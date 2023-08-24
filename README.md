@@ -13,6 +13,8 @@ Job open source intelligence and manager for jobseekers.
 ## TODO
 
 * HTTP client
+* Integrate with:
+  * https://serpapi.com
 * Infrastructure as Code
   * Terraform
 * Containerization
@@ -27,3 +29,10 @@ Job open source intelligence and manager for jobseekers.
 * Testing
   * Test containers
   * Playwright
+* UI
+  * SvelteKit?
+  * Vue?
+  * [iced](https://iced.rs/)?
+
+## References
+
