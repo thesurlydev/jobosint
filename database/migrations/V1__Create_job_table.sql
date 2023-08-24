@@ -1,4 +1,5 @@
-create table if not exists jobs(
+create table if not exists job(
     id uuid primary key default gen_random_uuid(),
-    title varchar(255) not null
+    title varchar(255) not null,
+    url text
 )
