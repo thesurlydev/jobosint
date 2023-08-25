@@ -1,6 +1,6 @@
 package com.jobosint.controller;
 
-import com.jobosint.model.Job;
+import com.jobosint.model.JobAndCompany;
 import com.jobosint.repository.JobRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +15,7 @@ public class JobController {
     }
 
     @GetMapping("/jobs")
-    public Iterable<Job> getJobs() {
-        return jobRepository.findAll();
+    public Iterable<JobAndCompany> getJobs() {
+        return jobRepository.findAllJobAndCompany();
     }
 }
