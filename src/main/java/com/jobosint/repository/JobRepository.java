@@ -11,8 +11,8 @@ import java.util.UUID;
 public interface JobRepository extends CrudRepository<Job, UUID> {
 
     @Query("""
-            select j.*, c.id as companyId, c.name as companyName, c.url as companyUrl
-                      from jobosint.job j, jobosint.company c
+            select j.*, c.id as companyId, c.name, c.website_url
+                      from jobosint.jobosint.job j, jobosint.jobosint.company c
                       where j.company = c.id
             """)
     List<JobAndCompany> findAllJobAndCompany();

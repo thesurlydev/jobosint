@@ -1,6 +1,6 @@
 create table if not exists company
 (
-    id    uuid primary key default gen_random_uuid(),
+    id   uuid primary key default gen_random_uuid(),
     name varchar(255) not null,
-    url varchar(255)
+    website_url  varchar(255)
 )

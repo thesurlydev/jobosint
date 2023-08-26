@@ -10,6 +10,14 @@ Job open source intelligence and manager for jobseekers.
 * PostgreSQL
 * Flyway
 
+
+## Database
+
+```bash
+./rebuild-db.sh
+```
+
+
 ## TODO
 
 * HTTP client

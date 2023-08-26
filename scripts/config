@@ -4,10 +4,11 @@ DB_NAME="jobosint"
 DB_USER="shane"
 DB_PASS="shane"
 DB_HOST="localhost"
-DB_PORT="5433"
+DB_PORT="5432"
 DB_ENCODING="UTF8"
 DB_LOCALE="en_US.UTF-8"
 
+DB_IMAGE="postgres:15"
 CONTAINER_NAME="${DB_NAME}-db"
 
 DATA_PATH="/home/shane/data/${DB_NAME}-pgdata"

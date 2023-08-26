@@ -7,17 +7,25 @@ source ./config
 echo "Creating data path: ${DATA_PATH}"
 mkdir -p ${DATA_PATH}
 
+echo "Stopping container: ${CONTAINER_NAME}"
+docker stop ${CONTAINER_NAME}
+
+echo "Removing container: ${CONTAINER_NAME}"
+docker rm ${CONTAINER_NAME}
+
 echo "Starting container: ${CONTAINER_NAME}"
 docker run --name ${CONTAINER_NAME} \
   -e POSTGRES_USER=${DB_USER} \
   -e POSTGRES_PASSWORD=${DB_PASS} \
   -v ${DATA_PATH}:/var/lib/postgresql/data \
   -p ${DB_PORT}:5432 \
-  -d postgres
-
+  -d ${DB_IMAGE}
 
 sleep 3
 
+CMD0="drop database if exists ${DB_NAME};"
+echo "Running command: ${CMD0}"
+PGPASSWORD=${DB_PASS} psql -h ${DB_HOST} -p ${DB_PORT} -U ${DB_USER} --no-password -c "${CMD0}"
 
 CMD1="CREATE DATABASE ${DB_NAME} WITH TEMPLATE = template0 ENCODING = '${DB_ENCODING}' LOCALE_PROVIDER = libc LOCALE = '${DB_LOCALE}'"
 echo "Running command: ${CMD1}"
