@@ -11,10 +11,7 @@ import com.jobosint.repository.JobRepository;
 import com.jobosint.repository.NoteRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
@@ -61,6 +58,16 @@ public class JobFormController {
         model.addAttribute("note", noteForm);
 
         return "/jobDetail";
+    }
+
+    @GetMapping("/jobs/{id}/delete")
+    public RedirectView deleteJob(@PathVariable UUID id) {
+
+        // todo wrap in transaction
+        noteRepository.deleteByJobId(id);
+        jobRepository.deleteById(id);
+
+        return new RedirectView("/");
     }
 
     @PostMapping("/job")

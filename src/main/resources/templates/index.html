@@ -15,6 +15,7 @@
             <th>Salary</th>
             <th>Source</th>
             <th>URL</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
             <td th:text="${job.job().salaryDisplay()}">Salary</td>
             <td th:text="${job.job().source()}">Source</td>
             <td><a th:href="@{{url}(url=${job.job().url()})}" th:text="${job.job().url()}">URL</a></td>
+            <td><a th:href="@{/jobs/{id}/delete(id=${job.job().id()})}">Del</a></td>
         </tr>
     </tbody>
 </table>
