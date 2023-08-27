@@ -16,4 +16,12 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
                       where j.company = c.id
             """)
     List<JobAndCompany> findAllJobAndCompany();
+
+    @Query("""
+            select j.*, c.id as companyId, c.name, c.website_url
+                      from jobosint.jobosint.job j, jobosint.jobosint.company c
+                      where j.company = c.id and j.id = :id
+                    
+            """)
+    JobAndCompany findJobDetailbyId(UUID id);
 }

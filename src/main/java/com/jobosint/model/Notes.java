@@ -1,7 +1,12 @@
 package com.jobosint.model;
 
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 
-public record Notes(List<NoteItem> items) {
+import java.util.UUID;
+
+public record Notes(@Id UUID id, @Column("job") UUID jobId, String description) {
+
+
 }
 

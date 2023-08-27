@@ -1,1 +1,0 @@
-alter table jobosint.job add column IF NOT EXISTS notes jsonb;
