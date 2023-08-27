@@ -14,6 +14,8 @@ public class JobForm {
     private Integer salaryMin;
     private Integer salaryMax;
 
+    private String notes;
+
     public UUID getId() {
         return id;
     }
@@ -68,5 +70,13 @@ public class JobForm {
 
     public void setSalaryMax(Integer salaryMax) {
         this.salaryMax = salaryMax;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

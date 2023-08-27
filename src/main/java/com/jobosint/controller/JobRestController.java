@@ -2,9 +2,9 @@ package com.jobosint.controller;
 
 import com.jobosint.model.JobAndCompany;
 import com.jobosint.model.JobDetail;
-import com.jobosint.model.Notes;
+import com.jobosint.model.Note;
 import com.jobosint.repository.JobRepository;
-import com.jobosint.repository.NotesRepository;
+import com.jobosint.repository.NoteRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +18,11 @@ import java.util.UUID;
 public class JobRestController {
 
     private final JobRepository jobRepository;
-    private final NotesRepository notesRepository;
+    private final NoteRepository noteRepository;
 
-    public JobRestController(JobRepository jobRepository, NotesRepository notesRepository) {
+    public JobRestController(JobRepository jobRepository, NoteRepository noteRepository) {
         this.jobRepository = jobRepository;
-        this.notesRepository = notesRepository;
+        this.noteRepository = noteRepository;
     }
 
     @GetMapping()
@@ -33,7 +33,7 @@ public class JobRestController {
     @GetMapping("/{id}")
     public JobDetail getJobs(@PathVariable UUID id) {
         var jobAndCompany = jobRepository.findJobDetailbyId(id);
-        List<Notes> notes = notesRepository.findByJobId(id);
+        List<Note> notes = noteRepository.findByJobId(id);
         return new JobDetail(jobAndCompany, notes);
     }
 }

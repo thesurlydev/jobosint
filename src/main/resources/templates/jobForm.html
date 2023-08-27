@@ -21,6 +21,10 @@
             <option th:each="s: ${sources}" th:value="${s}" th:text="${s}"></option>
         </select>
     </p>
+    <p>Notes:
+        <textarea th:field="*{notes}"></textarea>
+    </p>
+
     <p><input type="submit" value="Submit" /></p>
 </form>
 </body>

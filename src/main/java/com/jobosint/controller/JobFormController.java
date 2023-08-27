@@ -3,10 +3,11 @@ package com.jobosint.controller;
 import com.jobosint.model.Company;
 import com.jobosint.model.Job;
 import com.jobosint.model.JobDetail;
+import com.jobosint.model.Note;
 import com.jobosint.model.form.JobForm;
 import com.jobosint.repository.CompanyRepository;
 import com.jobosint.repository.JobRepository;
-import com.jobosint.repository.NotesRepository;
+import com.jobosint.repository.NoteRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +23,12 @@ public class JobFormController {
     private final JobRepository jobRepository;
     private final CompanyRepository companyRepository;
 
-    private final NotesRepository notesRepository;
+    private final NoteRepository noteRepository;
 
-    public JobFormController(JobRepository jobRepository, CompanyRepository companyRepository, NotesRepository notesRepository) {
+    public JobFormController(JobRepository jobRepository, CompanyRepository companyRepository, NoteRepository noteRepository) {
         this.jobRepository = jobRepository;
         this.companyRepository = companyRepository;
-        this.notesRepository = notesRepository;
+        this.noteRepository = noteRepository;
     }
 
     @GetMapping("/job")
@@ -50,7 +51,7 @@ public class JobFormController {
     public String jobDetail(@PathVariable UUID id, Model model) {
 
         var jobAndCompany = jobRepository.findJobDetailbyId(id);
-        var notes = notesRepository.findByJobId(id);
+        var notes = noteRepository.findByJobId(id);
         var jobDetail = new JobDetail(jobAndCompany, notes);
 
         model.addAttribute("job", jobDetail);
@@ -59,10 +60,15 @@ public class JobFormController {
     }
 
     @PostMapping("/job")
-    public RedirectView jobSubmit(@ModelAttribute JobForm jobForm, Model model) {
+    public RedirectView jobSubmit(@ModelAttribute JobForm jobForm) {
 
         var job = new Job(null, jobForm.getCompanyId(), jobForm.getTitle(), jobForm.getUrl(), null, null, jobForm.getSalaryMin(), jobForm.getSalaryMax(), jobForm.getSource());
-        jobRepository.save(job);
+        var savedJob = jobRepository.save(job);
+
+        if (!jobForm.getNotes().isEmpty()) {
+            var notes = new Note(null, savedJob.id(), jobForm.getNotes());
+            noteRepository.save(notes);
+        }
 
         return new RedirectView("/");
     }

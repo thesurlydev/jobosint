@@ -5,7 +5,7 @@ import org.springframework.data.relational.core.mapping.Column;
 
 import java.util.UUID;
 
-public record Notes(@Id UUID id, @Column("job") UUID jobId, String description) {
+public record Note(@Id UUID id, @Column("job") UUID jobId, String description) {
 
 
 }
