@@ -5,6 +5,7 @@ import com.jobosint.model.Job;
 import com.jobosint.model.JobDetail;
 import com.jobosint.model.Note;
 import com.jobosint.model.form.JobForm;
+import com.jobosint.model.form.NoteForm;
 import com.jobosint.repository.CompanyRepository;
 import com.jobosint.repository.JobRepository;
 import com.jobosint.repository.NoteRepository;
@@ -53,8 +54,10 @@ public class JobFormController {
         var jobAndCompany = jobRepository.findJobDetailbyId(id);
         var notes = noteRepository.findByJobId(id);
         var jobDetail = new JobDetail(jobAndCompany, notes);
-
         model.addAttribute("job", jobDetail);
+
+        var noteForm = new NoteForm(id);
+        model.addAttribute("note", noteForm);
 
         return "/jobDetail";
     }

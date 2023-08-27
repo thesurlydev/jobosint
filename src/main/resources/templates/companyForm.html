@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>Add a company</h1>
+<p><a href="/">Back home</a></p>
 <form action="#" th:action="@{/company}" th:object="${company}" method="post">
     <p>Name: <input type="text" th:field="*{name}" /></p>
     <p>Website URL: <input type="text" th:field="*{websiteUrl}" /></p>

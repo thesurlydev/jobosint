@@ -27,6 +27,14 @@
     </tr>
     </tbody>
 </table>
+
+<h3>Add note</h3>
+<form action="#" th:action="@{/note}" th:object="${note}" method="post">
+    <input type="hidden" th:field="*{jobId}"/>
+    <textarea rows="5" cols="50" th:field="*{description}"></textarea>
+    <p><input type="submit" value="Save note" /></p>
+</form>
+
 <hr/>
 <a href="/job">Add another job</a>
 </body>
