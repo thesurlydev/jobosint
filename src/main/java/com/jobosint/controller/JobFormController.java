@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -69,7 +70,7 @@ public class JobFormController {
         var savedJob = jobRepository.save(job);
 
         if (!jobForm.getNotes().isEmpty()) {
-            var notes = new Note(null, savedJob.id(), jobForm.getNotes());
+            var notes = new Note(null, savedJob.id(), jobForm.getNotes(), LocalDateTime.now());
             noteRepository.save(notes);
         }
 

@@ -12,18 +12,20 @@
 <p th:text="'title: ' + ${job.jobDetail().job().title}" />
 <p th:text="'id: ' + ${job.jobDetail().job().id()}" />
 <p th:text="'url: ' + ${job.jobDetail().job().url}" />
-<p th:text="'company: ' + ${job.jobDetail().company().name()}" />
+<p>company: <a th:href="@{{url}(url=${job.jobDetail().company().websiteUrl()})}" th:text="${job.jobDetail().company().name()}">company website</a></p>
 
 <h2>notes</h2>
 <table>
     <thead>
     <tr>
         <th>Description</th>
+        <th>Created</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="note : ${job.notes()}">
-        <td th:text="${note.description}">Title</td>
+        <td th:text="${note.description}">description</td>
+        <td th:text="${note.createdAt}">createdAt</td>
     </tr>
     </tbody>
 </table>

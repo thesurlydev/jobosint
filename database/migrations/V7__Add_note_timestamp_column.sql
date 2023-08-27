@@ -1,0 +1,1 @@
+alter table jobosint.note add column IF NOT EXISTS created_at timestamptz default now();
