@@ -7,12 +7,14 @@ import com.jobosint.repository.JobRepository;
 import com.jobosint.repository.NotesRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/api/jobs")
 public class JobController {
 
     private final JobRepository jobRepository;
@@ -23,12 +25,12 @@ public class JobController {
         this.notesRepository = notesRepository;
     }
 
-    @GetMapping("/jobs")
+    @GetMapping()
     public Iterable<JobAndCompany> getJobs() {
         return jobRepository.findAllJobAndCompany();
     }
 
-    @GetMapping("/jobs/{id}")
+    @GetMapping("/{id}")
     public JobDetail getJobs(@PathVariable UUID id) {
         var jobAndCompany = jobRepository.findJobDetailbyId(id);
         List<Notes> notes = notesRepository.findByJobId(id);
