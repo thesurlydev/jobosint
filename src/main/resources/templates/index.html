@@ -8,12 +8,16 @@
         <tr>
             <th>Title</th>
             <th>Company</th>
+            <th>Created</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
         <tr th:each="job : ${jobs}">
             <td><a th:href="@{/jobs/{id}(id=${job.job().id()})}" th:text="${job.job().title()}">Title</a></td>
-            <td><span th:text="${job.company().name()}">Title</span></td>
+            <td th:text="${job.company().name()}">Company</td>
+            <td th:text="${job.job().createdAt()}">Created</td>
+            <td th:text="${job.job().status()}">Status</td>
         </tr>
     </tbody>
 </table>
