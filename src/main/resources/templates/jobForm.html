@@ -15,6 +15,12 @@
         </select>
         <a href="/company">Add new</a>
     </p>
+    <p>Salary: <input type="text" th:field="*{salaryMin}" size="10" /> to <input type="text" th:field="*{salaryMax}" size="10" /></p>
+    <p>Source:
+        <select th:field="*{source}">
+            <option th:each="s: ${sources}" th:value="${s}" th:text="${s}"></option>
+        </select>
+    </p>
     <p><input type="submit" value="Submit" /></p>
 </form>
 </body>

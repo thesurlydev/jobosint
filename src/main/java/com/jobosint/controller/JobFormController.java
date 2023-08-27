@@ -40,6 +40,9 @@ public class JobFormController {
         companyList.sort(Comparator.comparing(Company::name));
         model.addAttribute("companies", companyList);
 
+        var sources = List.of("LinkedIn", "Google Jobs", "Indeed", "Recruiter", "Company Job Site");
+        model.addAttribute("sources", sources);
+
         return "/jobForm";
     }
 
@@ -58,7 +61,7 @@ public class JobFormController {
     @PostMapping("/job")
     public RedirectView jobSubmit(@ModelAttribute JobForm jobForm, Model model) {
 
-        var job = new Job(null, jobForm.getCompanyId(), jobForm.getTitle(), jobForm.getUrl(), null, null);
+        var job = new Job(null, jobForm.getCompanyId(), jobForm.getTitle(), jobForm.getUrl(), null, null, jobForm.getSalaryMin(), jobForm.getSalaryMax(), jobForm.getSource());
         jobRepository.save(job);
 
         return new RedirectView("/");

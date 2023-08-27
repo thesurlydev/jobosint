@@ -3,6 +3,8 @@
 
 <hr/>
 
+<h2>Jobs</h2>
+
 <table>
     <thead>
         <tr>
@@ -10,6 +12,8 @@
             <th>Company</th>
             <th>Created</th>
             <th>Status</th>
+            <th>Salary</th>
+            <th>Source</th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +22,8 @@
             <td th:text="${job.company().name()}">Company</td>
             <td th:text="${job.job().createdAt()}">Created</td>
             <td th:text="${job.job().status()}">Status</td>
+            <td th:text="${job.job().salaryDisplay()}">Salary</td>
+            <td th:text="${job.job().source()}">Source</td>
         </tr>
     </tbody>
 </table>
