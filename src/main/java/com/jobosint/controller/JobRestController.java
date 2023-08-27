@@ -15,12 +15,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/jobs")
-public class JobController {
+public class JobRestController {
 
     private final JobRepository jobRepository;
     private final NotesRepository notesRepository;
 
-    public JobController(JobRepository jobRepository, NotesRepository notesRepository) {
+    public JobRestController(JobRepository jobRepository, NotesRepository notesRepository) {
         this.jobRepository = jobRepository;
         this.notesRepository = notesRepository;
     }

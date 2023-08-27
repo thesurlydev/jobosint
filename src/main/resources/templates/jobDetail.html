@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Job Detail</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Job Detail</h1>
+
+<p><a href="/">Back home</a></p>
+
+<p th:text="'title: ' + ${job.jobDetail().job().title}" />
+<p th:text="'id: ' + ${job.jobDetail().job().id()}" />
+<p th:text="'url: ' + ${job.jobDetail().job().url}" />
+<p th:text="'company: ' + ${job.jobDetail().company().name()}" />
+
+<h2>notes</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="note : ${job.notes()}">
+        <td th:text="${note.description}">Title</td>
+    </tr>
+    </tbody>
+</table>
+<hr/>
+<a href="/job">Add another job</a>
+</body>
+</html>

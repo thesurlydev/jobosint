@@ -2,16 +2,15 @@ package com.jobosint.controller;
 
 import com.jobosint.model.Company;
 import com.jobosint.repository.CompanyRepository;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/companies")
-public class CompanyController {
+public class CompanyRestController {
 
     private final CompanyRepository companyRepository;
 
-    public CompanyController(CompanyRepository companyRepository) {
+    public CompanyRestController(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
 
