@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Company Detail</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Company Detail</h1>
+<p th:text="'id: ' + ${company.id}" />
+<p th:text="'name: ' + ${company.name}" />
+<p th:text="'websiteUrl: ' + ${company.websiteUrl}" />
+<a href="/company">Add another company</a>
+</body>
+</html>
