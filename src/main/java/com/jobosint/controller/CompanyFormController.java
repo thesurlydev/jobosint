@@ -3,6 +3,7 @@ package com.jobosint.controller;
 import com.jobosint.model.Company;
 import com.jobosint.model.form.CompanyForm;
 import com.jobosint.repository.CompanyRepository;
+import com.jobosint.service.CompanyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,11 @@ import java.util.UUID;
 @Controller
 public class CompanyFormController {
     private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
 
-    public CompanyFormController(CompanyRepository companyRepository) {
+    public CompanyFormController(CompanyRepository companyRepository, CompanyService companyService) {
         this.companyRepository = companyRepository;
+        this.companyService = companyService;
     }
 
     @GetMapping("/company")
@@ -51,7 +54,7 @@ public class CompanyFormController {
     @PostMapping("/company")
     public RedirectView companySubmit(@ModelAttribute CompanyForm companyForm) {
         var company = new Company(companyForm.getId(), companyForm.getName(), companyForm.getWebsiteUrl());
-        companyRepository.save(company);
+        companyService.createCompany(company);
         return new RedirectView("/companies");
     }
 
