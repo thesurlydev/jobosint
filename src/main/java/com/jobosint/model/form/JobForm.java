@@ -16,6 +16,10 @@ public class JobForm {
 
     private String notes;
 
+    private String contactName;
+    private String contactEmail;
+    private String contactPhone;
+
     public UUID getId() {
         return id;
     }
@@ -78,5 +82,29 @@ public class JobForm {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 }

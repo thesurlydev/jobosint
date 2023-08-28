@@ -1,5 +1,6 @@
 package com.jobosint.model;
 
+import com.jobosint.model.form.JobForm;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
@@ -15,7 +16,11 @@ public record Job(@Id UUID id,
                   String status,
                   @Column("salary_min") Integer salaryMin,
                   @Column("salary_max") Integer salaryMax,
-                  String source
+                  String source,
+
+                  @Column("contact_name") String contactName,
+                  @Column("contact_email") String contactEmail,
+                  @Column("contact_phone") String contactPhone
 ) {
 
     public String salaryDisplay() {
@@ -29,5 +34,21 @@ public record Job(@Id UUID id,
                     .add(String.valueOf(this.salaryMax))
                     .toString();
         }
+    }
+
+    public static Job fromForm(JobForm form) {
+        return new Job(form.getId(),
+                form.getCompanyId(),
+                form.getTitle(),
+                form.getUrl(),
+                null,
+                null,
+                form.getSalaryMin(),
+                form.getSalaryMax(),
+                form.getSource(),
+                form.getContactName(),
+                form.getContactEmail(),
+                form.getContactPhone()
+        );
     }
 }

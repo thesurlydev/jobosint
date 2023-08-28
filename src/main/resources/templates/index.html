@@ -5,7 +5,7 @@
 
 <h2>Jobs</h2>
 
-<table>
+<table style="width: 100%">
     <thead>
         <tr>
             <th>Title</th>
@@ -14,6 +14,7 @@
             <th>Status</th>
             <th>Salary</th>
             <th>Source</th>
+            <th>Contact</th>
             <th>URL</th>
             <th></th>
         </tr>
@@ -26,6 +27,7 @@
             <td th:text="${job.job().status()}">Status</td>
             <td th:text="${job.job().salaryDisplay()}">Salary</td>
             <td th:text="${job.job().source()}">Source</td>
+            <td th:text="${job.job().contactName()}">Contact Name</td>
             <td><a th:href="@{{url}(url=${job.job().url()})}" th:text="${job.job().url()}">URL</a></td>
             <td><a th:href="@{/jobs/{id}/delete(id=${job.job().id()})}">Del</a></td>
         </tr>

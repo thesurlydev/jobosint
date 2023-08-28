@@ -73,7 +73,7 @@ public class JobFormController {
     @PostMapping("/job")
     public RedirectView jobSubmit(@ModelAttribute JobForm jobForm) {
 
-        var job = new Job(null, jobForm.getCompanyId(), jobForm.getTitle(), jobForm.getUrl(), null, null, jobForm.getSalaryMin(), jobForm.getSalaryMax(), jobForm.getSource());
+        var job = Job.fromForm(jobForm);
         var savedJob = jobRepository.save(job);
 
         if (!jobForm.getNotes().isEmpty()) {
