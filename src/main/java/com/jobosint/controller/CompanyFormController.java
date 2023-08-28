@@ -2,7 +2,6 @@ package com.jobosint.controller;
 
 import com.jobosint.model.Company;
 import com.jobosint.model.form.CompanyForm;
-import com.jobosint.repository.CompanyRepository;
 import com.jobosint.service.CompanyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +15,9 @@ import java.util.UUID;
 
 @Controller
 public class CompanyFormController {
-    private final CompanyRepository companyRepository;
     private final CompanyService companyService;
 
-    public CompanyFormController(CompanyRepository companyRepository, CompanyService companyService) {
-        this.companyRepository = companyRepository;
+    public CompanyFormController(CompanyService companyService) {
         this.companyService = companyService;
     }
 
@@ -32,21 +29,20 @@ public class CompanyFormController {
 
     @GetMapping("/companies/{id}/delete")
     public RedirectView deleteCompany(@PathVariable UUID id, Model model) {
-        companyRepository.deleteById(id);
+        companyService.deleteCompany(id);
         return new RedirectView("/companies");
     }
 
     @GetMapping("/companies/{id}/edit")
     public String editCompany(@PathVariable UUID id, Model model) {
-        var company = companyRepository.findById(id);
+        var company = companyService.getById(id);
         company.ifPresent(c -> model.addAttribute("company", new CompanyForm(c.id(), c.name(), c.websiteUrl())));
         return "/companyForm";
     }
 
-
     @GetMapping("/companies")
     public String companies(Model model) {
-        var companies = companyRepository.findAll();
+        var companies = companyService.getAllSorted();
         model.addAttribute("companies", companies);
         return "/companies";
     }
