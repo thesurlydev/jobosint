@@ -1,5 +1,5 @@
 <h1>jobosint</h1>
-<p><a href="/job">Add a job</a> - <a href="/company">Add a company</a></p>
+<p><a href="/companies">Companies</a> - <a href="/job">Add a job</a> - <a href="/company">Add a company</a></p>
 
 <hr/>
 
@@ -29,7 +29,7 @@
             <td th:text="${job.job().source()}">Source</td>
             <td th:text="${job.job().contactName()}">Contact Name</td>
             <td><a th:href="@{{url}(url=${job.job().url()})}" th:text="${job.job().url()}">URL</a></td>
-            <td><a th:href="@{/jobs/{id}/delete(id=${job.job().id()})}">Del</a></td>
+            <td><a th:href="@{/jobs/{id}/edit(id=${job.job().id()})}">Edit</a> - <a th:href="@{/jobs/{id}/delete(id=${job.job().id()})}">Del</a></td>
         </tr>
     </tbody>
 </table>

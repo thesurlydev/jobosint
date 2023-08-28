@@ -1,0 +1,23 @@
+<h1>jobosint</h1>
+<p><a href="/">Jobs</a> - <a href="/job">Add a job</a> - <a href="/company">Add a company</a></p>
+
+<hr/>
+
+<h2>Companies</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>URL</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${companies}">
+        <td th:text="${c.name()}">Name</td>
+        <td th:text="${c.websiteUrl()}">URL</td>
+        <td><a th:href="@{/companies/{id}/edit(id=${c.id()})}">Edit</a> - <a th:href="@{/companies/{id}/delete(id=${c.id()})}">Del</a></td>
+    </tr>
+    </tbody>
+</table>

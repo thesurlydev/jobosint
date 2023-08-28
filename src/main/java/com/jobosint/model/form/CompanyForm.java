@@ -8,6 +8,15 @@ public class CompanyForm {
     private String name;
     private String websiteUrl;
 
+    public CompanyForm() {
+    }
+
+    public CompanyForm(UUID id, String name, String websiteUrl) {
+        this.id = id;
+        this.name = name;
+        this.websiteUrl = websiteUrl;
+    }
+
     public UUID getId() {
         return id;
     }
