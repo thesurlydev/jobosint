@@ -2,6 +2,7 @@ package com.jobosint.repository;
 
 import com.jobosint.model.Job;
 import com.jobosint.model.JobAndCompany;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -14,6 +15,7 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
             select j.*, c.id as companyId, c.name, c.website_url
                       from jobosint.jobosint.job j, jobosint.jobosint.company c
                       where j.company = c.id
+                      order by j.created_at
             """)
     List<JobAndCompany> findAllJobAndCompany();
 
@@ -24,4 +26,11 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
                     
             """)
     JobAndCompany findJobDetailbyId(UUID id);
+
+
+    @Modifying
+    @Query("""
+        delete from jobosint.job where company = :companyId
+""")
+    void deleteAllByCompanyId(UUID companyId);
 }

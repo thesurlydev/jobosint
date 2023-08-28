@@ -4,6 +4,7 @@ import com.jobosint.event.CompanyDeletedEvent;
 import com.jobosint.listener.CompanyNotifierService;
 import com.jobosint.model.Company;
 import com.jobosint.repository.CompanyRepository;
+import com.jobosint.repository.JobRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +19,15 @@ public class CompanyService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final CompanyRepository companyRepository;
     private final CompanyNotifierService companyNotifierService;
+    private final JobRepository jobRepository;
 
     public CompanyService(ApplicationEventPublisher applicationEventPublisher,
                           CompanyRepository companyRepository,
-                          CompanyNotifierService companyNotifierService) {
+                          CompanyNotifierService companyNotifierService, JobRepository jobRepository) {
         this.applicationEventPublisher = applicationEventPublisher;
         this.companyRepository = companyRepository;
         this.companyNotifierService = companyNotifierService;
+        this.jobRepository = jobRepository;
     }
 
     @Transactional
@@ -36,6 +39,9 @@ public class CompanyService {
 
     @Transactional
     public void deleteCompany(UUID id) {
+        // delete any associated jobs first
+        jobRepository.deleteAllByCompanyId(id);
+
         companyRepository.deleteById(id);
         applicationEventPublisher.publishEvent(new CompanyDeletedEvent(this, id));
     }
