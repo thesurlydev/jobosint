@@ -2,85 +2,82 @@ package com.jobosint.controller;
 
 import com.jobosint.model.Company;
 import com.jobosint.model.Job;
-import com.jobosint.model.JobDetail;
-import com.jobosint.model.Note;
 import com.jobosint.model.form.JobForm;
-import com.jobosint.model.form.NoteForm;
-import com.jobosint.repository.CompanyRepository;
-import com.jobosint.repository.JobRepository;
-import com.jobosint.repository.NoteRepository;
+import com.jobosint.service.AttributeService;
+import com.jobosint.service.CompanyService;
+import com.jobosint.service.JobService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class JobFormController {
-    private final JobRepository jobRepository;
-    private final CompanyRepository companyRepository;
 
-    private final NoteRepository noteRepository;
+    private final AttributeService attributeService;
+    private final JobService jobService;
+    private final CompanyService companyService;
 
-    public JobFormController(JobRepository jobRepository, CompanyRepository companyRepository, NoteRepository noteRepository) {
-        this.jobRepository = jobRepository;
-        this.companyRepository = companyRepository;
-        this.noteRepository = noteRepository;
+    public JobFormController(AttributeService attributeService, JobService jobService, CompanyService companyService) {
+        this.attributeService = attributeService;
+        this.jobService = jobService;
+        this.companyService = companyService;
     }
 
     @GetMapping("/job")
     public String jobForm(Model model) {
         model.addAttribute("job", new JobForm());
-
-        Iterable<Company> companies = companyRepository.findAll();
-        var companyList = new ArrayList<Company>();
-        companies.forEach(companyList::add);
-        companyList.sort(Comparator.comparing(Company::name));
-        model.addAttribute("companies", companyList);
-
-        var sources = List.of("LinkedIn", "Google Jobs", "Indeed", "Recruiter", "Company Job Site");
-        model.addAttribute("sources", sources);
-
+        prepareJobForm(model);
         return "/jobForm";
     }
 
     @GetMapping("/jobs/{id}")
     public String jobDetail(@PathVariable UUID id, Model model) {
-
-        var jobAndCompany = jobRepository.findJobDetailbyId(id);
-        var notes = noteRepository.findByJobId(id);
-        var jobDetail = new JobDetail(jobAndCompany, notes);
-        model.addAttribute("job", jobDetail);
-
-        var noteForm = new NoteForm(id);
-        model.addAttribute("note", noteForm);
-
+        var job = jobService.getJob(id);
+        job.ifPresent(value -> model.addAttribute("job", value));
         return "/jobDetail";
     }
 
     @GetMapping("/jobs/{id}/delete")
     public RedirectView deleteJob(@PathVariable UUID id) {
-
-        // todo wrap in transaction
-        noteRepository.deleteByJobId(id);
-        jobRepository.deleteById(id);
-
+        jobService.deleteJob(id);
         return new RedirectView("/");
+    }
+
+    @GetMapping("/jobs/{id}/edit")
+    public String editJob(@PathVariable UUID id, Model model) {
+        var maybeJob = jobService.getJob(id);
+        maybeJob.ifPresent(job -> {
+            var jobForm = new JobForm(job);
+            model.addAttribute("job", jobForm);
+        });
+
+        prepareJobForm(model);
+
+        return "/jobForm";
+    }
+
+    private void prepareJobForm(Model model) {
+        List<Company> companies = companyService.getAllSorted();
+        model.addAttribute("companies", companies);
+
+        var sources = attributeService.getSources();
+        model.addAttribute("sources", sources);
+
+        var statuses = attributeService.getStatuses();
+        model.addAttribute("statuses", statuses);
     }
 
     @PostMapping("/job")
     public RedirectView jobSubmit(@ModelAttribute JobForm jobForm) {
-
         var job = Job.fromForm(jobForm);
-        var savedJob = jobRepository.save(job);
-
-        if (!jobForm.getNotes().isEmpty()) {
-            var notes = new Note(null, savedJob.id(), jobForm.getNotes(), LocalDateTime.now());
-            noteRepository.save(notes);
-        }
-
+        jobService.saveJob(job);
         return new RedirectView("/");
     }
 }

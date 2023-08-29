@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
     <title>Add a company</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
 <h1 th:if="${company.id == null}">Add a company</h1>
@@ -10,9 +10,15 @@
 <p><a href="/">Back home</a></p>
 <form action="#" th:action="@{/company}" th:object="${company}" method="post">
     <input type="hidden" th:field="*{id}"/>
-    <p>Name: <input type="text" th:field="*{name}" /></p>
-    <p>Website URL: <input type="text" th:field="*{websiteUrl}" /></p>
-    <p><input type="submit" value="Submit" /></p>
+    <p><label>
+        Name:
+        <input type="text" th:field="*{name}"/>
+    </label></p>
+    <p><label>
+        Website URL:
+        <input type="text" th:field="*{websiteUrl}"/>
+    </label></p>
+    <p><input type="submit" value="Submit"/></p>
 </form>
 </body>
 </html>

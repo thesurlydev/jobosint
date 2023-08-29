@@ -50,7 +50,7 @@ public class CompanyFormController {
     @PostMapping("/company")
     public RedirectView companySubmit(@ModelAttribute CompanyForm companyForm) {
         var company = new Company(companyForm.getId(), companyForm.getName(), companyForm.getWebsiteUrl());
-        companyService.createCompany(company);
+        companyService.saveCompany(company);
         return new RedirectView("/companies");
     }
 

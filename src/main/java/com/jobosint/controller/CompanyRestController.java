@@ -1,27 +1,26 @@
 package com.jobosint.controller;
 
 import com.jobosint.model.Company;
-import com.jobosint.repository.CompanyRepository;
+import com.jobosint.service.CompanyService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/companies")
 public class CompanyRestController {
 
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
 
-    public CompanyRestController(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+    public CompanyRestController(CompanyService companyService) {
+        this.companyService = companyService;
     }
 
     @GetMapping()
     public Iterable<Company> getCompanies() {
-        return companyRepository.findAll();
+        return companyService.getAllSorted();
     }
 
     @PostMapping()
-    public Company insertCompany(@RequestBody Company company) {
-        Company savedCompany = companyRepository.save(company);
-        return savedCompany;
+    public Company save(@RequestBody Company company) {
+        return companyService.saveCompany(company);
     }
 }

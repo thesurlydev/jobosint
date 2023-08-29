@@ -17,7 +17,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
 
-        var jobs = jobRepository.findAllJobAndCompany();
+        var jobs = jobRepository.findAllJobDetailOrderByCreatedAt();
         model.addAttribute("jobs", jobs);
 
         return "index";

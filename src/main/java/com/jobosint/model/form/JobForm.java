@@ -1,5 +1,8 @@
 package com.jobosint.model.form;
 
+import com.jobosint.model.Job;
+
+import java.util.List;
 import java.util.UUID;
 
 public class JobForm {
@@ -10,6 +13,7 @@ public class JobForm {
     private UUID companyId;
 
     private String source;
+    private String status;
 
     private Integer salaryMin;
     private Integer salaryMax;
@@ -19,6 +23,32 @@ public class JobForm {
     private String contactName;
     private String contactEmail;
     private String contactPhone;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public JobForm() {
+    }
+
+    public JobForm(Job job) {
+        this.id = job.id();
+        this.notes = job.notes();
+        this.companyId = job.companyId();
+        this.contactEmail = job.contactEmail();
+        this.contactName = job.contactName();
+        this.contactPhone = job.contactPhone();
+        this.salaryMin = job.salaryMin();
+        this.salaryMax = job.salaryMax();
+        this.source = job.source();
+        this.status = job.status();
+        this.title = job.title();
+        this.url = job.url();
+    }
 
     public UUID getId() {
         return id;

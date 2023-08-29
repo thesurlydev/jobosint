@@ -31,9 +31,12 @@ public class CompanyService {
     }
 
     @Transactional
-    public Company createCompany(Company company) {
+    public Company saveCompany(Company company) {
+        boolean isNew = company.id() == null;
         var persistedCompany = companyRepository.save(company);
-        companyNotifierService.notifyCompanyCreated(persistedCompany);
+        if (isNew) {
+            companyNotifierService.notifyCompanyCreated(persistedCompany);
+        }
         return company;
     }
 

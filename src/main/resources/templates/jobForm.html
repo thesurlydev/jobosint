@@ -5,15 +5,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<h1>Add a job</h1>
+<h1 th:if="${job.id == null}">Add a job</h1>
+<h1 th:if="${job.id != null}">Edit job</h1>
 <p><a href="/">Back home</a></p>
 <form action="#" th:action="@{/job}" th:object="${job}" method="post">
+    <input type="hidden"  th:field="*{id}"/>
     <p>Title: <input type="text" th:field="*{title}" size="50" /></p>
     <p>URL: <input type="text" th:field="*{url}" size="80" /></p>
-    <p>Company:
-        <select th:field="*{companyId}">
-            <option th:each="c: ${companies}" th:value="${c.id}" th:text="${c.name}"></option>
-        </select>
+    <p>
+        <label>Company:
+            <select th:field="*{companyId}">
+                <option th:each="c: ${companies}" th:value="${c.id}" th:text="${c.name}"></option>
+            </select>
+        </label>
         <a href="/company">Add new</a>
     </p>
     <p>Salary: <input type="text" th:field="*{salaryMin}" size="10" /> to <input type="text" th:field="*{salaryMax}" size="10" /></p>
@@ -21,6 +25,18 @@
         <select th:field="*{source}">
             <option th:each="s: ${sources}" th:value="${s}" th:text="${s}"></option>
         </select>
+    </p>
+
+    <p>
+    <fieldset>
+        <legend>Status</legend>
+        <ul>
+            <li th:each="status : ${statuses}">
+                <input type="radio" th:field="*{status}" th:value="${status}" />
+                <label th:for="${#ids.prev('status')}" th:text="${status}"></label>
+            </li>
+        </ul>
+    </fieldset>
     </p>
 
     <p>Notes:<br/>

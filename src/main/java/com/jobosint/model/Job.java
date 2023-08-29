@@ -20,7 +20,9 @@ public record Job(@Id UUID id,
 
                   @Column("contact_name") String contactName,
                   @Column("contact_email") String contactEmail,
-                  @Column("contact_phone") String contactPhone
+                  @Column("contact_phone") String contactPhone,
+
+                  String notes
 ) {
 
     public String salaryDisplay() {
@@ -41,14 +43,15 @@ public record Job(@Id UUID id,
                 form.getCompanyId(),
                 form.getTitle(),
                 form.getUrl(),
-                null,
-                null,
+                LocalDateTime.now(),
+                form.getStatus(),
                 form.getSalaryMin(),
                 form.getSalaryMax(),
                 form.getSource(),
                 form.getContactName(),
                 form.getContactEmail(),
-                form.getContactPhone()
+                form.getContactPhone(),
+                form.getNotes()
         );
     }
 }

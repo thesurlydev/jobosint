@@ -9,8 +9,8 @@
 
 <p><a href="/">Back home</a></p>
 
-<p th:text="'title: ' + ${job.jobDetail().job().title}" />
-<p th:text="'id: ' + ${job.jobDetail().job().id()}" />
+<p th:text="'title: ' + ${job.title()}" />
+<!--<p th:text="'id: ' + ${job.jobDetail().job().id()}" />
 <p th:text="'url: ' + ${job.jobDetail().job().url}" />
 <p>company: <a th:href="@{{url}(url=${job.jobDetail().company().websiteUrl()})}" th:text="${job.jobDetail().company().name()}">company website</a></p>
 
@@ -35,7 +35,7 @@
     <input type="hidden" th:field="*{jobId}"/>
     <textarea rows="5" cols="50" th:field="*{description}"></textarea>
     <p><input type="submit" value="Save note" /></p>
-</form>
+</form>-->
 
 <hr/>
 <a href="/job">Add another job</a>
