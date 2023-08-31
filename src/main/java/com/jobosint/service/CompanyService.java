@@ -5,6 +5,7 @@ import com.jobosint.listener.CompanyNotifierService;
 import com.jobosint.model.Company;
 import com.jobosint.repository.CompanyRepository;
 import com.jobosint.repository.JobRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,21 +15,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CompanyService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
     private final CompanyRepository companyRepository;
     private final CompanyNotifierService companyNotifierService;
     private final JobRepository jobRepository;
-
-    public CompanyService(ApplicationEventPublisher applicationEventPublisher,
-                          CompanyRepository companyRepository,
-                          CompanyNotifierService companyNotifierService, JobRepository jobRepository) {
-        this.applicationEventPublisher = applicationEventPublisher;
-        this.companyRepository = companyRepository;
-        this.companyNotifierService = companyNotifierService;
-        this.jobRepository = jobRepository;
-    }
 
     @Transactional
     public Company saveCompany(Company company) {

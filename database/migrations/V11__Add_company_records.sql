@@ -15,6 +15,7 @@ insert into jobosint.jobosint.company(name, website_url) values('DigitalOcean', 
 insert into jobosint.jobosint.company(name, website_url) values('Dragos', 'https://www.dragos.com');
 insert into jobosint.jobosint.company(name, website_url) values('Earnin', 'https://www.earnin.com');
 insert into jobosint.jobosint.company(name, website_url) values('F5', 'https://www.f5.com');
+insert into jobosint.jobosint.company(name, website_url) values('Facebook', 'https://www.facebook.com');
 insert into jobosint.jobosint.company(name, website_url) values('Fastly', 'https://www.fastly.com');
 insert into jobosint.jobosint.company(name, website_url) values('Fermyon', 'https://www.fermyon.com');
 insert into jobosint.jobosint.company(name, website_url) values('Fly.io', 'https://www.fly.io');

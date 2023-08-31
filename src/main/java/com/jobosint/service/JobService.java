@@ -3,6 +3,8 @@ package com.jobosint.service;
 import com.jobosint.model.Job;
 import com.jobosint.model.JobDetail;
 import com.jobosint.repository.JobRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,15 +14,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class JobService {
 
-    private static final Logger log = LoggerFactory.getLogger(JobService.class);
-
     private final JobRepository jobRepository;
-
-    public JobService(JobRepository jobRepository) {
-        this.jobRepository = jobRepository;
-    }
 
     public List<JobDetail> getAllJobs() {
         return jobRepository.findAllJobDetailOrderByCreatedAt();

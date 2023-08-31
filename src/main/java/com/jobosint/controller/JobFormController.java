@@ -6,6 +6,7 @@ import com.jobosint.model.form.JobForm;
 import com.jobosint.service.AttributeService;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.JobService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,17 +19,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 public class JobFormController {
 
     private final AttributeService attributeService;
     private final JobService jobService;
     private final CompanyService companyService;
-
-    public JobFormController(AttributeService attributeService, JobService jobService, CompanyService companyService) {
-        this.attributeService = attributeService;
-        this.jobService = jobService;
-        this.companyService = companyService;
-    }
 
     @GetMapping("/job")
     public String jobForm(Model model) {
@@ -57,9 +53,7 @@ public class JobFormController {
             var jobForm = new JobForm(job);
             model.addAttribute("job", jobForm);
         });
-
         prepareJobForm(model);
-
         return "/jobForm";
     }
 

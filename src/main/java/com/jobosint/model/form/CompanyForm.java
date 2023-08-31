@@ -1,7 +1,10 @@
 package com.jobosint.model.form;
 
+import lombok.Getter;
+
 import java.util.UUID;
 
+@Getter
 public class CompanyForm {
 
     private UUID id;
@@ -17,24 +20,12 @@ public class CompanyForm {
         this.websiteUrl = websiteUrl;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
     public void setId(UUID id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getWebsiteUrl() {
-        return websiteUrl;
     }
 
     public void setWebsiteUrl(String websiteUrl) {

@@ -3,6 +3,7 @@ package com.jobosint.controller;
 import com.jobosint.model.Company;
 import com.jobosint.model.form.CompanyForm;
 import com.jobosint.service.CompanyService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +15,9 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 public class CompanyFormController {
     private final CompanyService companyService;
-
-    public CompanyFormController(CompanyService companyService) {
-        this.companyService = companyService;
-    }
 
     @GetMapping("/company")
     public String companyForm(Model model) {
