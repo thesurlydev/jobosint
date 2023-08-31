@@ -1,11 +1,14 @@
 package com.jobosint.controller;
 
 import com.jobosint.model.JobDetail;
-import com.jobosint.model.ext.Page;
 import com.jobosint.service.JobService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
@@ -18,17 +21,15 @@ public class JobRestController {
     private final JobService jobService;
 
     @GetMapping()
+    @Operation(summary = "Get all jobs")
     public Iterable<JobDetail> getJobs() {
         return jobService.getAllJobs();
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get a job by its id")
     public JobDetail getJobDetail(@PathVariable UUID id) {
         return jobService.getJobDetail(id);
     }
 
-    @PostMapping("/ext")
-    public void postJobFromExtension(@RequestBody Page page) {
-        log.info("post from extension; url: {}", page.url());
-    }
 }
