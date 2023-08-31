@@ -30,7 +30,7 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
 
     @Modifying
     @Query("""
-        delete from jobosint.job where company = :companyId
-""")
+            delete from jobosint.job where company = :companyId
+            """)
     void deleteAllByCompanyId(UUID companyId);
 }
