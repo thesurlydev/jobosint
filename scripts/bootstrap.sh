@@ -8,10 +8,10 @@ echo "Creating data path: ${DATA_PATH}"
 mkdir -p ${DATA_PATH}
 
 echo "Stopping container: ${CONTAINER_NAME}"
-docker stop ${CONTAINER_NAME}
+docker stop ${CONTAINER_NAME} || true
 
 echo "Removing container: ${CONTAINER_NAME}"
-docker rm ${CONTAINER_NAME}
+docker rm ${CONTAINER_NAME} || true
 
 echo "Starting container: ${CONTAINER_NAME}"
 docker run --name ${CONTAINER_NAME} \
