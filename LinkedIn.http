@@ -1,0 +1,8 @@
+https://www.linkedin.com/voyager/api/graphql?includeWebMetadata=true&variables=(keywords:United%20States,query:(typeaheadFilterQuery:(geoSearchTypes:List(POSTCODE_1,POSTCODE_2,POPULATED_PLACE,ADMIN_DIVISION_1,ADMIN_DIVISION_2,COUNTRY_REGION,MARKET_AREA,COUNTRY_CLUSTER)),typeaheadUseCase:JOBS),type:GEO)&&queryId=voyagerSearchDashReusableTypeahead.1043b2d44b336397a7560ac3243a89a0
+accept: application/vnd.linkedin.normalized+json+2.1
+accept-encoding: gzip, deflate, br
+cache-control: no-cache
+content-type: application/json; charset=utf-8
+cookie: cookieHeaderVal
+csrf-token: csrfToken
+pragma: no-cache

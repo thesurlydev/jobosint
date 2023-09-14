@@ -7,6 +7,7 @@ import com.jobosint.repository.CompanyRepository;
 import com.jobosint.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +42,8 @@ public class CompanyService {
     }
 
     public List<Company> getAllSorted() {
-        return companyRepository.findByOrderByNameAsc();
+        Pageable pageable = Pageable.ofSize(100);
+        return companyRepository.findAllByOrderByName(pageable);
     }
 
     public Optional<Company> getById(UUID id) {
