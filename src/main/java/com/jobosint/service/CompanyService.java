@@ -6,6 +6,7 @@ import com.jobosint.model.Company;
 import com.jobosint.repository.CompanyRepository;
 import com.jobosint.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,28 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CompanyService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
     private final CompanyRepository companyRepository;
     private final JobRepository jobRepository;
+
+    public List<Company> search(String query) {
+        if (query.startsWith("\"") && query.endsWith("\"")) {
+            var exact = query.replaceAll("\"", "");
+            log.info("Performing exact search for: {}", exact);
+            return companyRepository.findCompaniesByNameIsIgnoreCase(exact);
+        }
+        var results = companyRepository.findCompaniesByNameIsIgnoreCase(query);
+        if (results.size() == 1) {
+            log.info("Found exact match");
+            return results;
+        }
+        log.info("No exact match; performing like search for: {}", query);
+        return companyRepository.findCompaniesByNameContainingIgnoreCase(query);
+    }
 
     @Transactional
     public Company saveCompany(Company company) {

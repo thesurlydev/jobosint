@@ -10,4 +10,8 @@ import java.util.UUID;
 
 public interface CompanyRepository extends CrudRepository<Company, UUID>, PagingAndSortingRepository<Company, UUID> {
     List<Company> findAllByOrderByName(Pageable pageable);
+
+    List<Company> findCompaniesByNameContainingIgnoreCase(String name);
+
+    List<Company> findCompaniesByNameIsIgnoreCase(String name);
 }

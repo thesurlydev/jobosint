@@ -1,0 +1,29 @@
+<h1>jobosint</h1>
+<p><a href="/companies">Companies</a> - <a href="/job">Add a job</a> - <a href="/company">Add a company</a></p>
+
+<hr/>
+
+<h2>Search</h2>
+
+<form action="#" th:action="@{/search}" th:object="${searchForm}" method="post">
+    <input type="text" th:field="*{query}" size="50" placeholder="Enter query..." onClick="this.select();" />
+    <button type="submit" class="btn btn-info" >Search</button>
+</form>
+
+<p>Found <span th:text="${numResults}" style="font-weight: bold"></span> results</p>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>URL</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${results}">
+        <td th:text="${c.name()}">Name</td>
+        <td><a th:href="${c.websiteUrl()}" th:text="${c.websiteUrl()}" target="_blank">website url</a></td>
+        <td><a th:href="@{/companies/{id}/edit(id=${c.id()})}">Edit</a> - <a th:href="@{/companies/{id}/delete(id=${c.id()})}">Del</a></td>
+    </tr>
+    </tbody>
+</table>
