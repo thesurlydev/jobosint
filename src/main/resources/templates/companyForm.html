@@ -1,13 +1,11 @@
-<!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<html th:replace="~{layouts/default :: layout(~{::title}, ~{::section})}">
 <head>
-    <title>Add a company</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>jobosint - company form</title>
 </head>
 <body>
-<h1 th:if="${company.id == null}">Add a company</h1>
-<h1 th:if="${company.id != null}">Edit company</h1>
-<p><a href="/">Back home</a></p>
+<section>
+<h2 th:if="${company.id == null}">Add a company</h2>
+<h2 th:if="${company.id != null}">Edit company</h2>
 <form action="#" th:action="@{/company}" th:object="${company}" method="post">
     <input type="hidden" th:field="*{id}"/>
     <p><label>
@@ -20,5 +18,6 @@
     </label></p>
     <p><input type="submit" value="Submit"/></p>
 </form>
+</section>
 </body>
 </html>

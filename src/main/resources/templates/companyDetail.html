@@ -1,11 +1,11 @@
-<!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org">
+<html th:replace="~{layouts/default :: layout(~{::title}, ~{::section})}">
 <head>
-    <title>Company Detail</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>jobosint - company detail</title>
 </head>
 <body>
-<h1>Company Detail</h1>
+<section>
+<div th:insert="~{fragments/header :: nav}"></div>
+<h2>Company Detail</h2>
 <p th:text="'id: ' + ${company.id}" />
 <p th:text="'name: ' + ${company.name}" />
 <p th:text="'websiteUrl: ' + ${company.websiteUrl}" />

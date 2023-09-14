@@ -1,13 +1,11 @@
-<!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org">
+<html th:replace="~{layouts/default :: layout(~{::title}, ~{::section})}">
 <head>
-    <title>Add a job</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>jobosint - job form</title>
 </head>
 <body>
-<h1 th:if="${job.id == null}">Add a job</h1>
-<h1 th:if="${job.id != null}">Edit job</h1>
-<p><a href="/">Back home</a></p>
+<section>
+<h2 th:if="${job.id == null}">Add a job</h2>
+<h2 th:if="${job.id != null}">Edit job</h2>
 <form action="#" th:action="@{/job}" th:object="${job}" method="post">
     <input type="hidden"  th:field="*{id}"/>
     <p>Title: <input type="text" th:field="*{title}" size="50" /></p>
@@ -50,5 +48,7 @@
 
     <p><input type="submit" value="Submit" /></p>
 </form>
+
+</section>
 </body>
 </html>

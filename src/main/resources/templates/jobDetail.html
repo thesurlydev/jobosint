@@ -1,13 +1,9 @@
-<!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org">
+<html th:replace="~{layouts/default :: layout(~{::title}, ~{::section})}">
 <head>
-    <title>Job Detail</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>jobosint - job detail</title>
 </head>
 <body>
-<h1>Job Detail</h1>
-
-<p><a href="/">Back home</a></p>
+<section>
 
 <p th:text="'title: ' + ${job.title()}" />
 <!--<p th:text="'id: ' + ${job.jobDetail().job().id()}" />
@@ -39,5 +35,7 @@
 
 <hr/>
 <a href="/job">Add another job</a>
+
+</section>
 </body>
 </html>
