@@ -13,9 +13,6 @@ public class CrunchBaseService {
     private final CrunchbaseConfig crunchBaseConfig;
 
     public void test() {
-        System.out.println("key=" + crunchBaseConfig.apiKey());
+        // TODO
     }
-
-
-
 }
