@@ -1,7 +1,7 @@
 package com.jobosint.controller;
 
 import com.jobosint.model.ext.Page;
-import com.jobosint.openai.OpenAIService;
+import com.jobosint.ai.OpenAIService;
 import com.jobosint.service.PageService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

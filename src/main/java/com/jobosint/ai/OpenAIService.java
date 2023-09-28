@@ -1,4 +1,4 @@
-package com.jobosint.openai;
+package com.jobosint.ai;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
