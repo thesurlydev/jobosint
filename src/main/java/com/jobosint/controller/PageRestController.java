@@ -1,7 +1,7 @@
 package com.jobosint.controller;
 
 import com.jobosint.model.ext.Page;
-import com.jobosint.ai.OpenAIService;
+import com.jobosint.ai.WeatherServiceOpenAI;
 import com.jobosint.service.PageService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 public class PageRestController {
 
     private final PageService pageService;
-    private final OpenAIService openAIService;
+    private final WeatherServiceOpenAI weatherServiceOpenAI;
 
     @PostMapping()
     @Operation(summary = "Save a page")
@@ -57,6 +57,6 @@ public class PageRestController {
 
     @GetMapping("/ai")
     public void callAi() {
-        openAIService.example("Portland, Oregon");
+        weatherServiceOpenAI.example("Portland, Oregon");
     }
 }

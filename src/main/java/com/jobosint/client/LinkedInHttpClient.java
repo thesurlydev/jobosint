@@ -3,9 +3,7 @@ package com.jobosint.client;
 import com.github.mizosoft.methanol.MoreBodyHandlers;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.CookieManager;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,10 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Random;
-import java.util.zip.GZIPInputStream;
 
 @Slf4j
-public class SimpleHttpClient {
+public class LinkedInHttpClient {
 
 
     private HttpClient getClient() {

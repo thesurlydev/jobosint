@@ -1,6 +1,6 @@
 package com.jobosint.parser;
 
-import com.jobosint.model.JobDescriptionParseResult;
+import com.jobosint.model.JobDescription;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ public class JobDescriptionParserTest {
     @Test
     public void parse() throws IOException {
         String path = "/home/shane/projects/jobosint/tester.html";
-        JobDescriptionParseResult result = jobDescriptionParser.parse(path);
+        ParseResult<JobDescription> result = jobDescriptionParser.parse(path);
         System.out.println(result);
     }
 }

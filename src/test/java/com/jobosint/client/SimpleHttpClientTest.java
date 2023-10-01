@@ -6,7 +6,7 @@ public class SimpleHttpClientTest {
 
     @Test
     public void test() throws Exception {
-        SimpleHttpClient client = new SimpleHttpClient();
+        LinkedInHttpClient client = new LinkedInHttpClient();
         client.testVoyager();
     }
 }
