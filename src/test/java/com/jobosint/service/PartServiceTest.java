@@ -11,8 +11,8 @@ public class PartServiceTest {
 
     @Test
     public void refresh() throws Exception {
-        partService.refresh(false, true);
-        Thread.sleep(60000);
+        partService.refresh(true, false);
+        Thread.sleep(3000);
     }
 
 }

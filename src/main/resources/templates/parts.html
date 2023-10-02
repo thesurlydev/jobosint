@@ -1,0 +1,25 @@
+<html th:replace="~{layouts/default :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>parts</title>
+</head>
+<body>
+<section>
+    <h2>Parts</h2>
+
+    <table style="width: 100%">
+        <thead>
+        <tr>
+            <th>Number</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="part : ${parts}">
+            <td><a th:href="@{/parts/{id}(id=${part.id()})}" th:text="${part.num()}">Number</a></td>
+            <td th:text="${part.description()}">Description</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

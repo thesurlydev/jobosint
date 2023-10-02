@@ -4,6 +4,7 @@ import com.jobosint.client.HttpClientFactory;
 import com.jobosint.event.DownloadImageEvent;
 import com.jobosint.event.PersistPartEvent;
 import com.jobosint.model.DownloadImageRequest;
+import com.jobosint.model.JobDetail;
 import com.jobosint.model.Part;
 import com.jobosint.parser.OemPartsOnlinePageParser;
 import com.jobosint.parser.ParseResult;
@@ -32,6 +33,10 @@ public class PartService {
     private final PartRepository partRepository;
     private final OemPartsOnlinePageParser oemPartsOnlinePageParser;
     private final HttpClientFactory httpClientFactory;
+
+    public List<Part> getAllParts() {
+        return partRepository.findAllPartsOrderByTitle();
+    }
 
     @Transactional
     public Part savePart(Part part) {
