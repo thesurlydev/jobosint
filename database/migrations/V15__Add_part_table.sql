@@ -7,5 +7,6 @@ create table if not exists part
     title      text,
     info       text,
     ref_code   varchar(10),
-    ref_image  text
+    ref_image  text,
+    ref_local_image text
 )

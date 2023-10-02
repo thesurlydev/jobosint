@@ -1,6 +1,9 @@
 package com.jobosint.model;
 
+import java.nio.file.Path;
+
 public record DownloadImageRequest(String url,
-                                   String dir,
-                                   String filename) {
+                                   Path targetDir,
+                                   String targetFilename,
+                                   boolean overwrite) {
 }
