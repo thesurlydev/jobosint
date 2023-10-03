@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public record Part(
         @Id UUID id,
-        String num,
+        String num, // vendor specific
         String title,
         String info,
         String source,
@@ -18,7 +18,12 @@ public record Part(
         String partHash,
         String category,
         String subcategory,
-        String msrp) {
+        String msrp,
+        String price,
+        String supplier,
+        String vendor,
+        String sku // supplier specific
+) {
 
     public String toCsv() {
         return String.format("%s,%s,%s,%s,%s,%s", this.num, this.title, this.info, this.source, this.refCode, this.refImage);

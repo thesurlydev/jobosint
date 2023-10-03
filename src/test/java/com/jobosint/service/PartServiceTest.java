@@ -12,7 +12,7 @@ public class PartServiceTest {
     @Test
     public void refresh() throws Exception {
         partService.refresh(true, false);
-        Thread.sleep(3000);
+        Thread.sleep(5000);
     }
 
 }

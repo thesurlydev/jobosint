@@ -62,8 +62,7 @@ public class PartService {
             partRepository.deleteAll();
         }
         refreshCruiserCorps(persistParts, downloadImages);
-//        refreshOemPartsOnline(persistParts, downloadImages);
-
+        refreshOemPartsOnline(persistParts, downloadImages);
     }
 
     public void refreshCruiserCorps(boolean persistParts, boolean downloadImages) throws IOException {

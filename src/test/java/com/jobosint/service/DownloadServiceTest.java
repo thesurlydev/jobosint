@@ -28,7 +28,7 @@ public class DownloadServiceTest {
 
     @Test
     public void downloadAllTest() throws Exception {
-        String namespace = "sor";
+        String namespace = "toyotapartsdeal";
         Path linksPath = Paths.get("content", namespace + "-links.txt");
         String targetDir = "/home/shane/projects/jobosint/content/" + namespace;
         List<Optional<Path>> localPaths = downloadService.downloadAll(linksPath, targetDir, false);

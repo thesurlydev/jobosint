@@ -54,7 +54,6 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
             log.warn("No subcategory found for {}", path);
         }
 
-
         Elements partContainers = doc.getElementsByClass("part-group-container");
 
         /*
@@ -96,8 +95,11 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
                 String raw = msrpEls.select("div.list-price").text();
                 msrp = raw.replace("MSRP", "").trim();
             }
+
+            // TODO price
+
             String hash = Part.calcHash(partNum, title, info);
-            return new Part(null, partNum, title, info, path.toString(), refCode, refImage, hash, category, subcategory, msrp);
+            return new Part(null, partNum, title, info, path.toString(), refCode, refImage, hash, category, subcategory, msrp, null, "oempartsonline", "Toyota", null);
         }).toList();
         result.setData(parts);
     }

@@ -40,14 +40,10 @@ public class CruiserCorpsProductParser implements Parser<Path, Part> {
         String partHash = partHashAsLong.toString();
         String info = JsonPath.read(document, "$.product.body_html");
         String source = path.toString();
+        String sku = JsonPath.read(document, "$.product.variants[0].sku");
+        String price = JsonPath.read(document, "$.product.variants[0].price");
 
-        // TODO: this is CruserCorps SKU, not Toyota part number
-        String num = JsonPath.read(document, "$.product.variants[0].sku");
-
-        // TODO: this is CruiserCorps price, but using it as MSRP for now
-        String msrp = JsonPath.read(document, "$.product.variants[0].price");
-
-        Part part = new Part(null, num, title, info, source, null, refImage, partHash, category, null, msrp);
+        Part part = new Part(null, sku, title, info, source, null, refImage, partHash, category, null, null, price, "cruisercorps", null, sku);
         result.setData(part);
 
         return result;
