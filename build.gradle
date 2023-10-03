@@ -30,6 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'com.github.mizosoft.methanol:methanol:1.7.0'
+    implementation 'com.jayway.jsonpath:json-path:2.8.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
     // https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/service
     implementation 'com.theokanning.openai-gpt3-java:service:0.16.0'

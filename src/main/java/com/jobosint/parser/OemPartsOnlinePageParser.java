@@ -17,6 +17,7 @@ import java.util.List;
 public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
     @Override
     public ParseResult<List<Part>> parse(Path path) {
+        log.info("Parsing: {}", path);
         ParseResult<List<Part>> result = new ParseResult<>();
         Document doc;
         try {
@@ -27,7 +28,36 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
             result.addError(err);
             return result;
         }
+
+        // Body
+        Elements categoryEls = doc.getElementsByClass("category-group")
+                .select("a.category")
+                .select("[aria-expanded=true]");
+
+        String category;
+        if (!categoryEls.isEmpty()) {
+            category = categoryEls.get(0).attr("title");
+        } else {
+            category = null;
+            log.warn("No category found for {}", path);
+        }
+
+        // Bumper & Components - Front
+        Elements subcategoryEls = doc.getElementsByClass("category-group")
+                .select("a.subcategory")
+                .select("a.active-cat");
+        String subcategory;
+        if (!subcategoryEls.isEmpty()) {
+            subcategory = subcategoryEls.get(0).text();
+        } else {
+            subcategory = null;
+            log.warn("No subcategory found for {}", path);
+        }
+
+
         Elements partContainers = doc.getElementsByClass("part-group-container");
+
+        /*
         int numContainers = partContainers.size();
         if (numContainers >= 2) {
             Element partContainer = partContainers.get(1);
@@ -36,10 +66,16 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
             Element partContainer = partContainers.get(0);
             parsePartContainer(partContainer, path, result);
         }
+        */
+
+        if (!partContainers.isEmpty()) {
+            partContainers.forEach(pc -> parsePartContainer(pc, path, result, category, subcategory));
+        }
+
         return result;
     }
 
-    private void parsePartContainer(Element partContainer, Path path, ParseResult<List<Part>> result) {
+    private void parsePartContainer(Element partContainer, Path path, ParseResult<List<Part>> result, String category, String subcategory) {
         Elements partRows = partContainer.select("div.catalog-product");
         if (partRows.isEmpty()) {
             String err = "No parts found for: " + path;
@@ -54,7 +90,14 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
             String title = row.select("strong.product-title").text();
             String partNum = row.select("div.product-partnum").text();
             String info = row.select("div.product-more-info").text();
-            return new Part(null, partNum, title, info, path.toString(), refCode, refImage);
+            String msrp = null;
+            Elements msrpEls = row.select("div.product-pricing");
+            if (!msrpEls.isEmpty()) {
+                String raw = msrpEls.select("div.list-price").text();
+                msrp = raw.replace("MSRP", "").trim();
+            }
+            String hash = Part.calcHash(partNum, title, info);
+            return new Part(null, partNum, title, info, path.toString(), refCode, refImage, hash, category, subcategory, msrp);
         }).toList();
         result.setData(parts);
     }

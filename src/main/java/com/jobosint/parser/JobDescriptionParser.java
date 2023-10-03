@@ -24,13 +24,18 @@ import java.util.Set;
 public class JobDescriptionParser implements Parser<String, JobDescription> {
 
     @Override
-    public ParseResult<JobDescription> parse(String path) throws IOException {
+    public ParseResult<JobDescription> parse(String path) {
         log.info("Parsing {}", path);
 
 
         File input = new File(path);
         // TODO verify file exists
-        Document doc = Jsoup.parse(input, "UTF-8");
+        Document doc = null;
+        try {
+            doc = Jsoup.parse(input, "UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         log.info("Document size (init): {}", docSize(doc));
 
@@ -46,8 +51,9 @@ public class JobDescriptionParser implements Parser<String, JobDescription> {
 
         // remove useless tags
         Set<String> tagsToRemove = Set.of("form", "script", "style", "svg", "img");
+        Document finalDoc = doc;
         tagsToRemove.forEach(tag -> {
-            Elements removedElements = doc.select(tag).remove();
+            Elements removedElements = finalDoc.select(tag).remove();
             log.info("Removed {} '{}' tags", removedElements.size(), tag);
         });
 

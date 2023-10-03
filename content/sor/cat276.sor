@@ -1,0 +1,1757 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FW0SP08XFD"></script>
+<script>
+  window.dataLayer = window.dataLayer || ;
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FW0SP08XFD');
+</script>
+
+<!--CATTEMPLATE-->
+<title>Page 276 Land Cruiser 40 & 45 Series Grab Bar & Shift Lever Pads</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+<meta name="verify-v1" content="YtZsEex7qMIxRBNhFziG6MNPUYuv1j88OFx1xcsn4b4=">
+<meta name="description" content="Land Cruiser, FJ40 Grab Bars, Shift Lever, Pads, covers, interior handles">
+<meta name="keywords" content="Land Cruiser, FJ40 Grab Bars, Shift Lever, Pads, covers, interior handles">
+<meta name="GENERATOR" content="Mozilla/4.61  (WinNT; I) ">
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="alternate" hreflang="en" href="https://sor.com">
+<link href="../sorCss.css" rel="stylesheet" type="text/css">
+<link href="../sor_content.css" rel="stylesheet" type="text/css">
+<link href="../sor_layout.css" rel="stylesheet" type="text/css">
+<link href="../svision.css" rel="stylesheet" type="text/css">
+
+<noscript><link href="../sor_noScript.css" rel="stylesheet" type="text/css"></noscript>
+
+<!--
+
+ -->
+
+<script>
+function mapFunction(name){
+	document.body.style.webkitOverflowScrolling = "auto";
+
+	//SET VAR TO CARRIE FILE TO FILL THE IFRAME FROM ONCLICK FUNCTION ON IMAGE MAP
+	vidFile = name;
+	
+	//BUILD GRAY BACKGROUND
+	var sldContainer = document.getElementById("mapListingContainer");
+	sldContainer.style.display = "block";
+	sldContainer.style.cursor = "pointer";
+	
+	//BUILD CONTAINER FOR IFRAME
+	var showContainer = document.getElementById("placeVid");
+	showContainer.style.webkitOverflowScrolling = "touch";
+	showContainer.style.overflowY ="auto";
+	showContainer.style.width = "80%";
+	showContainer.style.height = "80%";
+	
+	//BUILD IFRAME
+	sld = document.createElement("iframe");
+	sld.setAttribute("src", vidFile );
+	sld.setAttribute("id", "mapFile");
+	sld.style.width = "100%";
+	sld.style.height = "92%";	
+	sld.style.backgroundColor = "#ffffff";
+	sld.style.border = "none";
+	sld.style.overflow = "hidden";
+	
+	//PLACE THE IFRAME AND ITS TITLE BAR
+	$("#placeVid").html('<div class="imgMapTitle">Click outside this window to exit</div> <div class="closeImgMap" id="closit"></div>');
+	
+	document.getElementById("placeVid").appendChild(sld);
+		
+	//STOP BROWSER BG FROM SCROLLING WHILE MAP LISTING IS OPENED
+	var pbStopScroll = document.body;
+	pbStopScroll.style.overflowY = "hidden";
+
+	//CLICK THE BACKGROUND TO REMOVE THE IFRAME
+	
+	$('#mapListingContainer').on("click", function () {
+		sldContainer.style.display = "none";	
+		pbStopScroll.style.overflowY = "visible";
+	
+		//CUT THE FOLLOW CODE THAT REMOVES THE IFRAME AND PASTE IT IN THE PTR AS A FUNCTION OF THE BUY BUTTON
+		
+		var iframes = document.getElementsByTagName("iframe");
+		for (var i = 0; i < iframes.length; i++) {
+		  iframes.parentNode.removeChild(iframes);
+		  document.body.style.webkitOverflowScrolling = "auto";
+		}
+	});
+}
+</script>
+
+<script>
+function disableCheckout() {
+$("#chkOutBtn").removeClass("cartButtons").addClass("cartButtons_Dis");
+	alert("You cannot Checkout with a negative Total or empty cart - Please add more items");
+}
+</script>
+
+<!--jQuery load -->
+<script type="text/javascript" src="../scripts/jquery.js"></script>
+
+<SCRIPT type="text/jscript"> /*@cc_on @if(@_jscript_version>=5.7)new Image().src="https://evbeacon.networksolutions.com/evbeacon.gif" @end @*/
+</SCRIPT>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+
+<script>
+/*CALIPER WARNING TAG - see page cat084 for usage*/
+$(document).ready(function() {
+	$(".caliperCautionImage").mouseenter(function() {
+		$(this).siblings(".caliperCautionTag").fadeIn(150);
+	}).mouseleave(function () {  
+        $(".caliperCautionTag").fadeOut();
+    });
+}); 
+
+$(document).ready(function() {
+	$(".dieselWarningImage").mouseenter(function() {
+		$(this).siblings(".dieselParts").fadeIn(150);
+	}).mouseleave(function () {  
+        $(".dieselParts").fadeOut();
+    });
+}); 
+</script>
+
+<!--Zoomer -->
+<script type="text/javascript" src="/scripts/highslide.js"></script>
+<link rel="stylesheet" type="text/css" href="/scripts/highslide.css">
+        
+<!--jQuery Validate --> 
+<script type="text/javascript" src="../scripts/jquery.validate.js"></script>
+
+<script type="text/javascript">
+//<!]>
+</script>
+    
+<script type="text/javascript">
+<!--
+<!-- hide from old browsers
+function openWinSOR(helppage) {
+  window.open(helppage, "displayWindow", 
+    "status=no,toolbar=no,menubar=no,resizable=no,scrollbars=1 width=700px, height=650px," );
+	window.focus();
+}
+// -->
+</script>
+
+
+<script type="text/javascript" src="../Scripts/tabber_as.js"></script>
+<!-- End of Javascript for Tabber tabs -->
+
+<!-- The following style fixes gaps in html 4 image sliced tables. It will not work in style sheet -->
+<style>
+td img {
+	display: block;
+}
+div.bigDisplay { 
+	font-weight:bolder;
+	font-family: Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+	line-height:1em;
+	text-align: center;
+	color:#e45cfc;
+	font-size:100px;
+	text-align:center;
+	margin-bottom:-5px;
+	text-decoration:none;
+	letter-spacing:-.08em;	
+	}
+		
+.subDisplay {
+	font-weight:bolder;
+	font-family: Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+	color:#e45cfc;
+	font-size:42px;
+	text-align:center;
+	letter-spacing:-.05em;
+	line-height:1em;
+	}
+	
+.subTextPurple {
+	font-weight:bolder;
+	font-family: Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+	color:#9900FF;
+	font-size:18px;
+	text-align:left;
+	letter-spacing:.06em;
+	}	
+.subText {
+	font-weight:bolder;
+	font-family: Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+	line-height:1.2em;
+	color:#fff;
+	font-size:18px;
+	text-align:center;
+	margin-bottom:7px;
+	}	
+</style>
+
+
+<!-- network solutions trust cert install
+<script type="text/jscript"> /*@cc_on @if(@_jscript_version>=5.7)new Image().src="https://evbeacon.networksolutions.com/evbeacon.gif" @end @*/ </script>-->
+
+<!-- Script to hilight Map hot spots -->
+<script type="text/javascript" src="../scripts/jquery.maphilight.js"></script>
+<script type="text/javascript">$(function() {
+  $('.map').maphilight();
+});
+</script>
+</head>
+
+<body bgcolor="#23251a" style="background-image:url(../sorimages/interface/lftColTile2.jpg); background-position:left; background-repeat:repeat-y" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  >
+
+<a name="pageTop" id="pageTop"></a>
+
+<!-- Masthead, Tab bar and shopping cart -->
+
+<header>
+<div class="header2020" id="manHead">
+<div class="dalHeadImg"><img src="../sorimages/interface/DAL2020.png" alt="" width="940" height="275"  border="0"></div><div class="logo2020" style="margin: -9px 0 0 0px" >
+<a href="http://www.sor.com/catindex.sor"><img src="../sorimages/interface/NewSpecter_since1983Flat.png" alt="Specter Off-Road, Inc. link to home page" width="200" height="138" border="0" ></a></div>
+
+<div class="realPage2020">
+<div class="yellowbold18" >
+Page:
+
+276<br>
+
+</div>
+</div>
+
+<h1><div class="logo2020LCP">LAND CRUISER PARTS &amp; ACCESSORIES SINCE 1983</div></h1>
+<div class="headerRule2020" >
+<a name="contentTop" id="contentTop"></a>
+<div style="float: left"><div class="searchRule"><div class="bodyBoldReverse" style="padding-top: 2px">
+Browse Catalog</div></div> <div class="searchRule" style="margin-top: 1px"><a href="../cat277.sor" title="Forward to page 277- Grab Bar 60, 62 & 80 Series" class="subpageLinks"> <strong>&gt;&gt;&gt;</strong></a></div></div></div>
+<div class="rtColHeadRule2020">
+<div class="yellow12">You must Register and/or Login<br>
+to save a shopping cart<br><a href="https://www.sor.com/catlogin.sor?from=CAT276.SOR" >Login</a> &nbsp; <a href="https://www.sor.com/catreg.sor?from=CAT276.SOR">Register</a> 
+<br><div class="inLineImage2" style="margin:10px" aria-label="Print this page"><img src="../sorimages/interface/Print.png" width="40" height="40" border="0" style="cursor: pointer;" title="Print this page" onclick="window.print();return false;"></div><div class="inLineImage2" style="margin:10px">
+<a href="catnavhelp.sor?from=CAT276.sor">
+<img src="../sorimages/interface/helpIcon.png" width="40" height="40" border="0" alt="Get Navigation Help"></a></div><div class="inLineImage2" style="margin:10px"><a href="#" class="cartNum" onClick="fitsWarn();"><div class="cartNum">    0</div><img src="../sorimages/interface/cartNew.jpg" width="40" height="40" border="0" alt="View Shopping Cart"></a></div><br>You have     0 Items in your Cart<br>
+Sub Total: $        0.00</div></div>
+<div class="gear2020t"><img src="../sorimages/interface/gearBG_t.png" alt="background image of a gear" width="800" height="155" ></div>
+</div>
+</header>
+<section>
+<a href="#" class="lineDrawingBodyLeft" id="FitBut" onClick="confirmIt();">
+<div class="confirmFitsCon" id="conFitsCon">
+<div class="fitsConfirm" id="confirmFits"><div class="prtTitleText1">Confirm Your Part Numbers</div>
+<div class="partContent">
+<div >
+<p class="lineDrawingBodyLeft">Save yourself a headache, confirm your parts. Be sure the parts you are ordering will fit the Land Cruiser you drive. Ensure your production date falls within the timeframe noted on the “Fits” line in description for the parts you order. If you are not sure, give us a call, we’re here to help.</p>
+
+<div class="bodyBold">Example :</div>
+
+<div style="margin: auto"><img src="../sorimages/interface/example.jpg" title="Part Confirmation disclaimer" alt="Confirm your part numbers disclaimer example"></div>
+
+<div class="lineDrawingBodyLeft"><br>
+In this example, 088-100A-KIT fits a Land Cruiser built between 1963 and 9/73. The ending month/year means this part <span class="bodyBold"><i>Fits</i></span> vehicles up to but <span class="bodyBold">not</span> including September 1973 or vehicles built between January 1, 1963 and August 31, 1973. The kit required for a 9/73 or September 1973 vehicle is 088-100B-KIT, which <i>Fits</i> 9/73-8/92 or vehicles built between September 1, 1973 and July 31, 1992. If the starting date or ending date is a 4-digit year instead of month/year, the part <i>Fits</i> the starting year, the ending year, and all months and years in between.</div>
+<div style="350px" align="center"><div class="bodyleft">
+<span class="bodyBold">Fits 1963-9/73 -</span> between January 1, 1963 and August 31, 1973<br>
+
+<span class="bodyBold">Fits 1963-1974 -</span>  between January 1, 1963 and December 31, 1974<br>
+</div></div><br>
+
+<div class="inLineImage2">
+
+<div class="inLineImage2" style="vertical-align: middle; margin-right: 5px;" ><img src="../sorimages/interface/thumbsup.png" alt="Okay, Got it!"></div><div class="inLineImage2" style="vertical-align: middle">Okay, Got it</div>
+</div>
+</div>
+</div>
+</div>
+</div></a>
+</section>
+
+
+
+<div class="muzeCon" id="muzeCon">
+<div class="muzeWindow" id="placeZum"></div>
+<div class="muzeText" id="placemText"></div>
+</div>
+
+<div class="prop65Container" id="prop65Container">
+</div>
+
+<!-- MAP LISTING PANEL START -->
+<div class="mapListingContainer" id="mapListingContainer">
+
+<div class="imgMapWindow" id="placeVid">
+</div>
+</div>
+
+<!-- end masthead -->
+
+<!-- SpecterVision Slide show and Video Begin-->
+
+<div class="svVidContainer" id="svVidContainer">
+<div class="svVidWindow" id="placeSvVid">
+</div>
+</div>
+
+<nav>
+<div class="lftNewCol2020" style="top: 180px" id="leftCol"  align="center"><br>
+<form method="post" action="catsearchresult.sor" name="FORM2" autocomplete="on" >
+<label for="enter" class="bodyBoldReverse">Search</label>
+<input id="enter" class="required" style="border:#000 1px solid;" name="search" type="text"><input type="image" name="SUBMIT" value="enter" src="../sorimages/interface/search.jpg" width="22" height="22" alt="Search Button" border="0" ><input name="track" type="hidden" value="GGSSACSDKCGCRKARIAERL"/><input name="FROM" type="hidden" value="CAT276.sor"/></form>	
+
+<!--CATSCROLLSEARCH-->
+
+<link rel="stylesheet" href="../sorhtml/ajxmenu.css" type="text/css">
+<script src="../sorhtml/ajxmenu.js" type="text/javascript"></script>
+
+
+<br>
+<div class="catDirectory" id="cDirChange"><a href="catpageindex.sor" class="yellowBold12"><div class="yellowBold12" >SOR Catalog Directory</div>
+<div class="bodycenterReverse">Alphabetical or Numeric Catalog Page Directory</div></a></div>
+<br>
+
+
+<script>
+
+var bgChange = document.getElementById("cDirChange");
+bgChange.addEventListener("mouseover", changeFunc);
+bgChange.addEventListener("mouseout", changeFunc2);
+
+function changeFunc(){
+	bgChange.style.backgroundColor = "#323F48";
+	bgChange.style.borderColor = "#fff";
+}
+
+function changeFunc2(){
+	bgChange.style.backgroundColor = "#52573E";
+	bgChange.style.borderColor = "#52573E";
+}
+</script>
+
+<div class="AJXCSSMenuUbRQJLB">
+<!-- AJXFILE:../sorhtml/ajxmenu.css -->
+<ul>
+<li>
+<h4><span>SOR.COM Quick Directory</span></h4>
+</li>
+<li><a href="http://www.sor.com/catindex.sor"><span>Specter Off-Road Home Page</span></a></li>
+<li><a href="cat950.sor?from=CAT276.sor"><span>Join ClubSOR</span></a></li>
+<li><a href="catcontact.sor?backto=CAT276.sor"><span>Contact Specter Off-Road</span></a></li>
+<!--<li><a href="catreq.sor?backto=CAT276.sor"><span>Catalog &amp; Price List Download</span></a></li>-->
+<li><a href="cat359.sor"><span>Purchase Giftcards</span></a></li>
+<li><a href="cat359.sor?tabpage=tab2"><span>Redeem Giftcards &amp; Rebates</span></a></li>
+<li><a href="catreq.sor" target="_blank"><span>SOR 2023 Catalog PDF (66 MB)</span></a></li> 
+<li><a href="catpolicylong.sor" target="_blank"><span>Specter Off-Road, Inc. (sor.com) Policy</span></a></li> 
+<li>
+  <h4><span>Catalog Product Index</span></h4>
+</li>
+<!--<li><a href="catpageindex.sor"><span style="font-weight: bold">ALPHANUMERIC PAGE LISTING</span></a>
+</li>-->
+<li class="tsub"><a class="ajxsub" href="#"><span>Body, Exterior &amp; Trim</span></a>
+  <ul class="sub_8">
+    <li><a href="cat167.sor"><span>Antenna</span></a></li>
+    <li><a href="cat275.sor"><span>Car Covers, SOR Deluxe</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Body Panels</span></a>
+      <ul>
+        <li><a class="ajxsub" href="#"><span>40/45 Series</span></a>
+          <ul>
+            <li><a href="cat112.sor"><span>Apron, Bib, Fenders, Grill</span></a></li>
+			<li><a href="cat115.sor"><span>Cowl, Tub Panels </span></a></li>
+			<li><a href="cat116.sor?tabpage=tab2"><span>Early 40 Series Tool Box</span></a></li>
+			<li><a href="cat115.sor"><span>Floor</span></a></li>
+			<li><a class="ajxsub" href="#"><span>Hard Top </span></a>
+			<ul>
+                <li><a href="cat108.sor" title="40 Series Hard Top"><span>40 Series</span></a></li>
+                <li><a href="cat110.sor"><span>45 Series </span></a></li>
+              </ul>
+			<li><a href="cat115.sor"><span>Tub Panels</span></a></li>
+			<li><a href="cat115.sor"><span>Wheel Wells</span></a></li>
+              
+            </li>
+            <li><a href="cat112.sor"><span>Hood Latches/Hinges</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat109.sor"><span>FJ45LV Wagon</span></a></li>
+        <li><a href="cat113.sor"><span>FJ55</span></a></li>
+        <li><a href="cat114.sor"><span>60/62, 80 Series, FJ Cruiser</span></a></li>
+        <li><a href="cat116.sor"><span>Transmission Hump &amp; Running Boards</span></a></li>
+        <li><a href="cat238.sor"><span>Diamond Plate Panels</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat200f.sor"><span>Body Welting</span></a></li>
+    <li><a href="cat281.sor"><span>Bug Deflectors, Molded</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Bumper/Frame/Skid Plate/ Splash Guards</span></a>
+      <ul>
+        <li><a href="cat106.sor"><span>Factory Frame/Bumper/Skid Plates</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Aftermarket Bumpers</span></a>
+          <ul>
+            <li><a href="cat229.sor"><span>Front Bumper, Winch/ARB/Alloy</span></a></li>
+            <li><a href="cat228.sor"><span>Grill &amp; Brush Guard 80 Series/FJ Cruiser</span></a></li>
+            <li><a class="ajxsub" href="#"><span>Heavy Duty Bumper</span></a>
+              <ul>
+                <li><a href="cat226.sor"><span>40 &amp; 45 Series</span></a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="cat243.sor"><span>Factory Tow Hooks</span></a></li>
+        <li><a href="cat236.sor"><span>Nerf Bars/Side Rails </span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Cargo Glass/Weatherstrip</span></a>
+      <ul>
+        <li><a href="cat108.sor"><span>40 Series</span></a></li>
+        <li><a href="cat113.sor"><span>FJ55</span></a></li>
+        <li><a href="cat114.sor"><span>60/62, 80 Series</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Aftermarket Sliders</span></a>
+          <ul>
+            <li><a href="cat321.sor"><span>40 Series</span></a></li>
+            <li><a href="cat321.sor?tabpage=TAB2"><span>60 Series</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Door Assemblies</span></a>
+      <ul>
+        <li><a href="cat124.sor"><span>1963-1974 40/45 Series</span></a></li>
+        <li><a href="cat126.sor"><span>1975-1984 40/45 Series</span></a></li>
+        <li><a href="cat109.sor"><span>1963-1967 FJ45LV Wagon</span></a></li>
+        <li><a href="cat122.sor"><span>Factory Soft Door</span></a></li>
+        <li><a href="cat128.sor"><span>FJ55 (front)</span></a></li>
+        <li><a href="cat129.sor"><span>FJ55 (rear/passenger)</span></a></li>
+        <li><a href="cat130.sor"><span>60/62 &amp; 80 Series</span></a></li>
+        <li><a href="cat280.sor"><span>Weather Guards</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Emblems/Insignias/ Plaques</span></a>
+      <ul>
+        <li><a href="cat161.sor"><span>40 Series</span></a></li>
+        <li><a href="cat162.sor"><span>FJ55</span></a></li>
+        <li><a href="cat163.sor"><span>60/62 Series</span></a></li>
+        <li><a href="cat163b.sor"><span>80 Series</span></a></li>
+        <li><a href="cat163c.sor"><span>100 Series</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat282.sor"><span>Fender Flares</span></a></li>
+    <li><a href="cat273.sor"><span>Half Doors</span></a></li>
+    <li><a href="cat144.sor"><span>Locks</span></a></li>
+    <li><a href="cat166.sor"><span>Mirrors</span></a></li>
+    <li><a href="cat071.sor"><span>PTO Winch</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Roof Racks</span></a>
+      <ul>
+        <li><a href="cat256.sor"><span>Alloy, Factory, Safari &amp; Wilderness </span></a></li>
+        <li><a href="cat257.sor"><span>Roof Rack Accessories</span></a></li>
+        <li><a href="cat258.sor"><span>Expedition Rack &amp; Accessories</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat160.sor"><span>Reflectors</span></a></li>
+    <li><a href="cat142.sor"><span>Tire Carrier (Stock)</span></a></li>
+    <li><a href="cat255.sor"><span>Tire Carriers (Aftermarket)</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Tailgate/Hatch/ Weatherstrip/Glass</span></a>
+      <ul>
+        <li><a href="cat131.sor"><span>40/45 Series Fold Down Tailgate</span></a></li>
+        <li><a href="cat132.sor"><span>1963-1964 40 Series Bi-Fold Lift-up Door</span></a></li>
+        <li><a href="cat133.sor"><span>1958-1974 40 Series Swing-out Doors</span></a></li>
+        <li><a href="cat134.sor"><span>1958-1974 40 Series Lift-up Doors</span></a></li>
+        <li><a href="cat136.sor"><span>1975-1984 40 Series Rear Doors</span></a></li>
+        <li><a href="cat138.sor"><span>FJ55 Tailgate</span></a></li>
+        <li><a href="cat139.sor"><span>60/62 Series</span></a></li>
+        <li><a href="cat139b.sor"><span>70 Series</span></a></li>
+        <li><a href="cat139c.sor"><span>80 Series</span></a></li>
+        <li><a href="cat139d.sor"><span>100 Series</span></a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li><a href="cat202.sor"><span>Clamps &amp; Clips; Hose, Tube &amp; Wire</span></a></li>
+<li class="tsub"><a class="ajxsub" href="#"><span>Chassis &amp; Suspension</span></a>
+  <ul class="sub_10">
+    <li><a href="cat084b.sor?tabpage=tab4"><span>ABS Sensors</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Axle Components</span></a>
+      <ul>
+        <li><a href="cat090.sor" title="Differential &amp; Axle Housing"><span>Front &amp; Rear Differentials (Factory)</span></a></li>
+        <li><a class="ajxsub" href="#" title="Front Axle Components"><span>Front</span></a>
+          <ul>
+            <li><a href="cat080.sor"><span>Axle/Housing</span></a></li>
+            <li><a href="cat080.sor"><span>Knuckle/Hub Assembly</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat088.sor"><span>Rear Semi Float Axle Assembly</span></a></li>
+        <li><a href="cat089.sor"><span>Rear Full Floating Axle Assembly</span></a></li>
+        <li><a href="cat291.sor"><span>Traction Devices Lockers/Limited Slip</span></a></li>
+        <li><a href="cat291b.sor"><span>Ring &amp; Pinion Kits (Aftermarket)</span></a></li>
+        <li><a href="cat080d.sor?tabpage=tab2"><span>Rims &amp; Wheels</span></a></li>
+        <li><a href="cat080d.sor"><span>Hub Caps</span></a></li>
+        <li><a href="cat080c.sor"><span>Locking Hubs</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat105.sor"><span>Body Mounts</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Brakes</span></a>
+      <ul>
+        <li><a href="cat081.sor" title="Brake Shoes &amp; Components"><span>Brake Shoes/Cylinders Assemblies</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Disc Pads &amp; Components</span></a>
+          <ul>
+            <li><a href="cat084.sor"><span>Front Disc</span></a></li>
+            <li><a href="cat085.sor"><span>Rear Disc (Factory)</span></a></li>
+            <li><a href="cat292.sor"><span>Rear Disc Conversion (Aftermarket)</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat086.sor"><span>Lines &amp; Hoses</span></a></li>
+        <li><a href="cat076.sor" title="Parking Brake Components"><span>Parking Brake Components</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat092.sor" title="Drive Shaft"><span>Drive Shaft Components</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Frame</span></a>
+      <ul>
+        <li><a href="cat105.sor" title="Body Mounts"><span>Body Mounts</span></a></li>
+        <li><a href="cat106.sor" title="Frame, Bumpers &amp; Skid Plates"><span>Frame/Bumpers/Skid Plates</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat076.sor"><span>Parking Brake</span></a></li>
+    <li><a class="ajxsub" href="#" title="Steering components"><span>Steering Components</span></a>
+      <ul class="sub_10_7">
+        <li><a href="cat096.sor"><span>Center Arm</span></a></li>
+        <li><a href="cat094.sor"><span>Dampener/Stabilizer (stock)</span></a></li>
+        <li><a href="cat284.sor"><span>Dampener/Stabilizer (aftermarket)</span></a></li>
+        <li><a href="cat098.sor"><span>Manual Steering Box</span></a></li>
+        <li><a href="cat099.sor"><span>Power Steering Box/Pump/Lines</span></a></li>
+        <li><a href="cat100.sor"><span>Power Steering Conversion</span></a></li>
+        <li><a href="cat300.sor"><span>Steering Wheel (Aftermarket/Refurb, see page 300)</span></a></li>
+        <li><a href="cat098.sor"><span>Steering Wheel (Factory/Refurb, see page 098)</span></a></li>
+        <li><a href="cat094.sor"><span>Tie Rods/Ends/Knuckle Arms/Center Arm</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Suspension</span></a>
+      <ul class="sub_10_8">
+        <li><a class="ajxsub" href="#"><span>Leaf Spring &amp; Hanger Bushings</span></a>
+          <ul>
+            <li><a href="cat102.sor" title="Factory Suspension Bushings"><span>Bushings (Factory)</span></a></li>
+            <li><a href="cat289.sor" title="Poly Bushings (Aftermarket)"><span>Poly Bushings (SOR)</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat104.sor"><span>Stabilizer Bar</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Leaf/Coil Springs</span></a>
+          <ul>
+            <li><a href="cat102.sor" title="Leaf/Coil Springs Factory"><span>Leaf/Coil (Factory)</span></a></li>
+            <li><a href="cat287.sor" title="Leaf/Coil Aftermarket"><span>Leaf/Coil Aftermarket</span></a></li>
+            <li><a href="cat287.sor?tabpage=tab3" title="Spring Shims"><span>Spring Shims/U-Bolts</span></a></li>
+            <li><a href="cat290.sor" title="U-Bolt Skid Plates"><span>U-Bolt Skid Plates</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat288.sor"><span>Shackles &amp; Shackle Pins</span></a></li>
+        <li><a href="cat286.sor" title="Shocks &amp; Shock Boots"><span>Shocks</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Transfercase</span></a>
+      <ul class="sub_10_9">
+        <li><a href="cat067.sor"><span>1958 - 1963 Complete/ Seals &amp; Gaskets</span></a></li>
+        <li><a href="cat068.sor"><span>1963 &amp; Later Complete/ Seals &amp; Gaskets</span></a></li>
+        <li><a href="cat295.sor"><span>Low Range Gear Set (Aftermarket)</span></a></li>
+        <li><a href="cat070.sor" title="Overhaul/Bearing/Gasket Kits"><span>Overhaul/Bearing/ Gasket Kits</span></a></li>
+        <li><a href="cat076.sor" title="Parking Brake Assembly"><span>Parking Brake Assembly</span></a></li>
+        <li><a href="cat074.sor"><span>Direct Shift Assembly</span></a></li>
+        <li><a href="cat072.sor"><span>Vacuum Shift Assembly</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Transmission</span></a>
+      <ul>
+        <li><a href="cat065.sor"><span>Automatic</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Manual</span></a>
+          <ul class="sub_10_10_1">
+            <li><a class="ajxsub" href="cat"><span>3 Speed</span></a>
+              <ul>
+                <li><a href="cat056.sor"><span>1963-1973</span></a></li>
+                <li><a href="cat060.sor"><span>1958 - 1963</span></a></li>
+                <li><a href="cat058.sor"><span>Shafts/Gears/Gaskets</span></a></li>
+              </ul>
+            </li>
+            <li><a class="ajxsub" href="#"><span>4 Speed</span></a>
+              <ul>
+                <li><a href="cat062.sor"><span>Complete/Shift Assm./Gaskets</span></a></li>
+                <li><a href="cat064.sor"><span>Overhaul Kits/Shafts/Gears</span></a></li>
+              </ul>
+            </li>
+            <li><a class="ajxsub" href="#"><span>5 Speed</span></a>
+              <ul>
+                <li><a href="cat066.sor"><span>5 Speeds</span></a></li>
+                <li><a href="cat066.sor?tabpage=tab3"><span>Shift Assembly</span></a></li>
+                <li><a href="cat066b.sor"><span>Overhaul Kits, Gaskets &amp; Seals</span></a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="cat080d.sor?tabpage=tab2" title="Stock Rims &amp; Wheels"><span>Wheels</span></a></li>
+    <li><a href="cat080d.sor"><span>Hub Caps</span></a></li>
+    <li><a href="cat080c.sor"><span>Locking Hubs</span></a></li>
+  </ul>
+</li>
+<li class="tsub"><a class="ajxsub" href="#"><span>Electrical</span></a>
+  <ul>
+    <li><a href="cat020b.sor?tabpage=TAB2"><span>Battery</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Charging</span></a>
+      <ul>
+        <li><a href="cat020.sor"><span>Alternator/Idler Pulley</span></a></li>
+        <li><a href="cat020.sor"><span>Voltage Regulator</span></a></li>
+        <li><a href="cat020c.sor"><span>Diesel Alternator, Regulator &amp; Vacuum Pump</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Lights</span></a>
+      <ul>
+        <li><a href="cat262.sor"><span>Auxiliary Fog/Driving/ Backup</span></a></li>
+        <li><a href="catbulb.sor" title="Land Cruiser Light Bulbs"><span>Bulb Listing</span></a></li>
+        <li><a href="cat154.sor"><span>Backup Light Assemblies 40 &amp; 55 Series (other see Tail Lights)</span></a></li>
+        <li><a href="cat156.sor"><span>Dome Lights</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Head Light Assemblies</span></a>
+          <ul>
+            <li><a href="cat112.sor?tabpage=TAB4"><span>40/45 Series</span></a></li>
+            <li><a href="cat113.sor?tabpage=TAB3"><span>FJ55</span></a></li>
+            <li><a href="cat114.sor?tabpage=TAB2"><span>60/62 Series</span></a></li>
+            <li><a href="cat114d.sor?tabpage=TAB4"><span>80 Series</span></a></li>
+            <li><a href="cat114e.sor?tabpage=TAB2"><span>100 Series</span></a></li>
+            <li><a href="cat265.sor"><span>Headlight Shields (60 Series &amp; FJ Cruiser)</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat158.sor"><span>License Plate Light</span></a></li>
+        <li><a href="cat152.sor"><span>Marker/Slide Lights</span></a></li>
+        <li><a href="cat150.sor"><span>Parking Lights</span></a></li>
+        <li><a href="cat160.sor"><span>Reflectors</span></a></li>
+        <li><a href="cat148.sor"><span>Tail/Brake Lights</span></a></li>
+        <li><a href="cat146.sor"><span>Turn Signal</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat020d.sor"><span>Starter</span></a></li>
+    <li><a href="cat182.sor"><span>Switches/Relays/Flashers</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Wire Loom/Harness/ Connectors</span></a>
+      <ul>
+        <li><a href="cat184.sor"><span>Factory</span></a></li>
+        <li><a href="cat185.sor"><span>Aftermarket</span></a></li>
+      </ul>
+    </li>
+  </ul>
+</li> 
+<li class="tsub"><a class="ajxsub" href="#"><span>Engine Compartment</span></a>
+  <ul class="sub_12">
+    <li><a href="cat053.sor"><span>Air Conditioning</span></a></li>
+    <li><a class="ajxsub" href="cat012.sor"><span>Air Intake</span></a>
+      <ul>
+        <li><a href="cat012.sor"><span>Air Cleaner Assembly</span></a></li>
+        <li><a href="cat012c.sor" title="K&amp;N Filters and Cleaner"><span>K&amp;N Filters</span></a></li>
+        <li><a href="cat012d.sor" title="Safari Snorkles"><span>Snorkles</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Battery</span></a>
+      <ul>
+        <li><a href="cat020b.sor?tabpage=TAB2"><span>Battery</span></a></li>
+        <li><a href="cat019.sor"><span>Battery Tray</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat052.sor?tabpage=TAB4"><span>Block Heater (Gas)</span></a></li>
+    <li><a href="cat052b.sor?tabpage=TAB4"><span>Block Heater (Diesel)</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Brake</span></a>
+      <ul>
+        <li><a href="cat014c.sor" title="Brake Booster"><span>Booster</span></a></li>
+        <li><a href="cat014.sor" title="Brake Master Cylinder"><span>Master Cylinder</span></a></li>
+        <li><a href="cat014d.sor"><span>Pedal Assembly</span></a></li>
+        <li><a href="cat020c.sor"><span>Vacuum Pump</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="cat042.sor"><span>Carburetors</span></a>
+      <ul>
+        <li><a href="cat042.sor"><span>Stock USA Models</span></a></li>
+        <li><a href="cat042b.sor"><span>Non USA Toyota Carbs</span></a></li>
+        <li><a href="cat043.sor"><span>Aftermarket Carburetors</span></a></li>
+        <li><a href="cat042c.sor"><span>Accelerator Linkage/Cables &amp; Choke Cables</span></a></li>
+        <li><a href="cat042d.sor"><span>Carburetor Identifier</span></a></li>
+        <li><a href="cat042.sor?tabpage=tab5"><span>Jets</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Clutch Gas/Diesel</span></a>
+      <ul>
+        <li><a href="cat018.sor"><span>Disc/Plate/Bell Housing</span></a></li>
+        <li><a href="cat018.sor"><span>Master/ Slave Cylinder &amp; Hydrolic Lines</span></a></li>
+        <li><a href="cat018.sor"><span>Pedal Assembly</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Cooling System</span></a>
+      <ul>
+        <li><a class="ajxsub" href="#"><span>Water</span></a>
+          <ul>
+            <li><a href="cat054.sor"><span>Belts/Hoses</span></a></li>
+            <li><a href="cat054.sor"><span>Fan/Fan Clutch</span></a></li>
+            <li><a href="cat054.sor"><span>Radiator</span></a></li>
+            <li><a href="cat054.sor"><span>Water Pump</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat055.sor"><span>Oil Cooler</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat350.sor"><span>Decals &amp; Stickers</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Emissions</span></a>
+      <ul>
+        <li><a href="cat047.sor"><span>EGR</span></a></li>
+        <li><a href="cat048.sor"><span>Smog Pump &amp; Vacuum Hoses</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Engine</span></a>
+      <ul>
+        <li><a href="cat034.sor"><span>Block  Gas/Diesel</span></a></li>
+        <li><a href="cat035.sor"><span>Block/Engines Long/Short</span></a></li>
+        <li><a href="cat034.sor"><span>Cam &amp; Bearings</span></a></li>
+        <li><a href="cat034.sor"><span>Crank &amp; Bearings</span></a></li>
+        <li><a href="cat052.sor"><span>Freeze Plugs</span></a></li>
+        <li><a href="cat030.sor"><span>Gaskets</span></a></li>
+        <li><a href="cat032.sor"><span>Gasket Sets</span></a></li>
+        <li><a href="cat050.sor"><span>Head Assembly </span></a></li>
+        <li><a href="cat040.sor"><span>Mounts</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Oil</span></a>
+          <ul>
+            <li><a href="cat034.sor"><span>Pump</span></a></li>
+            <li><a href="cat034.sor"><span>Pan</span></a></li>
+            <li><a href="cat055.sor"><span>Cooler</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat030.sor?tabpage=TAB2"><span>PCV Valve/Hoses</span></a></li>
+        <li><a href="cat034.sor?tabpage=TAB2"><span>Piston Assembly</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Exhaust </span></a>
+      <ul>
+        <li><a href="cat044.sor"><span>Manifolds Gas/Diesel</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Exhaust System</span></a>
+       		<ul>
+       		   <li><a href="cat046.sor"><span>Factory Exhaust</span></a></li>
+        	   <li><a href="cat324.sor"><span>SOR Headers</span></a></li>
+			</ul>
+        </li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Fuel System</span></a>
+      <ul>
+        <li><a class="ajxsub" href="#"><span>Diesel</span></a>
+          <ul>
+            <li><a href="cat038.sor"><span>Injectors/Venturis</span></a></li>
+            <li><a href="#"><span>Injector Pump (Please Call)</span></a></li>
+            <li><a href="cat168.sor"><span>Fuel Tank Lines/Hoses/Mounts</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat028.sor"><span>Filters</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Gas</span></a>
+          <ul>
+            <li><a href="cat042c.sor"><span>Accelerator/Linkage/Choke</span></a></li>
+            <li><a href="cat042.sor"><span>Carburetor (Stock)</span></a></li>
+            <li><a href="cat042b.sor"><span>Carburetor (Non-USA)</span></a></li>
+            <li><a href="cat043.sor"><span>Carburetor (Aftermarket)</span></a></li>
+            <li><a href="cat042d.sor"><span>Carburetor Identifier</span></a></li>
+            <li><a href="cat042.sor?tabpage=tab5"><span>Jets</span></a></li>
+            <li><a class="ajxsub" href="#"><span>EFI (Fuel Injection)</span></a>
+              <ul>
+                <li><a href="cat036.sor"><span>EFI Computer</span></a></li>
+                <li><a href="cat037.sor"><span>System/Pump/Filters</span></a></li>
+              </ul>
+            </li>
+            <li><a href="cat028.sor"><span>Fuel Pump/Filter/ Lines/Hoses</span></a></li>
+            <li><a href="cat168.sor"><span>Fuel Tank/Lines/ Hoses/Mounts</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+   <li class="sub_16">  
+      <li><a class="ajxsub" href="#"><span>Heater blower/hoses/valves</span></a>
+       <ul>
+         <li><a href="cat186.sor"><span>40 45 &amp; 55</span></a>
+         </li>
+         <li><a href="cat188.sor"><span>60 62 &amp; 80 Series, Diesel</span></a></li>
+       </ul>
+     </li>
+   
+   <li><a href="cat190.sor"><span>Horn Horn/Button/Relay</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Ignition System</span></a>
+      <ul>
+        <li><a class="ajxsub" href="#"><span>Gas</span></a>
+          <ul>
+            <li><a href="cat022.sor"><span>Distributor</span></a></li>
+            <li><a href="cat024.sor"><span>Spark Plugs/Plug Wires/Coil</span></a></li>
+            <li><a href="cat020c.sor"><span>Starter</span></a></li>
+          </ul>
+        </li>
+        <li><a class="ajxsub" href="#"><span>Diesel</span></a>
+          <ul>
+            <li><a href="cat038b.sor"><span>Glow Plugs</span></a></li>
+            <li><a href="cat020.sor"><span>Starter</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="cat026.sor"><span>Oil Filter/Lines/  Regulator/Brackets</span></a></li>
+    <li><a href="cat044.sor"><span>Manifolds Intake/Exhaust</span></a></li>
+  </li></ul></li>
+
+<li><a href="cat168.sor"><span>Fuel Tank, Line, Hose, Mount</span></a></li>
+<li><a href="cat201.sor"><span>Hardware &amp; Hardware Kits</span></a></li>
+<li><a href="cat202.sor"><span>Hose Clamps</span></a></li>
+<li class="tsub"><a class="ajxsub" href="#" target="_self"><span>Interior &amp; Trim</span></a>
+  <ul class="sub_16">
+    <li><a class="ajxsub" href="#"><span>Ceiling</span></a>
+      <ul>
+        <li><a href="cat156.sor" title="Dome Light"><span>Dome Light</span></a></li>
+        <li><a href="cat140.sor" title="Ceiling Handles"><span>Handles</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Headliner</span></a>
+          <ul>
+            <li><a href="cat108.sor?tabpage=TAB4"><span>40 Series/Troopy</span></a></li>
+            <li><a href="cat110.sor?tabpage=TAB5"><span>45 Pickup</span></a></li>
+            <li><a href="cat114b.sor"><span>60 &amp; 62 Series</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat114c.sor"><span>Sun Roof</span></a></li>
+        <li><a href="cat140.sor"><span>Sun Visors</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Center Console/Storage Boxes</span></a>
+      <ul>
+        <li><a href="cat470.sor" title="Aftermarket Center Consoles and Storage "><span>Aftermarket (Tuffy)</span></a></li>
+        <li><a href="cat117.sor" title="Factory Center Console"><span>Factory </span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Dash Assembly Guages/Switches</span></a>
+      <ul>
+        <li><a href="cat172.sor"><span>40/45/55 Series (1 of 2)</span></a></li>
+        <li><a href="cat176.sor"><span>40/45/55 Series (2 of 2)</span></a></li>
+        <li><a href="cat177.sor"><span>60 Series</span></a></li>
+        <li><a href="cat178.sor"><span>62/80 Series</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat346.sor"><span>Dash Covers</span></a></li>
+    <li><a href="cat350.sor"><span>Decals/Stickers</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Doors</span></a>
+      <ul>
+        <li><a href="cat124.sor"><span>1963-1974 40/45 Series</span></a></li>
+        <li><a href="cat126.sor"><span>1975-1984 40/45 Series</span></a></li>
+        <li><a href="cat109.sor"><span>1963-1967 FJ45LV Wagon</span></a></li>
+        <li><a href="cat128.sor"><span>FJ55 (front)</span></a></li>
+        <li><a href="cat129.sor"><span>FJ55 (rear/passenger)</span></a></li>
+        <li><a href="cat130.sor"><span>60 &amp; 62 Series</span></a></li>
+        <li><a href="cat130b.sor"><span>80 Series</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Floor, Carpet &amp; Padding</span></a>
+      <ul>
+        <li><a class="ajxsub" href="#"><span>Carpet &amp; Padding</span></a>
+          <ul>
+            <li><a href="cat342.sor"><span>40 Series SOR Deluxe</span></a></li>
+            <li><a href="cat342b.sor"><span>FJ45LV Wagon</span></a></li>
+            <li><a href="cat343b.sor" title="60 Series Land Cruiser Carpet"><span>60 Series SOR Premium Carpet</span></a></li>
+            <li><a href="cat343c.sor" title="62 Series Land Cruiser Carpet"><span>62 Series SOR Premium Carpet</span></a></li>
+            <li><a href="cat343d.sor" title="80 Series Land Cruiser Carpet"><span>80 Series SOR Premium Carpet</span></a></li>
+            <li><a href="cat343.sor"><span>Molded Carpet Sets</span></a></li>
+            <li><a class="ajxsub" href="#"><span>Felt Padding</span></a>
+              <ul>
+                <li><a href="cat342.sor?tabpage=TAB3"><span>40 Series</span></a></li>
+                <li><a href="cat343b.sor"><span>60 Series</span></a></li>
+                <li><a href="cat343c.sor"><span>62 Series</span></a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a class="ajxsub" href="#"><span>Mats</span></a>
+          <ul>
+            <li><a href="cat340.sor"><span>Floor Mud Mats</span></a></li>
+            <li><a href="cat341.sor"><span>Carpet Trap Mats</span></a></li>
+            <li><a href="cat343.sor"><span>Carpet Mats</span></a></li>
+            <li><a href="cat344.sor"><span>Vinyl Sand Mats</span></a></li>
+            <li><a href="cat345.sor"><span>Floor &amp; Cargo Liners</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Grab Bars/Pads</span></a>
+      <ul>
+        <li><a href="cat276.sor"><span>40/45 Series</span></a></li>
+        <li><a href="cat277.sor"><span>60/62 &amp; 80 Series</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Heating/Air</span></a>
+      <ul>
+        <li><a class="ajxsub" href="#"><span>Heater blower/core/ ducts/hoses/valves</span></a>
+          <ul>
+            <li><a class="ajxsub" href="#"><span>40 45 &amp; 55</span></a>
+              <ul>
+                <li><a href="cat186.sor"><span>Front</span></a></li>
+                <li><a href="cat187.sor"><span>Rear</span></a></li>
+              </ul>
+            </li>
+            <li><a href="cat188.sor"><span>60 62 &amp; 80 Series, Diesel</span></a></li>
+          </ul>
+        </li>
+        <li><a href="cat053.sor"><span>Air Conditioning</span></a></li>
+      </ul>
+    </li>
+        <li><a class="ajxsub" href="#"><span>Interior Panels</span></a>
+      <ul>
+        <li><a href="cat114b.sor"><span>60 & 62 Interior Panels</span></a></li>
+        <li><a href="cat114d.sor"><span>80 Interior & Body Panels</span></a></li>
+         </ul>
+    </li>
+    
+    <li><a class="ajxsub" href="#"><span>Jump Seats</span></a>
+      <ul>
+        <li><a class="ajxsub" href="#"><span>40 Series</span></a>
+          <ul>
+            <li><a href="cat118.sor?tabpage=TAB3" title="Jump Seat Frames &amp; Hardware"><span>Frames &amp; Hardware</span></a></li>
+            <li><a href="cat309.sor" title="Jump Seat Slip Covers"><span>Slip Covers</span></a></li>
+            <li><a href="cat311.sor" title="Jump Seat Upholstery &amp; Cushions"><span>Upholstery &amp; Cushions</span></a></li>
+          </ul>
+        </li>
+        <li><a class="ajxsub" href="#"><span>80 Series</span></a>
+          <ul>
+            <li><a href="cat118c.sor?tabpage=tab3"><span>Frames &amp; Hardware</span></a></li>
+            <li><a href="cat309g.sor?tabpage=TAB3"><span>Slip Covers</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="cat166.sor"><span>Mirrors</span></a></li>
+    <li><a href="cat278.sor"><span>Overhead Tray</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Pedals</span></a>
+      <ul>
+        <li><a href="cat042c.sor"><span>Accelerator Pedal Assembly</span></a></li>
+        <li><a href="cat014d.sor"><span>Brake Pedal Assembly</span></a></li>
+        <li><a href="cat018.sor?tabpage=tab2"><span>Clutch Pedal Assembly</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat191.sor"><span>Radio</span></a></li>
+    <li><a href="cat244.sor"><span>Roll Bar</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Seats</span></a>
+      <ul>
+        
+        <li><a class="ajxsub" href="#"><span>Seat Brackets, Frames &amp; Hardware</span></a>
+          <ul>
+            <li><a href="cat118.sor"><span>40 Series</span></a></li>
+			<li><a href="cat116.sor?tabpage=tab2"><span>40 Series Early Tool Box</span></a></li>
+            <li><a href="cat118b.sor"><span>55, 60 &amp; 62 Series</span></a></li>
+            <li><a href="cat118c.sor"><span>80 Series</span></a></li>
+          </ul>
+        </li>
+        <li><a class="ajxsub" href="#"><span>Seat Belts</span></a>
+		   <ul>
+            <li><a href="cat306.sor"><span>Aftermarket</span></a></li>
+            <li><a href="cat305.sor"><span>Factory</span></a></li>
+          </ul>
+		</li>
+		<li><a href="cat480.sor"><span>Seats (Corbeau) Aftermarket Bucket </span></a></li>
+        <li><a href="cat309.sor"><span>Slip Covers</span></a></li>
+        <li><a href="cat482.sor"><span>Pet Pads</span></a></li>
+        <li><a class="ajxsub" href="#"><span>Upholstery Cushions/Hardware</span></a>
+          <ul class="sub_16_15_5">
+            <li><a href="cat310.sor"><span>1958-1984 </span></a></li>
+            <li><a href="cat308.sor"><span>1984 &amp; Later</span></a></li>
+            <li><a href="cat311.sor"><span>Jump Seats</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="#"><span>Seat belts</span></a>
+      <ul>
+        <li><a href="cat306.sor"><span>Aftermarket</span></a></li>
+        <li><a href="cat305.sor"><span>Factory</span></a></li>
+      </ul>
+    </li>
+    
+    <li><a href="cat180.sor"><span>Speedometer Head &amp; Cables</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Steering Wheel</span></a>
+      <ul>
+        <li><a href="cat300.sor"><span>Aftermarket</span></a></li>
+        <li><a href="cat098.sor"><span>Column/Wheel</span></a></li>
+        <li><a href="cat301.sor"><span>Steering Wheel Covers</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat140.sor"><span>Sun Visors, Grips &amp; Floormats (Factory)</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Tailgate/Rear Door</span></a>
+      <ul class="sub_16_21">
+        <li><a href="cat131.sor"><span>40/45 Series Fold Down Tailgate</span></a></li>
+        <li><a href="cat132.sor"><span>1963-1964 40 Series Bi-Fold Lift-up Door</span></a></li>
+        <li><a href="cat133.sor"><span>1958-1974 40 Series Swing-out Doors</span></a></li>
+        <li><a href="cat134.sor"><span>1958-1974 40 Series Lift-up Doors</span></a></li>
+        <li><a href="cat136.sor"><span>1975-1984 40 Series Rear Doors</span></a></li>
+        <li><a href="cat138.sor"><span>FJ55 Tailgate</span></a></li>
+        <li><a href="cat139.sor"><span>60/62 Series</span></a></li>
+        <li><a href="cat139b.sor"><span>70 Series</span></a></li>
+        <li><a href="cat139c.sor"><span>80 Series</span></a></li>
+        <li><a href="cat139d.sor"><span>100 Series</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat116.sor"><span>Transmission Hump Cover, Shift Boots &amp; Lever Knobs</span></a></li>
+  </ul>
+</li>
+<li class="tsub"><a class="ajxsub" href="#"><span> Service Manuals &amp; Books</span></a>
+  <ul>
+    <li><a href="cat220.sor"><span>Aftermarket Repair Manuals</span></a></li>
+    <li><a href="cat221.sor"><span>Engine, Chassis &amp; Body</span></a></li>
+    <li><a href="cat223.sor"><span>Owners Manuals</span></a></li>
+    <li><a href="cat223B.sor"><span>Maintenance, Emissions  &amp; Front Axle</span></a></li>
+    <li><a href="cat223c.sor"><span>Transmission Manuals</span></a></li>
+    <li><a href="cat223d.sor"><span>A/C, Wiring Diagrams &amp; Power Steering</span></a></li>
+    <li><a href="cat355b.sor"><span>Land Cruiser Videos</span></a></li>
+    <li><a href="cat403.sor"><span>Land Cruiser/Off-Road Books &amp; Magazines</span></a></li>
+    <li><a href="cat220.sor"><span>Service Manuals - ALL</span></a></li>
+  </ul>
+</li>
+<li class="tsub"><a class="ajxsub" href="#"><span>SummerTop/Soft Top</span></a>
+  <ul>
+    <li><a class="ajxsub" href="cat270.sor"><span>Replacement Parts (Aftermarket)</span></a>
+      <ul>
+        <li><a href="cat270.sor?tabpage=tab2"><span>Snap Repair Kit</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat268.sor"><span>SOR Soft Top</span></a></li>
+    <li><a href="cat122.sor"><span>Bows &amp; Brackets</span></a></li>
+    <li><a href="cat122.sor"><span>Factory Soft Doors</span></a></li>
+    <li><a href="cat272.sor"><span>SOR SummerTops</span></a></li>
+    <li><a href="cat269.sor"><span>Supertop</span></a></li>
+    <li><a href="cat271.sor"><span>Tailgate Panels</span></a></li>
+  </ul>
+</li>
+<li><a href="cat309.sor"><span>Slip Covers</span></a></li>
+<li class="tsub"><a class="ajxsub" href="#"><span>Tools &amp; Chemicals</span></a>
+  <ul>
+    <li><a href="cat200.sor"><span>Tool Listing</span></a></li>
+    <li><a href="cat200b.sor"><span>SOR & OEM Tools</span></a></li>
+    <li><a class="ajxsub" href="#"><span>Jacks &amp; Jack Handles</span></a>
+      <ul>
+        <li><a href="cat200c.sor"><span>OEM Jacks &amp; Jack Handles</span></a></li>
+        <li><a href="cat336.sor"><span>Hi-Lift Jack Accessories</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat200d.sor"><span>Chemicals, Lube &amp; Adhesives</span></a></li>
+    <li><a href="cat200b.sor#200-73"><span>Tool &amp; Accessory Bags</span></a></li>
+    <li><a href="cat200f.sor"><span>Edge Welting</span></a></li>
+  </ul>
+</li>
+<li class="tsub"><a class="ajxsub" href="#"><span>T-Shirts, Gifts &amp; Novelties</span></a>
+  <ul>
+    <li><a class="ajxsub" href="#"><span>Books</span></a>
+      <ul>
+        <li><a href="cat402.sor"><span>Factory Sales Brochures</span></a></li>
+        <li><a href="cat376.sor"><span>FJ Cruiser Book</span></a></li>
+        <li><a href="cat403.sor"><span>Land Cruiser Books</span></a></li>
+      </ul>
+    </li>
+    <li><a href="cat355.sor"><span>Land Cruiser Toys</span></a></li>
+    <li><a href="cat400.sor"><span>Maps</span></a></li>
+    <li><a href="cat401.sor"><span>Map Books/Road Atlas/ Gazetteer</span></a></li>
+    <li><a href="cat350.sor"><span>Stickers</span></a></li>
+    <li><a href="cat360.sor"><span>Tee Shirts (see pages 360-375)</span></a></li>
+    <li><a href="cat356.sor"><span>Toyota Collectables</span></a></li>
+    <li><a href="cat355b.sor"><span>Videos</span></a></li>
+    <li><a href="catsvindex.sor"><span>SOR Gallery</span></a></li>
+    <li><a href="cat319.sor"><span>Zippo Lighters</span></a></li>
+  </ul>
+</li>
+<li><a href="cat202.sor"><span>Tube &amp; Small Hose Clamps</span></a></li>
+<li class="tsub"><a class="ajxsub" href="#"><span>Upholstery</span></a>
+  <ul>
+    <li><a href="cat308.sor"><span>60, 62 &amp; 80 Series</span></a></li>
+    <li><a href="cat310.sor"><span>25, 40, 45, &amp; 55 Series</span></a></li>
+  </ul>
+</li>
+
+<li class="tsub"><a  href="cat048b.sor"><span>Vacuum Hose</span></a></li>
+
+<li class="tsub"><a class="ajxsub" href="#"><span>Windshield</span></a>
+  <ul>
+    <li><a href="cat120.sor"><span>Frame, Glass &amp; Weatherstrip</span></a></li>
+    <li><a href="cat194.sor"><span>Windshield Washer</span></a></li>
+    <li><a href="cat193.sor"><span>Windshield Wipers (Anco)</span></a></li>
+    <li><a href="cat192.sor"><span>Windshield Wipers (Factory)</span></a></li>
+  </ul>
+</li>
+<li><a href="cat202.sor"><span>Wire Clips and Straps</span></a></li>
+<li><a href="cat112b.sor"><span>40 Series Restoration Center</span></a></li>
+<li>
+  <h4><span>Special &amp; Info Pages</span></h4>
+</li>
+<li class="tsub"><a class="ajxsub" href="catclassified.sor"><span>SOR Classified Ads</span></a>
+  <ul>
+    <li><a href="catclassified.sor"><span>Find a Land Cruiser</span></a></li>
+    <li><a href="catplacead.sor"><span>Sell your Land Cruiser</span></a></li>
+  </ul>
+</li>
+<li><a href="cat801.sor"><span>Clearance</span></a></li>
+<li class="tsub"><a class="ajxsub" href="catfaq.sor"><span>FAQs &amp; Tech Info</span></a>
+  <ul>
+    <li><a class="ajxsub" href="catfaq.sor"><span>FAQs</span></a>
+      <ul class="sub_31_0">
+        <li><a href="../sorPDF_inst/SORresaleForm.pdf" target="_blank"><span>California Resale Certificate</span></a></li>
+        <li><a href="../sorPDF_inst/creditCardAuthorization.pdf" target="_blank"><span>Credit Card Authorization Form</span></a></li>
+        <li><a href="catengine.sor"><span>Land Cruiser Engine Numbers</span></a></li>
+        <li><a href="catfiring.sor"><span>6 Cylinder Firing Order</span></a></li>
+        <li><a href="catframe.sor"><span>Frame Number Charts</span></a></li>
+        <li><a href="cathead.sor"><span>Head Bolt Torque &amp; Sequence</span></a></li>
+        <li><a href="cathub.sor"><span>Locking Hubs</span></a></li>
+        <li><a href="cat042d.sor"><span>Carburetor Identifier (USA Models)</span></a></li>
+        <li><a href="catjet.sor"><span>Carburetor Jet Sizes</span></a></li>
+        <li><a href="catknuckle.sor"><span>Knuckle Bearing Tech Note</span></a></li>
+        <li><a href="catmodel.sor?backto=CAT276.sor"><span>Model Identifier</span></a></li>
+        <li><a href="cattiming.sor"><span>Timing Mark Locations</span></a></li>
+        <li><a href="cattorque.sor"><span>Torque Specs (bolt size)</span></a></li>
+        <li><a href="cattow.sor"><span>Towing your Land Cruiser</span></a></li>
+        <li><a href="catgear.sor"><span>Transmission Gear Ratios</span></a></li>
+        <li><a href="catvin.sor"><span>Vin Number Locations</span></a></li>
+      </ul>
+    </li>
+    <li><a class="ajxsub" href="catfaq.sor"><span>Tech Info</span></a>
+      <ul class="sub_31_1">
+        <li><a href="cat056.sor#relatedTipAnchor"><span>Backup Switch Locations</span></a></li>
+        <li><a href="cat048b.sor?tabpage=tab3"><span>Smog Pump Identifier</span></a></li>
+        <li><a href="cat289.sor?tabpage=tab2"><span>Bushing Measurement Chart</span></a></li>
+        <li><a href="cat035d.sor"><span>Diesel Conversion Info</span></a></li>
+        <li><a href="cat090.sor#diffTip"><span>Differential Tech Note</span></a></li>
+        <li><a href="cat184.sor"><span>Electrical Connectors</span></a></li>
+        <li><a href="cat035.sor?tabpage=tab2"><span>Engine Type &amp; Specifications</span></a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li><a href="cat359.sor"><span>Gift Cards/Redeem Rebate</span></a></li>
+<li><a href="catgifts.sor"><span>Holiday Gift Ideas</span></a></li>
+<li><a href="cathistory.sor?backto=CAT276.sor"><span>History of Specter Off-Road</span></a></li>
+<li><a href="catcelebrate.sor"><span>Marv Spector's Memorial</span></a></li>
+<li class="tsub"><a class="ajxsub" href="catmodel.sor?backto=CAT276.sor"><span>Model Identifier</span></a>
+  <ul>
+    <li><a href="catmodel.sor?backto=CAT276.sor"><span>Model Identifier</span></a></li>
+    <li><a href="catengine.sor"><span>F &amp; 2F Engine Number Charts</span></a></li>
+    <li><a href="catframe.sor"><span>Frame Number Charts</span></a></li>
+    <li><a href="catvin.sor"><span>Frame &amp; Vin Number Locations</span></a></li>
+  </ul>
+</li>
+<li><a href="catspecials.sor?backto=CAT276.sor"><span>Monthly Specials</span></a></li>
+<li><a href="catsewngood.sor?tabpage=tab2"><span>Sewn Goods Made By SOR</span></a></li>
+<!--<li><a href="catreq.sor?backto=CAT276.sor"><span>Catalog &amp; Price List Download</span></a></li>-->
+<li><a href="catpolicy.sor?backto=CAT276.sor"><span>Ordering &amp; Warranty Policy</span></a></li>
+<li><a href="catpolicy.sor?backto=CAT276.sor&anc=#prop65"><span>Proposition 65 Warning</span></a></li>
+<li><a href="catSVindex.sor?backto=CAT276.sor"><span>SOR Gallery SpecterVision</span></a></li>
+<li>
+  <h4><span>Forms &amp; Certificates</span></h4>
+</li>
+<li><a href="../sorPDF_inst/creditCardAuthorization.pdf" target="_blank"><span>Credit Card Authorization - PDF</span></a></li>
+<li><a href="../sorPDF_inst/SORresaleForm.pdf" target="_blank"><span>Calif. Resale Certificate PDF</span></a></li>
+  </ul>
+<div style="margin: 10px 0 10px"><a href="cat221.sor"><img src="../sorimages/product/manualAd.jpg" width="186" height="179" alt="Click for Toyota factory repair manuals"></a><br>
+</div>
+</div>
+
+
+</div>
+<!-- end left side column-->
+</nav>
+<!-- homebodycontent houses just the product portion of the body-->
+
+<div class="catbodyContent2020" id="homeBody" style="background-image: url(../sorimages/homeFlyer/pin.gif)">
+
+<main>
+<div class="gear2020b"><img src="../sorimages/interface/gearBG_b.png" width="800" height="259" alt="background image -- Gear"></div>
+<div class="pagetitleleft_sm">
+
+Page 276 Land Cruiser 40 & 45 Series Grab Bar & Shift Lever Pads
+
+</div>
+
+<!--the following div places SOR Video on all pages -->
+<div id="bg" class="popup_bg"></div>
+<div style="position: relative; z-index: 100002">
+<!--<noscript><div class="jWarning">WARNING - This site requires Javascript to run correctly. For help, click: <a href="https://enable-javascript.com/" target="_blank">Turn on JavaScript</a></div></noscript>-->
+<div class="internalStats">
+
+
+
+</div>
+
+<div class="subpage">
+<a href="../cat275.sor" class="subpageLinks" title="Back to page 275-Car Covers"><strong>&lt;&lt;&lt;</strong></a>
+<a href="../cat277.sor" title="Forward to page 277- Grab Bar 60, 62 & 80 Series"  class="subpageLinks"> <strong>&gt;&gt;&gt;</strong></a> <a href="cat276.sor" class="subpageLinksActive">40 &amp; 45 Series Grab Bar,  Grab Bar Pads  &amp; Shift Lever Pads</a>
+</div>
+
+<h1>40 &amp; 45 Series Grab Bar</h1>
+
+<div class="tabber">
+<div class="tabbertab ">
+<h2>40 &amp; 45 Series Grab Bar</h2>
+<div class="partContentTab">
+    
+<a name="276-20" id="a276-21">
+<div class="prtTitleText">SOR Grab Bar</div></a>
+<div class="partContent">
+<div class="partContentPhoto">
+<a href="../sorimages/product/276-21_i-big.jpg" class="highslide" onclick="return hs.expand(this)">
+<img src="../sorimages/product/276-21_i.jpg" alt="SOR Photo" width="160" height="110" border="0" title="Click to enlarge">
+</a>
+<a href="../sorimages/product/276-21-big.jpg" class="highslide" onclick="return hs.expand(this)">
+<img src="../sorimages/product/276-21_i2.jpg" alt="SOR Photo" width="175" height="110" border="0" title="Click to enlarge">
+</a>
+<br>
+<div class="clickPic">(click for large picture)</div></div>
+
+<p class="bodyleft">SOR Grab Bar bolts to the 40 and 45 Series factory dash board. It provides a convenient and secure handle for your passenger. This grab bar is designed to clear the glove box. Requires minor drilling for installation. Mounting hardware included. Available in black powder coated finish. Fits all 1968-1984 40 Series. Complete your installation with a <a href="cat276.sor#276-25-T">Grab Bar Pad </a>from SOR.</p>
+
+
+
+<link href="../sorCss.css" rel="stylesheet" type="text/css">
+<link href="../sor_content.css" rel="stylesheet" type="text/css">
+<link href="../sor_layout.css" rel="stylesheet" type="text/css"><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center">
+<tr>
+	<th  id="pth1FirstCol" class="buytableftborder"><div class="bodycenter">Buy</div></th>
+    <th width="60" id="pth1SecondCol" nowrap="nowrap" class="buytabmiddleborder"><div class="bodycenter">Quantity</div></th>
+	<th width="80" nowrap="nowrap" class="buytabmiddleborder"><div class="bodyleft">Part Number</div></th>
+	<th class="buytabmiddleborder" align="left" ><div class="bodyleft" style="display: inline-block; text-align: left">Description</div>
+</th>
+<th width="60" class="buytabmiddleborder"><div class="bodycenter">Price</div></th>
+<th width="60" class="buytabmiddleborder" nowrap="nowrap"><div class="bodycenter">In Stock</div></th>
+<th width="120" class="buytabrightborder" nowrap="nowrap"><div class="bodycenter">Picture<br></div><div class="bodycenter">Click 
+to Enlarge</div></th>
+</tr>
+
+</tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-21"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=TAB1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow_disabled.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"  DISABLED onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" DISABLED></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-21" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-21</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-21">
+    <B>SOR BLACK GRAB BAR -</B><BR> Fits 1968-1984 40 & 45 Series - Black powder coated finish - Requires minor drilling - Comes with installation hardware <br><b><font color="#C4090C">(Discontinued - Not available at this time)</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">     0.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/no.png" width="20" height="20" alt="This Product is out of stock"  title="Out of Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/276-21-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/276-21.jpg" title="276-21 Photo" alt="Photo of part number 276-21" border="0" /></div></a>  
+	</td>
+    </tr>
+</table>
+    </tr>
+</table>
+</div>
+
+<a name="pad"></a>
+<a name="276-25-T" id="a276-25-T">
+<div class="prtTitleText">SOR Grab Bar Pad</div></a>
+<div class="partContent">
+<a href="../sorimages/product/276-25_i-big.jpg" class="highslide" onclick="return hs.expand(this)">
+<img src="../sorimages/product/276-25_i.jpg" alt="SOR Photo" width="160" height="110" border="0" title="Click to enlarge">
+</a>
+<a href="../sorimages/product/276-25_i2-big.jpg" class="highslide" onclick="return hs.expand(this)">
+<img src="../sorimages/product/276-25_i2.jpg" alt="SOR Photo" width="160" height="110" border="0" title="Click to enlarge">
+</a>
+<a href="../sorimages/product/276-25-T_i-big.jpg" class="highslide" onclick="return hs.expand(this)">
+<img src="../sorimages/product/276-25-T_i.jpg" alt="SOR Photo" width="153" height="110" border="0" title="Click to enlarge">
+</a>
+<div class="clickPic">Color Choices<br>(click for large picture)</div>
+
+<p class="bodyleft">Designed to give your passenger a little added comfort when using your Grab Bar. Easy to install pad wraps around the grab bar using hook and loop closures. SOR Grab Bar Pads are made of padded durable Tuff Duck material. Measures approximately 13 3/4 inches long. Fits around any tube up to 1 inch diameter.  Available in Tuff Duck material: Black (BL) or Gray (GY) to match your SOR Tuff Duck slip covers (<a href="cat309.sor">see page 309</a>). It's also available Dark Charcoal Gray Vinyl (BV) to match SOR Deluxe Vinyl Seat Covers (<a href="cat310.sor"> see page 310</a><a href="cat311.sor"> &amp; 311</a>).</p>
+	
+
+<link href="../sorCss.css" rel="stylesheet" type="text/css">
+<link href="../sor_content.css" rel="stylesheet" type="text/css">
+<link href="../sor_layout.css" rel="stylesheet" type="text/css"><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center">
+<tr>
+	<th  id="pth1FirstCol" class="buytableftborder"><div class="bodycenter">Buy</div></th>
+    <th width="60" id="pth1SecondCol" nowrap="nowrap" class="buytabmiddleborder"><div class="bodycenter">Quantity</div></th>
+	<th width="80" nowrap="nowrap" class="buytabmiddleborder"><div class="bodyleft">Part Number</div></th>
+	<th class="buytabmiddleborder" align="left" ><div class="bodyleft" style="display: inline-block; text-align: left">Description</div>
+</th>
+<th width="60" class="buytabmiddleborder"><div class="bodycenter">Price</div></th>
+<th width="60" class="buytabmiddleborder" nowrap="nowrap"><div class="bodycenter">In Stock</div></th>
+<th width="120" class="buytabrightborder" nowrap="nowrap"><div class="bodycenter">Picture<br></div><div class="bodycenter">Click 
+to Enlarge</div></th>
+</tr>
+
+</tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-25-TBL"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=TAB1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"   onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" ></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-25-TBL" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-25-TBL</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-25-TBL">
+    <B>SOR GRAB BAR PAD-</B><BR>Black Tuff Duck fabric-13 3/4 inches long (approx.)<BR><b><font color="#C4090C">On Sale - Everyone gets the Discounted Price on this part.</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">    28.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/yes.png" width="20" height="20" alt="This Product is in stock" title="In Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/276-25-TBL-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/276-25-TBL.jpg" title="276-25-TBL Photo" alt="Photo of part number 276-25-TBL" border="0" /></div></a>  
+	</td>
+    </tr>
+
+    </tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-25-TGY"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=TAB1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"   onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" ></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-25-TGY" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-25-TGY</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-25-TGY">
+    <B>SOR GRAB BAR PAD-</B><BR>Grey Tuff Duck fabric-13 3/4 inches long (approx.)<BR><b><font color="#C4090C">On Sale - Everyone gets the Discounted Price on this part.</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">    28.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/yes.png" width="20" height="20" alt="This Product is in stock" title="In Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/276-25-TGY-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/276-25-TGY.jpg" title="276-25-TGY Photo" alt="Photo of part number 276-25-TGY" border="0" /></div></a>  
+	</td>
+    </tr>
+
+    </tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-25-BV"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=TAB1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"   onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" ></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-25-BV" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-25-BV</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-25-BV">
+    <B>SOR GRAB BAR PAD-</B><BR>Dark Charcoal vinyl-Matches S-O-R Deluxe Vinyl Seat Covers on page 310 & 311-13 3/4 inches long (approx.)<BR><b><font color="#C4090C">On Sale - Everyone gets the Discounted Price on this part.</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">    28.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/yes.png" width="20" height="20" alt="This Product is in stock" title="In Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/276-25-BV-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/276-25-BV.jpg" title="276-25-BV Photo" alt="Photo of part number 276-25-BV" border="0" /></div></a>  
+	</td>
+    </tr>
+</table>
+    </tr>
+</table>
+</div>
+
+<div class="prtTitleText">Rubber Grab Bar</div>
+<div class="partContent">
+
+
+<link href="../sorCss.css" rel="stylesheet" type="text/css">
+<link href="../sor_content.css" rel="stylesheet" type="text/css">
+<link href="../sor_layout.css" rel="stylesheet" type="text/css"><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center">
+<tr>
+	<th  id="pth1FirstCol" class="buytableftborder"><div class="bodycenter">Buy</div></th>
+    <th width="60" id="pth1SecondCol" nowrap="nowrap" class="buytabmiddleborder"><div class="bodycenter">Quantity</div></th>
+	<th width="80" nowrap="nowrap" class="buytabmiddleborder"><div class="bodyleft">Part Number</div></th>
+	<th class="buytabmiddleborder" align="left" ><div class="bodyleft" style="display: inline-block; text-align: left">Description</div>
+</th>
+<th width="60" class="buytabmiddleborder"><div class="bodycenter">Price</div></th>
+<th width="60" class="buytabmiddleborder" nowrap="nowrap"><div class="bodycenter">In Stock</div></th>
+<th width="120" class="buytabrightborder" nowrap="nowrap"><div class="bodycenter">Picture<br></div><div class="bodycenter">Click 
+to Enlarge</div></th>
+</tr>
+
+</tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-35"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=TAB1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"   onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" ></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-35" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-35</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-35">
+    <B>SMALL GRAB HANDLE-</B><BR>Black rubber-7 1/4 inches x 2 inches overall with bolt holes 6 1/4 inches on center-Universal fit-Comes with matching hole covers-Installation hardware NOT included<BR><b><font color="#C4090C">On Sale - Everyone gets the Discounted Price on this part.</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">     8.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/yes.png" width="20" height="20" alt="This Product is in stock" title="In Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/276-35-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/276-35.jpg" title="276-35 Photo" alt="Photo of part number 276-35" border="0" /></div></a>  
+	</td>
+    </tr>
+</table>
+    </tr>
+</table>
+</div>
+
+
+<a name="276-50-T"></a>
+<div class="prtTitleText">SOR Shift Lever Pad</div>
+<div class="partContent">
+<div class="partContentPhoto">
+<a href="../sorimages/product/276-50a-big.jpg" class="highslide" onclick="return hs.expand(this)">
+<img src="../sorimages/product/276-50a.jpg" alt="SOR Photo" width="122" height="110" border="0" title="Click to enlarge">
+</a>
+<a href="../sorimages/product/276-50b-big.jpg" class="highslide" onclick="return hs.expand(this)">
+<img src="../sorimages/product/276-50b.jpg" alt="SOR Photo" width="160" height="100" border="0" title="Click to enlarge">
+</a>
+<br>
+<div class="clickPic">(click for large picture)</div></div>
+<p class="bodyleft">SOR Shift Lever Pad is made of durable Tuff Duck material. Easy to install wrap around pad uses hook and look closures. Fits all 3 speed and 4 speed shift levers. Pad is approximately 15 inches long. Available in Tuff Duck material in Black (BL), Gray (GY) or Woodland Camo (WC). Also available in Dark Charcoal Gray (BV) to match SOR Deluxe Vinyl Seat Covers on page 310 and 311.</p>
+	
+
+<table align="center">
+<tr>
+<td><a href="https://www.sor.com/cat950.sor?from=CAT276.sor" class="redtitle12"><img src="../sorimages/interface/joinandsave.png" width="102" height="75" border="0" alt="Click to Join Club SOR and Save" title="Click to Join Club SOR and Save">
+<div class="redtitle12">Join ClubSOR<br> &amp; Save 15 %</div></a></td>
+<td>
+<img src="../sorimages/interface/madebySOR.png" width="111" height="65" border="0" alt="Pit Bull Tested for Quality Assurance" title="Made in the USA by SOR">
+</td>
+<td align="center">
+<img src="../sorimages/interface/pittest.png" width="66" height="68" border="0" alt="Pit Bull Tested for Quality Assurance" title="Pit Bull Tested for Quality Assurance">
+<div class="redtitle12">Pit Bull<br>
+Tested </div>
+</td>
+</tr>
+<tr style="height:10px;"><td></td></tr>
+</table>
+
+
+<link href="../sorCss.css" rel="stylesheet" type="text/css">
+<link href="../sor_content.css" rel="stylesheet" type="text/css">
+<link href="../sor_layout.css" rel="stylesheet" type="text/css"><table border="0" cellpadding="4" cellspacing="0" width="100%" align="center">
+<tr>
+	<th  id="pth1FirstCol" class="buytableftborder"><div class="bodycenter">Buy</div></th>
+    <th width="60" id="pth1SecondCol" nowrap="nowrap" class="buytabmiddleborder"><div class="bodycenter">Quantity</div></th>
+	<th width="80" nowrap="nowrap" class="buytabmiddleborder"><div class="bodyleft">Part Number</div></th>
+	<th class="buytabmiddleborder" align="left" ><div class="bodyleft" style="display: inline-block; text-align: left">Description</div>
+</th>
+<th width="60" class="buytabmiddleborder"><div class="bodycenter">Price</div></th>
+<th width="60" class="buytabmiddleborder" nowrap="nowrap"><div class="bodycenter">In Stock</div></th>
+<th width="120" class="buytabrightborder" nowrap="nowrap"><div class="bodycenter">Picture<br></div><div class="bodycenter">Click 
+to Enlarge</div></th>
+</tr>
+
+</tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-50-TBL"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=tab1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"   onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" ></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-50-TBL" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-50-TBL</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-50-TBL">
+    <B>SOR SHIFT LEVER PAD-</B><BR>Black Tuff Duck fabric-15 inches long (approx.)-Fits all 3 speed & 4 speed shift levers<BR><b><font color="#C4090C">On Sale - Everyone gets the Discounted Price on this part.</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">    27.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/yes.png" width="20" height="20" alt="This Product is in stock" title="In Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/TD-BL-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/TD-BL.jpg" title="276-50-TBL Photo" alt="Photo of part number 276-50-TBL" border="0" /></div></a>  
+	</td>
+    </tr>
+
+    </tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-50-TGY"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=tab1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"   onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" ></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-50-TGY" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-50-TGY</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-50-TGY">
+    <B>SOR SHIFT LEVER PAD-</B><BR>Grey Tuff Duck fabric-15 inches long (approx.)-Fits all 3 speed & 4 speed shift levers<BR><b><font color="#C4090C">On Sale - Everyone gets the Discounted Price on this part.</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">    27.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/yes.png" width="20" height="20" alt="This Product is in stock" title="In Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/TD-GY-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/TD-GY.jpg" title="276-50-TGY Photo" alt="Photo of part number 276-50-TGY" border="0" /></div></a>  
+	</td>
+    </tr>
+
+    </tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-50-TTN"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=tab1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"   onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" ></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-50-TTN" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-50-TTN</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-50-TTN">
+    <B>SOR SHIFT LEVER PAD-</B><BR>Tan Tuff Duck fabric-15 inches long (approx.)-Fits all 3 speed & 4 speed shift levers<BR><b><font color="#C4090C">On Sale - Everyone gets the Discounted Price on this part.</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">    27.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/yes.png" width="20" height="20" alt="This Product is in stock" title="In Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/TD-TN-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/TD-TN.jpg" title="276-50-TTN Photo" alt="Photo of part number 276-50-TTN" border="0" /></div></a>  
+	</td>
+    </tr>
+
+    </tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-50-TWC"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=tab1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"   onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" ></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-50-TWC" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-50-TWC</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-50-TWC">
+    <B>SOR SHIFT LEVER PAD-**Special Order - NO Return</B><BR>Woodland Camo Tuff Duck fabric-15 inches long (approx.)-Fits all 3 speed & 4 speed shift levers<BR><b><font color="#C4090C">On Sale - Everyone gets the Discounted Price on this part.</font></b><BR><b><font color="#650000">Special Order - NO Return</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">    27.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/no.png" width="20" height="20" alt="This Product is out of stock"  title="Out of Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/TD-WC-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/TD-WC.jpg" title="276-50-TWC Photo" alt="Photo of part number 276-50-TWC" border="0" /></div></a>  
+	</td>
+    </tr>
+
+    </tr>
+<tr bgcolor="#FFFFFF" ><a id="A276-50-BV"></a>
+    <form method="post" action="CAT276.sor?TABPAGE=tab1#" name="FORM2" style="margin-bottom:10px;" >
+	<td class="prinfofirstborder" valign="middle"><div class="bodycenter">
+    <input type="image" name="SUBMIT" value="BUY" src="../sorimages/interface/buynow.png" width="82" height="26" alt="Click the Add to Cart button to purchase this product" title="Buy Now"   onclick="document.getElementById('sCart').style.display='block'"></div></td>
+	<td class="prinfobottomborder" id="ptr1SecondCol" valign="middle"><div class="bodyleft"><input name="qty" aria-label="Enter Quantity"  type="tel" id="qty" value="1" size="5" maxlength="3" style="margin-bottom:10px;" ></div></td>
+    <input name="PART.NUMBER" type="hidden" value="276-50-BV" /><input name="SHOW.PANE" type="hidden" value="1" />
+    <input name="ANC" type="hidden" value="" />
+	</form>
+	<td class="prinfobottomborder"><div class="bodyleft">276-50-BV</div></td>
+    <td class="prinfobottomborder"><div class="bodyleft" id="276-50-BV">
+    <B>SOR SHIFT LEVER PAD-</B><BR>Dark Charcoal vinyl - Approximately 15 inches long- Matches interior see SOR upholstry sets pages 310 & 311 - Fits all 3 speed & 4 speed shift levers<BR><b><font color="#C4090C">On Sale - Everyone gets the Discounted Price on this part.</font></b>
+        <a href="https://www.p65warnings.ca.gov" target="_blank" class="bodyleft" ><div class="bodyleft" style="margin: 5px 0 3px"><img src="../sorimages/interface/caution24.png" width="17" height="14" alt="Prop 65 Caution" style="float: left">&nbsp;WARNING: Cancer and Reproductive Harm &mdash; www.p65warnings.ca.gov</div></a>
+</div>
+</td>
+    <td class="prinfobottomborder"><div class="bodyright">    27.00</div></td>
+    <td class="prinfobottomborder" ><div class="bodycenter"><center><img src="../sorimages/interface/yes.png" width="20" height="20" alt="This Product is in stock" title="In Stock" /> 
+</center></div></td>
+    <td class="prinfolastborder" ><a href="../sorimages/product/VINYL-DG-big.jpg" class="highslide" onclick="return hs.expand(this)" >
+	<div align="center" style="width:110px; margin-left:10px;"><img src="../sorimages/product/VINYL-DG.jpg" title="276-50-BV Photo" alt="Photo of part number 276-50-BV" border="0" /></div></a>  
+	</td>
+    </tr>
+</table>
+    </tr>
+</table>
+</div>
+</div>   
+</div> 
+  
+<div class="bottomPanels">
+<a name="relatedTipAnchor"></a>
+</div>
+</div>
+
+
+</div>
+
+<div class="bottomPageNav" id="bPn">
+<a href="../cat275.sor" class="topBackForth" title="Back to page 275-Car Covers"  ><strong>&lt;&lt;&lt;</strong></a> <a href="#pageTop" class="topOfPage">Top of Page</a> <a href="../cat277.sor" title="Forward to page 277- Grab Bar 60, 62 & 80 Series"  class="topBackForth"><strong>&gt;&gt;&gt;</strong></a> 
+</div>
+</main>
+
+<footer>
+<div class="catfooter2020" id="foot2020">
+<div class="footerPana" id="footerPana"><img src="../sorimages/interface/PP_80.jpg" width="100%" alt="Specter Off-Road Land Cruiser Parts" ></div>
+
+<h2><img src="../sorimages/interface/SORTriangle_footer.png" width="20" height="15" alt="SOR page footer logo" > 
+<div class="yellowbold16">Specter Off-Road, Inc.<br>
+World's Largest Supplier of Land Cruiser Parts &amp; Accessories. Providing Quality Parts Since 1983</div></h2>
+
+<div class="inLineImage2" style="width: 70%">
+<a href="catcontact.sor" class="yellowbold16">
+<div class="yellowbold14">Contact SOR </div></a>
+<div class="footerText12" style="margin-top: 10px; line-height:1.5em ">
+
+<strong>Hours: Monday thru Friday 8:00 AM to 5:00 PM PST, Closed Saturday &amp; Sunday<br>
+
+<br>Phone: (818) 882-1238, Email: sor@sor.com</strong><br>
+<address>
+Mailing Address: 21600 Nordhoff St. Chatsworth, California 91311 USA<br>
+Customer Entrance: 21601 Osborne St. (We're a city block long)<br><br>
+</address>
+</div>
+
+<div class="yellowbold16">The History of Specter Off-Road, Inc.</div>
+<div class="footerText12">Other Land Cruiser parts outfits may claim they're the oldest. ...in fact, we are... Our lineage transcends even our oldest competitor. Our staff possesses the combined experience of well over 100 years in the Land Cruiser Parts industry. Specter Off-Road boasts true Land Cruiser royalty. <a href="cathistory.sor" class="footerText12">Read more about the history of Specter Off-Road...</a></div></div>
+<br><br>
+
+<div class="inLineImage2" style="width:100px">
+<a href="http://www.pancan.org/" class="catfooter" target="_blank" title="Pancreatic Cancer Action Network "><div class="footerText12" style="padding:5px; margin:auto">
+<img src="../sorimages/interface/pancan.png" width="44" height="68" border="0" title="Pancreatic Action Network" alt="Visit the Pancreatic Action Network, pancan.org"><br>
+Pancreatic Cancer<br>
+Action Network<br>
+<br></div></a>
+</div>
+
+<div class="inLineImage2">
+
+<a href="catpolicy.sor" class="yellowbold16"><div class="yellowbold16">SOR Ordering, Content, Warranty, Shipping &amp; Privacy Policy</div></a>
+<div class="inLineImage2" style="width:360px"><ul>
+<li class="footerTextBoldLeft" style="margin-top:3px"><a href="catpolicy.sor?tabpage=tab1" class="footerTextBoldLeft">Warranty, Content &amp; Pricing Policy</a>
+<div class="footerText10Left">
+<a href="catpolicylong.sor#wp_policy">Warranty Policy</a> - 
+<a href="catpolicylong.sor#ada_policy">Accessibility Statement</a> - 
+<a href="catpolicylong.sor#cc_policy">Catalog Content</a> - 
+<a href="catpolicylong.sor#ppc_policy">Product &amp; Price Changes</a> -
+<a href="catpolicylong.sor#ra_policy">Resale Accounts</a></div>
+</li>
+<li class="footerTextBoldLeft" style="margin-top:3px"><a href="catpolicy.sor?tabpage=tab2" class="footerTextBoldLeft">Privacy Policy &amp; Personal Information</a>
+<div class="footerText10Left">
+<a href="catpolicylong.sor#pp_policy">Privacy Policy</a> -  
+<a href="catpolicylong.sor#pi_policy" >Personal Information</a> -  
+<a href="catpolicylong.sor#oo_policy" >Online Orders</a> -  
+<a href="catpolicylong.sor#cookies_policy">Cookies</a> -  
+<a href="catpolicylong.sor#tp_policy" >Third Parties</a> -  
+<a href="catpolicylong.sor#u12_policy">Children Under 12</a> -  
+<a href="catpolicylong.sor#ol_policy">Outside Links</a> -  
+<a href="catpolicylong.sor#c_policy">Changes</a></div>
+</li>
+</ul>
+</div>
+<div class="inLineImage2" style="width:360px">
+<ul>
+<li class="footerTextBoldLeft" style="margin-top:3px"><a href="catpolicy.sor?tabpage=tab3" class="footerTextBoldLeft">Product Delivery &amp; Return Policy</a>
+<div class="footerText10Left">
+<a href="catpolicylong.sor#sh_policy">Shipping &amp; Handling</a> -  
+<a href="catpolicylong.sor#to_policy">Truck Orders</a> -  
+<a href="catpolicylong.sor#rp_policy">Return Policy</a> -  
+<a href="catpolicylong.sor#dms_policy">Damaged Merchandise &amp; Shortages</a> 
+</div>
+</li>
+<li class="footerTextBoldLeft" style="margin-top:3px"><a href="catpolicy.sor?tabpage=tab4" class="footerTextBoldLeft">Order Processing</a>
+<div class="footerText10Left">
+<a href="catpolicylong.sor#oi_policy" >Ordering Information</a> -  
+<a href="catpolicylong.sor#do_policy">How To Pay</a> -  
+<a href="catpolicylong.sor#io_policy">International, Canadian, APO &amp; FPO</a> -  
+<a href="catpolicylong.sor#op_policy">Orders Processed</a> -  
+<a href="catpolicylong.sor#sop_policy">Special Order Parts</a> -  
+<a href="catpolicylong.sor#rp2_policy">Return Policy</a> 
+</div>
+</li>
+</ul>
+</div></div>
+<br>
+
+<a href="catpolicylong.sor#prop65" >
+<div class="prop65Logo" style="width: 20px"><img src="../sorimages/interface/caution24.png" alt="Caution image for Proposition 65 Warning" width="24" height="20"></div>
+<div class="footerTextBoldLeft" style="margin-top: 10px; display: inline-block">California Proposition 65 WARNING</div></a><br>
+<br>
+
+<div class="footerText10">
+
+&copy; Copyright 1996 -
+<script language="JavaScript" type="text/javascript">
+var now = new Date();
+var days = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+var months = new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+var date = ((now.getDate()<10) ? "0" : "")+ now.getDate();
+function fourdigits(number)	{
+return (number < 1000) ? number + 1900 : number;}
+today =    (fourdigits(now.getYear())) ;
+document.write(today);
+</script> 
+
+Specter Off-Road, Inc. All rights reserved. Specter Off-Road, Inc. is not affiliated with Toyota Motor Sales or Toyota Motor Corporation.<br>
+
+TT=00:00:00
+
+20
+
+216.128.96.177
+
+</div>
+<br>
+<br>
+</div>
+</footer>
+</div>
+
+<div class="cookieBlock" id="cookieBlock">
+<div class="cookieTextBlock">
+<div class="cookieText">
+This website uses JavaScript and Cookies to process your orders. Specter Off-Road, Inc. (sor.com) does not use cookies to track, sell, trade or otherwise distribute your personal information. If you choose to disable these browser enhancements, your shopping cart will not function properly. If you prefer, give us a call, we are always happy to assist you with your order by phone during normal business hours at (818) 882-1238. <a href="catpolicylong.sor" class="cookieText" aria-label="Click to read our complete ordering policy">Click here to read our policy</a> including how we use cookies. By continuing to use this web site, you agree to our policy.
+</div></div>
+
+<div class="cookieClose" onClick="setCookie('cookiesAccepted', 'set', 365);"><a  class="cookieTextX"><div class="cookieTextX">X</div></a></div>
+</div>
+
+<script type="text/javascript" src="../Scripts/ac.js"></script>
+<script>
+function fitsWarn(){
+   // If SS cookie exists, go to URL
+   if (sessionStorage.wf){
+      window.location.href = 'https://www.sor.com/catcart.sor?from=CAT276.SOR';
+      }else{// Else display warning
+      var fitsCon = document.getElementById("conFitsCon");
+      fitsCon.style.display = "block";
+   }
+}
+// After displing warning, set the SS Cookie and move on to shopping cart
+function confirmIt(){
+   sessionStorage.setItem("wf", "warnfits");
+   window.location.href =  'https://www.sor.com/catcart.sor?from=CAT276.SOR';
+   var fitBut = document.getElementById("conFitsCon");
+   fitBut.style.cursor ="pointer";
+   fitsCon.style.display = "none";
+}
+</script>
+
+<script>
+$('.pTop').click(function () {
+    window.location = "#pageTop";
+});
+</script>
+
+<script>
+/*loads the footer panarama image (id footerPana) and bottom pagenav (id bPn) after 1 Second - delay used as visual aid to prevent flicker of bottom elements during page load*/
+window.setTimeout(dispFootImg, 500);
+function dispFootImg(){
+var footerImg = document.getElementById("footerPana");
+var pNav = document.getElementById("bPn");
+footerImg.style.display = "block";
+pNav.style.display = "block";
+}
+
+</script>
+
+</body>
+
+
+
+
+
+</html>
+
+
+
+

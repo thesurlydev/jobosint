@@ -1,0 +1,203 @@
+/* CSS Document */
+/* 092506 0.02*/
+/*Note to Merchants: If you wish to make edits to your CSS, we suggest you make them in the css-edits stylesheet or another css file that you create and reference in your template. By doing so you will ensure that you are not introducing errors into the main stylesheets, which you could not recover if you edited them directly. This also allows Yahoo! to potentilly release fixes (if necessary) by you copying in the newlt revised files without overwriting any of your subsequent edits.*/
+
+/*
+
+/* Elements */
+a{color:#561d0a}
+a:visited{color:#561d0a}
+* {padding:0; /*margin:0;*/}
+td {font-size: 11px ; color:#000000; padding:0; margin:0;}
+h1, h2, h3{margin:0;}
+body {background-color: #000000; background-image:url('https://s.turbifycdn.com/aah/coolfj40/img-44586.jpg') ; font:normal 11px Verdana, Tahoma, Helvetica, sans-serif; text-align:center; width:100%;margin:0;color:#000000; }
+
+/* Classes */
+.boxclose {zoom:1;}
+.breadcrumbs{margin:10px;}
+.clear {clear:both; display:block; font-size:1px; height:1px; line-height:-1;}
+.last {border:0 solid;}
+  /* Form Buttons */
+
+.ys_primary{ background:#b3504a;color:#ffffff;font:bold 11px Arial,verdana,sans-serif;padding:1px 5px;text-align:center;cursor:pointer; display:block; margin-top:10px;}
+/*input.ys_primary{ background:#66A5FF;color:#FFF;font:bold 11px Arial,verdana,sans-serif;padding:1px 5px;text-align:center;cursor:pointer; }*/
+/*input.add2cartsubmit {background-color:#888; border-color:#DDD #AAA #555; border-style:solid; border-width:1px 1px 1px; color:#fff; font-weight:bold; outline:#000 solid 1px; padding:0 2px;}*/
+label.add2cartlabel {border:1px solid #000;}
+/*input.buttonsubmit {background-color:#888; border-color:#DDD #AAA #555; border-style:solid; border-width:1px 1px 1px; color:#fff; font-size:0.8em font-weight:bold; outline:#000 solid 1px; padding:0 2px; text-transform:uppercase;}*/
+/*label.buttonlabel {border:1px solid #000;}*/
+.buttonlabel {margin-left:4px}
+
+/* IDs */
+#info-div{
+	background-color:#FFFFFF;
+	padding:0px;
+	zoom:1;
+}
+#info-div:after{clear:both; content:"."; display:block; height:0; visibility:hidden;}
+#accessorytitle {}
+	#itemtype #accessorytitle {background:none; color:#b3504a; font:bold 14px Tahoma, Geneva, Verdana, sans-serif; padding:2px 10px 8px;}
+
+#bodycontent {float:right; width:610px;} /* 150 + 610 = 760 */ /* The Min-width is needed for Moz to stretch the bodycontent that is shrinkwrapping content due to floats. This is only necessary on pages without Tables in the contents. Min-width breaks Opera's layout so Width:100% is used instead of Min-width. */
+
+#bodyshell {background-color:#000000; border-left:150px solid #000000; float:left; zoom:1; margin:0;*position:relative;} /*Left Column Color*/ /* Background color is needed to counter an IE rendering bug that erases the left column bgcolor */ /* float:left is needed in Moz to handle extra wide cntent that breaks the width */ /* Left/Right Margin was removed due to expanded content errors in Moz, this was used to push the nav/content area in to match the mock-up */ /* position:relative is needed to fix bug in IE that caused the navigation bar to push out over the main content*/
+
+*:first-child+html #bodyshell { width:610px; }
+
+#bodyshell:after {clear:both; content:"."; display:block; height:0; visibility:hidden;}
+
+#brandmark {float:left; font:normal 36px Verdana, Tahoma, Helvetica, sans-serif; width:500px;} /* 510 + 250 = 760 */
+
+#brandmark a {color:#ffffff; display:block; padding:0 0 5px 13px; text-decoration:none;}
+
+#caption {zoom:1;}
+#caption:after {clear:both; content:"."; display:block; height:0; visibility:hidden;}
+#contentarea #caption {margin:10px;}
+#itemtype #caption {/*padding:0 10px;*/}
+#maintype #caption {background-color:#fff; padding:15px;}
+
+#captionarea, #messagearea, #info-div {margin:10px 10px 9px; /*border-bottom:1px #fff solid;*/} /* 1px is used to prevent Margin Folding */
+
+#messagearea #messagetitle{background:#f1f2ed url('') ; color:#b3504a; font:bold 14px Tahoma, Geneva, Verdana, sans-serif; padding:4px 15px 6px;}
+#itemtype #contentarea #itempage-captiontitle {margin:15px 0 10px; padding:0 2px;}
+#itemtype #itempage-captiontitle {background:none; color:#663300; font:bold 16px Verdana, Tahoma, Helvetica, sans-serif; margin:0; padding:2px 2px 8px;} /*The Left/Right Padding is smaller because the Caption Title needs to be nested within the Caption on Item pages, but not on Section pages */
+
+#container {margin:0 auto; text-align:left; width:760px; border:solid 1px #cccccc; background-color: #000000;} /* This "container" is needed as IE produces resize induced rendering errors when using the BODY element for a container. */ 
+
+#contentarea {margin:0 0 10px 0;}
+
+#section-contenttitle {background-color:#f1f2ed; color:#b3504a; font:bold 14px ; margin:0 15px; padding:4px 15px 6px;}
+
+#bodyContent #info-div #searchpageHeader {background-color:#f1f2ed; color:#b3504a; font:bold 14px ; margin:0; padding:4px 15px 6px;}
+
+#item-contenttitle {background-color:#351106; color:#ffffff; font:bold 16px Verdana, Tahoma, Helvetica, sans-serif; margin:0 15px; padding:4px 15px 6px;}
+
+#specialstitle {background:#f0ece6 url('') ; color:#000000; font:bold 16px Verdana, Tahoma, Helvetica, sans-serif; margin:0 10px; padding:4px 15px 6px;}
+
+#copyright {color:#666666; display:block; font:normal xx-small/1.2 verdana, sans-serif; padding:0 15px 15px; text-align:right;}
+
+#finaltext, #introtext {margin:10px;}
+
+#footer {background:#98a280 url('https://s.turbifycdn.com/aah/coolfj40/img-45062.jpg') ; clear:both;zoom:1;}
+#footer-links {color:#676767; display:block; font-weight:bold; font-size:11px; padding:10px 0 15px; text-align:center;}
+#footer-links a {color:#ffffff; text-decoration:none; text-transform:uppercase;}
+#footer-links a:hover {text-decoration:underline;}
+
+#header {background:#ffffff url('https://s.turbifycdn.com/aah/coolfj40/img-45063.jpg') ;zoom:1; min-height:203px; height:auto !important; height:203px;} /* _height and zoom are MS hacks */
+#header:after {clear:both; content:"."; display:block; height:0; visibility:hidden;}
+
+/* Search Page Styles */
+#info-div form, 
+     .infoText div {margin:0 10px;}
+#info-div form table td a img {margin-right:5px;}
+#info-div form table td b {display:block; padding:15px 0 5px;}
+#info-div form table td font {font-size:1em;}
+/* !Search Page Styles */
+
+#introtext {} /* REF: #finaltext */
+	
+
+#itemarea {background-color:#fff; margin:0px 15px 0; padding:10px; zoom:1;}
+#itemarea:after {clear:both; content:"."; display:block; height:0; visibility:hidden;}
+
+#nav-general {clear:both; float:right; display:block; list-style:none; margin:0 5px 0 0;}
+
+#nav-general li {background-color:#ffffff; border:1px solid #ffffff; border-top:0; float:left; margin:0 2px;} /* General Link Colors */
+
+#nav-general li a {color:#ffffff; display:block; font-size:11px; font-weight:bold; padding:4px 20px 6px; text-align:center; text-decoration:none; white-space:nowrap;}
+
+#nav-general li a:hover {background-color:#ffffff; color:#fcd800;}
+
+#nav-general a.linkcheckout {background:transparent url('https://s.turbifycdn.com/aah/coolfj40/img-45064.jpg') 90% 0 no-repeat; padding-right:35px;}	
+
+#nav-product {_display:inline; float:left; margin-left:-150px; overflow:hidden; position:relative; width:150px; z-index:1000;} /* IE Experiences the pixel doubling bug here. "display: inline;" fixes this. Position Relative and Z-Index are needed for IE in order to display the background colors */
+
+#nav-product ul li a {border-bottom:1px solid #b4bbab; color:#ffffff; display:block; font-weight:bold; font-size:11px; height:18px; margin:0; min-height:18px; padding:10px 4px 6px 13px; text-decoration:none;width:133px;}
+
+html>body #nav-product a {height:auto;}
+
+#nav-product ul li a:hover {background-color:#663300; color:#ffffff;}
+
+#nav-product li {margin:0;}
+
+#nav-product ul {list-style:none;}
+
+ * html #nav-product ul li a {  /* make hover effect work in IE */
+	width: 150px;
+}
+#htmltop, #htmlbottom, #htmltop a, #htmlbottom a{padding:5px;color:#000000}
+
+#nav-product ul li a{width:133px; background-color: #000000;}
+
+* html #nav-product ul li a{width:133px; height:100%; overflow:hidden; background-color: #000000; overflow:hidden;}
+
+* html #nav-product { overflow:visible; width:150px; }
+
+#searcharea {background:#ffffff url('') ; display:block; margin:0 0 0;}
+#searcharea input {font-size:1.0em;}
+#searcharea fieldset {border:0 solid; display:block; padding:10px 0 10px 13px;}
+#searcharea label {color:#535353; font-size:0.85em; font-weight:bold; text-transform:uppercase;}
+#searcharea label span, #searcharea label input {vertical-align:middle}
+#searcharea select {text-transform: none; max-width: 150px;vertical-align: middle; }
+#searchsubmit{ background:#98a280 url('https://s.turbifycdn.com/aah/coolfj40/img-44587.jpg') ;color:#ffffff;font:bold 11px Arial,verdana,sans-serif;padding:1px 5px;text-align:center;cursor:pointer;display:inline; margin:0;}
+#searchpageHeader {background-color:#f1f2ed; color:#b3504a; font:bold 14px ; margin:0; padding:4px 15px 6px;}
+input#query {margin-left:4px;}
+#query {padding:2px}
+
+#slogan {color:#ffffff; display:block; float:right; font:normal 11px Verdana, Tahoma, Helvetica, sans-serif; padding:2.7em 15px 10px 10px; width:225px; text-align:right;} /* 225 + 25= 250 */
+
+*:first-child+html #info-div,
+*:first-child+html #specialtitle,
+*:first-child+html #messagearea { width:590px; } *:first-child+html #itemarea { width:570px; }
+
+#badge { margin: 15px auto; }
+
+* html #badge { width:136px; text-align:center; }
+
+/* Cross-Sell Styles. */
+
+.ystore-cross-sell-table { width:100%; font-size:inherit; font:100%; }
+.ystore-cross-sell-title { padding-bottom:6px; color: #663300; font:bold 16px Verdana, Tahoma, Helvetica, sans-serif; }
+.ystore-cross-sell-table-vertical .ystore-cross-sell-cell { width:100%; }
+.ystore-cross-sell-table-horizontal .ystore-cross-sell-cell { width:28%; padding-right:5%; }
+
+.ystore-cross-sell-product-image-link { display:block; padding-bottom:8px; }
+.ystore-cross-sell-product-caption { padding-bottom:16px; }
+.ystore-cross-sell-product-caption p,
+.ystore-cross-sell-product-caption h4 { margin:0 0 10px; font-size:11px; }
+.ystore-cross-sell-table .ys_promo { font-weight:bold; }
+
+/* For CPers */
+
+#ys_superbar {left:0; margin:0 auto; position:static; top:0; width:762px; height:22px;}
+#ys_cpers { float:left; }
+#yfc_mini { float:right; }
+.ys_clear { clear:both; }
+#yscp_welcome_msg { font-family:verdana; text-decoration:none; margin:0px 10px 0px 5px; display:none; line-height:20px; color:#000; }
+#yscp_signin_link { display:none; line-height:20px; }
+#yscp_signout_link { margin-left:10px; display:none; line-height:20px; }
+#yscp_myaccount_link { display:none; line-height:20px; margin-right:10px; margin-left:10px; }
+#yscp_welcome_msg .yscp_bold { font-weight:bold; color:#000;}
+a.yscp_link { font-family:verdana; text-decoration:none; color:#000000; line-height:20px; }
+a.yscp_link:hover { font-family:verdana; color:#ffffff; text-decoration:underline; line-height:20px; }
+a.yscp_link:visited {color:#000;}
+#custRegDiv a.container-close { top:5px; }
+.yui-skin-sam .yui-panel .bd, .yui-skin-sam .yui-panel .ft { background-color:#fff; }
+.yui-skin-sam .yui-panel .bd { padding:0px; }
+#iframe_id  { width:679px; border:1px solid #000; padding:0px; }
+#custRegDiv_h.hd { display:none; }
+#custRegDiv_mask.mask  { background-color:#000000; opacity:0.5; filter:alpha(opacity=50);}
+#loadingDiv                 {height:210px; width:679px; position:absolute; background:#ececec;}
+img.loadingImg                 {margin-top:90px; margin-left:20px;}
+
+/* Social Media Share */
+
+#ys_social_top_hr {border-top:1px solid #CFCECE; margin-bottom:5px; margin-top:5px; clear:both; }
+#ys_social_media {height:26px;display:inline-block;vertical-align:middle;margin-left:10px; }
+#ys_social_fblike {float:left;}
+#ys_social_fbshare {float:left;}
+#ys_social_tweet {float:left;}
+#ys_social_yahoo {float:left;}
+#ys_social_pinterest {float:left;}
+#ys_social_v_separator {margin-left:10px;margin-right:10px;float:left;}
+#ys_social_bottom_hr {border-top:1px solid #CFCECE; margin-top:5px;}
+

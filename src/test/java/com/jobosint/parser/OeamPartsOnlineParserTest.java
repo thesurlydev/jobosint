@@ -1,25 +1,22 @@
 package com.jobosint.parser;
 
-import com.jobosint.event.PersistPartEvent;
 import com.jobosint.model.Part;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationEventPublisher;
 
 import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 public class OeamPartsOnlineParserTest {
 
-    @Autowired
     private OemPartsOnlinePageParser oemPartsOnlinePageParser;
 
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
+    @BeforeEach
+    public void setup() {
+        oemPartsOnlinePageParser = new OemPartsOnlinePageParser();
+    }
 
     @Test
     public void parseOemPartsOnlinePage() throws Exception {
@@ -29,7 +26,6 @@ public class OeamPartsOnlineParserTest {
         assertEquals(11, parts.size());
         for (Part part : parts) {
             System.out.println(part.toString());
-            applicationEventPublisher.publishEvent(new PersistPartEvent(this, part));
         }
 
         // give time to persist to db

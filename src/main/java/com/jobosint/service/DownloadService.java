@@ -1,6 +1,7 @@
 package com.jobosint.service;
 
 import com.jobosint.client.HttpClientFactory;
+import com.jobosint.model.DownloadContentRequest;
 import com.jobosint.model.DownloadImageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.WRITE;
@@ -132,30 +134,55 @@ public class DownloadService {
      * @return
      * @throws IOException
      */
-    public List<Optional<Path>> downloadAll(Path path) throws IOException {
+    public List<Optional<Path>> downloadAll(Path path, String targetDir, boolean overwrite) throws IOException {
         List<String> urls = Files.readAllLines(path);
         return urls.stream().map(url -> {
             try {
-                return download(url);
+                Thread.sleep(500);
+                DownloadContentRequest request = new DownloadContentRequest(url, targetDir, overwrite);
+                return downloadContent(request);
             } catch (InterruptedException | URISyntaxException | IOException e) {
                 throw new RuntimeException(e);
             }
         }).toList();
     }
 
-    public Optional<Path> download(String url) throws InterruptedException, URISyntaxException, IOException {
+    public List<Optional<Path>> downloadAllFromSiteMap(Path path, String targetDir, boolean overwrite) throws IOException {
+        List<String> urls = Files.readAllLines(path);
+        return urls.stream().flatMap(line -> {
+                    if (line.contains("<loc>")) {
+                        return Stream.of(line
+                                .replaceAll("<loc>", "")
+                                .replaceAll("</loc>", "")
+                                .trim());
+                    }
+                    return null;
+                })
+                .map(url -> {
+                    try {
+                        Thread.sleep(500);
+                        DownloadContentRequest request = new DownloadContentRequest(url, targetDir, overwrite);
+                        return downloadContent(request);
+                    } catch (InterruptedException | URISyntaxException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).toList();
+    }
 
+    public Optional<Path> downloadContent(DownloadContentRequest downloadContentRequest) throws InterruptedException, URISyntaxException, IOException {
+
+        String url = downloadContentRequest.url();
         int slashPos = url.lastIndexOf('/');
-        String path = url.substring(slashPos + 1);
-        File localFile = new File(path + ".html");
-        Path localFilePath = localFile.toPath();
-        if (localFile.exists()) {
+        String filename = url.substring(slashPos + 1);
+        Path localFilePath = Paths.get(downloadContentRequest.targetDir(), filename);
+        File localFile = localFilePath.toFile();
+
+        if (!downloadContentRequest.overwrite() && localFile.exists()) {
             return Optional.of(localFilePath);
         }
 
-        Thread.sleep(1000);
-
         log.info("Downloading: {}", url);
+        log.info("LocalPath: {}", localFilePath);
 
         URI uri = new URI(url);
         HttpRequest request = HttpRequest.newBuilder(uri).GET().build();

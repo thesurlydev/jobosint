@@ -11,12 +11,18 @@
         <tr>
             <th>Number</th>
             <th>Description</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>MSRP</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="part : ${parts}">
             <td><a th:href="@{/parts/{id}(id=${part.id()})}" th:text="${part.num()}">Number</a></td>
             <td th:text="${part.description()}">Description</td>
+            <td th:text="${part.category()}">Category</td>
+            <td th:text="${part.subcategory()}">Subcategory</td>
+            <td th:text="${part.msrp()}">MSRP</td>
         </tr>
         </tbody>
     </table>

@@ -4,16 +4,16 @@ import com.jobosint.client.HttpClientFactory;
 import com.jobosint.event.DownloadImageEvent;
 import com.jobosint.event.PersistPartEvent;
 import com.jobosint.model.DownloadImageRequest;
-import com.jobosint.model.JobDetail;
 import com.jobosint.model.Part;
+import com.jobosint.parser.CruiserCorpsProductParser;
 import com.jobosint.parser.OemPartsOnlinePageParser;
 import com.jobosint.parser.ParseResult;
 import com.jobosint.repository.PartRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,21 +32,67 @@ public class PartService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final PartRepository partRepository;
     private final OemPartsOnlinePageParser oemPartsOnlinePageParser;
+    private final CruiserCorpsProductParser cruiserCorpsProductParser;
     private final HttpClientFactory httpClientFactory;
 
     public List<Part> getAllParts() {
         return partRepository.findAllPartsOrderByTitle();
     }
 
-    @Transactional
+    //    @Transactional
     public Part savePart(Part part) {
+
         log.info("Saving part: {}", part);
-        return partRepository.save(part);
+        Part pp = null;
+        try {
+            pp = partRepository.save(part);
+        } catch (Exception e) {
+            if (e.getCause() instanceof DuplicateKeyException) {
+                log.warn("Duplicate: {}", part);
+            } else {
+                log.error("Error saving part", e);
+            }
+        }
+        return pp;
     }
 
     public void refresh(boolean persistParts, boolean downloadImages) throws IOException {
+        if (persistParts) {
+            log.warn("Deleting all part records");
+            partRepository.deleteAll();
+        }
+        refreshCruiserCorps(persistParts, downloadImages);
+//        refreshOemPartsOnline(persistParts, downloadImages);
+
+    }
+
+    public void refreshCruiserCorps(boolean persistParts, boolean downloadImages) throws IOException {
+        Path dirPath = Path.of("/home/shane/projects/jobosint/content/cruisercorps");
+        AtomicInteger filesProcessed = new AtomicInteger();
+        int totalFiles = Objects.requireNonNull(dirPath.toFile().listFiles()).length;
+        try (Stream<Path> stream = Files.list(dirPath)) {
+            stream.forEach(path -> {
+                ParseResult<Part> result = cruiserCorpsProductParser.parse(path);
+                Part part = result.getData();
+                if (part != null) {
+                    if (persistParts) {
+                        applicationEventPublisher.publishEvent(new PersistPartEvent(this, part));
+                    }
+                    if (downloadImages) {
+                        // todo
+                    }
+
+                } else {
+                    log.warn("No parts found for: {}", path);
+                }
+                filesProcessed.addAndGet(1);
+                log.info("Processed {} of {} files", filesProcessed, totalFiles);
+            });
+        }
+    }
+
+    public void refreshOemPartsOnline(boolean persistParts, boolean downloadImages) throws IOException {
         Path dirPath = Path.of("/home/shane/projects/jobosint/content/oempartsonline");
-        Path targetImageDir = Path.of("/home/shane/projects/jobosint/images/oempartsonline");
         AtomicInteger filesProcessed = new AtomicInteger();
         int totalFiles = Objects.requireNonNull(dirPath.toFile().listFiles()).length;
         try (Stream<Path> stream = Files.list(dirPath)) {
@@ -62,6 +108,7 @@ public class PartService {
                             String refImage = part.refImage();
                             if (!refImage.equals("//s3.amazonaws.com/static.revolutionparts.com/assets/images/toyota.png")) {
                                 if (refImage.startsWith("//dz310nzuyimx0.cloudfront.net/strapr1/")) {
+                                    Path targetImageDir = Path.of("/home/shane/projects/jobosint/images/oempartsonline");
                                     String targetFilename = refImage.substring("//dz310nzuyimx0.cloudfront.net/strapr1/".length() + 1);
                                     Path localPath = Paths.get(targetImageDir.toString(), targetFilename);
                                     if (!localPath.toFile().exists()) {
