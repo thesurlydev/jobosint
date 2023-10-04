@@ -93,13 +93,16 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
             Elements msrpEls = row.select("div.product-pricing");
             if (!msrpEls.isEmpty()) {
                 String raw = msrpEls.select("div.list-price").text();
-                msrp = raw.replace("MSRP", "").trim();
+                msrp = raw
+                        .replace("MSRP", "")
+                        .replace("$", "")
+                        .trim();
             }
 
             // TODO price
 
             String hash = Part.calcHash(partNum, title, info);
-            return new Part(null, partNum, title, info, path.toString(), refCode, refImage, hash, category, subcategory, msrp, null, "oempartsonline", "Toyota", null);
+            return new Part(null, partNum, title, info, path.toString(), refCode, refImage, hash, category, subcategory, msrp, null, "oempartsonline", "Toyota", partNum);
         }).toList();
         result.setData(parts);
     }

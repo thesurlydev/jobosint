@@ -8,6 +8,7 @@ import com.jobosint.model.Part;
 import com.jobosint.parser.CruiserCorpsProductParser;
 import com.jobosint.parser.OemPartsOnlinePageParser;
 import com.jobosint.parser.ParseResult;
+import com.jobosint.parser.ToyotaPartsDealPageParser;
 import com.jobosint.repository.PartRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class PartService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final PartRepository partRepository;
     private final OemPartsOnlinePageParser oemPartsOnlinePageParser;
+    private final ToyotaPartsDealPageParser toyotaPartsDealPageParser;
     private final CruiserCorpsProductParser cruiserCorpsProductParser;
     private final HttpClientFactory httpClientFactory;
 
@@ -63,8 +65,39 @@ public class PartService {
         }
         refreshCruiserCorps(persistParts, downloadImages);
         refreshOemPartsOnline(persistParts, downloadImages);
+        refreshToyotaPartsDeal(persistParts, downloadImages);
     }
 
+    public void refreshToyotaPartsDeal(boolean persistParts, boolean downloadImages) throws IOException {
+        Path dirPath = Path.of("/home/shane/projects/jobosint/content/toyotapartsdeal");
+        AtomicInteger filesProcessed = new AtomicInteger();
+        int totalFiles = Objects.requireNonNull(dirPath.toFile().listFiles()).length;
+        AtomicInteger totalParts = new AtomicInteger();
+        try (Stream<Path> stream = Files.list(dirPath)) {
+            stream.forEach(path -> {
+                ParseResult<List<Part>> result = toyotaPartsDealPageParser.parse(path);
+                List<Part> parts = result.getData();
+                if (parts != null) {
+                    totalParts.addAndGet(parts.size());
+                    parts.forEach(part -> {
+                        if (persistParts) {
+                            applicationEventPublisher.publishEvent(new PersistPartEvent(this, part));
+                        }
+                        if (downloadImages) {
+                            // todo
+                        }
+                    });
+                } else {
+                    log.warn("No parts found for: {}", path);
+                }
+
+                filesProcessed.addAndGet(1);
+                log.info("Processed {} of {} files", filesProcessed, totalFiles);
+            });
+        }
+
+        log.info("Found {} parts", totalParts);
+    }
     public void refreshCruiserCorps(boolean persistParts, boolean downloadImages) throws IOException {
         Path dirPath = Path.of("/home/shane/projects/jobosint/content/cruisercorps");
         AtomicInteger filesProcessed = new AtomicInteger();
