@@ -29,14 +29,18 @@ public class PersistVendorPartEventListener implements ApplicationListener<Persi
 
         Part part = vendorPart.part();
         Part savedPart = partService.savePart(part);
-        log.info("Saved part: {}", savedPart);
-
-        // only save price if available
-        if (vendorPart.available()) {
-            BigDecimal priceVal = vendorPart.price();
-            Price price = new Price(null, vendorPart.vendor().id(), savedPart.id(), savedPart.name(), priceVal, vendorPart.available(), vendorPart.sku(), null, PartCondition.NEW);
-            Price savedPrice = priceService.savePrice(price);
-            log.info("Saved price: {}", savedPrice);
+        if (savedPart == null) {
+            log.warn("Part not saved: {}", part);
+            return;
+        } else {
+            log.info("Saved part: {}", savedPart);
+            // only save price if available
+            if (vendorPart.available()) {
+                BigDecimal priceVal = vendorPart.price();
+                Price price = new Price(null, vendorPart.vendor().id(), savedPart.id(), savedPart.name(), priceVal, vendorPart.available(), vendorPart.sku(), null, PartCondition.NEW);
+                Price savedPrice = priceService.savePrice(price);
+                log.info("Saved price: {}", savedPrice);
+            }
         }
     }
 }
