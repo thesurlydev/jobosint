@@ -9,20 +9,29 @@
     <table style="width: 100%">
         <thead>
         <tr>
+            <th>Vendor</th>
             <th>Number</th>
-            <th>Description</th>
+            <th>Title</th>
+            <!--<th>Description</th>-->
             <th>Category</th>
             <th>Subcategory</th>
             <th>MSRP</th>
+            <th>Price</th>
+            <th>Supplier</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="part : ${parts}">
+
+            <td th:text="${part.vendor()}">Vendor</td>
             <td><a th:href="@{/parts/{id}(id=${part.id()})}" th:text="${part.num()}">Number</a></td>
-            <td th:text="${part.description()}">Description</td>
+            <td th:text="${part.name()}">Title</td>
+            <!--<td th:text="${part.description()}">Description</td>-->
             <td th:text="${part.category()}">Category</td>
             <td th:text="${part.subcategory()}">Subcategory</td>
-            <td th:text="${part.msrp()}">MSRP</td>
+            <td style="text-align: right" th:text="${part.msrp()}">MSRP</td>
+            <td style="text-align: right" th:text="${part.price()}">Price</td>
+            <td th:text="${part.supplier()}">Supplier</td>
         </tr>
         </tbody>
     </table>

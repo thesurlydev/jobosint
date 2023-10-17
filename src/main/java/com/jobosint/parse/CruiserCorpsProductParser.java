@@ -1,4 +1,4 @@
-package com.jobosint.parser;
+package com.jobosint.parse;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -43,8 +43,8 @@ public class CruiserCorpsProductParser implements Parser<Path, Part> {
         String sku = JsonPath.read(document, "$.product.variants[0].sku");
         String price = JsonPath.read(document, "$.product.variants[0].price");
 
-        Part part = new Part(null, sku, title, info, source, null, refImage, partHash, category, null, null, price, "cruisercorps", null, sku);
-        result.setData(part);
+//        Part part = new Part(null, sku, title, info, source, null, refImage, partHash, category, null, null, price, "cruisercorps", null, sku);
+//        result.setData(part);
 
         return result;
     }

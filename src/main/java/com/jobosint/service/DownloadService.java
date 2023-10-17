@@ -134,12 +134,12 @@ public class DownloadService {
      * @return
      * @throws IOException
      */
-    public List<Optional<Path>> downloadAll(Path path, String targetDir, boolean overwrite) throws IOException {
+    public List<Optional<Path>> downloadAll(Path path, String targetDir, boolean overwrite, String suffixToAppend) throws IOException {
         List<String> urls = Files.readAllLines(path);
         return urls.stream().map(url -> {
             try {
                 Thread.sleep(500);
-                DownloadContentRequest request = new DownloadContentRequest(url, targetDir, overwrite);
+                DownloadContentRequest request = new DownloadContentRequest(url, targetDir, overwrite, suffixToAppend);
                 return downloadContent(request);
             } catch (InterruptedException | URISyntaxException | IOException e) {
                 throw new RuntimeException(e);
@@ -147,7 +147,7 @@ public class DownloadService {
         }).toList();
     }
 
-    public List<Optional<Path>> downloadAllFromSiteMap(Path path, String targetDir, boolean overwrite) throws IOException {
+    public List<Optional<Path>> downloadAllFromSiteMap(Path path, String targetDir, boolean overwrite, String suffixToAppend) throws IOException {
         List<String> urls = Files.readAllLines(path);
         return urls.stream().flatMap(line -> {
                     if (line.contains("<loc>")) {
@@ -161,7 +161,7 @@ public class DownloadService {
                 .map(url -> {
                     try {
                         Thread.sleep(500);
-                        DownloadContentRequest request = new DownloadContentRequest(url, targetDir, overwrite);
+                        DownloadContentRequest request = new DownloadContentRequest(url, targetDir, overwrite, suffixToAppend);
                         return downloadContent(request);
                     } catch (InterruptedException | URISyntaxException | IOException e) {
                         throw new RuntimeException(e);
@@ -172,8 +172,23 @@ public class DownloadService {
     public Optional<Path> downloadContent(DownloadContentRequest downloadContentRequest) throws InterruptedException, URISyntaxException, IOException {
 
         String url = downloadContentRequest.url();
+        if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
+        }
         int slashPos = url.lastIndexOf('/');
         String filename = url.substring(slashPos + 1);
+        if (downloadContentRequest.localFileSuffixToAppend() != null) {
+            filename = filename + downloadContentRequest.localFileSuffixToAppend();
+        }
+        filename = filename
+                .replaceAll("\\?", "-")
+                .replaceAll("&", "-")
+                .replaceAll("=", "-");
+
+        if (filename.startsWith("-")) {
+            filename = filename.substring(1);
+        }
+
         Path localFilePath = Paths.get(downloadContentRequest.targetDir(), filename);
         File localFile = localFilePath.toFile();
 
@@ -188,8 +203,11 @@ public class DownloadService {
         HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
         HttpResponse<String> response = httpClientFactory.getClient().send(request, HttpResponse.BodyHandlers.ofString());
 
+
+        log.info("status: {}, len: {}, url: {}", response.statusCode(), response.body().length(), url);
+
         if (response.statusCode() > 399) {
-            log.error("status: {}, url: {}", response.statusCode(), url);
+//            log.error("status: {}, url: {}", response.statusCode(), url);
             return Optional.empty();
         }
 

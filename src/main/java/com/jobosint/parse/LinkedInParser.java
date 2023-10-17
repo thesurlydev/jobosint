@@ -1,4 +1,4 @@
-package com.jobosint.parser;
+package com.jobosint.parse;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,7 +19,7 @@ public class LinkedInParser {
         String metaRemoved = doc.select("meta").remove().toString();
 //        System.out.println(scriptsRemoved);
         System.out.println();
-        System.out.println("title: " + doc.select("h1").text());
+        System.out.println("name: " + doc.select("h1").text());
 
         System.out.println("company: " + doc.select("body > div.application-outlet > div.authentication-outlet > div > div.job-view-layout.jobs-details > div.grid > div > div:nth-child(1) > div > div > div.p5 > div.jobs-unified-top-card__primary-description > div > a"));
         System.out.println("applicants: " + doc.select("body > div.application-outlet > div.authentication-outlet > div > div.job-view-layout.jobs-details > div.grid > div > div:nth-child(1) > div > div > div.p5 > div.jobs-unified-top-card__primary-description > div > span:nth-child(6)").text());

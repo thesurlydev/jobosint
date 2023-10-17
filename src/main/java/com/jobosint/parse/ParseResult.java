@@ -1,4 +1,4 @@
-package com.jobosint.parser;
+package com.jobosint.parse;
 
 import lombok.Data;
 

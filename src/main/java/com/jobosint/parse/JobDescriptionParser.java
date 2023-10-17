@@ -1,4 +1,4 @@
-package com.jobosint.parser;
+package com.jobosint.parse;
 
 
 import com.jobosint.model.JobDescription;
@@ -82,7 +82,7 @@ public class JobDescriptionParser implements Parser<String, JobDescription> {
             System.out.println(link);
         }
 
-        Optional<String> maybeOgTitle = getMetaValue(doc, "og:title");
+        Optional<String> maybeOgTitle = getMetaValue(doc, "og:name");
         maybeOgTitle.ifPresent(jd::setTitle);
 
         result.setData(jd);

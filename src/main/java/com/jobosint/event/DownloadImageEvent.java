@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class DownloadImageEvent extends ApplicationEvent {
 
     private final DownloadImageRequest downloadImageRequest;

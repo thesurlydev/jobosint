@@ -1,7 +1,10 @@
 package com.jobosint.parser;
 
+import com.jobosint.parse.LinkedInParser;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Tag("parse")
 public class LinkedInParserTest {
 
     @Test

@@ -10,6 +10,7 @@ public class HttpClientFactory {
     public HttpClient getClient() {
         return HttpClient.newBuilder()
                 .cookieHandler(new CookieManager())
+                .followRedirects(HttpClient.Redirect.ALWAYS)
                 .version(HttpClient.Version.HTTP_2)
                 .build();
     }

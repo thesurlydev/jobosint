@@ -1,7 +1,10 @@
 package com.jobosint.parser;
 
 import com.jobosint.model.Part;
+import com.jobosint.parse.OemPartsOnlinePageParser;
+import com.jobosint.parse.ParseResult;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -9,6 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Tag("parse")
 public class OeamPartsOnlineParserTest {
 
     private OemPartsOnlinePageParser oemPartsOnlinePageParser;

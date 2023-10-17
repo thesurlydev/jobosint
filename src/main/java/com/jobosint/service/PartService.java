@@ -1,14 +1,10 @@
 package com.jobosint.service;
 
 import com.jobosint.client.HttpClientFactory;
-import com.jobosint.event.DownloadImageEvent;
-import com.jobosint.event.PersistPartEvent;
-import com.jobosint.model.DownloadImageRequest;
+import com.jobosint.event.PersistVendorPartEvent;
+import com.jobosint.model.VendorPart;
 import com.jobosint.model.Part;
-import com.jobosint.parser.CruiserCorpsProductParser;
-import com.jobosint.parser.OemPartsOnlinePageParser;
-import com.jobosint.parser.ParseResult;
-import com.jobosint.parser.ToyotaPartsDealPageParser;
+import com.jobosint.parse.*;
 import com.jobosint.repository.PartRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,6 +30,7 @@ public class PartService {
     private final OemPartsOnlinePageParser oemPartsOnlinePageParser;
     private final ToyotaPartsDealPageParser toyotaPartsDealPageParser;
     private final CruiserCorpsProductParser cruiserCorpsProductParser;
+    private final CruiserYardPageParser cruiserYardPageParser;
     private final HttpClientFactory httpClientFactory;
 
     public List<Part> getAllParts() {
@@ -58,33 +54,48 @@ public class PartService {
         return pp;
     }
 
-    public void refresh(boolean persistParts, boolean downloadImages) throws IOException {
+    public void refresh(boolean persistParts) throws IOException {
         if (persistParts) {
             log.warn("Deleting all part records");
-            partRepository.deleteAll();
+//            partRepository.deleteAll();
         }
-        refreshCruiserCorps(persistParts, downloadImages);
-        refreshOemPartsOnline(persistParts, downloadImages);
-        refreshToyotaPartsDeal(persistParts, downloadImages);
+//        refreshCruiserCorps(persistParts, downloadImages);
+//        refreshOemPartsOnline(persistParts, downloadImages);
+        refreshToyotaPartsDeal(persistParts);
     }
 
-    public void refreshToyotaPartsDeal(boolean persistParts, boolean downloadImages) throws IOException {
+    public void refreshCruiserYard(boolean persistParts, boolean downloadImages) throws IOException {
+        Path dirPath = Path.of("/home/shane/projects/jobosint/content/cruiseryard");
+        try (Stream<Path> stream = Files.list(dirPath)) {
+            stream.forEach(path -> {
+                ParseResult<List<String>> result = cruiserYardPageParser.getDetailPageUrls(path);
+                List<String> detailPageUrls = result.getData();
+                if (detailPageUrls != null) {
+                    // TODO download detail pages
+
+                } else {
+                    log.warn("No parts found for: {}", path);
+                }
+
+
+            });
+        }
+    }
+
+    public void refreshToyotaPartsDeal(boolean persistParts) throws IOException {
         Path dirPath = Path.of("/home/shane/projects/jobosint/content/toyotapartsdeal");
         AtomicInteger filesProcessed = new AtomicInteger();
         int totalFiles = Objects.requireNonNull(dirPath.toFile().listFiles()).length;
         AtomicInteger totalParts = new AtomicInteger();
         try (Stream<Path> stream = Files.list(dirPath)) {
             stream.forEach(path -> {
-                ParseResult<List<Part>> result = toyotaPartsDealPageParser.parse(path);
-                List<Part> parts = result.getData();
+                ParseResult<List<VendorPart>> result = toyotaPartsDealPageParser.parse(path);
+                List<VendorPart> parts = result.getData();
                 if (parts != null) {
                     totalParts.addAndGet(parts.size());
                     parts.forEach(part -> {
                         if (persistParts) {
-                            applicationEventPublisher.publishEvent(new PersistPartEvent(this, part));
-                        }
-                        if (downloadImages) {
-                            // todo
+                            applicationEventPublisher.publishEvent(new PersistVendorPartEvent(this, part));
                         }
                     });
                 } else {
@@ -98,7 +109,8 @@ public class PartService {
 
         log.info("Found {} parts", totalParts);
     }
-    public void refreshCruiserCorps(boolean persistParts, boolean downloadImages) throws IOException {
+
+    /*public void refreshCruiserCorps(boolean persistParts, boolean downloadImages) throws IOException {
         Path dirPath = Path.of("/home/shane/projects/jobosint/content/cruisercorps");
         AtomicInteger filesProcessed = new AtomicInteger();
         int totalFiles = Objects.requireNonNull(dirPath.toFile().listFiles()).length;
@@ -136,26 +148,6 @@ public class PartService {
                         if (persistParts) {
                             applicationEventPublisher.publishEvent(new PersistPartEvent(this, part));
                         }
-                        if (downloadImages) {
-                            String refImage = part.refImage();
-                            if (!refImage.equals("//s3.amazonaws.com/static.revolutionparts.com/assets/images/toyota.png")) {
-                                if (refImage.startsWith("//dz310nzuyimx0.cloudfront.net/strapr1/")) {
-                                    Path targetImageDir = Path.of("/home/shane/projects/jobosint/images/oempartsonline");
-                                    String targetFilename = refImage.substring("//dz310nzuyimx0.cloudfront.net/strapr1/".length() + 1);
-                                    Path localPath = Paths.get(targetImageDir.toString(), targetFilename);
-                                    if (!localPath.toFile().exists()) {
-                                        String[] imageFileParts = targetFilename.split("/");
-                                        Path targetDir = targetImageDir.resolve(imageFileParts[0]);
-                                        String filename = imageFileParts[1];
-                                        applicationEventPublisher.publishEvent(new DownloadImageEvent(this, new DownloadImageRequest("https:" + refImage, targetDir, filename, false)));
-                                    } else {
-                                        log.info("{} already exists; skipping download", localPath);
-                                    }
-                                } else {
-                                    log.warn("Unknown image source: {}", part.refImage());
-                                }
-                            }
-                        }
                     });
                 } else {
                     log.warn("No parts found for: {}", path);
@@ -164,7 +156,7 @@ public class PartService {
                 log.info("Processed {} of {} files", filesProcessed, totalFiles);
             });
         }
-    }
+    }*/
 
 
 }

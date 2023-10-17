@@ -1,4 +1,4 @@
-package com.jobosint.parser;
+package com.jobosint.parse;
 
 import com.jobosint.model.Part;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +20,8 @@ public class SorParser implements Parser<Path, List<Part>> {
     private Map<String, String> catLookupMap;
 
     public SorParser() {
-        Path path = Path.of("/home/shane/projects/jobosint/content/sor-numeric-catalog-listing.html");
-        this.catLookupMap = parseNumericCatalogListing(path);
+//        Path path = Path.of("/home/shane/projects/jobosint/content/sor-numeric-catalog-listing.html");
+//        this.catLookupMap = parseNumericCatalogListing(path);
     }
 
 
@@ -65,8 +65,8 @@ public class SorParser implements Parser<Path, List<Part>> {
         Elements links = doc.getElementsByClass("pbContainer").select("a");
         Map<String, String> map = new HashMap<>();
         links.forEach(link -> {
-            String title = link.attr("title");
-//            log.info("title: {}", title);
+            String title = link.attr("name");
+//            log.info("name: {}", name);
             String delim = "–"; // not a dash
             if (title.contains(delim)) {
                 int dashIdx = title.indexOf(delim);
@@ -80,7 +80,7 @@ public class SorParser implements Parser<Path, List<Part>> {
                 map.put(num, cat);
 
             } else {
-                log.warn("Unexpected title: {}", title);
+                log.warn("Unexpected name: {}", title);
             }
         });
         return map;

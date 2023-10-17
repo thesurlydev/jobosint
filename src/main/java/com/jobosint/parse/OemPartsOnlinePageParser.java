@@ -1,10 +1,9 @@
-package com.jobosint.parser;
+package com.jobosint.parse;
 
 import com.jobosint.model.Part;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +35,7 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
 
         String category;
         if (!categoryEls.isEmpty()) {
-            category = categoryEls.get(0).attr("title");
+            category = categoryEls.get(0).attr("name");
         } else {
             category = null;
             log.warn("No category found for {}", path);
@@ -54,7 +53,7 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
             log.warn("No subcategory found for {}", path);
         }
 
-        Elements partContainers = doc.getElementsByClass("part-group-container");
+        Elements partContainers = doc.getElementsByClass("part-group-containerClass");
 
         /*
         int numContainers = partContainers.size();
@@ -67,14 +66,14 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
         }
         */
 
-        if (!partContainers.isEmpty()) {
+        /*if (!partContainers.isEmpty()) {
             partContainers.forEach(pc -> parsePartContainer(pc, path, result, category, subcategory));
-        }
+        }*/
 
         return result;
     }
 
-    private void parsePartContainer(Element partContainer, Path path, ParseResult<List<Part>> result, String category, String subcategory) {
+    /*private void parsePartContainer(Element partContainer, Path path, ParseResult<List<Part>> result, String category, String subcategory) {
         Elements partRows = partContainer.select("div.catalog-product");
         if (partRows.isEmpty()) {
             String err = "No parts found for: " + path;
@@ -86,7 +85,7 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
             String refCode = row.select("div.reference-code-col").text();
             String refImage = row.select("div.product-image-col img").attr("src");
 
-            String title = row.select("strong.product-title").text();
+            String title = row.select("strong.product-name").text();
             String partNum = row.select("div.product-partnum").text();
             String info = row.select("div.product-more-info").text();
             String msrp = null;
@@ -105,5 +104,5 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
             return new Part(null, partNum, title, info, path.toString(), refCode, refImage, hash, category, subcategory, msrp, null, "oempartsonline", "Toyota", partNum);
         }).toList();
         result.setData(parts);
-    }
+    }*/
 }

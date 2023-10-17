@@ -1,8 +1,10 @@
 package com.jobosint.parser;
 
 import com.jobosint.model.Part;
-import org.junit.jupiter.api.Assertions;
+import com.jobosint.parse.ParseResult;
+import com.jobosint.parse.SorParser;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -10,6 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("parse")
 public class SorParserTest {
 
     private SorParser sorParser;
