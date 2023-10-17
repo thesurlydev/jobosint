@@ -1,11 +1,14 @@
 package com.jobosint.service;
 
 import com.jobosint.util.FileUtils;
+import org.jsoup.Connection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpMethod;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -16,6 +19,7 @@ public class DownloadServiceTest {
 
     @Autowired
     private DownloadService downloadService;
+
 
     @Test
     public void downloadAllFromSiteMapTest() throws Exception {
@@ -33,7 +37,7 @@ public class DownloadServiceTest {
         String namespace = "ih8mud-60-series-tech-discussion-thread";
         Path linksPath = Paths.get("content", namespace + "-links.txt");
         String targetDir = "/home/shane/projects/jobosint/content/" + namespace;
-        downloadService.downloadAll(linksPath, targetDir, false, ".html");
+        downloadService.downloadAll(HttpMethod.GET, linksPath, targetDir, false, ".html");
     }
 
     @Test
@@ -41,7 +45,24 @@ public class DownloadServiceTest {
         String namespace = "cruiseryard";
         Path linksPath = Paths.get("content", namespace + "-links.txt");
         String targetDir = "/home/shane/projects/jobosint/content/" + namespace;
-        downloadService.downloadAll(linksPath, targetDir, false, ".html");
+        downloadService.downloadAll(HttpMethod.GET, linksPath, targetDir, false, ".html");
+    }
+    @Test
+    public void downloadYoshiPartsTest() throws Exception {
+        String namespace = "yoshiparts";
+        Path linksPath = Paths.get("content", namespace + "-links.txt");
+        String targetDir = "/home/shane/projects/jobosint/content/" + namespace;
+
+        downloadService.downloadAll(HttpMethod.POST, linksPath, targetDir, false, ".json");
+    }
+
+    @Test
+    public void downloadAllImagesTest() throws Exception {
+        String namespace = "yoshiparts";
+        Path linksPath = Paths.get("/home/shane/projects/jobosint/images", namespace + "-image-links.txt");
+        List<String> urls = Files.readAllLines(linksPath);
+        Path targetDir = Paths.get("/home/shane/projects/jobosint/images", namespace);
+        downloadService.downloadAllImages(urls, targetDir);
     }
 
 }
