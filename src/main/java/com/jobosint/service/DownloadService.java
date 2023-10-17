@@ -5,6 +5,7 @@ import com.jobosint.model.DownloadContentRequest;
 import com.jobosint.model.DownloadImageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -75,6 +76,40 @@ public class DownloadService {
         }
     }
 
+    public void downloadAllImages(List<String> urls, Path targetDir) {
+        urls.forEach(url -> {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            URI uri;
+            try {
+                uri = new URI(url);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+
+            HttpRequest request = HttpRequest.newBuilder(uri)
+                    .header("Accept", "*/*")
+                    .GET().build();
+
+            HttpResponse<Path> response;
+            try {
+                response = httpClientFactory.getClient().send(request, HttpResponse.BodyHandlers.ofFile(targetDir.resolve(Paths.get(url).getFileName()), CREATE, WRITE));
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (response.statusCode() > 400) {
+                log.error("status: {}, url: {}", response.statusCode(), url);
+            } else {
+                log.info("status: {}, url: {}", response.statusCode(), url);
+            }
+        });
+    }
+
     public void downloadPartSouqImage(String partNumber) {
 
         String imagesDir = "/home/shane/projects/jobosint/images/partsouq";
@@ -134,12 +169,12 @@ public class DownloadService {
      * @return
      * @throws IOException
      */
-    public List<Optional<Path>> downloadAll(Path path, String targetDir, boolean overwrite, String suffixToAppend) throws IOException {
+    public List<Optional<Path>> downloadAll(HttpMethod httpMethod, Path path, String targetDir, boolean overwrite, String suffixToAppend) throws IOException {
         List<String> urls = Files.readAllLines(path);
         return urls.stream().map(url -> {
             try {
                 Thread.sleep(500);
-                DownloadContentRequest request = new DownloadContentRequest(url, targetDir, overwrite, suffixToAppend);
+                DownloadContentRequest request = new DownloadContentRequest(httpMethod, url, targetDir, overwrite, suffixToAppend);
                 return downloadContent(request);
             } catch (InterruptedException | URISyntaxException | IOException e) {
                 throw new RuntimeException(e);
@@ -161,7 +196,7 @@ public class DownloadService {
                 .map(url -> {
                     try {
                         Thread.sleep(500);
-                        DownloadContentRequest request = new DownloadContentRequest(url, targetDir, overwrite, suffixToAppend);
+                        DownloadContentRequest request = new DownloadContentRequest(HttpMethod.GET, url, targetDir, overwrite, suffixToAppend);
                         return downloadContent(request);
                     } catch (InterruptedException | URISyntaxException | IOException e) {
                         throw new RuntimeException(e);
@@ -200,9 +235,15 @@ public class DownloadService {
         log.info("LocalPath: {}", localFilePath);
 
         URI uri = new URI(url);
-        HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
+        HttpRequest request;
+        if (downloadContentRequest.httpMethod() == HttpMethod.GET) {
+            request = HttpRequest.newBuilder(uri).GET().build();
+        } else if (downloadContentRequest.httpMethod() == HttpMethod.POST) {
+            request = HttpRequest.newBuilder(uri).POST(HttpRequest.BodyPublishers.noBody()).build();
+        } else {
+            throw new RuntimeException("Unsupported http method: " + downloadContentRequest.httpMethod());
+        }
         HttpResponse<String> response = httpClientFactory.getClient().send(request, HttpResponse.BodyHandlers.ofString());
-
 
         log.info("status: {}, len: {}, url: {}", response.statusCode(), response.body().length(), url);
 

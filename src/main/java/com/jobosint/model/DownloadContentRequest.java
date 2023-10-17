@@ -1,6 +1,9 @@
 package com.jobosint.model;
 
-public record DownloadContentRequest(String url,
+import org.springframework.http.HttpMethod;
+
+public record DownloadContentRequest(HttpMethod httpMethod,
+                                     String url,
                                      String targetDir,
                                      boolean overwrite,
                                      String localFileSuffixToAppend) {
