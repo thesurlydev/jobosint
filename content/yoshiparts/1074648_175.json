@@ -1,0 +1,651 @@
+{
+  "manufacturer": "toyota",
+  "diagram": {
+    "id": 1288084,
+    "globalId": 1074648,
+    "slug": "indicator",
+    "name": "Indicator",
+    "chapterName": null,
+    "chapterId": null,
+    "position": 175,
+    "section": null,
+    "sectionName": null,
+    "hotspots": {
+      "3312": [
+        [
+          346,
+          640,
+          437,
+          657
+        ],
+        [
+          490,
+          676,
+          581,
+          693
+        ],
+        [
+          479,
+          726,
+          570,
+          742
+        ],
+        [
+          540,
+          935,
+          629,
+          951
+        ]
+      ],
+      "81850": [
+        [
+          244,
+          402,
+          298,
+          418
+        ],
+        [
+          179,
+          600,
+          259,
+          616
+        ]
+      ],
+      "81850B": [
+        [
+          272,
+          72,
+          337,
+          88
+        ],
+        [
+          207,
+          344,
+          273,
+          360
+        ],
+        [
+          216,
+          637,
+          282,
+          653
+        ]
+      ],
+      "81930": [
+        [
+          540,
+          476,
+          594,
+          492
+        ]
+      ],
+      "81930B": [
+        [
+          524,
+          420,
+          590,
+          436
+        ]
+      ],
+      "81931": [
+        [
+          602,
+          421,
+          672,
+          437
+        ]
+      ],
+      "81942": [
+        [
+          631,
+          893,
+          685,
+          909
+        ]
+      ],
+      "8202": [
+        [
+          29,
+          57,
+          120,
+          74
+        ]
+      ],
+      "9016450008": [
+        [
+          642,
+          193,
+          762,
+          208
+        ]
+      ],
+      "9356614512": [
+        [
+          311,
+          337,
+          427,
+          351
+        ]
+      ]
+    },
+    "description": " (8008- )",
+    "additionalInfo": null,
+    "dateRange": " [08.1980-]",
+    "uid": "1074648_175",
+    "image": {
+      "originals": "https:\/\/epc.partsbooster.com\/schemas\/toyota\/9ca8de2ac7a373180d6a21e01ba405fe.png",
+      "thumbnails": "https:\/\/epc.partsbooster.com\/schemas\/toyota\/9ca8de2ac7a373180d6a21e01ba405fe.png"
+    },
+    "imageScaleRatio": 1
+  },
+  "diagramsInSection": [
+    {
+      "slug": "indicator",
+      "uid": "1074648_175",
+      "image": {
+        "originals": "https:\/\/epc.partsbooster.com\/schemas\/toyota\/9ca8de2ac7a373180d6a21e01ba405fe.png",
+        "thumbnails": "https:\/\/epc.partsbooster.com\/schemas\/toyota\/9ca8de2ac7a373180d6a21e01ba405fe.png"
+      },
+      "image_scale_ratio": 1
+    }
+  ],
+  "variant": {
+    "id": 39958,
+    "path": "land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv",
+    "parentPath": "land_cruiser",
+    "techType": "car",
+    "manufacturer": {
+      "slug": "toyota",
+      "name": "Toyota"
+    },
+    "generationKey": "land_cruiser-gen_7",
+    "header": "Toyota Land Cruiser",
+    "subheader": "FJ60",
+    "params": [
+      [
+        "sales_region",
+        [
+          "USA",
+          "US"
+        ]
+      ],
+      [
+        "engine",
+        [
+          "2F",
+          "4200CC"
+        ]
+      ],
+      [
+        "atm_mtm",
+        [
+          "MTM",
+          "MANUAL TRANSMISSION"
+        ]
+      ],
+      [
+        "gear_shift_type",
+        [
+          "4F",
+          "MTM, 4-SPEED FLOOR SHIFT"
+        ]
+      ],
+      [
+        "destination",
+        [
+          "USA",
+          "UNITED STATES OF AMERICA"
+        ]
+      ],
+      [
+        "body",
+        [
+          "WGV",
+          "STATION WAGON"
+        ]
+      ],
+      [
+        "date_range",
+        [
+          "Sep 1986 \u2013 Aug 1987",
+          ""
+        ]
+      ]
+    ],
+    "options": [],
+    "vinParams": []
+  },
+  "countInSection": 1,
+  "diagramItems": [
+    {
+      "id": 41439012,
+      "refNumber": "81850B",
+      "qt": 6,
+      "itemId": 2834071,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60",
+            "12V 3.4W,NO.2,12V 3.4W"
+          ]
+        ],
+        [
+          "Required",
+          [
+            "6 pcs"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 41439013,
+      "refNumber": "81930",
+      "qt": 1,
+      "itemId": 3855898,
+      "description": [
+        [
+          "Year",
+          [
+            "04.1986-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "FJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 41439014,
+      "refNumber": "81930B",
+      "qt": 1,
+      "itemId": 3076077,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60",
+            "12V 2W,12V 2W"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 41439015,
+      "refNumber": "9016450008",
+      "qt": 1,
+      "itemId": 5957799,
+      "description": [],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 41439016,
+      "refNumber": "9356614512",
+      "qt": 1,
+      "itemId": 5672101,
+      "description": [],
+      "dateRange": "",
+      "isSearched": false
+    }
+  ],
+  "sectionRefs": {
+    "3312": {
+      "id": 1288005,
+      "globalId": 2012733,
+      "slug": "shift_lever_retainer",
+      "name": "Shift Lever & Retainer",
+      "chapterName": null,
+      "position": 41,
+      "section": null,
+      "chapterId": null,
+      "image": null,
+      "imageScaleRatio": null,
+      "hotspots": null,
+      "description": "",
+      "dateRange": "",
+      "uid": "2012733_41",
+      "refNumber": null
+    },
+    "8202": {
+      "id": 1288081,
+      "globalId": 2297413,
+      "slug": "wiring_clamp",
+      "name": "Wiring & Clamp",
+      "chapterName": null,
+      "position": 145,
+      "section": null,
+      "chapterId": null,
+      "image": null,
+      "imageScaleRatio": null,
+      "hotspots": null,
+      "description": "",
+      "dateRange": "",
+      "uid": "2297413_145",
+      "refNumber": null
+    }
+  },
+  "products": [
+    {
+      "id": 3855898,
+      "number": "8193090A06",
+      "numberFormatted": "81930-90A06",
+      "name": "Lamp Assy, Heater Control Indicator, No.1",
+      "slug": "lamp_assy_heater_control_indicator_no_1",
+      "description": "",
+      "weight": "160",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "supersessions": [
+        {
+          "type": 0,
+          "descriptionValueId": 0,
+          "supersessionSet": [
+            {
+              "itemId": 3868624,
+              "quantity": 1
+            }
+          ]
+        }
+      ],
+      "uid": "toyota-8193090A06",
+      "guid": "ED25B0A9-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 60
+    },
+    {
+      "id": 3868624,
+      "number": "8193090A10",
+      "numberFormatted": "81930-90A10",
+      "name": "Lamp Assy, Heater Control Indicator, No.1",
+      "slug": "lamp_assy_heater_control_indicator_no_1",
+      "description": "",
+      "weight": "160",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-8193090A10",
+      "guid": "ED6539BF-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 60
+    },
+    {
+      "id": 5957799,
+      "number": "9016450008",
+      "numberFormatted": "90164-50008",
+      "name": "Screw",
+      "slug": "new_genuine_part",
+      "description": "",
+      "weight": "5",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-9016450008",
+      "guid": "542984A4-F27E-4522-B34D-EA6005A5DD68",
+      "notes": [],
+      "availabilityRate": 99
+    },
+    {
+      "id": 3076077,
+      "number": "9098111010",
+      "numberFormatted": "90981-11010",
+      "name": "Bulb, Heater Control Indicator Lamp",
+      "slug": "bulb_heater_control_indicator_lamp",
+      "description": "",
+      "weight": "3",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-9098111010",
+      "guid": "D140899E-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 60
+    },
+    {
+      "id": 5672101,
+      "number": "9356614512",
+      "numberFormatted": "93566-14512",
+      "name": "New Genuine Part",
+      "slug": "new_genuine_part",
+      "description": "",
+      "weight": "2",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "supersessions": [
+        {
+          "type": 0,
+          "descriptionValueId": 0,
+          "supersessionSet": [
+            {
+              "itemId": 5807203,
+              "quantity": 1
+            }
+          ]
+        }
+      ],
+      "uid": "toyota-9356614512",
+      "guid": "2D9257FD-1237-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 99
+    },
+    {
+      "id": 5807203,
+      "number": "9356854512",
+      "numberFormatted": "93568-54512",
+      "name": "Screw",
+      "slug": "new_genuine_part",
+      "description": "",
+      "weight": "3",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-9356854512",
+      "guid": "7CD512AA-2A9A-4AA2-B8EE-2A28A0701CEF",
+      "notes": [],
+      "availabilityRate": 99
+    },
+    {
+      "id": 2834071,
+      "number": "9913212034",
+      "numberFormatted": "99132-12034",
+      "name": "Bulb, Combination Meter, No.1",
+      "slug": "bulb_combination_meter_no_1",
+      "description": "",
+      "weight": "3",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-9913212034",
+      "guid": "4E9D0719-7D7B-42CE-83B5-B1B238E95BCE",
+      "notes": [],
+      "availabilityRate": 99
+    }
+  ],
+  "model": {
+    "id": 7068,
+    "path": "land_cruiser",
+    "name": "Land Cruiser",
+    "techType": "car",
+    "manufacturer": {
+      "slug": "toyota",
+      "name": "Toyota"
+    },
+    "childrenCount": 0,
+    "oneChildPath": "",
+    "generationCount": 0,
+    "oneGenerationKey": "",
+    "notes": []
+  },
+  "generation": {
+    "techType": "car",
+    "manufacturer": {
+      "slug": "toyota",
+      "name": "Toyota"
+    },
+    "modelPath": "land_cruiser",
+    "key": "land_cruiser-gen_7",
+    "image": "land_cruiser\/gen_7",
+    "name": "7th Gen",
+    "yearRange": "1980 \u2014 1992",
+    "variantIds": [],
+    "variantCount": 0,
+    "oneVariantPath": "land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv"
+  },
+  "paramNames": {
+    "name": "Name",
+    "sales_region": "Sales Region",
+    "engine": "Engine",
+    "atm_mtm": "Atm,Mtm",
+    "gear_shift_type": "Gear Shift Type",
+    "destination": "Destination",
+    "body": "Body",
+    "date_range": "Production Dates"
+  },
+  "seoInfo": {
+    "title": "Indicator",
+    "subtitle": "Toyota Land Cruiser \u2022 FJ60",
+    "welcomeText": [],
+    "footerHeader": "",
+    "footerText": [],
+    "metaTitle": "Toyota Land Cruiser FJ60 Indicator | YoshiParts",
+    "metaDescription": "Shop for Toyota Indicator used in Toyota Land Cruiser FJ60 and enjoy worldwide shipping from our authorized dealer. Genuine Toyota parts."
+  },
+  "breadcrumbs": [
+    {
+      "label": "Home",
+      "url": "https:\/\/yoshiparts.com\/"
+    },
+    {
+      "label": "Toyota Genuine Parts",
+      "url": "https:\/\/yoshiparts.com\/parts\/toyota\/tech"
+    },
+    {
+      "label": "Toyota Car Parts",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota"
+    },
+    {
+      "label": "Toyota Land Cruiser",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser"
+    },
+    {
+      "label": "7th Gen",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser\/params\/land_cruiser-gen_7\/one"
+    },
+    {
+      "label": "FJ60",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/diagrams\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv"
+    },
+    {
+      "label": "Toyota Land Cruiser FJ60 Indicator",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/products\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv\/1074648_175"
+    }
+  ],
+  "jsonld": [
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/",
+            "name": "Home"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/toyota\/tech",
+            "name": "Toyota Genuine Parts"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota",
+            "name": "Toyota Car Parts"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser",
+            "name": "Toyota Land Cruiser"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser\/params\/land_cruiser-gen_7\/one",
+            "name": "7th Gen"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/diagrams\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv",
+            "name": "FJ60"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/products\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv\/1074648_175",
+            "name": "Toyota Land Cruiser FJ60 Indicator"
+          }
+        }
+      ]
+    }
+  ]
+}
