@@ -7,6 +7,17 @@ import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.UUID;
 
+/**
+ * TODO: supersessions, weight, images, required number, part name code (PNC)
+ * @param id
+ * @param partNumber
+ * @param name
+ * @param description
+ * @param manufacturerId
+ * @param category
+ * @param subcategory
+ * @param msrpPrice
+ */
 @Table(name = "parts")
 public record Part(
         @Id UUID id,
@@ -17,7 +28,7 @@ public record Part(
         String category,
         String subcategory,
         BigDecimal msrpPrice,
-        Boolean discontinued
+        PartClassification classification
 ) {
 
     public static String calcHash(String... parts) {

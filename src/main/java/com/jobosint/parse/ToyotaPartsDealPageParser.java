@@ -2,10 +2,7 @@ package com.jobosint.parse;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-import com.jobosint.model.Manufacturer;
-import com.jobosint.model.VendorPart;
-import com.jobosint.model.Part;
-import com.jobosint.model.Vendor;
+import com.jobosint.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.jobosint.model.PartClassification.OEM;
 import static com.jobosint.model.Vendor.TOYOTA_PARTS_DEAL;
 
 @Component
@@ -64,13 +62,13 @@ public class ToyotaPartsDealPageParser implements Parser<Path, List<VendorPart>>
 
             Map<String, String> priceInfo = (Map<String, String>) map.get("priceInfo");
             String msrpStr = priceInfo.get("retail");
-            boolean discontinued = false;
+            boolean available = false;
             BigDecimal msrp = null;
             try {
                 msrp = new BigDecimal(msrpStr).setScale(2, RoundingMode.HALF_UP);
             } catch (NumberFormatException e) {
                 if (msrpStr.equals("--")) {
-                    discontinued = true;
+                    available = true;
                 } else {
                     log.warn("Error parsing msrp '{}' for part number: {}", msrpStr, partNumber);
                 }
@@ -79,15 +77,15 @@ public class ToyotaPartsDealPageParser implements Parser<Path, List<VendorPart>>
             BigDecimal price = new BigDecimal(priceStr).setScale(2, RoundingMode.HALF_UP);
             UUID manufacturerId = Manufacturer.TOYOTA.id();
 
-            // TODO actual availability. for now, we assume if it's not discontinued, it's available
-            boolean available = !discontinued;
-
             // note: for ToyotaPartsDeal, sku is the same as partNumber
             String sku = partNumber;
 
-            Part part = new Part(null, partNumber, description, null, manufacturerId,null, null, msrp, discontinued);
+            Part part = new Part(null, partNumber, description, null, manufacturerId,null, null, msrp, OEM);
 
-            VendorPart vendorPart = new VendorPart(TOYOTA_PARTS_DEAL, part, price, sku, available);
+            String vendorPartUrlPath = (String) map.get("url");
+            String vendorPartUrl = Vendor.TOYOTA_PARTS_DEAL.baseUrl() + vendorPartUrlPath;
+
+            VendorPart vendorPart = new VendorPart(TOYOTA_PARTS_DEAL, part, price, sku, available, PartCondition.NEW, vendorPartUrl);
 
             parsedVendorParts.add(vendorPart);
         }

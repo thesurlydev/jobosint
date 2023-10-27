@@ -15,15 +15,15 @@ public class PriceService {
 
     public Price savePrice(Price price) {
 
-        log.info("Saving price: {}", price);
+//        log.info("Saving price: {}", price);
         Price pp = null;
         try {
             pp = priceRespository.save(price);
         } catch (Exception e) {
             if (e.getCause() instanceof DuplicateKeyException) {
-                log.warn("Duplicate: {}", price);
+//                log.warn("Duplicate: {}", price);
             } else {
-                log.error("Error saving price", e);
+                log.error("Error saving price {}", price, e);
             }
         }
         return pp;

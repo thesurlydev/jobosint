@@ -10,8 +10,7 @@ import java.util.UUID;
 public record Price(
         @Id UUID id,
         UUID vendorId,
-        UUID partId,
-        String name,
+        String partNumber,
         BigDecimal price,
         Boolean available,
         String sku,

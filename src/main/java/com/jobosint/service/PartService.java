@@ -1,11 +1,13 @@
 package com.jobosint.service;
 
 import com.jobosint.client.HttpClientFactory;
-import com.jobosint.event.PersistVendorPartEvent;
-import com.jobosint.model.VendorPart;
 import com.jobosint.model.Part;
+import com.jobosint.model.Price;
+import com.jobosint.model.Vendor;
+import com.jobosint.model.VendorPart;
 import com.jobosint.parse.*;
 import com.jobosint.repository.PartRepository;
+import com.jobosint.repository.PriceRespository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -13,10 +15,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -27,6 +29,7 @@ public class PartService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
     private final PartRepository partRepository;
+    private final PriceRespository priceRespository;
     private final OemPartsOnlinePageParser oemPartsOnlinePageParser;
     private final ToyotaPartsDealPageParser toyotaPartsDealPageParser;
     private final CruiserCorpsProductParser cruiserCorpsProductParser;
@@ -34,34 +37,73 @@ public class PartService {
     private final HttpClientFactory httpClientFactory;
 
     public List<Part> getAllParts() {
-        return partRepository.findAllPartsOrderByTitle();
+        return partRepository.findAllPartsOrderByCategorySubCategoryTitle();
+    }
+
+    public Optional<Part> getPartByPartNumber(String partNumber) {
+        return partRepository.findPartByPartNumber(partNumber);
     }
 
     //    @Transactional
-    public Part savePart(Part part) {
-
-        log.info("Saving part: {}", part);
-        Part pp = null;
-        try {
-            pp = partRepository.save(part);
-        } catch (Exception e) {
-            if (e.getCause() instanceof DuplicateKeyException) {
-                log.warn("Duplicate: {}", part);
-            } else {
-                log.error("Error saving part", e);
-            }
-        }
-        return pp;
+    public Part savePart(Part part) throws DuplicateKeyException {
+        Optional<Part> foundPart = getPartByPartNumber(part.partNumber());
+        return foundPart.orElseGet(() -> partRepository.save(part));
     }
 
-    public void refresh(boolean persistParts) throws IOException {
-        if (persistParts) {
-            log.warn("Deleting all part records");
-//            partRepository.deleteAll();
+    public void refresh() throws IOException {
+
+        // merge all the parts
+        List<VendorPart> allResults = new ArrayList<>();
+        allResults.addAll(getOemPartsOnlineParts());
+        allResults.addAll(getToyotaPartsDealParts());
+
+        // now key on part number
+        Map<String, List<VendorPart>> vendorPartMap = new HashMap<>();
+
+        for (VendorPart vendorPart : allResults) {
+            String partNumber = vendorPart.part().partNumber();
+            if (vendorPartMap.containsKey(partNumber)) {
+                vendorPartMap.get(partNumber).add(vendorPart);
+            } else {
+                List<VendorPart> vendorParts = new ArrayList<>();
+                vendorParts.add(vendorPart);
+                vendorPartMap.put(partNumber, vendorParts);
+            }
         }
-//        refreshCruiserCorps(persistParts, downloadImages);
-//        refreshOemPartsOnline(persistParts, downloadImages);
-        refreshToyotaPartsDeal(persistParts);
+
+        List<Part> parts = new ArrayList<>();
+        List<Price> prices = new ArrayList<>();
+        vendorPartMap.forEach((partNumber, vendorParts) -> {
+            if (vendorParts.size() == 1) {
+                VendorPart vendorPart = vendorParts.getFirst();
+                Part part = vendorPart.part();
+                parts.add(part);
+
+                Price price = vendorPart.priceObj();
+                if (isValidPrice(price.price())) {
+                    prices.add(price);
+                }
+            } else {
+                // save part from OEM_PARTS_ONLINE
+                Optional<VendorPart> maybeOemPartsOnlinePart = vendorParts.stream()
+                        .filter(vendorPart -> vendorPart.vendor() == Vendor.OEM_PARTS_ONLINE)
+                        .findFirst();
+                maybeOemPartsOnlinePart.ifPresent(vendorPart -> parts.add(vendorPart.part()));
+                vendorParts.stream()
+                        .map(VendorPart::priceObj)
+                        .filter(price -> isValidPrice(price.price()))
+                        .forEach(prices::add);
+            }
+        });
+
+        partRepository.saveAll(parts);
+        log.info("Saved {} parts", parts.size());
+        priceRespository.saveAll(prices);
+        log.info("Saved {} prices", prices.size());
+    }
+
+    private boolean isValidPrice(BigDecimal price) {
+        return price != null && price.compareTo(BigDecimal.ZERO) > 0;
     }
 
     public void refreshCruiserYard(boolean persistParts, boolean downloadImages) throws IOException {
@@ -82,32 +124,23 @@ public class PartService {
         }
     }
 
-    public void refreshToyotaPartsDeal(boolean persistParts) throws IOException {
+    public List<VendorPart> getToyotaPartsDealParts() throws IOException {
         Path dirPath = Path.of("/home/shane/projects/jobosint/content/toyotapartsdeal");
         AtomicInteger filesProcessed = new AtomicInteger();
         int totalFiles = Objects.requireNonNull(dirPath.toFile().listFiles()).length;
-        AtomicInteger totalParts = new AtomicInteger();
+        Map<String, VendorPart> allResultsMap = new HashMap<>();
         try (Stream<Path> stream = Files.list(dirPath)) {
             stream.forEach(path -> {
                 ParseResult<List<VendorPart>> result = toyotaPartsDealPageParser.parse(path);
-                List<VendorPart> parts = result.getData();
-                if (parts != null) {
-                    totalParts.addAndGet(parts.size());
-                    parts.forEach(part -> {
-                        if (persistParts) {
-                            applicationEventPublisher.publishEvent(new PersistVendorPartEvent(this, part));
-                        }
-                    });
-                } else {
-                    log.warn("No parts found for: {}", path);
-                }
-
+                result.getData().forEach(vendorPart -> {
+                    String partNumber = vendorPart.part().partNumber();
+                    allResultsMap.put(partNumber, vendorPart);
+                });
                 filesProcessed.addAndGet(1);
                 log.info("Processed {} of {} files", filesProcessed, totalFiles);
             });
         }
-
-        log.info("Found {} parts", totalParts);
+        return allResultsMap.values().stream().toList();
     }
 
     /*public void refreshCruiserCorps(boolean persistParts, boolean downloadImages) throws IOException {
@@ -134,29 +167,26 @@ public class PartService {
             });
         }
     }
+     */
 
-    public void refreshOemPartsOnline(boolean persistParts, boolean downloadImages) throws IOException {
+    public List<VendorPart> getOemPartsOnlineParts() throws IOException {
         Path dirPath = Path.of("/home/shane/projects/jobosint/content/oempartsonline");
         AtomicInteger filesProcessed = new AtomicInteger();
         int totalFiles = Objects.requireNonNull(dirPath.toFile().listFiles()).length;
+        Map<String, VendorPart> allResultsMap = new HashMap<>();
         try (Stream<Path> stream = Files.list(dirPath)) {
             stream.forEach(path -> {
-                ParseResult<List<Part>> result = oemPartsOnlinePageParser.parse(path);
-                List<Part> parts = result.getData();
-                if (parts != null) {
-                    parts.forEach(part -> {
-                        if (persistParts) {
-                            applicationEventPublisher.publishEvent(new PersistPartEvent(this, part));
-                        }
-                    });
-                } else {
-                    log.warn("No parts found for: {}", path);
-                }
+                ParseResult<List<VendorPart>> result = oemPartsOnlinePageParser.parse(path);
+                result.getData().forEach(vendorPart -> {
+                    String partNumber = vendorPart.part().partNumber();
+                    allResultsMap.put(partNumber, vendorPart);
+                });
                 filesProcessed.addAndGet(1);
                 log.info("Processed {} of {} files", filesProcessed, totalFiles);
             });
         }
-    }*/
+        return allResultsMap.values().stream().toList();
+    }
 
 
 }

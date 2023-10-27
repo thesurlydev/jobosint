@@ -1,23 +1,28 @@
 package com.jobosint.parse;
 
-import com.jobosint.model.Part;
+import com.jobosint.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.jobosint.model.PartClassification.OEM;
+
 @Component
 @Slf4j
-public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
+public class OemPartsOnlinePageParser implements Parser<Path, List<VendorPart>> {
     @Override
-    public ParseResult<List<Part>> parse(Path path) {
+    public ParseResult<List<VendorPart>> parse(Path path) {
         log.info("Parsing: {}", path);
-        ParseResult<List<Part>> result = new ParseResult<>();
+        ParseResult<List<VendorPart>> result = new ParseResult<>();
         Document doc;
         try {
             doc = Jsoup.parse(path.toFile(), "UTF-8");
@@ -35,7 +40,7 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
 
         String category;
         if (!categoryEls.isEmpty()) {
-            category = categoryEls.get(0).attr("name");
+            category = categoryEls.getFirst().attr("title");
         } else {
             category = null;
             log.warn("No category found for {}", path);
@@ -47,62 +52,60 @@ public class OemPartsOnlinePageParser implements Parser<Path, List<Part>> {
                 .select("a.active-cat");
         String subcategory;
         if (!subcategoryEls.isEmpty()) {
-            subcategory = subcategoryEls.get(0).text();
+            subcategory = subcategoryEls.getFirst().text();
         } else {
             subcategory = null;
             log.warn("No subcategory found for {}", path);
         }
 
-        Elements partContainers = doc.getElementsByClass("part-group-containerClass");
+        Elements partContainers = doc.getElementsByClass("oem-assemblies-module")
+                .select("div.part-group div.part-group-container div.part-row div.product-details-col");
 
-        /*
-        int numContainers = partContainers.size();
-        if (numContainers >= 2) {
-            Element partContainer = partContainers.get(1);
-            parsePartContainer(partContainer, path, result);
-        } else if (numContainers == 1) {
-            Element partContainer = partContainers.get(0);
-            parsePartContainer(partContainer, path, result);
+        if (!partContainers.isEmpty()) {
+            List<VendorPart> vendorParts = partContainers.stream()
+                    .map(pc -> parsePartContainer(pc, category, subcategory))
+                    .toList();
+            result.setData(vendorParts);
         }
-        */
-
-        /*if (!partContainers.isEmpty()) {
-            partContainers.forEach(pc -> parsePartContainer(pc, path, result, category, subcategory));
-        }*/
 
         return result;
     }
 
-    /*private void parsePartContainer(Element partContainer, Path path, ParseResult<List<Part>> result, String category, String subcategory) {
-        Elements partRows = partContainer.select("div.catalog-product");
-        if (partRows.isEmpty()) {
-            String err = "No parts found for: " + path;
-            log.error(err);
-            result.addError(err);
-            return;
-        }
-        List<Part> parts = partRows.stream().map(row -> {
-            String refCode = row.select("div.reference-code-col").text();
-            String refImage = row.select("div.product-image-col img").attr("src");
+    private VendorPart parsePartContainer(Element partContainer, String category, String subcategory) {
 
-            String title = row.select("strong.product-name").text();
-            String partNum = row.select("div.product-partnum").text();
-            String info = row.select("div.product-more-info").text();
-            String msrp = null;
-            Elements msrpEls = row.select("div.product-pricing");
-            if (!msrpEls.isEmpty()) {
-                String raw = msrpEls.select("div.list-price").text();
-                msrp = raw
-                        .replace("MSRP", "")
-                        .replace("$", "")
-                        .trim();
+        String name = partContainer.select("strong.product-title").text();
+        String partNumber = partContainer.select("div.product-partnum").text();
+        String description = partContainer.select("div.product-more-info").text();
+        Elements discontinuedEl = partContainer.select("strong.cannot-purchase");
+        boolean available = !discontinuedEl.isEmpty();
+
+        String msrpPriceStr = partContainer.select("div.list-price").text();
+        BigDecimal msrpPrice = null;
+        if (!msrpPriceStr.isEmpty()) {
+            msrpPriceStr = msrpPriceStr.substring(6);
+            msrpPriceStr = msrpPriceStr.replace(",", "");
+            try {
+                msrpPrice = new BigDecimal(msrpPriceStr).setScale(2, RoundingMode.HALF_UP);
+            } catch (NumberFormatException e) {
+                log.warn("Error parsing msrp price: {}", msrpPriceStr, e);
             }
+        }
 
-            // TODO price
+        Part part = new Part(null, partNumber, name, description, Manufacturer.TOYOTA.id(), category, subcategory, msrpPrice, OEM);
 
-            String hash = Part.calcHash(partNum, title, info);
-            return new Part(null, partNum, title, info, path.toString(), refCode, refImage, hash, category, subcategory, msrp, null, "oempartsonline", "Toyota", partNum);
-        }).toList();
-        result.setData(parts);
-    }*/
+        String priceStr = partContainer.select("div.sale-price").text();
+        BigDecimal price = null;
+        if (!priceStr.isEmpty()) {
+            try {
+                price = new BigDecimal(priceStr.substring(1)).setScale(2, RoundingMode.HALF_UP);
+            } catch (NumberFormatException e) {
+                log.warn("Error parsing price: {}", priceStr, e);
+            }
+        }
+        String sku = partNumber;
+        String vendorPartUrlPath = partContainer.select("strong.product-title a").attr("href");
+        String vendorPartUrl = Vendor.OEM_PARTS_ONLINE.baseUrl() + vendorPartUrlPath;
+
+        return new VendorPart(Vendor.OEM_PARTS_ONLINE, part, price, sku, available, PartCondition.NEW, vendorPartUrl);
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Table(name = "parts")
@@ -14,7 +15,11 @@ public interface PartRepository extends CrudRepository<Part, UUID> {
     @Query("""
             select *
             from parts p
-            order by p.name
+            order by p.category, p.subcategory, p.name
               """)
-    List<Part> findAllPartsOrderByTitle();
+    List<Part> findAllPartsOrderByCategorySubCategoryTitle();
+
+    Optional<Part> findPartByPartNumber(String partNumber);
+
+
 }

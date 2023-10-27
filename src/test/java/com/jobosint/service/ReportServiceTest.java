@@ -5,13 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class PartsServiceTest {
-
-    @Autowired private PartService partService;
+public class ReportServiceTest {
+    @Autowired
+    private ReportService reportService;
 
     @Test
-    public void refresh() throws Exception {
-        partService.refresh();
-        Thread.sleep(5000);
+    public void test() throws Exception {
+        reportService.report();
     }
 }
