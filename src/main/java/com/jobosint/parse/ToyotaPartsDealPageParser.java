@@ -78,14 +78,13 @@ public class ToyotaPartsDealPageParser implements Parser<Path, List<VendorPart>>
             UUID manufacturerId = Manufacturer.TOYOTA.id();
 
             // note: for ToyotaPartsDeal, sku is the same as partNumber
-            String sku = partNumber;
 
             Part part = new Part(null, partNumber, description, null, manufacturerId,null, null, msrp, OEM);
 
             String vendorPartUrlPath = (String) map.get("url");
             String vendorPartUrl = Vendor.TOYOTA_PARTS_DEAL.baseUrl() + vendorPartUrlPath;
 
-            VendorPart vendorPart = new VendorPart(TOYOTA_PARTS_DEAL, part, price, sku, available, PartCondition.NEW, vendorPartUrl);
+            VendorPart vendorPart = new VendorPart(TOYOTA_PARTS_DEAL, part, price, partNumber, available, PartCondition.NEW, vendorPartUrl);
 
             parsedVendorParts.add(vendorPart);
         }

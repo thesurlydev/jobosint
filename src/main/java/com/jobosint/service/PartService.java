@@ -56,6 +56,7 @@ public class PartService {
         List<VendorPart> allResults = new ArrayList<>();
         allResults.addAll(getOemPartsOnlineParts());
         allResults.addAll(getToyotaPartsDealParts());
+//        allResults.addAll(getCruiserCorpsParts());
 
         // now key on part number
         Map<String, List<VendorPart>> vendorPartMap = new HashMap<>();
@@ -118,8 +119,6 @@ public class PartService {
                 } else {
                     log.warn("No parts found for: {}", path);
                 }
-
-
             });
         }
     }
@@ -137,37 +136,30 @@ public class PartService {
                     allResultsMap.put(partNumber, vendorPart);
                 });
                 filesProcessed.addAndGet(1);
-                log.info("Processed {} of {} files", filesProcessed, totalFiles);
+                log.info("toyotapartsdeal: processed {} of {} files", filesProcessed, totalFiles);
             });
         }
         return allResultsMap.values().stream().toList();
     }
 
-    /*public void refreshCruiserCorps(boolean persistParts, boolean downloadImages) throws IOException {
+    public List<VendorPart> getCruiserCorpsParts() throws IOException {
         Path dirPath = Path.of("/home/shane/projects/jobosint/content/cruisercorps");
         AtomicInteger filesProcessed = new AtomicInteger();
         int totalFiles = Objects.requireNonNull(dirPath.toFile().listFiles()).length;
+        Map<String, VendorPart> allResultsMap = new HashMap<>();
         try (Stream<Path> stream = Files.list(dirPath)) {
             stream.forEach(path -> {
-                ParseResult<Part> result = cruiserCorpsProductParser.parse(path);
-                Part part = result.getData();
-                if (part != null) {
-                    if (persistParts) {
-                        applicationEventPublisher.publishEvent(new PersistPartEvent(this, part));
-                    }
-                    if (downloadImages) {
-                        // todo
-                    }
-
-                } else {
-                    log.warn("No parts found for: {}", path);
-                }
+                ParseResult<List<VendorPart>> result = cruiserCorpsProductParser.parse(path);
+                result.getData().forEach(vendorPart -> {
+                    String partNumber = vendorPart.part().partNumber();
+                    allResultsMap.put(partNumber, vendorPart);
+                });
                 filesProcessed.addAndGet(1);
                 log.info("Processed {} of {} files", filesProcessed, totalFiles);
             });
         }
+        return allResultsMap.values().stream().toList();
     }
-     */
 
     public List<VendorPart> getOemPartsOnlineParts() throws IOException {
         Path dirPath = Path.of("/home/shane/projects/jobosint/content/oempartsonline");
@@ -182,7 +174,7 @@ public class PartService {
                     allResultsMap.put(partNumber, vendorPart);
                 });
                 filesProcessed.addAndGet(1);
-                log.info("Processed {} of {} files", filesProcessed, totalFiles);
+                log.info("oempartsonline: processed {} of {} files", filesProcessed, totalFiles);
             });
         }
         return allResultsMap.values().stream().toList();
