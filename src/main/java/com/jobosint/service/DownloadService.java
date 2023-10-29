@@ -3,6 +3,7 @@ package com.jobosint.service;
 import com.jobosint.client.HttpClientFactory;
 import com.jobosint.model.DownloadContentRequest;
 import com.jobosint.model.DownloadImageRequest;
+import com.jobosint.model.DownloadRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
@@ -202,6 +204,37 @@ public class DownloadService {
                         throw new RuntimeException(e);
                     }
                 }).toList();
+    }
+
+    public Optional<Path> download(DownloadRequest downloadRequest)  throws InterruptedException, URISyntaxException, IOException {
+        Path localFilePath = downloadRequest.localPath();
+        File localFile = localFilePath.toFile();
+
+        if (!downloadRequest.overwrite() && localFile.exists()) {
+            return Optional.of(localFilePath);
+        }
+
+        URL url = downloadRequest.httpRequest().uri().toURL();
+
+        log.info("Downloading: {}", downloadRequest.httpRequest().uri().toString());
+        log.info("LocalPath: {}", localFilePath);
+
+        HttpRequest request = downloadRequest.httpRequest();
+
+        HttpResponse<String> response = httpClientFactory.getClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+        log.info("status: {}, len: {}, url: {}", response.statusCode(), response.body().length(), url);
+
+        if (response.statusCode() > 399) {
+//            log.error("status: {}, url: {}", response.statusCode(), url);
+            return Optional.empty();
+        }
+
+        Files.writeString(localFilePath, response.body());
+        log.info("Wrote {}", localFile.getCanonicalPath());
+
+        return Optional.of(localFilePath);
+
     }
 
     public Optional<Path> downloadContent(DownloadContentRequest downloadContentRequest) throws InterruptedException, URISyntaxException, IOException {

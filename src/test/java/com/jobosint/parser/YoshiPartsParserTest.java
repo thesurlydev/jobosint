@@ -22,5 +22,7 @@ public class YoshiPartsParserTest {
         Path testPath = Path.of("/home/shane/projects/jobosint/content/yoshiparts/1074648_175.json");
         ParseResult<List<Part>> result = parser.parse(testPath);
         System.out.println(result);
+
+
     }
 }

@@ -30,12 +30,4 @@ public record Part(
         BigDecimal msrpPrice,
         PartClassification classification
 ) {
-
-    public static String calcHash(String... parts) {
-        StringBuilder out = new StringBuilder();
-        for (String part : parts) {
-            out.append(part);
-        }
-        return Base64.getEncoder().withoutPadding().encodeToString(out.toString().getBytes());
-    }
 }

@@ -1,1 +1,838 @@
-{"manufacturer":"toyota","diagram":{"id":296940,"globalId":1118956,"slug":"rear_wiper","name":"Rear Wiper","chapterName":null,"chapterId":null,"position":157,"section":null,"sectionName":null,"hotspots":{"85010R":[[175,999,243,1015]],"85163R":[[517,1003,585,1019],[455,1038,523,1054]],"85163V":[[389,1004,458,1020]],"85168R":[[636,1004,703,1020]],"85169R":[[574,1038,641,1054]],"85178R":[[190,480,257,498]],"85188R":[[699,1039,766,1056]],"85190R":[[210,276,277,292]],"85192R":[[269,382,336,399]],"85220R":[[165,23,232,39]],"85221R":[[97,101,164,117]],"9165140612":[[40,941,136,955]]},"description":" (8008- )","additionalInfo":null,"dateRange":" [08.1980-]","uid":"1118956_157","image":{"originals":"https:\/\/epc.partsbooster.com\/schemas\/toyota\/d69bdef9c5a85fb4d4841eb7eb0433c8.png","thumbnails":"https:\/\/epc.partsbooster.com\/schemas\/toyota\/d69bdef9c5a85fb4d4841eb7eb0433c8.png"},"imageScaleRatio":1},"diagramsInSection":[{"slug":"rear_wiper","uid":"1118956_157","image":{"originals":"https:\/\/epc.partsbooster.com\/schemas\/toyota\/d69bdef9c5a85fb4d4841eb7eb0433c8.png","thumbnails":"https:\/\/epc.partsbooster.com\/schemas\/toyota\/d69bdef9c5a85fb4d4841eb7eb0433c8.png"},"image_scale_ratio":1}],"variant":{"id":39958,"path":"land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv","parentPath":"land_cruiser","techType":"car","manufacturer":{"slug":"toyota","name":"Toyota"},"generationKey":"land_cruiser-gen_7","header":"Toyota Land Cruiser","subheader":"FJ60","params":[["sales_region",["USA","US"]],["engine",["2F","4200CC"]],["atm_mtm",["MTM","MANUAL TRANSMISSION"]],["gear_shift_type",["4F","MTM, 4-SPEED FLOOR SHIFT"]],["destination",["USA","UNITED STATES OF AMERICA"]],["body",["WGV","STATION WAGON"]],["date_range",["Sep 1986 \u2013 Aug 1987",""]]],"options":[],"vinParams":[]},"countInSection":1,"diagramItems":[{"id":9702430,"refNumber":"85010R","qt":1,"itemId":3856608,"description":[["Year",["08.1980-08.1987"]],["Note",["BJ60,FJ60"]]],"dateRange":"","isSearched":false},{"id":9702431,"refNumber":"85163R","qt":2,"itemId":3056067,"description":[["Year",["08.1980-08.1987"]],["Note",["BJ60,FJ60,HJ60"]],["Required",["2 pcs"]]],"dateRange":"","isSearched":false},{"id":9702432,"refNumber":"85163V","qt":1,"itemId":3856625,"description":[["Year",["08.1980-08.1987"]],["Note",["BJ60,FJ60,HJ60"]]],"dateRange":"","isSearched":false},{"id":9702433,"refNumber":"85168R","qt":1,"itemId":2822252,"description":[["Year",["08.1980-08.1987"]],["Note",["BJ60,FJ60,HJ60"]]],"dateRange":"","isSearched":false},{"id":9702434,"refNumber":"85169R","qt":1,"itemId":3056068,"description":[["Year",["08.1980-08.1987"]],["Note",["BJ60,FJ60,HJ60"]]],"dateRange":"","isSearched":false},{"id":9702435,"refNumber":"85178R","qt":1,"itemId":2822256,"description":[["Year",["08.1980-08.1987"]],["Note",["BJ60,FJ60,HJ60"]]],"dateRange":"","isSearched":false},{"id":9702436,"refNumber":"85188R","qt":1,"itemId":3056069,"description":[["Year",["08.1980-08.1987"]],["Note",["BJ60,FJ60,HJ60"]]],"dateRange":"","isSearched":false},{"id":9702437,"refNumber":"85190R","qt":1,"itemId":3856637,"description":[["Year",["04.1985-08.1987"]],["Note",["BJ60,FJ60,HJ60"]]],"dateRange":"","isSearched":false},{"id":9702438,"refNumber":"85192R","qt":1,"itemId":3551820,"description":[["Year",["01.1983-08.1987"]],["Note",["BJ60,FJ60,HJ60"]]],"dateRange":"","isSearched":false},{"id":9702439,"refNumber":"85220R","qt":1,"itemId":3793126,"description":[["Year",["08.1980-08.1987"]],["Note",["BJ60,FJ60,HJ60"]]],"dateRange":"","isSearched":false},{"id":9702440,"refNumber":"85221R","qt":1,"itemId":3793129,"description":[["Year",["08.1980-08.1987"]],["Note",["BJ60,FJ60,HJ60"]]],"dateRange":"","isSearched":false},{"id":9702441,"refNumber":"9165140612","qt":1,"itemId":5806476,"description":[],"dateRange":"","isSearched":false}],"sectionRefs":null,"products":[{"id":3856608,"number":"8501090A00","numberFormatted":"85010-90A00","name":"Motor & Link Assy, Rr Wiper","slug":"motor_link_assy_rr_wiper","description":"","weight":"1680","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-8501090A00","guid":"ED281724-1236-11ED-8605-9600009BA0E0","notes":[],"availabilityRate":60},{"id":3056067,"number":"8517412320","numberFormatted":"85174-12320","name":"Packing, Rear Wiper Pivot, No.1","slug":"packing_rear_wiper_pivot_no_1","description":"","weight":"1","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-8517412320","guid":"CF9331C0-1236-11ED-8605-9600009BA0E0","notes":[],"availabilityRate":99},{"id":3856625,"number":"8517690A00","numberFormatted":"85176-90A00","name":"Bush, Rear Wiper Link Pivot","slug":"bush_rear_wiper_link_pivot","description":"","weight":"17","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-8517690A00","guid":"ED281F54-1236-11ED-8605-9600009BA0E0","notes":[],"availabilityRate":60},{"id":3056069,"number":"8517812320","numberFormatted":"85178-12320","name":"Cap, Rear Wiper Pivot, No.1","slug":"cap_rear_wiper_pivot_no_1","description":"","weight":"3","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-8517812320","guid":"CF9334FE-1236-11ED-8605-9600009BA0E0","notes":[],"availabilityRate":99},{"id":3856637,"number":"8519090A06","numberFormatted":"85190-90A06","name":"Arm Assy, Rear Wiper","slug":"arm_assy_rear_wiper","description":"","weight":"130","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-8519090A06","guid":"ED282323-1236-11ED-8605-9600009BA0E0","notes":[],"availabilityRate":60},{"id":3551820,"number":"8519595700","numberFormatted":"85195-95700","name":"Cover, Rear Wiper Arm","slug":"cover_rear_wiper_arm","description":"","weight":"5","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-8519595700","guid":"5DDF51A3-E359-4972-AEC7-C8782684F615","notes":[],"availabilityRate":99},{"id":3793126,"number":"8522090A02","numberFormatted":"85220-90A02","name":"Blade Assy, Windshield Wiper","slug":"blade_assy_windshield_wiper","description":"","weight":"60","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-8522090A02","guid":"6ACE6E8A-3FB9-4EE3-A59C-C22ED66C873E","notes":[],"availabilityRate":60},{"id":3793129,"number":"8522190A02","numberFormatted":"85221-90A02","name":"Blade, Windshield Wiper","slug":"blade_windshield_wiper","description":"","weight":"20","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-8522190A02","guid":"E9ED4467-1236-11ED-8605-9600009BA0E0","notes":[],"availabilityRate":60},{"id":3056068,"number":"9009901458","numberFormatted":"90099-01458","name":"Washer, Rear Wiper Link Pivot, No.2","slug":"washer_rear_wiper_link_pivot_no_2","description":"","weight":"4","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-9009901458","guid":"CF933225-1236-11ED-8605-9600009BA0E0","notes":[],"availabilityRate":99},{"id":2822252,"number":"9009905141","numberFormatted":"90099-05141","name":"Nut, W\/Washer Packing, Rear Wiper Link Pivot","slug":"nut_w_washer_packing_rear_wiper_link_pivot","description":"","weight":"5","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-9009905141","guid":"C899C7C6-1236-11ED-8605-9600009BA0E0","notes":[],"availabilityRate":99},{"id":2822256,"number":"9017906158","numberFormatted":"90179-06158","name":"Nut (For Rear Wiper Arm Setting)","slug":"nut_for_rear_wiper_arm_setting","description":"","weight":"10","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-9017906158","guid":"B0CFF12D-FF92-4BE3-A676-2CDDE3F8055E","notes":[],"availabilityRate":null},{"id":5806476,"number":"9165140612","numberFormatted":"91651-40612","name":"Bolt","slug":"new_genuine_part","description":"","weight":"10","hasReplace":false,"isProduced":true,"manufacturer":"toyota","manufacturerName":"Toyota","isLargeItem":false,"articul":null,"uid":"toyota-9165140612","guid":"31EE2381-1237-11ED-8605-9600009BA0E0","notes":[],"availabilityRate":99}],"model":{"id":7068,"path":"land_cruiser","name":"Land Cruiser","techType":"car","manufacturer":{"slug":"toyota","name":"Toyota"},"childrenCount":0,"oneChildPath":"","generationCount":0,"oneGenerationKey":"","notes":[]},"generation":{"techType":"car","manufacturer":{"slug":"toyota","name":"Toyota"},"modelPath":"land_cruiser","key":"land_cruiser-gen_7","image":"land_cruiser\/gen_7","name":"7th Gen","yearRange":"1980 \u2014 1992","variantIds":[],"variantCount":0,"oneVariantPath":"land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv"},"paramNames":{"name":"Name","sales_region":"Sales Region","engine":"Engine","atm_mtm":"Atm,Mtm","gear_shift_type":"Gear Shift Type","destination":"Destination","body":"Body","date_range":"Production Dates"},"seoInfo":{"title":"Rear Wiper","subtitle":"Toyota Land Cruiser \u2022 FJ60","welcomeText":[],"footerHeader":"","footerText":[],"metaTitle":"Toyota Land Cruiser FJ60 Rear Wiper | YoshiParts","metaDescription":"Shop for Toyota Rear Wiper used in Toyota Land Cruiser FJ60 and enjoy worldwide shipping from our authorized dealer. Genuine Toyota parts."},"breadcrumbs":[{"label":"Home","url":"https:\/\/yoshiparts.com\/"},{"label":"Toyota Genuine Parts","url":"https:\/\/yoshiparts.com\/parts\/toyota\/tech"},{"label":"Toyota Car Parts","url":"https:\/\/yoshiparts.com\/parts\/car\/toyota"},{"label":"Toyota Land Cruiser","url":"https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser"},{"label":"7th Gen","url":"https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser\/params\/land_cruiser-gen_7\/one"},{"label":"FJ60","url":"https:\/\/yoshiparts.com\/parts\/car\/toyota\/diagrams\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv"},{"label":"Toyota Land Cruiser FJ60 Rear Wiper","url":"https:\/\/yoshiparts.com\/parts\/car\/toyota\/products\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv\/1118956_157"}],"jsonld":[{"@context":"http:\/\/schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/yoshiparts.com\/","name":"Home"}},{"@type":"ListItem","position":2,"item":{"@id":"https:\/\/yoshiparts.com\/parts\/toyota\/tech","name":"Toyota Genuine Parts"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/yoshiparts.com\/parts\/car\/toyota","name":"Toyota Car Parts"}},{"@type":"ListItem","position":4,"item":{"@id":"https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser","name":"Toyota Land Cruiser"}},{"@type":"ListItem","position":5,"item":{"@id":"https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser\/params\/land_cruiser-gen_7\/one","name":"7th Gen"}},{"@type":"ListItem","position":6,"item":{"@id":"https:\/\/yoshiparts.com\/parts\/car\/toyota\/diagrams\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv","name":"FJ60"}},{"@type":"ListItem","position":7,"item":{"@id":"https:\/\/yoshiparts.com\/parts\/car\/toyota\/products\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv\/1118956_157","name":"Toyota Land Cruiser FJ60 Rear Wiper"}}]}]}
+{
+  "manufacturer": "toyota",
+  "diagram": {
+    "id": 296940,
+    "globalId": 1118956,
+    "slug": "rear_wiper",
+    "name": "Rear Wiper",
+    "chapterName": null,
+    "chapterId": null,
+    "position": 157,
+    "section": null,
+    "sectionName": null,
+    "hotspots": {
+      "85010R": [
+        [
+          175,
+          999,
+          243,
+          1015
+        ]
+      ],
+      "85163R": [
+        [
+          517,
+          1003,
+          585,
+          1019
+        ],
+        [
+          455,
+          1038,
+          523,
+          1054
+        ]
+      ],
+      "85163V": [
+        [
+          389,
+          1004,
+          458,
+          1020
+        ]
+      ],
+      "85168R": [
+        [
+          636,
+          1004,
+          703,
+          1020
+        ]
+      ],
+      "85169R": [
+        [
+          574,
+          1038,
+          641,
+          1054
+        ]
+      ],
+      "85178R": [
+        [
+          190,
+          480,
+          257,
+          498
+        ]
+      ],
+      "85188R": [
+        [
+          699,
+          1039,
+          766,
+          1056
+        ]
+      ],
+      "85190R": [
+        [
+          210,
+          276,
+          277,
+          292
+        ]
+      ],
+      "85192R": [
+        [
+          269,
+          382,
+          336,
+          399
+        ]
+      ],
+      "85220R": [
+        [
+          165,
+          23,
+          232,
+          39
+        ]
+      ],
+      "85221R": [
+        [
+          97,
+          101,
+          164,
+          117
+        ]
+      ],
+      "9165140612": [
+        [
+          40,
+          941,
+          136,
+          955
+        ]
+      ]
+    },
+    "description": " (8008- )",
+    "additionalInfo": null,
+    "dateRange": " [08.1980-]",
+    "uid": "1118956_157",
+    "image": {
+      "originals": "https:\/\/epc.partsbooster.com\/schemas\/toyota\/d69bdef9c5a85fb4d4841eb7eb0433c8.png",
+      "thumbnails": "https:\/\/epc.partsbooster.com\/schemas\/toyota\/d69bdef9c5a85fb4d4841eb7eb0433c8.png"
+    },
+    "imageScaleRatio": 1
+  },
+  "diagramsInSection": [
+    {
+      "slug": "rear_wiper",
+      "uid": "1118956_157",
+      "image": {
+        "originals": "https:\/\/epc.partsbooster.com\/schemas\/toyota\/d69bdef9c5a85fb4d4841eb7eb0433c8.png",
+        "thumbnails": "https:\/\/epc.partsbooster.com\/schemas\/toyota\/d69bdef9c5a85fb4d4841eb7eb0433c8.png"
+      },
+      "image_scale_ratio": 1
+    }
+  ],
+  "variant": {
+    "id": 39958,
+    "path": "land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv",
+    "parentPath": "land_cruiser",
+    "techType": "car",
+    "manufacturer": {
+      "slug": "toyota",
+      "name": "Toyota"
+    },
+    "generationKey": "land_cruiser-gen_7",
+    "header": "Toyota Land Cruiser",
+    "subheader": "FJ60",
+    "params": [
+      [
+        "sales_region",
+        [
+          "USA",
+          "US"
+        ]
+      ],
+      [
+        "engine",
+        [
+          "2F",
+          "4200CC"
+        ]
+      ],
+      [
+        "atm_mtm",
+        [
+          "MTM",
+          "MANUAL TRANSMISSION"
+        ]
+      ],
+      [
+        "gear_shift_type",
+        [
+          "4F",
+          "MTM, 4-SPEED FLOOR SHIFT"
+        ]
+      ],
+      [
+        "destination",
+        [
+          "USA",
+          "UNITED STATES OF AMERICA"
+        ]
+      ],
+      [
+        "body",
+        [
+          "WGV",
+          "STATION WAGON"
+        ]
+      ],
+      [
+        "date_range",
+        [
+          "Sep 1986 \u2013 Aug 1987",
+          ""
+        ]
+      ]
+    ],
+    "options": [],
+    "vinParams": []
+  },
+  "countInSection": 1,
+  "diagramItems": [
+    {
+      "id": 9702430,
+      "refNumber": "85010R",
+      "qt": 1,
+      "itemId": 3856608,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702431,
+      "refNumber": "85163R",
+      "qt": 2,
+      "itemId": 3056067,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ],
+        [
+          "Required",
+          [
+            "2 pcs"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702432,
+      "refNumber": "85163V",
+      "qt": 1,
+      "itemId": 3856625,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702433,
+      "refNumber": "85168R",
+      "qt": 1,
+      "itemId": 2822252,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702434,
+      "refNumber": "85169R",
+      "qt": 1,
+      "itemId": 3056068,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702435,
+      "refNumber": "85178R",
+      "qt": 1,
+      "itemId": 2822256,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702436,
+      "refNumber": "85188R",
+      "qt": 1,
+      "itemId": 3056069,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702437,
+      "refNumber": "85190R",
+      "qt": 1,
+      "itemId": 3856637,
+      "description": [
+        [
+          "Year",
+          [
+            "04.1985-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702438,
+      "refNumber": "85192R",
+      "qt": 1,
+      "itemId": 3551820,
+      "description": [
+        [
+          "Year",
+          [
+            "01.1983-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702439,
+      "refNumber": "85220R",
+      "qt": 1,
+      "itemId": 3793126,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702440,
+      "refNumber": "85221R",
+      "qt": 1,
+      "itemId": 3793129,
+      "description": [
+        [
+          "Year",
+          [
+            "08.1980-08.1987"
+          ]
+        ],
+        [
+          "Note",
+          [
+            "BJ60,FJ60,HJ60"
+          ]
+        ]
+      ],
+      "dateRange": "",
+      "isSearched": false
+    },
+    {
+      "id": 9702441,
+      "refNumber": "9165140612",
+      "qt": 1,
+      "itemId": 5806476,
+      "description": [],
+      "dateRange": "",
+      "isSearched": false
+    }
+  ],
+  "sectionRefs": null,
+  "products": [
+    {
+      "id": 3856608,
+      "number": "8501090A00",
+      "numberFormatted": "85010-90A00",
+      "name": "Motor & Link Assy, Rr Wiper",
+      "slug": "motor_link_assy_rr_wiper",
+      "description": "",
+      "weight": "1680",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-8501090A00",
+      "guid": "ED281724-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 60
+    },
+    {
+      "id": 3056067,
+      "number": "8517412320",
+      "numberFormatted": "85174-12320",
+      "name": "Packing, Rear Wiper Pivot, No.1",
+      "slug": "packing_rear_wiper_pivot_no_1",
+      "description": "",
+      "weight": "1",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-8517412320",
+      "guid": "CF9331C0-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 99
+    },
+    {
+      "id": 3856625,
+      "number": "8517690A00",
+      "numberFormatted": "85176-90A00",
+      "name": "Bush, Rear Wiper Link Pivot",
+      "slug": "bush_rear_wiper_link_pivot",
+      "description": "",
+      "weight": "17",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-8517690A00",
+      "guid": "ED281F54-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 60
+    },
+    {
+      "id": 3056069,
+      "number": "8517812320",
+      "numberFormatted": "85178-12320",
+      "name": "Cap, Rear Wiper Pivot, No.1",
+      "slug": "cap_rear_wiper_pivot_no_1",
+      "description": "",
+      "weight": "3",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-8517812320",
+      "guid": "CF9334FE-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 99
+    },
+    {
+      "id": 3856637,
+      "number": "8519090A06",
+      "numberFormatted": "85190-90A06",
+      "name": "Arm Assy, Rear Wiper",
+      "slug": "arm_assy_rear_wiper",
+      "description": "",
+      "weight": "130",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-8519090A06",
+      "guid": "ED282323-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 60
+    },
+    {
+      "id": 3551820,
+      "number": "8519595700",
+      "numberFormatted": "85195-95700",
+      "name": "Cover, Rear Wiper Arm",
+      "slug": "cover_rear_wiper_arm",
+      "description": "",
+      "weight": "5",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-8519595700",
+      "guid": "5DDF51A3-E359-4972-AEC7-C8782684F615",
+      "notes": [],
+      "availabilityRate": 99
+    },
+    {
+      "id": 3793126,
+      "number": "8522090A02",
+      "numberFormatted": "85220-90A02",
+      "name": "Blade Assy, Windshield Wiper",
+      "slug": "blade_assy_windshield_wiper",
+      "description": "",
+      "weight": "60",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-8522090A02",
+      "guid": "6ACE6E8A-3FB9-4EE3-A59C-C22ED66C873E",
+      "notes": [],
+      "availabilityRate": 60
+    },
+    {
+      "id": 3793129,
+      "number": "8522190A02",
+      "numberFormatted": "85221-90A02",
+      "name": "Blade, Windshield Wiper",
+      "slug": "blade_windshield_wiper",
+      "description": "",
+      "weight": "20",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-8522190A02",
+      "guid": "E9ED4467-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 60
+    },
+    {
+      "id": 3056068,
+      "number": "9009901458",
+      "numberFormatted": "90099-01458",
+      "name": "Washer, Rear Wiper Link Pivot, No.2",
+      "slug": "washer_rear_wiper_link_pivot_no_2",
+      "description": "",
+      "weight": "4",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-9009901458",
+      "guid": "CF933225-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 99
+    },
+    {
+      "id": 2822252,
+      "number": "9009905141",
+      "numberFormatted": "90099-05141",
+      "name": "Nut, W\/Washer Packing, Rear Wiper Link Pivot",
+      "slug": "nut_w_washer_packing_rear_wiper_link_pivot",
+      "description": "",
+      "weight": "5",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-9009905141",
+      "guid": "C899C7C6-1236-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 99
+    },
+    {
+      "id": 2822256,
+      "number": "9017906158",
+      "numberFormatted": "90179-06158",
+      "name": "Nut (For Rear Wiper Arm Setting)",
+      "slug": "nut_for_rear_wiper_arm_setting",
+      "description": "",
+      "weight": "10",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-9017906158",
+      "guid": "B0CFF12D-FF92-4BE3-A676-2CDDE3F8055E",
+      "notes": [],
+      "availabilityRate": null
+    },
+    {
+      "id": 5806476,
+      "number": "9165140612",
+      "numberFormatted": "91651-40612",
+      "name": "Bolt",
+      "slug": "new_genuine_part",
+      "description": "",
+      "weight": "10",
+      "hasReplace": false,
+      "isProduced": true,
+      "manufacturer": "toyota",
+      "manufacturerName": "Toyota",
+      "isLargeItem": false,
+      "articul": null,
+      "uid": "toyota-9165140612",
+      "guid": "31EE2381-1237-11ED-8605-9600009BA0E0",
+      "notes": [],
+      "availabilityRate": 99
+    }
+  ],
+  "model": {
+    "id": 7068,
+    "path": "land_cruiser",
+    "name": "Land Cruiser",
+    "techType": "car",
+    "manufacturer": {
+      "slug": "toyota",
+      "name": "Toyota"
+    },
+    "childrenCount": 0,
+    "oneChildPath": "",
+    "generationCount": 0,
+    "oneGenerationKey": "",
+    "notes": []
+  },
+  "generation": {
+    "techType": "car",
+    "manufacturer": {
+      "slug": "toyota",
+      "name": "Toyota"
+    },
+    "modelPath": "land_cruiser",
+    "key": "land_cruiser-gen_7",
+    "image": "land_cruiser\/gen_7",
+    "name": "7th Gen",
+    "yearRange": "1980 \u2014 1992",
+    "variantIds": [],
+    "variantCount": 0,
+    "oneVariantPath": "land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv"
+  },
+  "paramNames": {
+    "name": "Name",
+    "sales_region": "Sales Region",
+    "engine": "Engine",
+    "atm_mtm": "Atm,Mtm",
+    "gear_shift_type": "Gear Shift Type",
+    "destination": "Destination",
+    "body": "Body",
+    "date_range": "Production Dates"
+  },
+  "seoInfo": {
+    "title": "Rear Wiper",
+    "subtitle": "Toyota Land Cruiser \u2022 FJ60",
+    "welcomeText": [],
+    "footerHeader": "",
+    "footerText": [],
+    "metaTitle": "Toyota Land Cruiser FJ60 Rear Wiper | YoshiParts",
+    "metaDescription": "Shop for Toyota Rear Wiper used in Toyota Land Cruiser FJ60 and enjoy worldwide shipping from our authorized dealer. Genuine Toyota parts."
+  },
+  "breadcrumbs": [
+    {
+      "label": "Home",
+      "url": "https:\/\/yoshiparts.com\/"
+    },
+    {
+      "label": "Toyota Genuine Parts",
+      "url": "https:\/\/yoshiparts.com\/parts\/toyota\/tech"
+    },
+    {
+      "label": "Toyota Car Parts",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota"
+    },
+    {
+      "label": "Toyota Land Cruiser",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser"
+    },
+    {
+      "label": "7th Gen",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser\/params\/land_cruiser-gen_7\/one"
+    },
+    {
+      "label": "FJ60",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/diagrams\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv"
+    },
+    {
+      "label": "Toyota Land Cruiser FJ60 Rear Wiper",
+      "url": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/products\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv\/1118956_157"
+    }
+  ],
+  "jsonld": [
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/",
+            "name": "Home"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/toyota\/tech",
+            "name": "Toyota Genuine Parts"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota",
+            "name": "Toyota Car Parts"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser",
+            "name": "Toyota Land Cruiser"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/land_cruiser\/params\/land_cruiser-gen_7\/one",
+            "name": "7th Gen"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/diagrams\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv",
+            "name": "FJ60"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@id": "https:\/\/yoshiparts.com\/parts\/car\/toyota\/products\/land_cruiser\/fj60-fj60lv_ka-us-2f-mtm-4f-usa-wgv\/1118956_157",
+            "name": "Toyota Land Cruiser FJ60 Rear Wiper"
+          }
+        }
+      ]
+    }
+  ]
+}
