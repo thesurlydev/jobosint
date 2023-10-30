@@ -1,12 +1,12 @@
 # jobosint.com
 
-Job open source intelligence and manager for jobseekers.
+Job open source intelligence (OSINT) and manager for jobseekers.
 
 ## Technology Stack
 
 * Spring Boot
 * Spring Data JDBC
-* Java 17
+* Java 21
 * PostgreSQL
 * Flyway
 
@@ -42,37 +42,3 @@ Job open source intelligence and manager for jobseekers.
   * Vue?
   * [iced](https://iced.rs/)?
 
-## References
-
-
-
-## Toyota Parts Deal
-
-### Part search
-
-```
-curl "https://www.toyotapartsdeal.com/api/search/search-words?searchText=90368-49084-77&isConflict=false" -H "Site: TPD"
-```
-
-Response:
-
-```json
-{
-  "url": null,
-  "code": 200,
-  "data": {
-    "isConfirmShow": false,
-    "redirectUrl": "/oem/toyota~bearing~rtp~50~82~k~90368-49084-77.html",
-    "make": null,
-    "fakeMake": null,
-    "model": null,
-    "year": 0,
-    "submodel": null,
-    "extra1": null,
-    "extra2": null,
-    "vin": null,
-    "vehicles": null
-  },
-  "message": null
-}
-```

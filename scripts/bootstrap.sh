@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# NOTE: docker and postgresql-client package is required
+# WARNING: if you run into auth issues, check environment variables!
+
 set -e
 
 source ./config
@@ -36,7 +39,7 @@ echo "Running command: ${CMD2}"
 PGPASSWORD=${DB_PASS} psql -h ${DB_HOST} -p ${DB_PORT} -U ${DB_USER} --no-password -c "${CMD2}"
 
 
-DB_STRING="postgres://${DB_USER}:${DB_PASS}@localhost:${DB_PORT}/${DB_NAME}"
+DB_STRING="postgres://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
 
 echo
 echo "Container name: ${CONTAINER_NAME}"

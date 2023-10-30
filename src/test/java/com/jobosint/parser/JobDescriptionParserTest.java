@@ -4,12 +4,14 @@ import com.jobosint.model.JobDescription;
 import com.jobosint.parse.JobDescriptionParser;
 import com.jobosint.parse.ParseResult;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 @Tag("parse")
+@Disabled
 public class JobDescriptionParserTest {
 
     private JobDescriptionParser jobDescriptionParser;

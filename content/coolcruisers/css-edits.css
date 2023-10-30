@@ -1,3 +1,0 @@
-/*Merchants--Use this file to make any edits that you wish to override styles in the main stylesheets. By making edits to this CSS file, your styles applied here will cascade and overwrite styles in the main CSS files. This will allow you to replace the entire contents of the main stylesheets should it become necessary to update those to fix styling issues with the themes without losing any of your custom styles.*/
-
-.ys_primary{ background:#b3504a;color:#ffffff;font:bold 11px Arial,verdana,sans-serif;padding:1px 5px;text-align:center;cursor:pointer; display:inline; margin-top:10px;}

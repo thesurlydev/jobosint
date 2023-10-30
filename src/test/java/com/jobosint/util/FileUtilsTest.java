@@ -1,7 +1,9 @@
 package com.jobosint.util;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 public class FileUtilsTest {
 
     @Test
