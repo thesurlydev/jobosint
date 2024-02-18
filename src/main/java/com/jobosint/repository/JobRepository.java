@@ -13,7 +13,7 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
 
     @Query("""
             select j.*, c.id as companyId, c.name, c.website_url
-                      from jobosint.jobosint.job j, jobosint.jobosint.company c
+                      from jobosint.public.job j, jobosint.public.company c
                       where j.company = c.id
                       order by j.created_at
             """)
@@ -21,7 +21,7 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
 
     @Query("""
             select j.*, c.id as companyId, c.name, c.website_url
-                      from jobosint.jobosint.job j, jobosint.jobosint.company c
+                      from jobosint.public.job j, jobosint.public.company c
                       where j.company = c.id and j.id = :id
                     
             """)
@@ -30,7 +30,8 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
 
     @Modifying
     @Query("""
-            delete from jobosint.job where company = :companyId
+            delete from jobosint.public.job where company = :companyId
             """)
     void deleteAllByCompanyId(UUID companyId);
+
 }

@@ -8,14 +8,6 @@ Job open source intelligence (OSINT) and manager for jobseekers.
 * Spring Data JDBC
 * Java 21
 * PostgreSQL
-* Flyway
-
-
-## Database
-
-```bash
-./rebuild-db.sh
-```
 
 
 ## TODO
