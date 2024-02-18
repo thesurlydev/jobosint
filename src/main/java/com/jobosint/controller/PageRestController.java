@@ -46,7 +46,8 @@ public class PageRestController {
             data = data.replaceAll("<percentage>", "%");
             data = data.replaceAll("<plus>", "+");
         } catch(Exception e) {
-            e.printStackTrace();
+            String msg = "Error saving page: " + page.url();
+            log.error(msg, e);
         }
 
         Page p = new Page(null, page.url(), data, page.source());

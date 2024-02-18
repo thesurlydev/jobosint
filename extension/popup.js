@@ -1,5 +1,5 @@
 // popup.js
-document.getElementById('sendButton').addEventListener('click', function() {
+document.getElementById('saveBtn').addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
         const activeTab = tabs[0];
         const url = activeTab.url;
@@ -23,12 +23,19 @@ document.getElementById('sendButton').addEventListener('click', function() {
                     },
                     body: body
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            document.getElementById('msg').innerText = 'Error: ' + response.status;
+                        }
+                        document.getElementById('msg').innerText = 'Page saved successfully';
+                        return response.json();
+
+                    })
                     .then(data => {
                         console.log('Response from server:', data);
                     })
                     .catch(error => {
-                        console.error('Error:', error);
+                        document.getElementById('msg').innerText = 'Error saving page!';
                     });
             }
         );
