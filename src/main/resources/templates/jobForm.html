@@ -5,7 +5,12 @@
 <body>
 <section>
 <h2 th:if="${job.id == null}">Add a job</h2>
-<h2 th:if="${job.id != null}">Edit job</h2>
+<div th:if="${job.id != null}">
+    <h2>Edit job</h2>
+    <a th:href="@{/jobs/{id}/delete(id=${job.id})}" class="btn btn-danger btn-sm">
+        <input type="submit" value="Delete" class="btn btn-danger btn-sm"/>
+    </a>
+</div>
 <form action="#" th:action="@{/job}" th:object="${job}" method="post">
     <input type="hidden"  th:field="*{id}"/>
     <p>Title: <input type="text" th:field="*{title}" size="50" /></p>

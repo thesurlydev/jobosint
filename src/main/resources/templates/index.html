@@ -30,8 +30,9 @@
             <td th:text="${job.job().source()}">Source</td>
             <td th:text="${job.job().contactName()}">Contact Name</td>
             <td><a th:href="@{{url}(url=${job.job().url()})}" th:text="${job.job().url()}">URL</a></td>
-            <td><a th:href="@{/jobs/{id}/edit(id=${job.job().id()})}">Edit</a> - <a
-                    th:href="@{/jobs/{id}/delete(id=${job.job().id()})}">Del</a></td>
+            <td><a th:href="@{/jobs/{id}/edit(id=${job.job().id()})}"><button type="button"
+                                                                              class="btn btn-primary btn-sm">Edit
+            </button></a></td>
         </tr>
         </tbody>
     </table>
