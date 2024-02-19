@@ -1,6 +1,6 @@
 package com.jobosint.repository;
 
-import com.jobosint.model.ext.Page;
+import com.jobosint.model.Page;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;

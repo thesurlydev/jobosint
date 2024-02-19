@@ -1,3 +1,7 @@
+drop table if exists page;
+drop table if exists job;
+drop table if exists company;
+
 create table if not exists company
 (
     id               uuid primary key default gen_random_uuid(),
@@ -61,9 +65,9 @@ create table if not exists job
 
 create table if not exists page
 (
-    id          uuid primary key default gen_random_uuid(),
-    source      varchar(20),
-    raw_content text,
-    url         text,
-    created_at  timestamptz      default current_timestamp
+    id           uuid primary key default gen_random_uuid(),
+    source       varchar(20),
+    content_path text,
+    url          text,
+    created_at   timestamptz      default current_timestamp
 );

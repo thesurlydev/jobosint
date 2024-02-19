@@ -57,7 +57,7 @@ public class JobDescriptionParser implements Parser<String, JobDescription> {
             log.info("Removed {} '{}' tags", removedElements.size(), tag);
         });
 
-        // TODO remove navigational tags/content
+        // TODO remove navigational tags/rawContent
         // TODO remove empty tags
 
         log.info("Document size (post): {}", docSize(doc));
@@ -148,7 +148,7 @@ public class JobDescriptionParser implements Parser<String, JobDescription> {
         for (Element metaEl : metaElements) {
             String name = metaEl.attr("name");
             String property = metaEl.attr("property");
-            String content = metaEl.attr("content");
+            String content = metaEl.attr("rawContent");
             if (name.equals(key) || property.equals(key)) {
                 return Optional.of(content);
             }

@@ -1,12 +1,10 @@
-package com.jobosint.model.ext;
+package com.jobosint.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
-import java.util.UUID;
-
-public record Page(@Id UUID id,
+public record Page(@Id String id,
                    String url,
-                   @Column("raw_content") String content,
+                   @Column("content_path") String contentPath,
                    String source) {
 }

@@ -1,6 +1,6 @@
 package com.jobosint.event;
 
-import com.jobosint.model.ext.Page;
+import com.jobosint.model.Page;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.context.ApplicationEvent;
