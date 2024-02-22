@@ -1,6 +1,6 @@
-drop table if exists page;
-drop table if exists job;
-drop table if exists company;
+-- drop table if exists page;
+-- drop table if exists job;
+-- drop table if exists company;
 
 create table if not exists company
 (
