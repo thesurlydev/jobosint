@@ -1,5 +1,7 @@
 package com.jobosint.parse;
 
+import com.jobosint.model.Company;
+import com.jobosint.model.Job;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,13 +20,41 @@ public class LinkedInParser {
         String scriptsRemoved = doc.select("script").remove().toString();
         String metaRemoved = doc.select("meta").remove().toString();
 //        System.out.println(scriptsRemoved);
-        System.out.println();
-        System.out.println("name: " + doc.select("h1").text());
 
-        System.out.println("company: " + doc.select("body > div.application-outlet > div.authentication-outlet > div > div.job-view-layout.jobs-details > div.grid > div > div:nth-child(1) > div > div > div.p5 > div.jobs-unified-top-card__primary-description > div > a"));
-        System.out.println("applicants: " + doc.select("body > div.application-outlet > div.authentication-outlet > div > div.job-view-layout.jobs-details > div.grid > div > div:nth-child(1) > div > div > div.p5 > div.jobs-unified-top-card__primary-description > div > span:nth-child(6)").text());
-        System.out.println("description: " + doc.select("#job-details"));
+        var title = doc.select("h1").text();
 
+        Elements tagLineElements = doc.select("body > div.application-outlet > div.authentication-outlet > div" +
+                ".scaffold-layout.scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow" +
+                ".job-view-layout.jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) >" +
+                " div > div > div.p5 > div.job-details-jobs-unified-top-card__primary-description-container > div");
+
+        String companyName = null;
+        String companyUrl = null;
+        for(Element element : tagLineElements.getFirst().children()) {
+            if (element.tag().getName().equals("a")) {
+                companyUrl = element.attr("href");
+                companyName = element.text();
+            }
+            if (element.text().contains("applicants")) {
+                System.out.println("applicants: " + element.text().replaceFirst(" applicants", ""));
+            }
+        }
+
+//        System.out.println("tagline: " + tagLineElements);
+//
+//        System.out.println("company: " + doc.select("body > div.application-outlet > div.authentication-outlet > div" +
+//                ".scaffold-layout.scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow" +
+//                ".job-view-layout.jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) >" +
+//                " div > div > div.p5 > div.job-details-jobs-unified-top-card__primary-description-container > div > a").text());
+//        System.out.println("applicants: " + doc.select("body > div.application-outlet > div.authentication-outlet > div.scaffold-layout.scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow.job-view-layout.jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) > div > div > div.p5 > div.job-details-jobs-unified-top-card__primary-description-container > div > span.tvm__text.tvm__text--positive > strong").text());
+//        System.out.println("description: " + doc.select("#job-details"));
+
+        var company = new Company(null, companyName, companyUrl);
+        System.out.println(company);
+
+        System.out.println("---");
+        var job = new Job(null, null, title, null, null, "ingested", null, null, null, null, null, null, null);
+        System.out.println(job);
     }
 
     public void parseSearchResults(String path) throws IOException {

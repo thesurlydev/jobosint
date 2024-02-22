@@ -12,8 +12,9 @@ public class LinkedInParserTest {
     @Test
     public void parseJobDescription() throws Exception {
         LinkedInParser parser = new LinkedInParser();
-        parser.parseJobDescription("/home/shane/projects/jobosint/src/test/resources/test1.html");
-        parser.parseJobDescription("/home/shane/projects/jobosint/src/test/resources/test2.html");
+//        parser.parseJobDescription("/home/shane/projects/jobosint/src/test/resources/test1.html");
+//        parser.parseJobDescription("/home/shane/projects/jobosint/src/test/resources/test2.html");
+        parser.parseJobDescription("/home/shane/projects/jobosint/data/pages/20240219-0800/https-www-linkedin-com-jobs-view-3818479939-alternatechannel-search-refid-gpajzx5osaaopfjrwljxww-3d-3d-trackingid-hz50rlfh7ues4-2f0m-2b7nbtw-3d-3d.html");
     }
 
     @Test
