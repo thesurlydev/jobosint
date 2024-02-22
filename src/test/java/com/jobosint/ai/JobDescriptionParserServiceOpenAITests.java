@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Disabled
-public class JobDescriptionServiceOpenAITests {
+public class JobDescriptionParserServiceOpenAITests {
 
     @Autowired
     private JobDescriptionServiceOpenAI jdService;

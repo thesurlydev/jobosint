@@ -3,7 +3,6 @@ package com.jobosint.controller;
 import com.jobosint.event.PageCreatedEvent;
 import com.jobosint.model.Page;
 import com.jobosint.model.extension.SavePageRequest;
-import com.jobosint.ai.WeatherServiceOpenAI;
 import com.jobosint.service.PageService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ import java.nio.file.Path;
 public class PageRestController {
 
     private final PageService pageService;
-    private final WeatherServiceOpenAI weatherServiceOpenAI;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping()
@@ -68,10 +66,5 @@ public class PageRestController {
             log.error("Error fixing content", e);
             return null; // Return null or some error indication as per your error handling policy
         }
-    }
-
-    @GetMapping("/ai")
-    public void callAi() {
-        weatherServiceOpenAI.example("Portland, Oregon");
     }
 }

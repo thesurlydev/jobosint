@@ -1,6 +1,6 @@
 package com.jobosint.controller;
 
-import com.jobosint.model.ActorsFilms;
+import com.jobosint.model.ai.ActorsFilms;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.Generation;
@@ -19,7 +19,7 @@ public class FilmographyOpenAIController {
 
     private final ChatClient chatClient;
 
-    @GetMapping("/ai/output")
+    @GetMapping("/ai/filmography")
     public ActorsFilms generate(@RequestParam(value = "actor", defaultValue = "Jeff Bridges") String actor) {
         var outputParser = new BeanOutputParser<>(ActorsFilms.class);
 
@@ -33,7 +33,6 @@ public class FilmographyOpenAIController {
         Prompt prompt = promptTemplate.create();
         Generation generation = chatClient.call(prompt).getResult();
 
-        ActorsFilms actorsFilms = outputParser.parse(generation.getOutput().getContent());
-        return actorsFilms;
+        return outputParser.parse(generation.getOutput().getContent());
     }
 }

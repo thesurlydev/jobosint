@@ -14,11 +14,11 @@ import java.io.IOException;
 @Component
 public class LinkedInParser {
 
-    public void parseJobDescription(String path) throws IOException {
+    public String parseJobDescription(String path) throws IOException {
         File input = new File(path);
         Document doc = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
-        String scriptsRemoved = doc.select("script").remove().toString();
-        String metaRemoved = doc.select("meta").remove().toString();
+        doc.select("script").remove();
+        doc.select("meta").remove();
 //        System.out.println(scriptsRemoved);
 
         var title = doc.select("h1").text();
@@ -55,6 +55,8 @@ public class LinkedInParser {
         System.out.println("---");
         var job = new Job(null, null, title, null, null, "ingested", null, null, null, null, null, null, null);
         System.out.println(job);
+
+        return doc.select("#job-details").text();
     }
 
     public void parseSearchResults(String path) throws IOException {
