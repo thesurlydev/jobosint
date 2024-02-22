@@ -1,8 +1,8 @@
 //file:noinspection GroovyUnusedAssignment
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.2'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
 }
 
 group = 'com.jobosint'
@@ -16,48 +16,44 @@ allprojects {
     repositories {
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/snapshot' }
     }
-}
-
-ext {
-    set('springCloudVersion', "2023.0.0")
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation platform("org.springframework.ai:spring-ai-bom:_")
+    implementation 'org.springframework.ai:spring-ai-pgvector-store:_'
+    implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:_'
+
+    implementation Spring.boot.thymeleaf
+    implementation Spring.boot.actuator
+    implementation Spring.boot.data.jdbc
+    implementation Spring.boot.web
+    implementation 'org.springframework.boot:spring-boot-starter-aop:_'
     // https://github.com/mizosoft/methanol
-    implementation 'com.github.mizosoft.methanol:methanol:1.7.0'
-    implementation 'com.jayway.jsonpath:json-path:2.9.0'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    implementation 'com.github.mizosoft.methanol:methanol:_'
+//    implementation 'com.jayway.jsonpath:json-path:_'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:_'
     // https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/service
-    implementation 'com.theokanning.openai-gpt3-java:service:0.18.2'
+    implementation 'com.theokanning.openai-gpt3-java:service:_'
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
-    implementation 'org.jsoup:jsoup:1.17.2'
+    implementation 'org.jsoup:jsoup:_'
     // https://github.com/serpapi/google-search-results-java
-    implementation 'com.github.serpapi:google-search-results-java:2.0.3'
+    implementation 'com.github.serpapi:google-search-results-java:_'
 
-    implementation 'com.github.slugify:slugify:3.0.6'
+    implementation 'com.github.slugify:slugify:_'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    runtimeOnly 'org.postgresql:postgresql'
+    developmentOnly Spring.boot.devTools
+    compileOnly 'org.projectlombok:lombok:_'
+    annotationProcessor 'org.projectlombok:lombok:_'
+    runtimeOnly 'org.postgresql:postgresql:_'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-//	testImplementation 'org.testcontainers:junit-jupiter'
-//	testImplementation 'org.testcontainers:postgresql'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
+    testImplementation Spring.boot.test
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+//	testImplementation 'org.springframework.boot:spring-boot-testcontainers:_'
+//	testImplementation 'org.testcontainers:junit-jupiter:_'
+//	testImplementation 'org.testcontainers:postgresql:_'
 }
 
 tasks.named('test') {
