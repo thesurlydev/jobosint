@@ -4,6 +4,7 @@ import java.util.List;
 
 public record JobDescriptionParseResult(String jobTitle,
                                         String jobDescription,
+                                        String companyName,
                                         String aboutCompany,
                                         String aboutTeam,
 //                                        CompanyDetail companyDetail,

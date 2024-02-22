@@ -42,12 +42,11 @@ public class CompanyService {
 
     @Transactional
     public Company saveCompany(Company company) {
-        boolean isNew = company.id() == null;
         var persistedCompany = companyRepository.save(company);
-        if (isNew) {
+        if (company.id() == null) {
             applicationEventPublisher.publishEvent(new CompanyCreatedEvent(this, persistedCompany));
         }
-        return company;
+        return persistedCompany;
     }
 
     @Transactional

@@ -22,7 +22,6 @@ import java.nio.file.Path;
 public class PageRestController {
 
     private final PageService pageService;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping()
     @Operation(summary = "Save a page")
@@ -33,7 +32,6 @@ public class PageRestController {
             Path savedPath = pageService.saveContent(savePageRequest.url(), decodedContent);
             Page page = savePageRequest.toPage(savedPath);
             savedPage = pageService.savePage(page);
-            applicationEventPublisher.publishEvent(new PageCreatedEvent(this, savedPage));
         } catch (Exception e) {
             log.error("Error saving page: " + savePageRequest, e);
             return ResponseEntity.internalServerError().build();

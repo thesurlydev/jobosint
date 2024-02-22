@@ -34,7 +34,6 @@ insert into jobosint.public.company(name, website_url) values('Nuna', 'https://n
 insert into jobosint.public.company(name, website_url) values('NVIDIA', 'https://www.nvidia.com/en-us') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Ockam', 'https://www.ockam.io') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Overjet', 'https://www.overjet.ai') ON CONFLICT DO NOTHING;
-insert into jobosint.public.company(name, website_url) values('Pacific Northwest National Laboratory', 'https://www.pnnl.gov/news') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Paxos', 'https://paxos.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Paypal', 'https://www.paypal.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Pulumi', 'https://www.pulumi.com') ON CONFLICT DO NOTHING;

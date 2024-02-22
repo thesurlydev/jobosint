@@ -16,8 +16,8 @@ public class JobForm {
     private String source;
     private String status;
 
-    private Integer salaryMin;
-    private Integer salaryMax;
+    private String salaryMin;
+    private String salaryMax;
 
     private String notes;
 
@@ -67,11 +67,11 @@ public class JobForm {
         this.source = source;
     }
 
-    public void setSalaryMin(Integer salaryMin) {
+    public void setSalaryMin(String salaryMin) {
         this.salaryMin = salaryMin;
     }
 
-    public void setSalaryMax(Integer salaryMax) {
+    public void setSalaryMax(String salaryMax) {
         this.salaryMax = salaryMax;
     }
 

@@ -36,7 +36,7 @@ public class JobService {
         jobRepository.deleteById(id);
     }
 
-    public void saveJob(Job job) {
-        var savedJob = jobRepository.save(job);
+    public Job saveJob(Job job) {
+        return jobRepository.save(job);
     }
 }

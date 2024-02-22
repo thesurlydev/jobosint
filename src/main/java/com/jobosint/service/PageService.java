@@ -1,6 +1,7 @@
 package com.jobosint.service;
 
 import com.jobosint.config.AppConfig;
+import com.jobosint.event.PageCreatedEvent;
 import com.jobosint.model.Page;
 import com.jobosint.repository.PageRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,15 @@ import java.util.UUID;
 public class PageService {
     private final AppConfig appConfig;
     private final PageRepository pageRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Page savePage(Page page) {
-        return pageRepository.save(page);
+        Page savedPage = pageRepository.save(page);
+        if (page.id() == null) {
+            applicationEventPublisher.publishEvent(new PageCreatedEvent(this, savedPage));
+        }
+        return savedPage;
     }
 
     public Path saveContent(String url, String content) throws IOException {
