@@ -1,6 +1,6 @@
--- drop table if exists page;
--- drop table if exists job;
--- drop table if exists company;
+drop table if exists page;
+drop table if exists job;
+drop table if exists company;
 
 -- start Spring AI vector store
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -25,36 +25,10 @@ create table if not exists company
     created_at       timestamptz      default now(),
     updated_at       timestamptz      default now(),
     website_url      varchar(255),
-    crunchbase_url   text,
-    facebook_url     text,
-    glassdoor_rating numeric,
-    glassdoor_url    text,
-    indeed_url       text,
-    indeed_rating    numeric,
-    blind_rating     numeric,
-    blind_url        text,
-    linkedin_url     text,
-    twitter_url      text,
-    logo_url         text,
-    valuation        numeric,
-    ipo_date         numeric,
-    year_founded     numeric,
     summary          text,
-    industry         varchar(100),
-    notes            text,
-    careers_url      text,
-    company_type     varchar(20),
-    funding          varchar(10),
-    symbol           varchar(10),
-    employees_min    numeric,
-    employees_max    numeric,
-    street_address   text,
-    city             text,
-    region_state     text,
-    postal_code      varchar(12),
-    country          varchar(50),
-    geo_lat          varchar(20),
-    geo_long         varchar(20)
+    employee_count   numeric,
+    stock_ticker     varchar(10),
+    location        text
 );
 
 create table if not exists job
@@ -74,6 +48,7 @@ create table if not exists job
     contact_name  varchar(100),
     contact_email varchar(100),
     contact_phone varchar(20),
+    page_id       uuid,
     notes         text,
     constraint fk_job_company foreign key (company) references jobosint.public.company
 );

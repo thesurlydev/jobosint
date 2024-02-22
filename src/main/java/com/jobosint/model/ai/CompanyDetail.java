@@ -1,7 +1,9 @@
 package com.jobosint.model.ai;
 
 public record CompanyDetail(String name,
-                            String websiteUrl,
+                            String websiteLink,
                             String stockTicker,
-                            Long numberOfEmployees
+                            Long numberOfEmployees,
+                            String summary,
+                            String location
 ) {}

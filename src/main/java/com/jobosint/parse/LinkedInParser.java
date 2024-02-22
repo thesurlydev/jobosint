@@ -16,47 +16,32 @@ public class LinkedInParser {
 
     public String parseJobDescription(String path) throws IOException {
         File input = new File(path);
-        Document doc = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
-        doc.select("script").remove();
-        doc.select("meta").remove();
-//        System.out.println(scriptsRemoved);
+        Document orig = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
+        Element body = orig.body();
+        body.children().comments().clear();
+        body.select("a").clear();
+        body.select("code").clear();
+        body.select("iframe").clear();
+        body.select("img").clear();
+        body.select("meta").clear();
+        body.select("script").clear();
+        body.select("svg").clear();
 
-        var title = doc.select("h1").text();
-
-        Elements tagLineElements = doc.select("body > div.application-outlet > div.authentication-outlet > div" +
+        Elements tagLineElements = body.select("body > div.application-outlet > div.authentication-outlet > div" +
                 ".scaffold-layout.scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow" +
                 ".job-view-layout.jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) >" +
                 " div > div > div.p5 > div.job-details-jobs-unified-top-card__primary-description-container > div");
 
-        String companyName = null;
-        String companyUrl = null;
-        for(Element element : tagLineElements.getFirst().children()) {
-            if (element.tag().getName().equals("a")) {
-                companyUrl = element.attr("href");
-                companyName = element.text();
-            }
-            if (element.text().contains("applicants")) {
-                System.out.println("applicants: " + element.text().replaceFirst(" applicants", ""));
-            }
-        }
+        String tagLine
+                = tagLineElements.text();
+        String topCard = body.select("body > div.application-outlet > div.authentication-outlet > div.scaffold-layout" +
+                ".scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow.job-view-layout" +
+                ".jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) > div > div > div" +
+                ".p5 > div.mt3.mb2").text();
+        Elements detailsEl = body.select("#job-details");
+        String details = detailsEl.text();
 
-//        System.out.println("tagline: " + tagLineElements);
-//
-//        System.out.println("company: " + doc.select("body > div.application-outlet > div.authentication-outlet > div" +
-//                ".scaffold-layout.scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow" +
-//                ".job-view-layout.jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) >" +
-//                " div > div > div.p5 > div.job-details-jobs-unified-top-card__primary-description-container > div > a").text());
-//        System.out.println("applicants: " + doc.select("body > div.application-outlet > div.authentication-outlet > div.scaffold-layout.scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow.job-view-layout.jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) > div > div > div.p5 > div.job-details-jobs-unified-top-card__primary-description-container > div > span.tvm__text.tvm__text--positive > strong").text());
-//        System.out.println("description: " + doc.select("#job-details"));
-
-        var company = new Company(null, companyName, companyUrl);
-        System.out.println(company);
-
-        System.out.println("---");
-        var job = new Job(null, null, title, null, null, "ingested", null, null, null, null, null, null, null);
-        System.out.println(job);
-
-        return doc.select("#job-details").text();
+        return tagLine + "\n\n" + topCard + "\n\n" + details;
     }
 
     public void parseSearchResults(String path) throws IOException {

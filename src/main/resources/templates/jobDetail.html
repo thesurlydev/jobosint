@@ -7,8 +7,8 @@
 
 <p th:text="'title: ' + ${job.title()}" />
 <!--<p th:text="'id: ' + ${job.jobDetail().job().id()}" />
-<p th:text="'url: ' + ${job.jobDetail().job().url}" />
-<p>company: <a th:href="@{{url}(url=${job.jobDetail().company().websiteUrl()})}" th:text="${job.jobDetail().company().name()}">company website</a></p>
+<p th:text="'websiteLink: ' + ${job.jobDetail().job().websiteLink}" />
+<p>company: <a th:href="@{{websiteLink}(websiteLink=${job.jobDetail().company().websiteLink()})}" th:text="${job.jobDetail().company().name()}">company website</a></p>
 
 <h2>notes</h2>
 <table>

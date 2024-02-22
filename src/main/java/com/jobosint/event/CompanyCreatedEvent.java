@@ -13,6 +13,9 @@ public class CompanyCreatedEvent  extends ApplicationEvent {
         this.company = company;
     }
 
+    public Company getCompany() {
+        return company;
+    }
 
     @Override
     public String toString() {

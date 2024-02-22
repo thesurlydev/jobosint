@@ -35,9 +35,7 @@ public class JobDescriptionParserService {
     public Optional<JobDescriptionParseResult> parseJobDescription() {
         var outputParser = new BeanOutputParser<>(JobDescriptionParseResult.class);
 
-        String filePath = "/home/shane/projects/jobosint/data/pages/20240219-0800/https-www-linkedin" +
-                "-com-jobs-view-3818479939-alternatechannel-search-refid-gpajzx5osaaopfjrwljxww-3d-3d-trackingid" +
-                "-hz50rlfh7ues4-2f0m-2b7nbtw-3d-3d.html";
+        String filePath = "/home/shane/projects/jobosint/data/pages/20240222-0800/3ffa83f1-1fe1-4e65-9629-ae9599f9fb2a.html";
 
         // first let's pare down the raw content
 
@@ -59,6 +57,7 @@ public class JobDescriptionParserService {
         String userMessage =
                 """
                         Given the following job description return details about the job {jd}.
+                        Responsibilities and qualifications should be copied verbatim.
                         {format}
                         """;
 

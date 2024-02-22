@@ -5,9 +5,15 @@ import java.util.List;
 public record JobDescriptionParseResult(String jobTitle,
                                         String jobDescription,
                                         String aboutCompany,
-                                        CompanyDetail companyDetail,
-                                        List<String> requirements,
+                                        String aboutTeam,
+//                                        CompanyDetail companyDetail,
+                                        List<String> qualifications,
+//                                        List<String> technologies,
                                         String minimumSalary,
                                         String maximumSalary,
-                                        List<String> reasonsToJoin) {
+                                        List<String> responsibilities,
+                                        List<String> interviewProcess,
+                                        Integer numberOfApplicants,
+                                        String location,
+                                        List<String> benefits) {
 }

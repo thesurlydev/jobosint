@@ -8,9 +8,10 @@ import java.util.UUID;
 
 public record Company(@Id UUID id,
                       String name,
-                      @Column("website_url") @JsonProperty("website_url") String websiteUrl
-
+                      @Column("website_url") @JsonProperty("website_url") String websiteUrl,
+                      @Column("stock_ticker") @JsonProperty("stock_ticker") String stockTicker,
+                      @Column("employee_count") @JsonProperty("employee_count") Long employeeCount,
+                      String summary,
+                      String location
                       ) {
-
-
 }

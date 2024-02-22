@@ -72,9 +72,9 @@ public class DownloadService {
         }
 
         if (response.statusCode() > 400) {
-            log.error("status: {}, url: {}", response.statusCode(), url);
+            log.error("status: {}, websiteLink: {}", response.statusCode(), url);
         } else {
-            log.info("status: {}, url: {}", response.statusCode(), url);
+            log.info("status: {}, websiteLink: {}", response.statusCode(), url);
         }
     }
 
@@ -105,9 +105,9 @@ public class DownloadService {
             }
 
             if (response.statusCode() > 400) {
-                log.error("status: {}, url: {}", response.statusCode(), url);
+                log.error("status: {}, websiteLink: {}", response.statusCode(), url);
             } else {
-                log.info("status: {}, url: {}", response.statusCode(), url);
+                log.info("status: {}, websiteLink: {}", response.statusCode(), url);
             }
         });
     }
@@ -154,7 +154,7 @@ public class DownloadService {
         }
 
         if (response.statusCode() > 400) {
-            log.error("status: {}, url: {}", response.statusCode(), url);
+            log.error("status: {}, websiteLink: {}", response.statusCode(), url);
 //            return Optional.empty();
         }
 //        return Optional.of(localFilePath);
@@ -223,10 +223,10 @@ public class DownloadService {
 
         HttpResponse<String> response = httpClientFactory.getClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-        log.info("status: {}, len: {}, url: {}", response.statusCode(), response.body().length(), url);
+        log.info("status: {}, len: {}, websiteLink: {}", response.statusCode(), response.body().length(), url);
 
         if (response.statusCode() > 399) {
-//            log.error("status: {}, url: {}", response.statusCode(), url);
+//            log.error("status: {}, websiteLink: {}", response.statusCode(), websiteLink);
             return Optional.empty();
         }
 
@@ -278,10 +278,10 @@ public class DownloadService {
         }
         HttpResponse<String> response = httpClientFactory.getClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-        log.info("status: {}, len: {}, url: {}", response.statusCode(), response.body().length(), url);
+        log.info("status: {}, len: {}, websiteLink: {}", response.statusCode(), response.body().length(), url);
 
         if (response.statusCode() > 399) {
-//            log.error("status: {}, url: {}", response.statusCode(), url);
+//            log.error("status: {}, websiteLink: {}", response.statusCode(), websiteLink);
             return Optional.empty();
         }
 

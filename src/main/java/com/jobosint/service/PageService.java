@@ -21,7 +21,6 @@ import java.util.UUID;
 @Service
 public class PageService {
     private final AppConfig appConfig;
-    private final ApplicationEventPublisher applicationEventPublisher;
     private final PageRepository pageRepository;
 
     @Transactional
