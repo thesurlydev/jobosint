@@ -1,6 +1,5 @@
 package com.jobosint.service;
 
-import com.github.slugify.Slugify;
 import com.jobosint.config.AppConfig;
 import com.jobosint.model.Page;
 import com.jobosint.repository.PageRepository;
@@ -25,8 +24,6 @@ public class PageService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final PageRepository pageRepository;
 
-    final Slugify slugify = Slugify.builder().build();
-
     @Transactional
     public Page savePage(Page page) {
         return pageRepository.save(page);
@@ -39,9 +36,7 @@ public class PageService {
         }
 
         // Generate file slug based on URL or UUID
-        String fileSlug = (url == null || url.trim().isEmpty())
-                ? UUID.randomUUID().toString()
-                : slugify.slugify(url.trim());
+        String fileSlug = UUID.randomUUID().toString();
 
         // Determine the directory for today's date
         Path contentDir = appConfig.pageDir()
