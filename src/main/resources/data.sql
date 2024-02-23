@@ -63,3 +63,7 @@ insert into jobosint.public.company(name, website_url) values('Zillow', 'https:/
 insert into jobosint.public.company(name, website_url) values('Human Interest', 'https://humaninterest.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.job(title, company, url) values('Senior Software Engineer', (select id from jobosint.public.company where name = 'Google'), 'https://google.com/jobs/senior-software-engineer') ON CONFLICT DO NOTHING;
 insert into jobosint.public.job(title, company, url) values('Analyst', (select id from jobosint.public.company where name = 'Microsoft'), 'https://microsoft.com/jobs/analyst') ON CONFLICT DO NOTHING;
+insert into jobosint.public.job_board(name, base_url) values('LinkedIn', 'https://www.linkedin.com');
+insert into jobosint.public.job_board(name, base_url) values('Lever', 'https://jobs.lever.co');
+insert into jobosint.public.job_board(name, base_url) values('Greenhouse', 'https://boards.greenhouse.io');
+insert into jobosint.public.job_board(name, base_url) values('BuiltIn', 'https://builtin.com');
