@@ -36,7 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 
-data/
+data/pages
+data/db
 report.*
 
 .env

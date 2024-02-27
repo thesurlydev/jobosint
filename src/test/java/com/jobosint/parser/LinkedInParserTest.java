@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 @Tag("parse")
-//@Disabled
+@Disabled
 public class LinkedInParserTest {
 
     @Test

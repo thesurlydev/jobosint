@@ -1,7 +1,7 @@
-drop table if exists page;
-drop table if exists job;
-drop table if exists company;
-drop table if exists job_board;
+-- drop table if exists page;
+-- drop table if exists job;
+-- drop table if exists company;
+-- drop table if exists job_board;
 
 -- start Spring AI vector store
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -73,4 +73,18 @@ create table if not exists page
     content_path text,
     url          text,
     created_at   timestamptz      default current_timestamp
+);
+
+create table if not exists attribute
+(
+    id       uuid primary key default gen_random_uuid(),
+    name     varchar(255) not null constraint attribute_name_unique UNIQUE
+);
+
+create table if not exists attribute_value
+(
+    id          uuid primary key default gen_random_uuid(),
+    attribute   uuid not null,
+    value       text not null,
+    constraint fk_attribute_value_attribute foreign key (attribute) references jobosint.public.attribute
 );

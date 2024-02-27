@@ -1,0 +1,9 @@
+### Greenhouse Job Board for GitLab
+
+GET https://api.greenhouse.io/v1/boards/gitlab/jobs
+Accept: application/json
+
+### Get a job
+
+GET https://api.greenhouse.io/v1/boards/gitlab/jobs/7251788002?questions=true
+Accept: application/json

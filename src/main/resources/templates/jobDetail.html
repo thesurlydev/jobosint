@@ -5,36 +5,10 @@
 <body>
 <section>
 
-<p th:text="'title: ' + ${job.title()}" />
-<!--<p th:text="'id: ' + ${job.jobDetail().job().id()}" />
-<p th:text="'websiteLink: ' + ${job.jobDetail().job().websiteLink}" />
-<p>company: <a th:href="@{{websiteLink}(websiteLink=${job.jobDetail().company().websiteLink()})}" th:text="${job.jobDetail().company().name()}">company website</a></p>
+<h1 th:text="${job.title()}">title</h1>
 
-<h2>notes</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Description</th>
-        <th>Created</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="note : ${job.notes()}">
-        <td th:text="${note.description}">description</td>
-        <td th:text="${note.createdAt}">createdAt</td>
-    </tr>
-    </tbody>
-</table>
 
-<h3>Add note</h3>
-<form action="#" th:action="@{/note}" th:object="${note}" method="post">
-    <input type="hidden" th:field="*{jobId}"/>
-    <textarea rows="5" cols="50" th:field="*{description}"></textarea>
-    <p><input type="submit" value="Save note" /></p>
-</form>-->
 
-<hr/>
-<a href="/job">Add another job</a>
 
 </section>
 </body>

@@ -67,3 +67,5 @@ insert into jobosint.public.job_board(name, base_url) values('LinkedIn', 'https:
 insert into jobosint.public.job_board(name, base_url) values('Lever', 'https://jobs.lever.co');
 insert into jobosint.public.job_board(name, base_url) values('Greenhouse', 'https://boards.greenhouse.io');
 insert into jobosint.public.job_board(name, base_url) values('BuiltIn', 'https://builtin.com');
+
+insert into jobosint.public.attribute(name, value) values('job-title-include-words', 'true');

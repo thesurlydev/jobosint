@@ -60,7 +60,7 @@ public class JobDescriptionParserService {
         String userMessage =
                 """
                         Given the following job description return details about the job {jd}.
-                        Responsibilities and qualifications should be copied verbatim.
+                        Responsibilities and qualifications should be copied verbatim from the given job description.
                         {format}
                         """;
 
