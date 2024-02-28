@@ -1,0 +1,24 @@
+<html th:replace="~{layouts/default :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>jobosint - attributes</title>
+</head>
+<body>
+<section>
+    <h2>Attributes</h2>
+
+    <table style="width: 100%">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="attribute : ${attributes}">
+            <td><a th:href="@{/attributes/{id}(id=${attribute.id()})}" th:text="${attribute.name()}">Name</a></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

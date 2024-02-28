@@ -12,9 +12,6 @@ Job open source intelligence (OSINT) and manager for jobseekers.
 
 ## TODO
 
-* HTTP client
-* Integrate with:
-  * https://serpapi.com
 * Infrastructure as Code
   * Terraform
 * Containerization

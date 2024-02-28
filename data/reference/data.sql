@@ -68,4 +68,8 @@ insert into jobosint.public.job_board(name, base_url) values('Lever', 'https://j
 insert into jobosint.public.job_board(name, base_url) values('Greenhouse', 'https://boards.greenhouse.io');
 insert into jobosint.public.job_board(name, base_url) values('BuiltIn', 'https://builtin.com');
 
-insert into jobosint.public.attribute(name, value) values('job-title-include-words', 'true');
+delete from jobosint.public.attribute;
+insert into jobosint.public.attribute(name) values('job-include-words');
+insert into jobosint.public.attribute(name) values('job-exclude-words');
+insert into jobosint.public.attribute(name) values('tech-wanted');
+insert into jobosint.public.attribute(name) values('tech-unwanted');

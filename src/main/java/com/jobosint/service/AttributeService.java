@@ -4,6 +4,7 @@ import com.jobosint.model.Attribute;
 import com.jobosint.repository.AttributeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +23,8 @@ public class AttributeService {
         return List.of("Applied", "Interviewing", "Rejected", "Received Offer");
     }
 
-    public List<String> getAttributeValues(String name) {
-        return attributeRepository.findAttributesByNameContainingIgnoreCase(name).stream()
-                .map(Attribute::value)
-                .sorted()
-                .toList();
+    public List<Attribute> getAllAttributes() {
+        Pageable pageable = Pageable.ofSize(100);
+        return attributeRepository.findAllByOrderByName(pageable);
     }
 }
