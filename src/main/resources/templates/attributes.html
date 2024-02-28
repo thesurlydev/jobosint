@@ -6,16 +6,19 @@
 <section>
     <h2>Attributes</h2>
 
-    <table style="width: 100%">
+    <table>
         <thead>
         <tr>
             <th>Name</th>
+            <th>Value(s)</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="attribute : ${attributes}">
-            <td><a th:href="@{/attributes/{id}(id=${attribute.id()})}" th:text="${attribute.name()}">Name</a></td>
+            <td th:text="${attribute.name()}">Name</td>
+            <td><span th:each="value : ${attribute.attributeValues()}" th:text="${value.value()}">Value</span></td>
+            <td>Add</td>
         </tr>
         </tbody>
     </table>

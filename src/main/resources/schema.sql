@@ -1,8 +1,10 @@
+-- drop table if exists attribute_value;
+-- drop table if exists attribute;
 -- drop table if exists page;
 -- drop table if exists job;
 -- drop table if exists company;
 -- drop table if exists job_board;
-
+--
 -- start Spring AI vector store
 CREATE EXTENSION IF NOT EXISTS vector;
 CREATE EXTENSION IF NOT EXISTS hstore;
@@ -63,7 +65,7 @@ create table if not exists job
     contact_phone varchar(20),
     page_id       uuid,
     notes         text,
-    constraint fk_job_company foreign key (company) references jobosint.public.company
+    constraint fk_job_company foreign key (company) references jobosint.public.company(id)
 );
 
 create table if not exists page
@@ -86,5 +88,5 @@ create table if not exists attribute_value
     id          uuid primary key default gen_random_uuid(),
     attribute   uuid not null,
     value       text not null,
-    constraint fk_attribute_value_attribute foreign key (attribute) references jobosint.public.attribute
+    constraint fk_attribute_value_attribute foreign key (attribute) references jobosint.public.attribute(id)
 );
