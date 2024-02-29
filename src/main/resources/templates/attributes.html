@@ -6,22 +6,16 @@
 <section>
     <h2>Attributes</h2>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Value(s)</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="attribute : ${attributes}">
-            <td th:text="${attribute.name()}">Name</td>
-            <td><span th:each="value : ${attribute.attributeValues()}" th:text="${value.value()}">Value</span></td>
-            <td>Add</td>
-        </tr>
-        </tbody>
-    </table>
+    <form action="#" th:action="@{/attributes}" th:object="${attributeForm}" method="post">
+        <input type="text" th:field="*{name}" size="20" placeholder="Enter attribute name..." onClick="this.select();"/>
+        <input type="text" th:field="*{valuesCsv}" size="50" placeholder="Enter one or more comma separated values..." onClick="this.select();"/>
+        <button type="submit" class="btn btn-info">Add attribute</button>
+
+        <div th:each="attribute : ${attributes}">
+            <h4 th:text="${attribute.name()}">Name</h4>
+            <div th:each="value : ${attribute.attributeValues()}" th:text="${value.value()}">Value</div>
+        </div>
+    </form>
 </section>
 </body>
 </html>

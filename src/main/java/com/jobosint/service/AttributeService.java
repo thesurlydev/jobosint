@@ -1,14 +1,17 @@
 package com.jobosint.service;
 
+import com.jobosint.event.CompanyCreatedEvent;
 import com.jobosint.model.Attribute;
 import com.jobosint.model.AttributeDetail;
 import com.jobosint.model.AttributeValue;
+import com.jobosint.model.Company;
 import com.jobosint.repository.AttributeRepository;
 import com.jobosint.repository.AttributeValueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,5 +46,19 @@ public class AttributeService {
             return Optional.of(new AttributeDetail(attr, values));
         }
         return Optional.empty();
+    }
+
+    @Transactional
+    public Attribute saveAttribute(Attribute attribute) {
+        var persistedAttr = attributeRepository.save(attribute);
+        /*if (company.id() == null) {
+            applicationEventPublisher.publishEvent(new AttributeCreatedEvent(this, persistedAttr));
+        }*/
+        return persistedAttr;
+    }
+
+    @Transactional
+    public Iterable<AttributeValue> saveAttributeValues(Set<AttributeValue> values) {
+        return attributeValueRepository.saveAll(values);
     }
 }
