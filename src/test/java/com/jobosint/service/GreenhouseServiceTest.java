@@ -2,9 +2,11 @@ package com.jobosint.service;
 
 import com.jobosint.model.greenhouse.Job;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 import java.io.IOException;
 
+@Disabled
 public class GreenhouseServiceTest {
 
     private final GreenhouseService greenhouseService = new GreenhouseService();

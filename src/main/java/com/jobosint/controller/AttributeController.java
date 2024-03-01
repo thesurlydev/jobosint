@@ -56,6 +56,7 @@ public class AttributeController {
         Set<AttributeValue> values = Arrays.stream(attributeForm.getValuesCsv()
                         .split(","))
                 .map(String::trim)
+                .filter(val -> !val.isEmpty())
                 .map(val -> new AttributeValue(null, pAttr.id(), val))
                 .collect(Collectors.toSet());
         Iterable<AttributeValue> pAttrValues = attributeService.saveAttributeValues(values);
