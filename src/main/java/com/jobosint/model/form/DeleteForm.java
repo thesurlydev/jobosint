@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class DeleteAttributeForm {
+public class DeleteForm {
     private UUID id;
 }

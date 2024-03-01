@@ -22,7 +22,12 @@
         <form action="#" th:object="${deleteAttributeForm}" th:action="@{/attributes/{attributeId}(attributeId=${attribute.id})}" th:method="delete">
             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
         </form>
-        <div th:each="value : ${attribute.attributeValues()}" th:text="${value.value()}">Value</div>
+        <div th:each="value : ${attribute.attributeValues()}">
+            <span th:text="${value.value()}">Value</span>
+            <form action="#" th:object="${deleteAttributeValueForm}" th:action="@{/attributes/{attributeId}/values/{valueId}(attributeId=${attribute.id}, valueId=${value.id})}" th:method="delete">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </div>
     </div>
 
 </section>

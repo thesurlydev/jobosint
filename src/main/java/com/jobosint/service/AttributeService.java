@@ -62,7 +62,13 @@ public class AttributeService {
         return attributeValueRepository.saveAll(values);
     }
 
+    @Transactional
     public void deleteAttribute(UUID id) {
         attributeRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAttributeValue(UUID id) {
+        attributeValueRepository.deleteById(id);
     }
 }

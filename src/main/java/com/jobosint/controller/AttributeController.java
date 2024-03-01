@@ -4,7 +4,7 @@ package com.jobosint.controller;
 import com.jobosint.model.Attribute;
 import com.jobosint.model.AttributeValue;
 import com.jobosint.model.form.AttributeForm;
-import com.jobosint.model.form.DeleteAttributeForm;
+import com.jobosint.model.form.DeleteForm;
 import com.jobosint.service.AttributeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +29,21 @@ public class AttributeController {
         var attributes = attributeService.getAllAttributes();
         model.addAttribute("attributes", attributes);
         model.addAttribute("attributeForm", new AttributeForm());
-        model.addAttribute("deleteAttributeForm", new DeleteAttributeForm());
+        model.addAttribute("deleteAttributeForm", new DeleteForm());
+        model.addAttribute("deleteAttributeValueForm", new DeleteForm());
         return "attributes";
     }
 
     @DeleteMapping("/attributes/{id}")
     public String deleteAttribute(@PathVariable UUID id) {
         attributeService.deleteAttribute(id);
+        return "redirect:/attributes";
+    }
+
+    @DeleteMapping("/attributes/{id}/values/{valueId}")
+    public String deleteAttributeValue(@PathVariable UUID id,
+                                       @PathVariable UUID valueId) {
+        attributeService.deleteAttributeValue(valueId);
         return "redirect:/attributes";
     }
 
