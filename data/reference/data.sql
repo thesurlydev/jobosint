@@ -77,9 +77,10 @@ insert into jobosint.public.job_board(name, base_url) values('BuiltIn', 'https:/
 delete from jobosint.public.attribute_value;
 
 delete from jobosint.public.attribute;
-insert into jobosint.public.attribute(name) values('job-include-words');
-insert into jobosint.public.attribute(name) values('job-exclude-words');
-insert into jobosint.public.attribute(name) values('tech-wanted');
-insert into jobosint.public.attribute(name) values('tech-unwanted');
+insert into jobosint.public.attribute(name) values('job-title-include');
+insert into jobosint.public.attribute(name) values('job-title-exclude');
+insert into jobosint.public.attribute(name) values('tech-include');
+insert into jobosint.public.attribute(name) values('tech-exclude');
+insert into jobosint.public.attribute(name) values('company-exclude');
 
-insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'tech-wanted'), 'kotlin');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'tech-include'), 'kotlin');

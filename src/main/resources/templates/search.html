@@ -8,7 +8,9 @@
 <h2>Search</h2>
 
 <form action="#" th:action="@{/search}" th:object="${searchForm}" method="post">
-    <input type="text" th:field="*{query}" size="50" placeholder="Enter query..." onClick="this.select();" />
+    <label>
+        <input type="text" th:field="*{query}" size="50" placeholder="Enter query..." onClick="this.select();" />
+    </label>
     <button type="submit" class="btn btn-info" >Search</button>
 </form>
 
