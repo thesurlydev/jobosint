@@ -13,6 +13,10 @@
 
         <div th:each="attribute : ${attributes}">
             <h4 th:text="${attribute.name()}">Name</h4>
+            <form th:object="${attribute}" th:action="@{/attributes}" th:method="delete">
+                <input type="hidden" th:field="*{id}" th:value="${attribute.id()}"/>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
             <div th:each="value : ${attribute.attributeValues()}" th:text="${value.value()}">Value</div>
         </div>
     </form>

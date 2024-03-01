@@ -61,4 +61,8 @@ public class AttributeService {
     public Iterable<AttributeValue> saveAttributeValues(Set<AttributeValue> values) {
         return attributeValueRepository.saveAll(values);
     }
+
+    public void deleteAttribute(UUID id) {
+        attributeRepository.deleteById(id);
+    }
 }

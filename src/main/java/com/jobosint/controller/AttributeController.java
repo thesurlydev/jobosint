@@ -9,12 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -30,6 +29,12 @@ public class AttributeController {
         model.addAttribute("attributes", attributes);
         model.addAttribute("attributeForm", new AttributeForm());
         return "attributes";
+    }
+
+    @DeleteMapping("/attributes/{id}")
+    public String deleteAttribute(Model model, @PathVariable UUID id) {
+        attributeService.deleteAttribute(id);
+        return "redirect:/attributes";
     }
 
     @PostMapping("/attributes")
