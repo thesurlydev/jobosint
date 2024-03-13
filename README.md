@@ -17,23 +17,21 @@ To connect to the database, use the following command:
 PGPASSWORD=shane psql -h bleepboop -U shane -d jobosint
 ```
 
+## Versions
+
+This project uses the Gradle refreshVersions plugin to manage dependencies. 
+
+To update the versions, run the following command:
+
+```
+./gradlew refreshVersions
+```
+
+
+
 ## TODO
 
-- Infrastructure as Code
-  - Terraform
 - Containerization
-- Comprehensive configuration
-  - Support for environment variables to override
 - CI/CD pipeline
-  - GitHub Actions
 - OpenTelemetry logs, traces and metrics
   - micrometer?
-- Deployment paths to a VM and Kubernetes
-- Documentation and OpenAPI specification
-- Testing
-  - Test containers
-  - Playwright
-- UI
-  - SvelteKit?
-  - Vue?
-  - [iced](https://iced.rs/)?

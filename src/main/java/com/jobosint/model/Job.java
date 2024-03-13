@@ -13,15 +13,9 @@ public record Job(@Id UUID id,
                   String title,
                   String url,
                   @Column("created_at") LocalDateTime createdAt,
-                  String status,
                   @Column("salary_min") String salaryMin,
                   @Column("salary_max") String salaryMax,
                   String source,
-
-                  @Column("contact_name") String contactName,
-                  @Column("contact_email") String contactEmail,
-                  @Column("contact_phone") String contactPhone,
-
                   String notes
 ) {
 
@@ -44,13 +38,9 @@ public record Job(@Id UUID id,
                 form.getTitle(),
                 form.getUrl(),
                 LocalDateTime.now(),
-                form.getStatus(),
                 form.getSalaryMin(),
                 form.getSalaryMax(),
                 form.getSource(),
-                form.getContactName(),
-                form.getContactEmail(),
-                form.getContactPhone(),
                 form.getNotes()
         );
     }

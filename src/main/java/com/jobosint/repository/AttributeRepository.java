@@ -18,4 +18,5 @@ public interface AttributeRepository
     List<Attribute> findAllByOrderByName(Pageable pageable);
 
 //    Optional<Attribute> findById(UUID id);
+
 }

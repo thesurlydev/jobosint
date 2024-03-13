@@ -30,26 +30,9 @@
         </select>
     </p>
 
-    <p>
-    <fieldset>
-        <legend>Status</legend>
-        <ul>
-            <li th:each="status : ${statuses}">
-                <input type="radio" th:field="*{status}" th:value="${status}" />
-                <label th:for="${#ids.prev('status')}" th:text="${status}"></label>
-            </li>
-        </ul>
-    </fieldset>
-    </p>
-
     <p>Notes:<br/>
         <textarea rows="5" cols="50" th:field="*{notes}"></textarea>
     </p>
-
-    <h2>Contact</h2>
-    <p>Name: <input type="text" th:field="*{contactName}"/></p>
-    <p>Email: <input type="text" th:field="*{contactEmail}"/></p>
-    <p>Phone: <input type="text" th:field="*{contactPhone}"/></p>
 
     <p><input type="submit" value="Submit" /></p>
 </form>

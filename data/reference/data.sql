@@ -25,6 +25,7 @@ insert into jobosint.public.company(name, website_url) values('Google', 'https:/
 insert into jobosint.public.company(name, website_url) values('Harness', 'https://harness.io') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Hashicorp', 'https://www.hashicorp.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Hubspot', 'https://www.hubspot.com') ON CONFLICT DO NOTHING;
+insert into jobosint.public.company(name, website_url) values('Human Interest', 'https://humaninterest.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Intuit', 'https://intuit.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Isovalent', 'https://isovalent.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Iterative Health', 'https://iterative.health') ON CONFLICT DO NOTHING;
@@ -62,8 +63,6 @@ insert into jobosint.public.company(name, website_url) values('Vercel', 'https:/
 insert into jobosint.public.company(name, website_url) values('Vida Health', 'https://www.vida.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Vivint', 'https://www.vivint.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Zillow', 'https://www.zillow.com') ON CONFLICT DO NOTHING;
-insert into jobosint.public.company(name, website_url) values('Human Interest', 'https://humaninterest.com') ON CONFLICT DO NOTHING;
-
 
 insert into jobosint.public.job(title, company, url) values('Senior Software Engineer', (select id from jobosint.public.company where name = 'Google'), 'https://google.com/jobs/senior-software-engineer') ON CONFLICT DO NOTHING;
 insert into jobosint.public.job(title, company, url) values('Analyst', (select id from jobosint.public.company where name = 'Microsoft'), 'https://microsoft.com/jobs/analyst') ON CONFLICT DO NOTHING;
@@ -77,10 +76,26 @@ insert into jobosint.public.job_board(name, base_url) values('BuiltIn', 'https:/
 delete from jobosint.public.attribute_value;
 
 delete from jobosint.public.attribute;
+insert into jobosint.public.attribute(name) values('application-status');
+insert into jobosint.public.attribute(name) values('job-source');
 insert into jobosint.public.attribute(name) values('job-title-include');
 insert into jobosint.public.attribute(name) values('job-title-exclude');
 insert into jobosint.public.attribute(name) values('tech-include');
 insert into jobosint.public.attribute(name) values('tech-exclude');
 insert into jobosint.public.attribute(name) values('company-exclude');
+
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Applied');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Declined');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Rejected');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Interviewing');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Offer');
+
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Builtin');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Google Jobs');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Indeed');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'LinkedIn');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Recruiter');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Remote Army');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'TrueUp');
 
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'tech-include'), 'kotlin');

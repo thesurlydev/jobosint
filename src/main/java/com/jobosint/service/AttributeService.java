@@ -1,15 +1,12 @@
 package com.jobosint.service;
 
-import com.jobosint.event.CompanyCreatedEvent;
 import com.jobosint.model.Attribute;
 import com.jobosint.model.AttributeDetail;
 import com.jobosint.model.AttributeValue;
-import com.jobosint.model.Company;
 import com.jobosint.repository.AttributeRepository;
 import com.jobosint.repository.AttributeValueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +22,16 @@ public class AttributeService {
     private final AttributeRepository attributeRepository;
     private final AttributeValueRepository attributeValueRepository;
 
+    public List<String> findAttributeValuesByName(String name) {
+        return attributeValueRepository.findAllByAttributeName(name);
+    }
+
     public List<String> getSources() {
-        return List.of("LinkedIn", "Google Jobs", "Indeed", "Recruiter", "Company Job Site");
+        return findAttributeValuesByName("job-source");
     }
 
     public List<String> getStatuses() {
-        return List.of("Applied", "Interviewing", "Rejected", "Received Offer");
+        return findAttributeValuesByName("application-status");
     }
 
     public List<Attribute> getAllAttributes() {

@@ -10,7 +10,7 @@ import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.ai.openai.api.common.OpenAiApiClientErrorException;
 import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +72,7 @@ public class JobDescriptionParserService {
         Generation generation;
         try {
             generation = chatClient.call(prompt).getResult();
-        } catch (OpenAiApi.OpenAiApiClientErrorException e) {
+        } catch (OpenAiApiClientErrorException e) {
             log.error("Error calling OpenAI API", e);
             return Optional.empty();
         }

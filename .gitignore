@@ -37,7 +37,7 @@ out/
 .vscode/
 
 data/pages
-data/db
+#data/db
 report.*
 
 .env

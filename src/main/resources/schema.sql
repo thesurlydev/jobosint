@@ -1,9 +1,10 @@
--- drop table if exists attribute_value;
--- drop table if exists attribute;
--- drop table if exists page;
--- drop table if exists job;
--- drop table if exists company;
--- drop table if exists job_board;
+drop table if exists attribute_value;
+drop table if exists attribute;
+drop table if exists page;
+drop table if exists application;
+drop table if exists job;
+drop table if exists company;
+drop table if exists job_board;
 --
 -- start Spring AI vector store
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -48,24 +49,33 @@ create table if not exists company
 
 create table if not exists job
 (
-    id            uuid primary key default gen_random_uuid(),
-    created_at    timestamptz      default now(),
-    updated_at    timestamptz      default now(),
-    posted_at     timestamptz      default now(),
-    title         varchar(255) not null,
-    url           text
+    id         uuid primary key default gen_random_uuid(),
+    created_at timestamptz      default now(),
+    updated_at timestamptz      default now(),
+    posted_at  timestamptz      default now(),
+    title      varchar(255) not null,
+    url        text
         CONSTRAINT job_url_unique UNIQUE,
-    company       uuid         not null,
-    status        text             default 'applied',
-    salary_min    text,
-    salary_max    text,
-    source        text,
-    contact_name  varchar(100),
-    contact_email varchar(100),
-    contact_phone varchar(20),
-    page_id       uuid,
-    notes         text,
-    constraint fk_job_company foreign key (company) references jobosint.public.company(id)
+    company    uuid         not null,
+    salary_min text,
+    salary_max text,
+    source     text,
+    page_id    uuid,
+    notes      text,
+    constraint fk_job_company foreign key (company) references jobosint.public.company (id)
+);
+
+create table if not exists application
+(
+    id         uuid primary key default gen_random_uuid(),
+    created_at timestamptz      default now(),
+    updated_at timestamptz      default now(),
+    applied_at timestamptz      default now(),
+    replied_at timestamptz      default now(),
+    job        uuid,
+    status     text             default 'applied',
+    notes      text,
+    constraint fk_application_job foreign key (job) references jobosint.public.job (id)
 );
 
 create table if not exists page
@@ -79,14 +89,15 @@ create table if not exists page
 
 create table if not exists attribute
 (
-    id       uuid primary key default gen_random_uuid(),
-    name     varchar(255) not null constraint attribute_name_unique UNIQUE
+    id   uuid primary key default gen_random_uuid(),
+    name varchar(255) not null
+        constraint attribute_name_unique UNIQUE
 );
 
 create table if not exists attribute_value
 (
-    id          uuid primary key default gen_random_uuid(),
-    attribute   uuid not null,
-    value       text not null,
-    constraint fk_attribute_value_attribute foreign key (attribute) references jobosint.public.attribute(id)
+    id        uuid primary key default gen_random_uuid(),
+    attribute uuid not null,
+    value     text not null,
+    constraint fk_attribute_value_attribute foreign key (attribute) references jobosint.public.attribute (id)
 );

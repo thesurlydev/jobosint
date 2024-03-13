@@ -14,20 +14,11 @@ public class JobForm {
     private UUID companyId;
 
     private String source;
-    private String status;
 
     private String salaryMin;
     private String salaryMax;
 
     private String notes;
-
-    private String contactName;
-    private String contactEmail;
-    private String contactPhone;
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public JobForm() {
     }
@@ -36,13 +27,9 @@ public class JobForm {
         this.id = job.id();
         this.notes = job.notes();
         this.companyId = job.companyId();
-        this.contactEmail = job.contactEmail();
-        this.contactName = job.contactName();
-        this.contactPhone = job.contactPhone();
         this.salaryMin = job.salaryMin();
         this.salaryMax = job.salaryMax();
         this.source = job.source();
-        this.status = job.status();
         this.title = job.title();
         this.url = job.url();
     }
@@ -77,17 +64,5 @@ public class JobForm {
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
-    }
-
-    public void setContactPhone(String contactPhone) {
-        this.contactPhone = contactPhone;
     }
 }

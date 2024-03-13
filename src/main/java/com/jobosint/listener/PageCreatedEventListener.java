@@ -66,8 +66,8 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             log.info("Company: {}", company);
             // TODO create job
 
-            Job job= new Job(null, company.id(), jd.jobTitle(), page.url(), null, "applied", jd.minimumSalary(),
-                    jd.maximumSalary(), "LinkedIn", null, null, null, null);
+            Job job= new Job(null, company.id(), jd.jobTitle(), page.url(), null, jd.minimumSalary(),
+                    jd.maximumSalary(), "LinkedIn", null);
 
             Job savedJob = jobService.saveJob(job);
 
