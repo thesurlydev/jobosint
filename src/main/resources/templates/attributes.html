@@ -18,16 +18,8 @@
     </form>
 
     <div th:each="attribute : ${attributes}">
-        <span th:text="${attribute.name()}">Name</span>
-        <form action="#" th:object="${deleteAttributeForm}" th:action="@{/attributes/{attributeId}(attributeId=${attribute.id})}" th:method="delete">
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-        </form>
-        <div th:each="value : ${attribute.attributeValues()}">
-            <span th:text="${value.value()}">Value</span>
-            <form action="#" th:object="${deleteAttributeValueForm}" th:action="@{/attributes/{attributeId}/values/{valueId}(attributeId=${attribute.id}, valueId=${value.id})}" th:method="delete">
-                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-            </form>
-        </div>
+        <h3 th:text="${attribute.name()}">Name</h3>
+        <p th:each="av : ${#strings.listJoin(attribute.getAttributeValuesAsStrings(), ', ')}" th:text="${av}">Value</p>
     </div>
 
 </section>

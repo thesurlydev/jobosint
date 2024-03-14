@@ -36,7 +36,7 @@ public class CompanyService {
             log.info("Found exact match");
             return results;
         }
-        log.info("No exact match; performing like search for: {}", query);
+        log.info("No exact match; performing 'like' search for: {}", query);
         return companyRepository.findCompaniesByNameContainingIgnoreCase(query);
     }
 
