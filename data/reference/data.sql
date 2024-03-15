@@ -33,6 +33,7 @@ insert into jobosint.public.company(name, website_url) values('JetBrains', 'http
 insert into jobosint.public.company(name, website_url) values('Kraken', 'https://www.kraken.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Microsoft', 'https://www.microsoft.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Mixpanel', 'https://mixpanel.com') ON CONFLICT DO NOTHING;
+insert into jobosint.public.company(name, website_url) values('N/A', null) ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Nuna', 'https://nuna.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('NVIDIA', 'https://www.nvidia.com/en-us') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Ockam', 'https://www.ockam.io') ON CONFLICT DO NOTHING;

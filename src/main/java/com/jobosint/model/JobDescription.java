@@ -11,6 +11,7 @@ public class JobDescription {
     private String rawHead;
     private String rawBody;
     private String rawText;
+    private String markdownBody;
     private List<String> requirements;
     private String aboutRole;
     private String aboutTeam;

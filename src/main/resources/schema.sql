@@ -50,9 +50,9 @@ create table if not exists company
 create table if not exists job
 (
     id         uuid primary key default gen_random_uuid(),
-    created_at timestamptz      default now(),
-    updated_at timestamptz      default now(),
-    posted_at  timestamptz      default now(),
+    created_at timestamptz      not null default now(),
+    updated_at timestamptz      not null default now(),
+    posted_at  timestamptz,
     title      varchar(255) not null,
     url        text
         CONSTRAINT job_url_unique UNIQUE,
@@ -62,6 +62,7 @@ create table if not exists job
     source     text,
     page_id    uuid,
     notes      text,
+    content    text,
     constraint fk_job_company foreign key (company) references jobosint.public.company (id)
 );
 

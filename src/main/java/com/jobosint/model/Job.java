@@ -16,18 +16,20 @@ public record Job(@Id UUID id,
                   @Column("salary_min") String salaryMin,
                   @Column("salary_max") String salaryMax,
                   String source,
-                  String notes
+                  String notes,
+                  String content,
+                  UUID page_id
 ) {
 
     public String salaryDisplay() {
         if (this.salaryMin == null && this.salaryMax == null) {
             return "n/a";
         } else if (this.salaryMin != null && this.salaryMax == null) {
-            return String.valueOf(this.salaryMin);
+            return this.salaryMin;
         } else {
             return new StringJoiner("-")
                     .add(String.valueOf(this.salaryMin))
-                    .add(String.valueOf(this.salaryMax))
+                    .add(this.salaryMax)
                     .toString();
         }
     }
@@ -41,7 +43,9 @@ public record Job(@Id UUID id,
                 form.getSalaryMin(),
                 form.getSalaryMax(),
                 form.getSource(),
-                form.getNotes()
+                form.getNotes(),
+                null,
+                null
         );
     }
 }

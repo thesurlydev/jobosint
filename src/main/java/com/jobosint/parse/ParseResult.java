@@ -10,7 +10,7 @@ import java.util.List;
 public class ParseResult<T> {
     private final List<String> errors = new ArrayList<>();
     private T data;
-    private HttpRequest priceRequest;
+    private HttpRequest httpRequest;
     public void addError(String msg) {
         this.errors.add(msg);
     }

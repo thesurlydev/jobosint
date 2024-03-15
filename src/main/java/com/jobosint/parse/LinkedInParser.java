@@ -1,7 +1,8 @@
 package com.jobosint.parse;
 
-import com.jobosint.model.Company;
-import com.jobosint.model.Job;
+import com.jobosint.model.JobDescription;
+import com.jobosint.model.LinkedInJobDescription;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,37 +12,25 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 
+@RequiredArgsConstructor
 @Component
 public class LinkedInParser {
 
-    public String parseJobDescription(String path) throws IOException {
+    private final JobDescriptionParser jobDescriptionParser;
+
+    public LinkedInJobDescription parseJobDescription(String path) throws IOException {
         File input = new File(path);
-        Document orig = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
-        Element body = orig.body();
-        body.children().comments().clear();
-        body.select("a").clear();
-        body.select("code").clear();
-        body.select("iframe").clear();
-        body.select("img").clear();
-        body.select("meta").clear();
-        body.select("script").clear();
-        body.select("svg").clear();
+        Document doc = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
+        Element body = doc.body();
 
-        Elements tagLineElements = body.select("body > div.application-outlet > div.authentication-outlet > div" +
-                ".scaffold-layout.scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow" +
-                ".job-view-layout.jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) >" +
-                " div > div > div.p5 > div.job-details-jobs-unified-top-card__primary-description-container > div");
+        String title = body.select("h1").text();
+        String company = body.select("body > div.application-outlet > div.authentication-outlet > div.scaffold-layout.scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow.job-view-layout.jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) > div > div > div.p5 > div.job-details-jobs-unified-top-card__primary-description-container > div > a").text();
 
-        String tagLine
-                = tagLineElements.text();
-        String topCard = body.select("body > div.application-outlet > div.authentication-outlet > div.scaffold-layout" +
-                ".scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow.job-view-layout" +
-                ".jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) > div > div > div" +
-                ".p5 > div.mt3.mb2").text();
-        Elements detailsEl = body.select("#job-details");
-        String details = detailsEl.text();
+        ParseResult<JobDescription> parseResult = jobDescriptionParser.parse(body.toString(), "article");
+        String rawMarkdown = parseResult.getData().getMarkdownBody();
+        String jobDescriptionMarkdown = rawMarkdown.replace("{#job-details}", "");
 
-        return tagLine + "\n\n" + topCard + "\n\n" + details;
+        return new LinkedInJobDescription(title, company, jobDescriptionMarkdown);
     }
 
     public void parseSearchResults(String path) throws IOException {

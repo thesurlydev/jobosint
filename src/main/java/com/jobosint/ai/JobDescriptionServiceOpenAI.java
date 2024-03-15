@@ -13,6 +13,7 @@ import java.util.*;
 
 @Service
 @Slf4j
+@Deprecated
 public class JobDescriptionServiceOpenAI {
 
     public static class JobDescriptionParserRequest {
@@ -55,8 +56,8 @@ public class JobDescriptionServiceOpenAI {
         messages.add(systemMessage);
 
         String contentMessage = "The job description content is the following: " + content;
-        ChatMessage firstMsg = new ChatMessage(ChatMessageRole.USER.value(), contentMessage);
-        messages.add(firstMsg);
+        ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), contentMessage);
+        messages.add(userMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
@@ -71,20 +72,9 @@ public class JobDescriptionServiceOpenAI {
 
         ChatCompletionResult result = service.createChatCompletion(chatCompletionRequest);
         System.out.println(result.toString());
-        ChatMessage responseMessage = result.getChoices().get(0).getMessage();
+        ChatMessage responseMessage = result.getChoices().getFirst().getMessage();
         messages.add(responseMessage);
 
-        /*ChatFunctionCall functionCall = responseMessage.getFunctionCall();
-        if (functionCall != null) {
-            log.info("Trying to execute {}...", functionCall.getName());
-            Optional<ChatMessage> message = functionExecutor.executeAndConvertToMessageSafely(functionCall);
-            if (message.isPresent()) {
-                log.info("Executed {}", functionCall.getName());
-                messages.add(message.get());
-            } else {
-                log.error("Something went wrong with the execution of {}", functionCall.getName());
-            }
-        }*/
 
         for (ChatMessage chatMessage : messages) {
             log.info(chatMessage.toString());

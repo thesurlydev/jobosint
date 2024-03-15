@@ -10,6 +10,15 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class FileUtils {
+
+    public static void writeToFile(String path, String content) {
+        try (FileWriter fileWriter = new FileWriter(path)) {
+            fileWriter.write(content);
+        } catch (IOException e) {
+            log.error("Error writing to file {}", path, e);
+        }
+    }
+
     public static void appendToFile(String filePath, String text) {
         File file = new File(filePath);
         try (FileWriter fr = new FileWriter(file, true); BufferedWriter br = new BufferedWriter(fr); PrintWriter pr = new PrintWriter(br)) {
