@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -30,7 +31,7 @@ public class JobRestController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a job by its id")
-    public JobDetail getJobDetail(@PathVariable UUID id) {
+    public Optional<JobDetail> getJobDetail(@PathVariable UUID id) {
         return jobService.getJobDetail(id);
     }
 

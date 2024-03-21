@@ -1,5 +1,6 @@
 package com.jobosint.model;
 
+import com.jobosint.convert.MarkdownToHtmlConverter;
 import com.jobosint.model.form.JobForm;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -17,9 +18,13 @@ public record Job(@Id UUID id,
                   @Column("salary_max") String salaryMax,
                   String source,
                   String notes,
-                  String content,
+                  String content, // stored as markdown
                   UUID page_id
 ) {
+
+    public String htmlContent() {
+        return MarkdownToHtmlConverter.convertToHtml(this.content);
+    }
 
     public String salaryDisplay() {
         if (this.salaryMin == null && this.salaryMax == null) {

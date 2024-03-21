@@ -5,8 +5,6 @@ import com.jobosint.model.JobDetail;
 import com.jobosint.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +22,7 @@ public class JobService {
         return jobRepository.findAllJobDetailOrderByCreatedAt();
     }
 
-    public JobDetail getJobDetail(UUID id) {
+    public Optional<JobDetail> getJobDetail(UUID id) {
         return jobRepository.findJobDetailbyId(id);
     }
 

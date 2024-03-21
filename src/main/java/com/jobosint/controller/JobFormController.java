@@ -35,8 +35,8 @@ public class JobFormController {
 
     @GetMapping("/jobs/{id}")
     public String jobDetail(@PathVariable UUID id, Model model) {
-        var job = jobService.getJob(id);
-        job.ifPresent(value -> model.addAttribute("job", value));
+        var jobDetail = jobService.getJobDetail(id);
+        jobDetail.ifPresent(value -> model.addAttribute("detail", value));
         return "/jobDetail";
     }
 

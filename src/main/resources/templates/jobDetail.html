@@ -5,9 +5,14 @@
 <body>
 <section>
 
-<h1 th:text="${job.title()}">title</h1>
+    <h1 th:text="${detail.job().title()}">title</h1>
 
+    <h2>Company</h2>
+    <p>
+        <span th:text="${detail.company().name()}">company</span>. <span th:text="${detail.company().location()}">location</span>. Employee count: <span th:text="${detail.company().employeeCount()}">employee count</span>
+    </p>
 
+    <div th:utext="${detail.job().htmlContent()}">content</div>
 
 
 </section>
