@@ -7,6 +7,7 @@ import com.jobosint.service.AttributeService;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.JobService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class JobFormController {
 
     private final AttributeService attributeService;
@@ -36,8 +38,12 @@ public class JobFormController {
     @GetMapping("/jobs/{id}")
     public String jobDetail(@PathVariable UUID id, Model model) {
         var jobDetail = jobService.getJobDetail(id);
-        jobDetail.ifPresent(value -> model.addAttribute("detail", value));
-        return "/jobDetail";
+        if (jobDetail.isPresent()) {
+            model.addAttribute("detail", jobDetail.get());
+        } else {
+            log.warn("Job not found: {}", id);
+        }
+        return "jobDetail";
     }
 
     @GetMapping("/jobs/{id}/delete")

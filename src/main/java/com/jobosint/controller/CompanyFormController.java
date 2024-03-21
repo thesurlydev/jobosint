@@ -19,16 +19,23 @@ import java.util.UUID;
 public class CompanyFormController {
     private final CompanyService companyService;
 
-    @GetMapping("/company")
-    public String companyForm(Model model) {
-        model.addAttribute("company", new CompanyForm());
-        return "/companyForm";
+    @GetMapping("/companies/{id}")
+    public String companyDetail(@PathVariable UUID id, Model model) {
+        var company = companyService.getById(id);
+        company.ifPresent(c -> model.addAttribute("company", c));
+        return "companyDetail";
     }
 
     @GetMapping("/companies/{id}/delete")
     public RedirectView deleteCompany(@PathVariable UUID id, Model model) {
         companyService.deleteCompany(id);
         return new RedirectView("/companies");
+    }
+
+    @GetMapping("/company")
+    public String companyForm(Model model) {
+        model.addAttribute("company", new CompanyForm());
+        return "/companyForm";
     }
 
     @GetMapping("/companies/{id}/edit")

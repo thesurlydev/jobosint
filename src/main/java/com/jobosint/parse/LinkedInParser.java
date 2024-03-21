@@ -1,7 +1,7 @@
 package com.jobosint.parse;
 
 import com.jobosint.model.JobDescription;
-import com.jobosint.model.LinkedInJobDescription;
+import com.jobosint.model.JobDescriptionParserResult;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,7 +18,7 @@ public class LinkedInParser {
 
     private final JobDescriptionParser jobDescriptionParser;
 
-    public LinkedInJobDescription parseJobDescription(String path) throws IOException {
+    public JobDescriptionParserResult parseJobDescription(String path) throws IOException {
         File input = new File(path);
         Document doc = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
         Element body = doc.body();
@@ -30,7 +30,7 @@ public class LinkedInParser {
         String rawMarkdown = parseResult.getData().getMarkdownBody();
         String jobDescriptionMarkdown = rawMarkdown.replace("{#job-details}", "");
 
-        return new LinkedInJobDescription(title, company, jobDescriptionMarkdown);
+        return new JobDescriptionParserResult(title, company, jobDescriptionMarkdown);
     }
 
     public void parseSearchResults(String path) throws IOException {

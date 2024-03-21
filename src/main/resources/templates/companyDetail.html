@@ -4,11 +4,9 @@
 </head>
 <body>
 <section>
-<div th:insert="~{fragments/header :: nav}"></div>
-<h2>Company Detail</h2>
-<p th:text="'id: ' + ${company.id}" />
-<p th:text="'name: ' + ${company.name}" />
-<p th:text="'websiteUrl: ' + ${company.websiteUrl}" />
-<a href="/company">Add another company</a>
+    <h2 th:text="${company.name()}">Company Name</h2>
+    <p>Location: <span th:text="${company.location()}">location</span></p>
+    <p th:text="${company.summary()}">summary</p>
+</section>
 </body>
 </html>

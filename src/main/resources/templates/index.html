@@ -5,30 +5,12 @@
 <body>
 <section>
     <h2>Jobs</h2>
-
     <p><a href="/job">Add a job</a></p>
-
-    <table style="width: 100%">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Company</th>
-            <th>Status</th>
-            <th>URL</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="job : ${jobs}">
-            <td><a th:href="@{/jobs/{id}(id=${job.job().id()})}" th:text="${job.job().title()}">Title</a></td>
-            <td th:text="${job.company().name()}">Company</td>
-            <td><a th:href="@{{url}(url=${job.job().url()})}" th:text="${job.job().url()}">URL</a></td>
-            <td><a th:href="@{/jobs/{id}/edit(id=${job.job().id()})}"><button type="button"
-                                                                              class="btn btn-primary btn-sm">Edit
-            </button></a></td>
-        </tr>
-        </tbody>
-    </table>
+    <div th:each="job : ${jobs}">
+        <h3><a th:href="@{/jobs/{id}(id=${job.job().id()})}" th:text="${job.job().title()}">Title</a></h3>
+        <p><a th:href="@{/companies/{id}(id=${job.job().companyId()})}" th:text="${job.company().name()}">Company Name</a></p>
+        <p><a th:href="@{{url}(url=${job.job().url()})}" th:text="${job.job().url()}">URL</a></p>
+    </div>
 </section>
 </body>
 </html>

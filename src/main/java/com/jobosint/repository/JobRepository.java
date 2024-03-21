@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface JobRepository extends CrudRepository<Job, UUID> {
 
     @Query("""
-            select j.*, c.id as companyId, c.name, c.website_url
+            select j.*, c.id as company_id, c.name, c.website_url, c.location, c.summary, c.stock_ticker, c.employee_count
                       from jobosint.public.job j, jobosint.public.company c
                       where j.company = c.id
                       order by j.created_at
@@ -21,7 +21,7 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
     List<JobDetail> findAllJobDetailOrderByCreatedAt();
 
     @Query("""
-            select j.*, c.id as companyId, c.name, c.website_url, c.location, c.summary, c.stock_ticker, c.employee_count
+            select j.*, c.id as company_id, c.name, c.website_url, c.location, c.summary, c.stock_ticker, c.employee_count
                       from jobosint.public.job j, jobosint.public.company c
                       where j.company = c.id and j.id = :id
                     

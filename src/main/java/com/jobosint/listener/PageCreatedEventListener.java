@@ -1,30 +1,25 @@
 package com.jobosint.listener;
 
 import com.jobosint.event.PageCreatedEvent;
-import com.jobosint.model.*;
+import com.jobosint.model.Company;
+import com.jobosint.model.Job;
+import com.jobosint.model.JobDescriptionParserResult;
+import com.jobosint.model.Page;
 import com.jobosint.model.ai.CompanyDetail;
-import com.jobosint.model.ai.JobDescriptionParseResult;
-import com.jobosint.parse.JobDescriptionParser;
+import com.jobosint.parse.BuiltinParser;
 import com.jobosint.parse.LinkedInParser;
-import com.jobosint.parse.ParseResult;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.JobService;
-import com.jobosint.service.PageService;
 import com.jobosint.service.ai.CompanyDetailsService;
-import com.jobosint.service.ai.JobDescriptionParserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -34,12 +29,9 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
     private final CompanyService companyService;
     private final CompanyDetailsService companyDetailsService;
-    private final PageService pageService;
     private final JobService jobService;
-    private final JobDescriptionParser jobDescriptionParser;
-//    private final JobDescriptionParserService jobDescriptionParserService;
-    private final ApplicationEventPublisher applicationEventPublisher;
     private final LinkedInParser linkedInParser;
+    private final BuiltinParser builtInParser;
 
     @Override
     public void onApplicationEvent(@NonNull PageCreatedEvent event) {
@@ -48,17 +40,34 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
         Page page = event.getPage();
         String contentPath = page.contentPath();
+        String jobSource = null;
 
-        LinkedInJobDescription linkedInJobDescription;
+        JobDescriptionParserResult jobDescriptionParserResult = null;
         try {
-            linkedInJobDescription = linkedInParser.parseJobDescription(contentPath);
+
+            if (page.url().startsWith("https://builtin.com/job/")) {
+                jobDescriptionParserResult = builtInParser.parseJobDescription(contentPath);
+                jobSource = "Builtin";
+            } else if (page.url().startsWith("https://www.linkedin.com/jobs/view/")) {
+                jobDescriptionParserResult = linkedInParser.parseJobDescription(contentPath);
+                jobSource = "LinkedIn";
+            } else {
+                log.error("Unsupported job site: {}", page.url());
+                return;
+            }
+            if (jobDescriptionParserResult != null) {
+                Company company = processCompany(jobDescriptionParserResult);
+                if (company != null) {
+                    Job job = processJob(jobDescriptionParserResult, page, company, jobSource);
+                }
+            }
         } catch (IOException e) {
             log.error("Failed to parse job description: {}", contentPath, e);
-            return;
         }
+    }
 
-        String companyName = linkedInJobDescription.companyName();
-
+    private Company processCompany(JobDescriptionParserResult jobDescriptionParserResult) {
+        String companyName = jobDescriptionParserResult.companyName();
         Company company = null;
         if (companyName.isBlank()) {
             log.warn("Using N/A for company");
@@ -75,24 +84,19 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             } else if (companies.size() == 1) {
                 company = companies.getFirst();
             } else {
-                log.error("Ambiguous company name: {}", companyName);;
+                log.error("Ambiguous company name: {}", companyName);
             }
         }
+        return company;
+    }
 
-        if (company != null) {
-            log.info("Company: {}", company);
-            // TODO create job
+    private Job processJob(JobDescriptionParserResult jobDescriptionParserResult,
+                            Page page,
+                            Company company,
+                            String jobSource) {
 
-            Job job= new Job(null, company.id(), linkedInJobDescription.title(), page.url(), LocalDateTime.now(), null,
-                    null, "LinkedIn", null, linkedInJobDescription.description(), UUID.fromString(page.id()));
-
-            Job savedJob = jobService.saveJob(job);
-
-            log.info("Saved job: {}", savedJob);
-
-        } else {
-            log.error("Failed to save company: {}", companyName);
-        }
-
+        Job job = new Job(null, company.id(), jobDescriptionParserResult.title(), page.url(), LocalDateTime.now(), null,
+                null, jobSource, null, jobDescriptionParserResult.description(), UUID.fromString(page.id()));
+        return jobService.saveJob(job);
     }
 }
