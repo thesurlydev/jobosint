@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,8 +25,12 @@ public class CompanyFormController {
     @GetMapping("/companies/{id}")
     public String companyDetail(@PathVariable UUID id, Model model) {
         var company = companyService.getById(id);
-        company.ifPresent(c -> model.addAttribute("company", c));
-        return "companyDetail";
+        if (company.isPresent()) {
+            company.ifPresent(c -> model.addAttribute("company", c));
+            return "companyDetail";
+        } else {
+            throw new ResponseStatusException(NOT_FOUND, "Company not found");
+        }
     }
 
     @GetMapping("/companies/{id}/delete")
@@ -55,7 +62,7 @@ public class CompanyFormController {
     @PostMapping("/company")
     public RedirectView companySubmit(@ModelAttribute CompanyForm companyForm) {
         var company = new Company(companyForm.getId(), companyForm.getName(), companyForm.getWebsiteUrl(), null, null
-                ,null, null);
+                , null, null);
         companyService.saveCompany(company);
         return new RedirectView("/companies");
     }

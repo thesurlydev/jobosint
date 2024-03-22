@@ -24,10 +24,10 @@ public class CompanyDetailsService {
 
         String userMessage =
                 """
-                        Get the details including website url for the company: {name}.
-                        Only provide the stock ticker if the company is public.
-                        {format}
-                        """;
+                Get the details including website url and address for the company: {name}.
+                Only provide the stock ticker if the company is public.
+                {format}
+                """;
 
         PromptTemplate promptTemplate = new PromptTemplate(userMessage, Map.of("name", name, "format",
                 outputParser.getFormat()));

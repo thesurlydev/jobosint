@@ -5,15 +5,19 @@
 <body>
 <section>
 
-    <h1 th:text="${detail.job().title()}">title</h1>
+    <h2 th:text="${detail.job().title()}">title</h2>
 
-    <h2>Company</h2>
-    <p>
-        <span th:text="${detail.company().name()}">company</span>. <span th:text="${detail.company().location()}">location</span>. Employee count: <span th:text="${detail.company().employeeCount()}">employee count</span>
-    </p>
+    <hr/>
+    <p><a th:href="@{/companies/{id}(id=${detail.job().companyId()})}" th:text="${detail.company().name()}">Company Name</a></p>
+    <div>
+        <span th:text="${detail.company().employeeCount()}">employee count</span> employees.
+        <span th:text="${detail.company().location()}">location</span>.
+        <span th:text="${detail.company().summary()}">company summary</span>
+    </div>
+
+    <hr/>
 
     <div th:utext="${detail.job().htmlContent()}">content</div>
-
 
 </section>
 </body>
