@@ -65,20 +65,12 @@ insert into jobosint.public.company(name, website_url) values('Vida Health', 'ht
 insert into jobosint.public.company(name, website_url) values('Vivint', 'https://www.vivint.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Zillow', 'https://www.zillow.com') ON CONFLICT DO NOTHING;
 
-insert into jobosint.public.job(title, company, url) values('Senior Software Engineer', (select id from jobosint.public.company where name = 'Google'), 'https://google.com/jobs/senior-software-engineer') ON CONFLICT DO NOTHING;
-insert into jobosint.public.job(title, company, url) values('Analyst', (select id from jobosint.public.company where name = 'Microsoft'), 'https://microsoft.com/jobs/analyst') ON CONFLICT DO NOTHING;
-
-delete from jobosint.public.job_board;
-insert into jobosint.public.job_board(name, base_url) values('LinkedIn', 'https://www.linkedin.com');
-insert into jobosint.public.job_board(name, base_url) values('Lever', 'https://jobs.lever.co');
-insert into jobosint.public.job_board(name, base_url) values('Greenhouse', 'https://boards.greenhouse.io');
-insert into jobosint.public.job_board(name, base_url) values('BuiltIn', 'https://builtin.com');
-
 delete from jobosint.public.attribute_value;
 
 delete from jobosint.public.attribute;
 insert into jobosint.public.attribute(name) values('application-status');
 insert into jobosint.public.attribute(name) values('job-source');
+insert into jobosint.public.attribute(name) values('job-status');
 insert into jobosint.public.attribute(name) values('job-title-include');
 insert into jobosint.public.attribute(name) values('job-title-exclude');
 insert into jobosint.public.attribute(name) values('tech-include');
@@ -86,10 +78,19 @@ insert into jobosint.public.attribute(name) values('tech-exclude');
 insert into jobosint.public.attribute(name) values('company-exclude');
 
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Applied');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Archived');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Declined');
-insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Rejected');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Interviewing');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Interviewing Suspended');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Offer');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Offer Declined');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Rejected');
+
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-status'), 'Active');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-status'), 'Applied');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-status'), 'Archived');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-status'), 'Filled');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-status'), 'No longer accepting applications');
 
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Builtin');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Google Jobs');

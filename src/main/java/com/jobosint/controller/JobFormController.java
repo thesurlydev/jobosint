@@ -31,7 +31,10 @@ public class JobFormController {
     @GetMapping("/job")
     public String jobForm(Model model) {
         prepareJobForm(model);
-        model.addAttribute("job", new JobForm());
+        var jobForm = new JobForm();
+        jobForm.setStatus("Active");
+        jobForm.setSource("LinkedIn");
+        model.addAttribute("job", jobForm);
         return "/jobForm";
     }
 
@@ -69,6 +72,9 @@ public class JobFormController {
 
         var sources = attributeService.getSources();
         model.addAttribute("sources", sources);
+
+        var statuses = attributeService.getJobStatuses();
+        model.addAttribute("statuses", statuses);
     }
 
     @PostMapping("/job")

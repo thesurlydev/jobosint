@@ -19,6 +19,7 @@ public record Job(@Id UUID id,
                   String source,
                   String notes,
                   String content, // stored as markdown
+                  String status,
                   UUID page_id
 ) {
 
@@ -50,6 +51,7 @@ public record Job(@Id UUID id,
                 form.getSource(),
                 form.getNotes(),
                 null,
+                form.getStatus(),
                 null
         );
     }

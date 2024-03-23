@@ -30,6 +30,12 @@
         </select>
     </p>
 
+    <p>Status:
+        <select th:field="*{status}">
+            <option th:each="s: ${statuses}" th:value="${s}" th:text="${s}"></option>
+        </select>
+    </p>
+
     <p>Notes:<br/>
         <textarea rows="5" cols="50" th:field="*{notes}"></textarea>
     </p>

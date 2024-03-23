@@ -17,6 +17,8 @@
 
     <hr/>
 
+    <p><a th:href="@{{url}(url=${detail.job().url()})}">Apply</a></p>
+
     <div th:utext="${detail.job().htmlContent()}">content</div>
 
 </section>
