@@ -12,27 +12,26 @@ import java.util.UUID;
 
 public interface JobRepository extends CrudRepository<Job, UUID> {
 
-    @Query("""
-            select j.*, c.id as company_id, c.name, c.website_url, c.location, c.summary, c.stock_ticker, c.employee_count
-                      from jobosint.public.job j, jobosint.public.company c
-                      where j.company = c.id
-                      order by j.created_at
-            """)
+    String JOB_DETAIL_SELECT = """
+    select j.*, c.id as company_id, c.name, c.website_url, c.location, c.summary, c.stock_ticker, c.employee_count
+    from jobosint.public.job j, jobosint.public.company c
+    where j.company = c.id
+    """;
+
+    @Query(JOB_DETAIL_SELECT + "order by j.created_at")
     List<JobDetail> findAllJobDetailOrderByCreatedAt();
 
-    @Query("""
-            select j.*, c.id as company_id, c.name, c.website_url, c.location, c.summary, c.stock_ticker, c.employee_count
-                      from jobosint.public.job j, jobosint.public.company c
-                      where j.company = c.id and j.id = :id
-                    
-            """)
+    @Query(JOB_DETAIL_SELECT + " and j.id = :id")
     Optional<JobDetail> findJobDetailbyId(UUID id);
 
-
     @Modifying
-    @Query("""
-            delete from jobosint.public.job where company = :companyId
-            """)
+    @Query("delete from jobosint.public.job where company = :companyId")
     void deleteAllByCompanyId(UUID companyId);
+
+    @Query("""
+    select * from jobosint.public.job
+    where title ilike '%' || :query || '%' or content ilike '%' || :query || '%'
+    """)
+    List<Job> searchJobs(String query);
 
 }

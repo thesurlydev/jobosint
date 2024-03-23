@@ -37,4 +37,8 @@ public class JobService {
     public Job saveJob(Job job) {
         return jobRepository.save(job);
     }
+
+    public List<Job> searchJobs(String query) {
+        return jobRepository.searchJobs(query);
+    }
 }
