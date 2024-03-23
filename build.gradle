@@ -26,8 +26,8 @@ dependencies {
     implementation 'org.springframework.ai:spring-ai-pgvector-store:_'
     implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:_'
 
-    implementation 'com.vladsch.flexmark:flexmark-all:0.64.8'
-    implementation 'com.vladsch.flexmark:flexmark-html2md-converter:0.64.8'
+    implementation 'com.vladsch.flexmark:flexmark-all:_'
+    implementation 'com.vladsch.flexmark:flexmark-html2md-converter:_'
 
     implementation Spring.boot.thymeleaf
     implementation Spring.boot.actuator
@@ -53,7 +53,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql:_'
 
     testImplementation Spring.boot.test
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:_'
 //	testImplementation 'org.springframework.boot:spring-boot-testcontainers:_'
 //	testImplementation 'org.testcontainers:junit-jupiter:_'
 //	testImplementation 'org.testcontainers:postgresql:_'
