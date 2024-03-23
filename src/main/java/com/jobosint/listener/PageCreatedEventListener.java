@@ -96,7 +96,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                             String jobSource) {
 
         Job job = new Job(null, company.id(), jobDescriptionParserResult.title(), page.url(), LocalDateTime.now(), null,
-                null, jobSource, null, jobDescriptionParserResult.description(), UUID.fromString(page.id()));
+                null, jobSource, null, jobDescriptionParserResult.description(), "Active", UUID.fromString(page.id()));
         return jobService.saveJob(job);
     }
 }

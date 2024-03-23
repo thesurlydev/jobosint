@@ -6,6 +6,32 @@
 <section>
     <h2>Applications</h2>
 
+    <p><a href="/app">Add an application</a></p>
+
+    <hr/>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Status</th>
+            <th scope="col">Title</th>
+            <th scope="col">Company</th>
+            <th scope="col">Salary</th>
+            <th scope="col">Source</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detail : ${apps}">
+            <td th:text="${detail.app().status()}"></td>
+            <td th:text="${detail.app().jobTitle()}"></td>
+            <td><a th:href="@{/companies/{id}(id=${detail.app().companyId()})}" th:text="${detail.company().name()}">Company Name</a></td>
+            <td th:text="${detail.app().salaryDisplay()}"></td>
+            <td th:text="${detail.app().source()}"></td>
+            <td><a th:href="@{/apps/{id}/edit(id=${detail.app().id()})}">Edit</a></td>
+        </tr>
+        </tbody>
+    </table>
 </section>
 </body>
 </html>

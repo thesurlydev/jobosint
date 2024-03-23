@@ -30,7 +30,11 @@ public class AttributeService {
         return findAttributeValuesByName("job-source");
     }
 
-    public List<String> getStatuses() {
+    public List<String> getJobStatuses() {
+        return findAttributeValuesByName("job-status");
+    }
+
+    public List<String> getApplicationStatuses() {
         return findAttributeValuesByName("application-status");
     }
 
