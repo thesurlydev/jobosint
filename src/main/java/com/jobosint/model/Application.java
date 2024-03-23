@@ -29,6 +29,21 @@ public record Application(@Id UUID id,
         }
     }
 
+    public static Application fromJob(JobDetail jobDetail) {
+        return new Application(null,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                jobDetail.job().title(),
+                jobDetail.job().companyId(),
+                jobDetail.job().url(),
+                jobDetail.job().salaryMin(),
+                jobDetail.job().salaryMax(),
+                "Applied",
+                jobDetail.job().source(),
+                null
+        );
+    }
+
     public static Application fromForm(ApplicationForm form) {
         return new Application(form.getId(),
                 LocalDateTime.now(),

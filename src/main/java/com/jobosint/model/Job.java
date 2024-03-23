@@ -27,10 +27,12 @@ public record Job(@Id UUID id,
         return MarkdownToHtmlConverter.convertToHtml(this.content);
     }
 
+    // used by thymeleaf views
+    @SuppressWarnings("unused")
     public String salaryDisplay() {
-        if (this.salaryMin == null && this.salaryMax == null) {
+        if (this.salaryMin.isBlank() && this.salaryMax.isBlank()) {
             return "n/a";
-        } else if (this.salaryMin != null && this.salaryMax == null) {
+        } else if (!this.salaryMin.isBlank() && this.salaryMax.isBlank()) {
             return this.salaryMin;
         } else {
             return new StringJoiner("-")
@@ -38,6 +40,22 @@ public record Job(@Id UUID id,
                     .add(this.salaryMax)
                     .toString();
         }
+    }
+
+    public static Job fromJobWithNewStatus(Job job, String newStatus) {
+        return new Job(job.id(),
+                job.companyId(),
+                job.title(),
+                job.url(),
+                job.createdAt(),
+                job.salaryMin(),
+                job.salaryMax(),
+                job.source(),
+                job.notes(),
+                job.content(),
+                newStatus,
+                job.page_id()
+        );
     }
 
     public static Job fromForm(JobForm form) {

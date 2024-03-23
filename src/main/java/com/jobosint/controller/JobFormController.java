@@ -1,8 +1,10 @@
 package com.jobosint.controller;
 
+import com.jobosint.model.Application;
 import com.jobosint.model.Company;
 import com.jobosint.model.Job;
 import com.jobosint.model.form.JobForm;
+import com.jobosint.service.ApplicationService;
 import com.jobosint.service.AttributeService;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.JobService;
@@ -24,6 +26,7 @@ import java.util.UUID;
 @Slf4j
 public class JobFormController {
 
+    private final ApplicationService appService;
     private final AttributeService attributeService;
     private final JobService jobService;
     private final CompanyService companyService;
@@ -53,6 +56,37 @@ public class JobFormController {
     public RedirectView deleteJob(@PathVariable UUID id) {
         jobService.deleteJob(id);
         return new RedirectView("/");
+    }
+
+    @GetMapping("/jobs/{id}/apply")
+    public RedirectView apply(@PathVariable UUID id) {
+
+        // get the job
+        var maybeJobDetail = jobService.getJobDetail(id);
+
+        if (maybeJobDetail.isPresent()) {
+
+            var jobDetail = maybeJobDetail.get();
+            var job = jobDetail.job();
+
+            // create an application from the job
+            var app = Application.fromJob(maybeJobDetail.get());
+
+            // save the application
+            var savedApp = appService.saveApplication(app);
+
+            // update job status to "Applied"
+            var updatedJob = Job.fromJobWithNewStatus(job, "Applied");
+            jobService.saveJob(updatedJob);
+
+            // redirect to app detail view so we can click through the apply link
+            return new RedirectView("/apps/" + savedApp.id() + "/edit");
+
+        } else {
+            log.warn("Job not found: {}", id);
+        }
+
+        return new RedirectView("/apps");
     }
 
     @GetMapping("/jobs/{id}/edit")

@@ -16,7 +16,7 @@
 
     <hr/>
 
-    <p><a th:href="@{{url}(url=${detail.job().url()})}">Apply</a></p>
+    <p><a th:href="@{/jobs/{id}/apply(id=${detail.job().id()})}">Apply</a></p>
 
     <div th:utext="${detail.job().htmlContent()}">content</div>
 

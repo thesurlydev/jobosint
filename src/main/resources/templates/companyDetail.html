@@ -6,6 +6,8 @@
 <section>
     <h2 th:text="${company.name()}">Company Name</h2>
     <p>Location: <span th:text="${company.location()}">location</span></p>
+    <p>Employees: <span th:text="${company.employeeCount()}">num employees</span></p>
+    <p>Ticker: <span th:text="${company.stockTicker()}">ticker</span></p>
     <p th:text="${company.summary()}">summary</p>
 </section>
 </body>
