@@ -21,7 +21,7 @@ public class BuiltinParser {
         Document doc = Jsoup.parse(input, "UTF-8", "https://builtin.com/");
         Element body = doc.body();
 
-        String title = body.select("h1").text();
+        String title = body.select("h1.node-title").text();
         String company = body.select("#page-main-content > div > div > div > div > div.l-content.right > div.row.row-region-top > div > div > div > div.block-content > div.company-title").text();
 
         ParseResult<JobDescription> parseResult = jobDescriptionParser.parse(body.toString(), "#page-main-content > div > div > div > div > div.l-content.right > div.row.row-region-middle > div > div > div.block.block-ctools.block-entity-viewnode > article > div.node__content > div.job-description");
