@@ -6,7 +6,6 @@
 <section>
 
     <h2>Search</h2>
-
     <form action="#" th:action="@{/search}" th:object="${searchForm}" method="post">
         <label>
             <input type="text" th:field="*{query}" size="50" placeholder="Enter query..." onClick="this.select();"/>
@@ -19,7 +18,7 @@
     <h3>Jobs</h3>
     <p>Found <span th:text="${numJobResults}" style="font-weight: bold"></span> jobs</p>
     <div th:each="j : ${jobResults}">
-        <p th:text="${j.title()}">Title</p>
+        <p><a th:href="@{/jobs/{id}(id=${j.id()})}" th:text="${j.title()}">Title</a></p>
     </div>
 
     <hr/>
@@ -27,7 +26,8 @@
     <h3>Companies</h3>
     <p>Found <span th:text="${numCompanyResults}" style="font-weight: bold"></span> companies</p>
     <div th:each="c : ${companyResults}">
-        <p th:text="${c.name()}">Name</p>
+        <!--<p th:text="${c.name()}">Name</p>-->
+        <p><a th:href="@{/companies/{id}(id=${c.id()})}" th:text="${c.name()}">Name</a></p>
     </div>
 
 </section>

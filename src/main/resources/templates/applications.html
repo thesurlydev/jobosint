@@ -24,7 +24,7 @@
         <tbody>
         <tr th:each="detail : ${apps}">
             <td th:text="${detail.status()}"></td>
-            <td th:text="${detail.jobTitle()}"></td>
+            <td><a th:href="@{/jobs/{id}(id=${detail.jobId()})}" th:text="${detail.jobTitle()}">Title</a></td>
             <td><a th:href="@{/companies/{id}(id=${detail.companyId()})}" th:text="${detail.companyName()}">Company Name</a></td>
             <td th:text="${detail.salaryDisplay()}"></td>
             <td th:text="${detail.jobSource()}"></td>
