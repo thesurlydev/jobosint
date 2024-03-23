@@ -10,36 +10,17 @@ import java.util.UUID;
 public record Application(@Id UUID id,
                           @Column("created_at") LocalDateTime createdAt,
                           @Column("updated_at") LocalDateTime updatedAt,
-                          @Column("job_title") String jobTitle,
-                          @Column("company") UUID companyId,
-                          String url,
-                          @Column("salary_min") String salaryMin,
-                          @Column("salary_max") String salaryMax,
+                          @Column("job") UUID jobId,
                           String status,
-                          String source,
                           String notes) {
 
-    public String salaryDisplay() {
-        if (this.salaryMin == null && this.salaryMax == null) {
-            return "n/a";
-        } else if (this.salaryMin != null && this.salaryMax == null) {
-            return this.salaryMin + "- ?";
-        } else {
-            return this.salaryMin + "-" + this.salaryMax;
-        }
-    }
 
     public static Application fromJob(JobDetail jobDetail) {
         return new Application(null,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                jobDetail.job().title(),
-                jobDetail.job().companyId(),
-                jobDetail.job().url(),
-                jobDetail.job().salaryMin(),
-                jobDetail.job().salaryMax(),
+                jobDetail.job().id(),
                 "Applied",
-                jobDetail.job().source(),
                 null
         );
     }
@@ -48,13 +29,8 @@ public record Application(@Id UUID id,
         return new Application(form.getId(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                form.getTitle(),
-                form.getCompanyId(),
-                form.getUrl(),
-                form.getSalaryMin(),
-                form.getSalaryMax(),
+                null,
                 form.getStatus(),
-                form.getSource(),
                 form.getNotes()
         );
     }

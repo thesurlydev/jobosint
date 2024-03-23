@@ -25,7 +25,8 @@ CREATE INDEX ON vector_store USING HNSW (embedding vector_cosine_ops);
 create table if not exists company
 (
     id             uuid primary key default gen_random_uuid(),
-    name           varchar(255) not null CONSTRAINT company_name_unique UNIQUE,
+    name           varchar(255) not null
+        CONSTRAINT company_name_unique UNIQUE,
     created_at     timestamptz      default now(),
     updated_at     timestamptz      default now(),
     website_url    varchar(255),
@@ -57,18 +58,13 @@ create table if not exists job
 
 create table if not exists application
 (
-    id           uuid primary key default gen_random_uuid(),
-    created_at   timestamptz      default now(),
-    updated_at   timestamptz      default now(),
-    job_title    text,
-    company    uuid         not null,
-    url          text,
-    salary_min   text,
-    salary_max   text,
-    status       text,
-    source       text,
-    notes        text,
-    constraint fk_app_company foreign key (company) references jobosint.public.company (id)
+    id         uuid primary key default gen_random_uuid(),
+    created_at timestamptz      default now(),
+    updated_at timestamptz      default now(),
+    job        uuid,
+    status     text,
+    notes      text,
+    constraint fk_app_job foreign key (job) references jobosint.public.job (id)
 );
 
 create table if not exists page

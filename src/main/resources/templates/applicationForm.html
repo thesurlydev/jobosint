@@ -8,31 +8,20 @@
     <h2 th:if="${app.id != null}">Edit app</h2>
     <form action="#" th:action="@{/app}" th:object="${app}" method="post">
         <input type="hidden"  th:field="*{id}"/>
-        <label>Title
-            <input type="text" th:field="*{title}" size="50" />
-        </label>
-        <p>URL: <input type="text" th:field="*{url}" size="80" /></p>
+        <input type="hidden"  th:field="*{jobId}"/>
+        <h4 th:text="${app.getJobTitle()}"></h4>
+        <p th:text="'Company: ' + ${app.getCompanyName()}"></p>
         <p>
-            <label>Company:
-                <select th:field="*{companyId}">
-                    <option th:each="c: ${companies}" th:value="${c.id()}" th:text="${c.name}"></option>
+            <label>Status:
+                <select th:field="*{status}">
+                    <option th:each="s: ${statuses}" th:value="${s}" th:text="${s}"></option>
                 </select>
             </label>
-            <a href="/company">Add new</a>
         </p>
-        <p>Salary: <input type="text" th:field="*{salaryMin}" size="10" /> to <input type="text" th:field="*{salaryMax}" size="10" /></p>
-        <p>Source:
-            <select th:field="*{source}">
-                <option th:each="s: ${sources}" th:value="${s}" th:text="${s}"></option>
-            </select>
-        </p>
-        <p>Status:
-            <select th:field="*{status}">
-                <option th:each="s: ${statuses}" th:value="${s}" th:text="${s}"></option>
-            </select>
-        </p>
-        <p>Notes:<br/>
-            <textarea rows="5" cols="50" th:field="*{notes}"></textarea>
+        <p>
+            <label>Notes:
+                <textarea rows="5" cols="50" th:field="*{notes}"></textarea>
+            </label>
         </p>
 
         <p><input type="submit" value="Submit" /></p>

@@ -21,6 +21,10 @@ public class ApplicationService {
         return applicationRepository.findById(id);
     }
 
+    public ApplicationDetail getApplicationDetail(UUID id) {
+        return applicationRepository.findApplicationDetailById(id);
+    }
+
     public Iterable<ApplicationDetail> getAllApplications() {
         return applicationRepository.findAllApplicationDetailOrderByCreatedAt();
     }

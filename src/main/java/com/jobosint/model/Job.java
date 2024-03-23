@@ -2,6 +2,7 @@ package com.jobosint.model;
 
 import com.jobosint.convert.MarkdownToHtmlConverter;
 import com.jobosint.model.form.JobForm;
+import com.jobosint.util.DisplayUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
@@ -27,19 +28,8 @@ public record Job(@Id UUID id,
         return MarkdownToHtmlConverter.convertToHtml(this.content);
     }
 
-    // used by thymeleaf views
-    @SuppressWarnings("unused")
     public String salaryDisplay() {
-        if (this.salaryMin.isBlank() && this.salaryMax.isBlank()) {
-            return "n/a";
-        } else if (!this.salaryMin.isBlank() && this.salaryMax.isBlank()) {
-            return this.salaryMin;
-        } else {
-            return new StringJoiner("-")
-                    .add(String.valueOf(this.salaryMin))
-                    .add(this.salaryMax)
-                    .toString();
-        }
+        return DisplayUtils.salaryDisplay(this.salaryMin, this.salaryMax);
     }
 
     public static Job fromJobWithNewStatus(Job job, String newStatus) {

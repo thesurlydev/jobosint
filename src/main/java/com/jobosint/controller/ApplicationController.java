@@ -35,19 +35,15 @@ public class ApplicationController {
     @GetMapping("/app")
     public String addApp(Model model) {
         prepareAppForm(model);
-        var appForm = new ApplicationForm();
-        appForm.setSource("LinkedIn");
-        model.addAttribute("app", appForm);
+        model.addAttribute("app", new ApplicationForm());
         return "applicationForm";
     }
 
     @GetMapping("/apps/{id}/edit")
     public String editApp(@PathVariable UUID id, Model model) {
-        var maybeApp = applicationService.getApplication(id);
-        maybeApp.ifPresent(app -> {
-            var appForm = new ApplicationForm(app);
-            model.addAttribute("app", appForm);
-        });
+        var appDetail = applicationService.getApplicationDetail(id);
+        var appForm = new ApplicationForm(appDetail);
+        model.addAttribute("app", appForm);
         prepareAppForm(model);
         return "applicationForm";
     }
@@ -60,13 +56,7 @@ public class ApplicationController {
     }
 
     private void prepareAppForm(Model model) {
-        List<Company> companies = companyService.getAllSorted();
-        model.addAttribute("companies", companies);
-
         var statuses = attributeService.getApplicationStatuses();
         model.addAttribute("statuses", statuses);
-
-        var sources = attributeService.getSources();
-        model.addAttribute("sources", sources);
     }
 }

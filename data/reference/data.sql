@@ -76,6 +76,12 @@ insert into jobosint.public.attribute(name) values('job-title-exclude');
 insert into jobosint.public.attribute(name) values('tech-include');
 insert into jobosint.public.attribute(name) values('tech-exclude');
 insert into jobosint.public.attribute(name) values('company-exclude');
+insert into jobosint.public.attribute(name) values('wishlist');
+
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'wishlist'), 'Small to medium sized company');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'wishlist'), '100% remote');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'wishlist'), 'Medical benefits');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'wishlist'), 'Minimum of 150K salary');
 
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Applied');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'application-status'), 'Archived');

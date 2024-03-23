@@ -16,7 +16,8 @@
 
     <hr/>
 
-    <p><a th:href="@{/jobs/{id}/apply(id=${detail.job().id()})}">Apply</a></p>
+    <div class="alert alert-success" role="alert" th:if="${detail.job().status() == 'Applied'}">Applied</div>
+    <div class="alert alert-primary" role="alert" th:if="${detail.job().status() != 'Applied'}"><strong><a th:href="@{/jobs/{id}/apply(id=${detail.job().id()})}">Apply</a></strong></div>
 
     <div th:utext="${detail.job().htmlContent()}">content</div>
 

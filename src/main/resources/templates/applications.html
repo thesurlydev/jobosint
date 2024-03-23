@@ -23,12 +23,12 @@
         </thead>
         <tbody>
         <tr th:each="detail : ${apps}">
-            <td th:text="${detail.app().status()}"></td>
-            <td th:text="${detail.app().jobTitle()}"></td>
-            <td><a th:href="@{/companies/{id}(id=${detail.app().companyId()})}" th:text="${detail.company().name()}">Company Name</a></td>
-            <td th:text="${detail.app().salaryDisplay()}"></td>
-            <td th:text="${detail.app().source()}"></td>
-            <td><a th:href="@{/apps/{id}/edit(id=${detail.app().id()})}">Edit</a></td>
+            <td th:text="${detail.status()}"></td>
+            <td th:text="${detail.jobTitle()}"></td>
+            <td><a th:href="@{/companies/{id}(id=${detail.companyId()})}" th:text="${detail.companyName()}">Company Name</a></td>
+            <td th:text="${detail.salaryDisplay()}"></td>
+            <td th:text="${detail.jobSource()}"></td>
+            <td><a th:href="@{/apps/{id}/edit(id=${detail.id()})}">Edit</a></td>
         </tr>
         </tbody>
     </table>
