@@ -40,7 +40,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
         Page page = event.getPage();
         String contentPath = page.contentPath();
-        String jobSource = null;
+        String jobSource;
 
         JobDescriptionParserResult jobDescriptionParserResult = null;
         try {

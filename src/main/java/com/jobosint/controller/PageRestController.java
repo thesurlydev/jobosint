@@ -26,10 +26,11 @@ public class PageRestController {
     @PostMapping()
     @Operation(summary = "Save a page")
     public ResponseEntity<Page> savePage(@RequestBody SavePageRequest savePageRequest) {
+        log.info("SavePageRequest: {} from {}", savePageRequest.url(), savePageRequest.source());
         Page savedPage;
         try {
             String decodedContent = decodeContent(savePageRequest.content());
-            Path savedPath = pageService.saveContent(savePageRequest.url(), decodedContent);
+            Path savedPath = pageService.saveContent(decodedContent);
             Page page = savePageRequest.toPage(savedPath);
             savedPage = pageService.savePage(page);
         } catch (Exception e) {

@@ -10,9 +10,8 @@
     <hr/>
     <p><a th:href="@{/companies/{id}(id=${detail.job().companyId()})}" th:text="${detail.company().name()}">Company Name</a></p>
     <div>
-        <span th:text="${detail.company().employeeCount()}">employee count</span> employees.
-        <span th:text="${detail.company().location()}">location</span>.
-        <span th:text="${detail.company().summary()}">company summary</span>
+        <div><span th:text="${detail.company().employeeCount()}">employee count</span> employees &middot; <span th:text="${detail.company().location()}">location</span></div>
+        <div th:text="${detail.company().summary()}">company summary</div>
     </div>
 
     <hr/>

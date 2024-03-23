@@ -34,7 +34,7 @@ public class PageService {
         return savedPage;
     }
 
-    public Path saveContent(String url, String content) throws IOException {
+    public Path saveContent(String content) throws IOException {
         // Validate content is neither null nor blank
         if (content == null || content.trim().isEmpty()) {
             throw new IllegalArgumentException("Content cannot be null or blank.");
