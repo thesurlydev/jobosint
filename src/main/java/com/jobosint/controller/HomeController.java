@@ -13,9 +13,7 @@ public class HomeController {
     private final JobService jobService;
 
     @GetMapping("/")
-    public String home(Model model) {
-        var jobs = jobService.getAllJobs();
-        model.addAttribute("jobs", jobs);
+    public String home() {
         return "index";
     }
 }

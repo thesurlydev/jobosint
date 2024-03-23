@@ -4,12 +4,13 @@
 </head>
 <body>
 <section>
-    <h2 th:if="${app.id == null}">Add a app</h2>
-    <h2 th:if="${app.id != null}">Edit app</h2>
+    <h2 th:if="${app.id == null}">Add a application</h2>
+    <h2 th:if="${app.id != null}">Edit application</h2>
     <form action="#" th:action="@{/app}" th:object="${app}" method="post">
         <input type="hidden"  th:field="*{id}"/>
         <input type="hidden"  th:field="*{jobId}"/>
         <h4 th:text="${app.getJobTitle()}"></h4>
+        <p><a th:href="${app.getJobUrl()}" th:text="${app.getJobUrl()}" target="_blank">Apply</a> (Apply)</p>
         <p th:text="'Company: ' + ${app.getCompanyName()}"></p>
         <p>
             <label>Status:

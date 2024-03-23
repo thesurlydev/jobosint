@@ -48,7 +48,7 @@ public class CompanyFormController {
     @GetMapping("/companies/{id}/edit")
     public String editCompany(@PathVariable UUID id, Model model) {
         var company = companyService.getById(id);
-        company.ifPresent(c -> model.addAttribute("company", new CompanyForm(c.id(), c.name(), c.websiteUrl())));
+        company.ifPresent(c -> model.addAttribute("company", CompanyForm.fromCompany(c)));
         return "/companyForm";
     }
 
@@ -61,8 +61,8 @@ public class CompanyFormController {
 
     @PostMapping("/company")
     public RedirectView companySubmit(@ModelAttribute CompanyForm companyForm) {
-        var company = new Company(companyForm.getId(), companyForm.getName(), companyForm.getWebsiteUrl(), null, null
-                , null, null);
+        var company = new Company(companyForm.getId(), companyForm.getName(), companyForm.getWebsiteUrl(),
+                companyForm.getStockTicker(), companyForm.getEmployeeCount(), companyForm.getSummary(), companyForm.getLocation());
         companyService.saveCompany(company);
         return new RedirectView("/companies");
     }

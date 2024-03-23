@@ -31,6 +31,13 @@ public class JobFormController {
     private final JobService jobService;
     private final CompanyService companyService;
 
+    @GetMapping("/jobs")
+    public String home(Model model) {
+        var jobs = jobService.getAllJobs();
+        model.addAttribute("jobs", jobs);
+        return "jobs";
+    }
+
     @GetMapping("/job")
     public String jobForm(Model model) {
         prepareJobForm(model);
@@ -97,7 +104,7 @@ public class JobFormController {
             model.addAttribute("job", jobForm);
         });
         prepareJobForm(model);
-        return "/jobForm";
+        return "jobForm";
     }
 
     private void prepareJobForm(Model model) {
@@ -115,6 +122,6 @@ public class JobFormController {
     public RedirectView jobSubmit(@ModelAttribute JobForm jobForm) {
         var job = Job.fromForm(jobForm);
         jobService.saveJob(job);
-        return new RedirectView("/");
+        return new RedirectView("jobs");
     }
 }

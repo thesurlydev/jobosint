@@ -4,12 +4,7 @@
 </head>
 <body>
 <section>
-    <h2>Jobs</h2>
-    <p><a href="/job">Add a job</a></p>
-    <div th:each="detail : ${jobs}">
-        <h3><a th:href="@{/jobs/{id}(id=${detail.job().id()})}" th:text="${detail.job().title()}">Title</a></h3>
-        <p><a th:href="@{/companies/{id}(id=${detail.job().companyId()})}" th:text="${detail.company().name()}">Company Name</a></p>
-    </div>
+    <p>Personal job management and tools app.</p>
 </section>
 </body>
 </html>

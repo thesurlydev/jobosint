@@ -13,8 +13,24 @@
         <input type="text" th:field="*{name}"/>
     </label></p>
     <p><label>
+        Location:
+        <input type="text" th:field="*{location}"/>
+    </label></p>
+    <p><label>
         Website URL:
         <input type="text" th:field="*{websiteUrl}"/>
+    </label></p>
+    <p><label>
+        Ticker:
+        <input type="text" th:field="*{stockTicker}"/>
+    </label></p>
+    <p><label>
+        Employee Count:
+        <input type="text" th:field="*{employeeCount}"/>
+    </label></p>
+    <p><label>
+        Summary:
+        <textarea rows="10" cols="50" th:field="*{summary}"></textarea>
     </label></p>
     <p><input type="submit" value="Submit"/></p>
 </form>

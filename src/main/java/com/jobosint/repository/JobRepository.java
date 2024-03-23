@@ -18,7 +18,7 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
     where j.company = c.id
     """;
 
-    @Query(JOB_DETAIL_SELECT + "order by j.created_at")
+    @Query(JOB_DETAIL_SELECT + "and j.status != 'Archived' order by j.created_at")
     List<JobDetail> findAllJobDetailOrderByCreatedAt();
 
     @Query(JOB_DETAIL_SELECT + " and j.id = :id")

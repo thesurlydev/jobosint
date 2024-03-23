@@ -1,6 +1,5 @@
 package com.jobosint.model.form;
 
-import com.jobosint.model.Application;
 import com.jobosint.model.ApplicationDetail;
 import lombok.Data;
 
@@ -11,6 +10,7 @@ public class ApplicationForm {
     private UUID id;
     private UUID jobId;
     private String jobTitle;
+    private String jobUrl;
     private String companyName;
     private String status;
     private String notes;
@@ -22,6 +22,7 @@ public class ApplicationForm {
         this.id = detail.id();
         this.jobId = detail.jobId();
         this.jobTitle = detail.jobTitle();
+        this.jobUrl = detail.jobUrl();
         this.companyName = detail.companyName();
         this.status = detail.status();
         this.notes = detail.notes();
