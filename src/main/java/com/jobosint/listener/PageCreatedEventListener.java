@@ -20,9 +20,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
@@ -109,8 +107,18 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                            Company company,
                            String jobSource) {
 
-        Job job = new Job(null, company.id(), jobDescriptionParserResult.title(), page.url(), LocalDateTime.now(), null,
-                null, jobSource, null, jobDescriptionParserResult.description(), "Active", UUID.fromString(page.id()));
+        Job job = new Job(null,
+                company.id(),
+                jobDescriptionParserResult.title(),
+                page.url(),
+                null,
+                null,
+                jobSource,
+                null,
+                jobDescriptionParserResult.description(),
+                "Active",
+                page.id()
+        );
         return jobService.saveJob(job);
     }
 }

@@ -6,15 +6,12 @@ import com.jobosint.util.DisplayUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
-import java.time.LocalDateTime;
-import java.util.StringJoiner;
 import java.util.UUID;
 
 public record Job(@Id UUID id,
                   @Column("company") UUID companyId,
                   String title,
                   String url,
-                  @Column("created_at") LocalDateTime createdAt,
                   @Column("salary_min") String salaryMin,
                   @Column("salary_max") String salaryMax,
                   String source,
@@ -37,7 +34,6 @@ public record Job(@Id UUID id,
                 job.companyId(),
                 job.title(),
                 job.url(),
-                job.createdAt(),
                 job.salaryMin(),
                 job.salaryMax(),
                 job.source(),
@@ -53,7 +49,6 @@ public record Job(@Id UUID id,
                 form.getCompanyId(),
                 form.getTitle(),
                 form.getUrl(),
-                LocalDateTime.now(),
                 form.getSalaryMin(),
                 form.getSalaryMax(),
                 form.getSource(),

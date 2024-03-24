@@ -5,6 +5,10 @@
 <body>
 <section>
     <h2 th:text="${company.name()}">Company Name</h2>
+
+    <p><a th:href="@{/companies/{id}/edit(id=${company.id()})}">Edit</a> - <a
+        th:href="@{/companies/{id}/delete(id=${company.id()})}">Delete</a></p>
+
     <p>Location: <span th:text="${company.location()}">location</span></p>
     <p>Employees: <span th:text="${company.employeeCount()}">num employees</span></p>
     <p>Ticker: <span th:text="${company.stockTicker()}">ticker</span></p>

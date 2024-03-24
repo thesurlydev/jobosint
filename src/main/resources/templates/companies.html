@@ -13,15 +13,18 @@
         <tr>
             <th>Name</th>
             <th>URL</th>
+            <th>Location</th>
+            <th>Employee Count</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="c : ${companies}">
-            <td th:text="${c.name()}">Name</td>
-            <td><a th:href="${c.websiteUrl()}" th:text="${c.websiteUrl()}" target="_blank">website url</a></td>
-            <td><a th:href="@{/companies/{id}/edit(id=${c.id()})}">Edit</a> - <a
-                    th:href="@{/companies/{id}/delete(id=${c.id()})}">Del</a></td>
+            <td><a th:href="@{/companies/{id}(id=${c.id()})}" th:text="${c.name()}">Name</a></td>
+            <td><a th:href="${c.websiteUrl()}" th:text="${c.websiteUrl()}">URL</a></td>
+            <td th:text="${c.location()}">Location</td>
+            <td th:text="${c.employeeCount()}">Count</td>
+            <td><a th:href="@{/companies/{id}/edit(id=${c.id()})}">Edit</a></td>
         </tr>
         </tbody>
     </table>
