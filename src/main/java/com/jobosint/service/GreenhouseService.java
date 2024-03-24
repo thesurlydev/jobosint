@@ -2,19 +2,18 @@ package com.jobosint.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.jobosint.model.greenhouse.GetJobResult;
 import com.jobosint.model.greenhouse.GreenhouseJobsResponse;
 import com.jobosint.model.greenhouse.Job;
 import com.jobosint.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import org.thymeleaf.expression.Sets;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -65,7 +64,7 @@ public class GreenhouseService {
                             .filter(Objects::nonNull)
                             .forEach(job -> {
                                 try {
-                                    String filename = StringUtils.slugify(job.title()) + "-" + job.id() + ".json";
+                                    String filename = StringUtils.slugify(job.job().title()) + "-" + job.id() + ".json";
                                     File f = new File(boardDir, filename);
                                     if (f.exists()) {
                                         return;
@@ -86,12 +85,26 @@ public class GreenhouseService {
                 .body(GreenhouseJobsResponse.class);
     }
 
+    public GetJobResult getJob(String greenhouseUrl) {
+        var url = greenhouseUrl;
+        if (url.contains("?")) {
+            url = url.substring(0, url.indexOf("?"));
+        }
 
-    public Job getJob(String boardToken, String jobId) {
+        // get the board token and job id from the page url
+        String[] urlParts = url.split("/");
+        String boardToken = urlParts[3];
+        String jobId = urlParts[5];
+
+        return getJob(boardToken, jobId);
+    }
+
+    public GetJobResult getJob(String boardToken, String jobId) {
         RestClient client = RestClient.create();
-        return client.get()
+        Job job = client.get()
                 .uri(BASE_URL + boardToken + "/jobs/" + jobId)
                 .retrieve()
                 .body(Job.class);
+        return new GetJobResult(jobId, boardToken, job);
     }
 }

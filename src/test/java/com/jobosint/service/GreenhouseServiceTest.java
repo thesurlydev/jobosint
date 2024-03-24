@@ -1,5 +1,6 @@
 package com.jobosint.service;
 
+import com.jobosint.model.greenhouse.GetJobResult;
 import com.jobosint.model.greenhouse.Job;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
@@ -27,8 +28,7 @@ public class GreenhouseServiceTest {
 
     @Test
     public void getJob() {
-        Job job = greenhouseService.getJob("gitlab", "7096222002");
-        System.out.println(job);
-
+        GetJobResult result = greenhouseService.getJob("gitlab", "7096222002");
+        System.out.println(result);
     }
 }

@@ -1,5 +1,6 @@
 package com.jobosint.listener;
 
+import com.jobosint.convert.HtmlToMarkdownConverter;
 import com.jobosint.event.PageCreatedEvent;
 import com.jobosint.model.Company;
 import com.jobosint.model.Job;
@@ -9,6 +10,7 @@ import com.jobosint.model.ai.CompanyDetail;
 import com.jobosint.parse.BuiltinParser;
 import com.jobosint.parse.LinkedInParser;
 import com.jobosint.service.CompanyService;
+import com.jobosint.service.GreenhouseService;
 import com.jobosint.service.JobService;
 import com.jobosint.service.ai.CompanyDetailsService;
 import lombok.NonNull;
@@ -29,6 +31,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
     private final CompanyService companyService;
     private final CompanyDetailsService companyDetailsService;
+    private final GreenhouseService greenhouseService;
     private final JobService jobService;
     private final LinkedInParser linkedInParser;
     private final BuiltinParser builtInParser;
@@ -51,6 +54,17 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             } else if (page.url().startsWith("https://www.linkedin.com/jobs/view/")) {
                 jobDescriptionParserResult = linkedInParser.parseJobDescription(contentPath);
                 jobSource = "LinkedIn";
+            } else if (page.url().startsWith("https://boards.greenhouse.io/")) {
+
+                // instead of parsing the page content, we can use the greenhouse API to get the job details
+                com.jobosint.model.greenhouse.GetJobResult result = greenhouseService.getJob(page.url());
+
+                // we need to convert the content to markdown
+                HtmlToMarkdownConverter converter = new HtmlToMarkdownConverter();
+                String markdownContent = converter.convertToMarkdown(result.job().content());
+
+                jobDescriptionParserResult = new JobDescriptionParserResult(result.job().title(), result.boardToken(), markdownContent);
+                jobSource = "Greenhouse";
             } else {
                 log.error("Unsupported job site: {}", page.url());
                 return;
@@ -91,9 +105,9 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
     }
 
     private Job processJob(JobDescriptionParserResult jobDescriptionParserResult,
-                            Page page,
-                            Company company,
-                            String jobSource) {
+                           Page page,
+                           Company company,
+                           String jobSource) {
 
         Job job = new Job(null, company.id(), jobDescriptionParserResult.title(), page.url(), LocalDateTime.now(), null,
                 null, jobSource, null, jobDescriptionParserResult.description(), "Active", UUID.fromString(page.id()));
