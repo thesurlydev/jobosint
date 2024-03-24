@@ -16,6 +16,7 @@ import com.jobosint.service.ai.CompanyDetailsService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
@@ -57,9 +58,11 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 // instead of parsing the page content, we can use the greenhouse API to get the job details
                 com.jobosint.model.greenhouse.GetJobResult result = greenhouseService.getJob(page.url());
 
+                var escapedContent = StringEscapeUtils.unescapeHtml4(result.job().content());
+
                 // we need to convert the content to markdown
                 HtmlToMarkdownConverter converter = new HtmlToMarkdownConverter();
-                String markdownContent = converter.convertToMarkdown(result.job().content());
+                String markdownContent = converter.convertToMarkdown(escapedContent);
 
                 jobDescriptionParserResult = new JobDescriptionParserResult(result.job().title(), result.boardToken(), markdownContent);
                 jobSource = "Greenhouse";
@@ -90,7 +93,8 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             if (companies.isEmpty()) {
                 // use companydetailservice to get company details
                 CompanyDetail detail = companyDetailsService.getCompanyDetails(companyName);
-                Company c = new Company(null, companyName, detail.websiteLink(), detail.stockTicker(), detail.numberOfEmployees(), detail.summary(), detail.location());
+                Company c = new Company(null, companyName, detail.websiteLink(), detail.stockTicker(),
+                        detail.numberOfEmployees(), detail.summary(), detail.location());
                 log.info("Creating new company: {}", c);
                 company = companyService.saveCompany(c);
             } else if (companies.size() == 1) {

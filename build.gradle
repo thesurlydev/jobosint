@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.springframework.ai:spring-ai-pgvector-store:_'
     implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:_'
 
+    implementation 'org.apache.commons:commons-text:1.11.0'
     implementation 'com.vladsch.flexmark:flexmark-all:_'
     implementation 'com.vladsch.flexmark:flexmark-html2md-converter:_'
 
