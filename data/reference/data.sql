@@ -101,9 +101,11 @@ insert into jobosint.public.attribute_value(attribute,value) values((select id f
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Builtin');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Google Jobs');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Indeed');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Lever');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'LinkedIn');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Recruiter');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Remote Army');
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'TrueUp');
+insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'job-source'), 'Workday');
 
 insert into jobosint.public.attribute_value(attribute,value) values((select id from jobosint.public.attribute where name = 'tech-include'), 'kotlin');

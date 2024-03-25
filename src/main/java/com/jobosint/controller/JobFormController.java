@@ -109,13 +109,13 @@ public class JobFormController {
 
     private void prepareJobForm(Model model) {
         List<Company> companies = companyService.getAllSorted();
-        model.addAttribute("companies", companies);
+        model.addAttribute("companyLookup", companies);
 
         var sources = attributeService.getSources();
-        model.addAttribute("sources", sources);
+        model.addAttribute("sourceLookup", sources);
 
         var statuses = attributeService.getJobStatuses();
-        model.addAttribute("statuses", statuses);
+        model.addAttribute("statusLookup", statuses);
     }
 
     @PostMapping("/job")

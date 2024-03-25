@@ -9,6 +9,7 @@ import com.jobosint.model.Page;
 import com.jobosint.model.ai.CompanyDetail;
 import com.jobosint.parse.BuiltinParser;
 import com.jobosint.parse.LinkedInParser;
+import com.jobosint.parse.WorkdayParser;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.GreenhouseService;
 import com.jobosint.service.JobService;
@@ -34,6 +35,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
     private final JobService jobService;
     private final LinkedInParser linkedInParser;
     private final BuiltinParser builtInParser;
+    private final WorkdayParser workdayParser;
 
     @Override
     public void onApplicationEvent(@NonNull PageCreatedEvent event) {
@@ -47,13 +49,19 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         JobDescriptionParserResult jobDescriptionParserResult = null;
         try {
 
-            if (page.url().startsWith("https://builtin.com/job/")) {
+            var url = page.url();
+            if (url.startsWith("https://builtin.com/job/")) {
                 jobDescriptionParserResult = builtInParser.parseJobDescription(contentPath);
                 jobSource = "Builtin";
-            } else if (page.url().startsWith("https://www.linkedin.com/jobs/view/")) {
+            } else if (url.startsWith("https://www.linkedin.com/jobs/view/")) {
                 jobDescriptionParserResult = linkedInParser.parseJobDescription(contentPath);
                 jobSource = "LinkedIn";
-            } else if (page.url().startsWith("https://boards.greenhouse.io/")) {
+            } else if (url.contains(".myworkdayjobs.com/")) {
+
+                jobDescriptionParserResult = workdayParser.parseJobDescription(contentPath);
+                jobSource = "Workday";
+
+            } else if (url.startsWith("https://boards.greenhouse.io/")) {
 
                 // instead of parsing the page content, we can use the greenhouse API to get the job details
                 com.jobosint.model.greenhouse.GetJobResult result = greenhouseService.getJob(page.url());

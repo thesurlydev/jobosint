@@ -9,16 +9,7 @@
 </head>
 <body>
 <div class="container-lg">
-    <div class="row mb-12 py-3">
-        <div class="col-sm-1">
-            <h2>jobosint</h2>
-        </div>
-        <div class="col-sm-11" style="text-align: right">
-            <div th:replace="~{fragments/header :: #nav-section}"></div>
-        </div>
-    </div>
-    <hr/>
-
+    <div th:replace="~{fragments/header :: #nav-section}"></div>
     <!-- start content -->
     <div th:replace="${content}">
         <p>Layout content</p>

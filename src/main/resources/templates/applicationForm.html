@@ -12,20 +12,29 @@
         <h4 th:text="${app.getJobTitle()}"></h4>
         <p><a th:href="${app.getJobUrl()}" th:text="${app.getJobUrl()}" target="_blank">Apply</a> (Apply)</p>
         <p th:text="'Company: ' + ${app.getCompanyName()}"></p>
-        <p>
-            <label>Status:
-                <select th:field="*{status}">
+
+        <div class="row mb-3">
+            <label for="status" class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-6">
+                <select class="form-select" id="status" th:field="*{status}">
                     <option th:each="s: ${statuses}" th:value="${s}" th:text="${s}"></option>
                 </select>
-            </label>
-        </p>
-        <p>
-            <label>Notes:
-                <textarea rows="5" cols="50" th:field="*{notes}"></textarea>
-            </label>
-        </p>
+            </div>
+        </div>
 
-        <p><input type="submit" value="Submit" /></p>
+        <div class="row mb-3">
+            <label for="notes" class="col-sm-2 col-form-label">Notes</label>
+            <div class="col-sm-6">
+                <textarea id="notes" class="form-control" th:field="*{notes}"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3 py-3">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary">Save Application</button>
+            </div>
+        </div>
     </form>
 
 </section>

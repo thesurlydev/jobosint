@@ -26,6 +26,9 @@ public class SearchFormController {
 
     @PostMapping("/search")
     public String jobSubmit(Model model, @ModelAttribute SearchForm searchForm) {
+
+        model.addAttribute("searchForm", searchForm);
+
         var companyResults = companyService.search(searchForm.getQuery());
         model.addAttribute("companyResults", companyResults);
 

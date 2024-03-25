@@ -6,8 +6,7 @@
 <section>
     <h2 th:if="${job.id == null}">Add a job</h2>
     <div th:if="${job.id != null}">
-
-            <h2>Edit job</h2>
+        <h2>Edit job</h2>
     </div>
     <form action="#" th:action="@{/job}" th:object="${job}" method="post">
         <input type="hidden" th:field="*{id}"/>
@@ -30,7 +29,7 @@
             <label for="company" class="col-sm-2 col-form-label">Company</label>
             <div class="col-sm-6">
                 <select class="form-select" id="company" th:field="*{companyId}">
-                    <option th:each="c: ${companies}" th:value="${c.id}" th:text="${c.name}"></option>
+                    <option th:each="c: ${companyLookup}" th:value="${c.id}" th:text="${c.name}"></option>
                 </select>
             </div>
         </div>
@@ -49,7 +48,7 @@
             <label for="source" class="col-sm-2 col-form-label">Source</label>
             <div class="col-sm-6">
                 <select class="form-select" id="source" th:field="*{source}">
-                    <option th:each="s: ${sources}" th:value="${s}" th:text="${s}"></option>
+                    <option th:each="s: ${sourceLookup}" th:value="${s}" th:text="${s}"></option>
                 </select>
             </div>
         </div>
@@ -58,7 +57,7 @@
             <label for="status" class="col-sm-2 col-form-label">Job Status</label>
             <div class="col-sm-6">
                 <select class="form-select" id="status" th:field="*{status}">
-                    <option th:each="s: ${statuses}" th:value="${s}" th:text="${s}"></option>
+                    <option th:each="s: ${statusLookup}" th:value="${s}" th:text="${s}"></option>
                 </select>
             </div>
         </div>
