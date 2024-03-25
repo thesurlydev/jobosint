@@ -62,7 +62,7 @@ public class JobFormController {
     @GetMapping("/jobs/{id}/delete")
     public RedirectView deleteJob(@PathVariable UUID id) {
         jobService.deleteJob(id);
-        return new RedirectView("/");
+        return new RedirectView("/jobs");
     }
 
     @GetMapping("/jobs/{id}/apply")

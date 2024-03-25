@@ -29,7 +29,7 @@ public record Application(@Id UUID id,
         return new Application(form.getId(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                null,
+                form.getJobId(),
                 form.getStatus(),
                 form.getNotes()
         );

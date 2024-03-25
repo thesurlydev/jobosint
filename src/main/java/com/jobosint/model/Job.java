@@ -18,7 +18,7 @@ public record Job(@Id UUID id,
                   String notes,
                   String content, // stored as markdown
                   String status,
-                  UUID page_id
+                  @Column("page_id") UUID pageId
 ) {
 
     public String htmlContent() {
@@ -40,7 +40,7 @@ public record Job(@Id UUID id,
                 job.notes(),
                 job.content(),
                 newStatus,
-                job.page_id()
+                job.pageId()
         );
     }
 
@@ -53,9 +53,9 @@ public record Job(@Id UUID id,
                 form.getSalaryMax(),
                 form.getSource(),
                 form.getNotes(),
-                null,
+                form.getContent(),
                 form.getStatus(),
-                null
+                form.getPageId()
         );
     }
 }

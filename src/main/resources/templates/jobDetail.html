@@ -7,11 +7,17 @@
 
     <h2 th:text="${detail.job().title()}">title</h2>
 
-    <hr/>
-    <p><a th:href="@{/companies/{id}(id=${detail.job().companyId()})}" th:text="${detail.company().name()}">Company Name</a></p>
-    <div>
-        <div><span th:text="${detail.company().employeeCount()}">employee count</span> employees &middot; <span th:text="${detail.company().location()}">location</span></div>
-        <div th:text="${detail.company().summary()}">company summary</div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p><a th:href="@{/companies/{id}(id=${detail.job().companyId()})}" th:text="${detail.company().name()}">Company Name</a></p>
+                <div><span th:text="${detail.company().employeeCount()}">employee count</span> employees &middot; <span th:text="${detail.company().location()}">location</span></div>
+                <div th:text="${detail.company().summary()}">company summary</div>
+            </div>
+            <div class="col">
+                <h4 th:text="${'Salary Range: ' + detail.job().salaryDisplay()}">Salary</h4>
+            </div>
+        </div>
     </div>
 
     <hr/>

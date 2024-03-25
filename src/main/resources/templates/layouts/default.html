@@ -9,14 +9,22 @@
 </head>
 <body>
 <div class="container-lg">
-    <h1>jobosint</h1>
-    <div th:replace="~{fragments/header :: #nav-section}"></div>
+    <div class="row mb-12 py-3">
+        <div class="col-sm-1">
+            <h2>jobosint</h2>
+        </div>
+        <div class="col-sm-11" style="text-align: right">
+            <div th:replace="~{fragments/header :: #nav-section}"></div>
+        </div>
+    </div>
+    <hr/>
+
     <!-- start content -->
     <div th:replace="${content}">
         <p>Layout content</p>
     </div>
     <!-- end content -->
-    <footer>
+    <footer class="py-5">
         <div th:replace="~{fragments/footer :: #copy-section}"></div>
     </footer>
 </div>

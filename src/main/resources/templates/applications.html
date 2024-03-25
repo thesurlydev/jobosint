@@ -6,11 +6,7 @@
 <section>
     <h2>Applications</h2>
 
-    <p><a href="/app">Add an application</a></p>
-
-    <hr/>
-
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead>
         <tr>
             <th scope="col">Status</th>
@@ -28,7 +24,7 @@
             <td><a th:href="@{/companies/{id}(id=${detail.companyId()})}" th:text="${detail.companyName()}">Company Name</a></td>
             <td th:text="${detail.salaryDisplay()}"></td>
             <td th:text="${detail.jobSource()}"></td>
-            <td><a th:href="@{/apps/{id}/edit(id=${detail.id()})}">Edit</a></td>
+            <td><a th:href="@{/apps/{id}/edit(id=${detail.id()})}"><span class="badge bg-primary">Edit</span></a></td>
         </tr>
         </tbody>
     </table>

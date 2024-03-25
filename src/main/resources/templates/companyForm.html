@@ -1,4 +1,4 @@
-<html th:replace="~{layouts/default :: layout(~{::title}, ~{::section})}">
+<html th:replace="~{layouts/default :: layout(~{::title}, ~{::section})}" lang="en">
 <head>
     <title>jobosint - company form</title>
 </head>
@@ -8,31 +8,55 @@
 <h2 th:if="${company.id != null}">Edit company</h2>
 <form action="#" th:action="@{/company}" th:object="${company}" method="post">
     <input type="hidden" th:field="*{id}"/>
-    <p><label>
-        Name:
-        <input type="text" th:field="*{name}"/>
-    </label></p>
-    <p><label>
-        Location:
-        <input type="text" th:field="*{location}"/>
-    </label></p>
-    <p><label>
-        Website URL:
-        <input type="text" th:field="*{websiteUrl}"/>
-    </label></p>
-    <p><label>
-        Ticker:
-        <input type="text" th:field="*{stockTicker}"/>
-    </label></p>
-    <p><label>
-        Employee Count:
-        <input type="text" th:field="*{employeeCount}"/>
-    </label></p>
-    <p><label>
-        Summary:
-        <textarea rows="10" cols="50" th:field="*{summary}"></textarea>
-    </label></p>
-    <p><input type="submit" value="Submit"/></p>
+
+    <div class="row mb-3">
+        <label for="name" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="name" th:field="*{name}"/>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="location" class="col-sm-2 col-form-label">Location</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="location" placeholder="San Francisco, California" th:field="*{location}"/>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="websiteUrl" class="col-sm-2 col-form-label">Website URL</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="websiteUrl" placeholder="https://acme.com" th:field="*{websiteUrl}"/>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="stockTicker" class="col-sm-2 col-form-label">Ticker</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="stockTicker" placeholder="ACME" th:field="*{stockTicker}"/>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="employeeCount" class="col-sm-2 col-form-label">Employee Count</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="employeeCount" th:field="*{employeeCount}"/>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="summary" class="col-sm-2 col-form-label">Summary</label>
+        <div class="col-sm-6">
+            <textarea class="form-control" id="summary" th:field="*{summary}"></textarea>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
 </form>
 </section>
 </body>

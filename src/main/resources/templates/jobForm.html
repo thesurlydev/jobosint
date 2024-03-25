@@ -4,44 +4,100 @@
 </head>
 <body>
 <section>
-<h2 th:if="${job.id == null}">Add a job</h2>
-<div th:if="${job.id != null}">
-    <h2>Edit job</h2>
-    <a th:href="@{/jobs/{id}/delete(id=${job.id})}" class="btn btn-danger btn-sm">
-        <input type="submit" value="Delete" class="btn btn-danger btn-sm"/>
-    </a>
-</div>
-<form action="#" th:action="@{/job}" th:object="${job}" method="post">
-    <input type="hidden"  th:field="*{id}"/>
-    <p>Title: <input type="text" th:field="*{title}" size="50" /></p>
-    <p>URL: <input type="text" th:field="*{url}" size="80" /></p>
-    <p>
-        <label>Company:
-            <select th:field="*{companyId}">
-                <option th:each="c: ${companies}" th:value="${c.id}" th:text="${c.name}"></option>
-            </select>
-        </label>
-        <a href="/company">Add new</a>
-    </p>
-    <p>Salary: <input type="text" th:field="*{salaryMin}" size="10" /> to <input type="text" th:field="*{salaryMax}" size="10" /></p>
-    <p>Source:
-        <select th:field="*{source}">
-            <option th:each="s: ${sources}" th:value="${s}" th:text="${s}"></option>
-        </select>
-    </p>
+    <h2 th:if="${job.id == null}">Add a job</h2>
+    <div th:if="${job.id != null}">
 
-    <p>Status:
-        <select th:field="*{status}">
-            <option th:each="s: ${statuses}" th:value="${s}" th:text="${s}"></option>
-        </select>
-    </p>
+            <h2>Edit job</h2>
+    </div>
+    <form action="#" th:action="@{/job}" th:object="${job}" method="post">
+        <input type="hidden" th:field="*{id}"/>
 
-    <p>Notes:<br/>
-        <textarea rows="5" cols="50" th:field="*{notes}"></textarea>
-    </p>
+        <div class="row mb-3">
+            <label for="title" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="title" th:field="*{title}"/>
+            </div>
+        </div>
 
-    <p><input type="submit" value="Submit" /></p>
-</form>
+        <div class="row mb-3">
+            <label for="url" class="col-sm-2 col-form-label">URL</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="url" th:field="*{url}"/>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="company" class="col-sm-2 col-form-label">Company</label>
+            <div class="col-sm-6">
+                <select class="form-select" id="company" th:field="*{companyId}">
+                    <option th:each="c: ${companies}" th:value="${c.id}" th:text="${c.name}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="salary-min" class="col-sm-2 col-form-label">Salary Range</label>
+            <div class="col-sm-1">
+                <input type="text" id="salary-min" class="form-control" th:field="*{salaryMin}"/>
+            </div>
+            <div class="col-sm-1">
+               <input type="text" id="salary-max" class="form-control" aria-label="Max Salary" th:field="*{salaryMax}"/>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="source" class="col-sm-2 col-form-label">Source</label>
+            <div class="col-sm-6">
+                <select class="form-select" id="source" th:field="*{source}">
+                    <option th:each="s: ${sources}" th:value="${s}" th:text="${s}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="status" class="col-sm-2 col-form-label">Job Status</label>
+            <div class="col-sm-6">
+                <select class="form-select" id="status" th:field="*{status}">
+                    <option th:each="s: ${statuses}" th:value="${s}" th:text="${s}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="notes" class="col-sm-2 col-form-label">Notes</label>
+            <div class="col-sm-6">
+                <textarea id="notes" class="form-control" th:field="*{notes}"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-6">
+            <label for="content" class="form-label">Content:</label>
+            <div class="col-sm-9">
+                <textarea id="content" class="form-control" th:field="*{content}" style="height: 500px"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3 py-3">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary">Save Job</button>
+            </div>
+        </div>
+    </form>
+
+
+
+    <div th:if="${job.id != null}" class="row mb-3 my-5 py-3">
+        <hr/>
+        <div class="col-sm-3">
+            <h4>Danger Zone</h4>
+        </div>
+        <div class="col-sm-3">
+            <a th:href="@{/jobs/{id}/delete(id=${job.id})}" class="btn btn-danger btn-sm">
+                <button class="btn btn-danger btn-sm">Delete this job</button>
+            </a>
+        </div>
+    </div>
 
 </section>
 </body>
