@@ -58,12 +58,14 @@
             </div>
             <div class="col">
                 <h4>Qualifications</h4>
-                Required:
-                <ul>
+                <strong>Required</strong>
+                <div th:if="${detail.job().requiredQualifications().isEmpty()}">n/a</div>
+                <ul th:if="${!detail.job().requiredQualifications().isEmpty()}">
                     <li th:each="qualification : ${detail.job().requiredQualifications()}" th:text="${qualification}">qualification</li>
                 </ul>
-                Preferred:
-                <ul>
+                <strong>Preferred</strong>
+                <div th:if="${detail.job().preferredQualifications().isEmpty()}">n/a</div>
+                <ul th:if="${!detail.job().preferredQualifications().isEmpty()}">
                     <li th:each="qualification : ${detail.job().preferredQualifications()}" th:text="${qualification}">qualification</li>
                 </ul>
             </div>

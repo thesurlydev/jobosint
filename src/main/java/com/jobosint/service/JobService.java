@@ -44,7 +44,7 @@ public class JobService {
         return jobRepository.save(job);
     }
 
-    public List<Job> searchJobs(String query) {
+    public List<JobDetail> searchJobs(String query) {
         return jobRepository.searchJobs(query);
     }
 }

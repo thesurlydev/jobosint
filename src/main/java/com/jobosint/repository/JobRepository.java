@@ -28,10 +28,7 @@ public interface JobRepository extends CrudRepository<Job, UUID> {
     @Query("delete from jobosint.public.job where company = :companyId")
     void deleteAllByCompanyId(UUID companyId);
 
-    @Query("""
-    select * from jobosint.public.job
-    where title ilike '%' || :query || '%' or content ilike '%' || :query || '%'
-    """)
-    List<Job> searchJobs(String query);
+    @Query(JOB_DETAIL_SELECT + " and (title ilike '%' || :query || '%' or content ilike '%' || :query || '%')")
+    List<JobDetail> searchJobs(String query);
 
 }
