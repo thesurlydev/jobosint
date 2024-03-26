@@ -19,6 +19,7 @@ import com.jobosint.service.JobService;
 import com.jobosint.service.ai.CompanyDetailsService;
 import com.jobosint.service.ai.JobAttributeService;
 import com.jobosint.util.ParseUtils;
+import com.jobosint.util.StringUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -125,6 +126,8 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         return company;
     }
 
+
+
     private Job processJob(JobDescriptionParserResult jobDescriptionParserResult,
                            Page page,
                            Company company,
@@ -141,6 +144,8 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 log.warn("Unexpected salary range length: {}", jobDescriptionParserResult.salaryRange().length);
             }
         }
+
+        String url = StringUtils.removeQueryString(page.url());
 
         String jobDescription = jobDescriptionParserResult.description();
         Optional<JobAttributes> jobAttributes = jobAttributesService.parseJobDescription(jobDescription);
@@ -160,7 +165,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             job = new Job(null,
                     company.id(),
                     jobDescriptionParserResult.title(),
-                    page.url(),
+                    url,
                     salaryMin,
                     salaryMax,
                     jobSource,
@@ -184,7 +189,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             job = new Job(null,
                     company.id(),
                     jobDescriptionParserResult.title(),
-                    page.url(),
+                    url,
                     salaryMin,
                     salaryMax,
                     jobSource,
