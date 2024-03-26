@@ -7,6 +7,7 @@ import com.jobosint.model.Job;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.model.Page;
 import com.jobosint.model.ai.CompanyDetail;
+import com.jobosint.model.greenhouse.GetJobResult;
 import com.jobosint.parse.BuiltinParser;
 import com.jobosint.parse.LinkedInParser;
 import com.jobosint.parse.WorkdayParser;
@@ -14,6 +15,7 @@ import com.jobosint.service.CompanyService;
 import com.jobosint.service.GreenhouseService;
 import com.jobosint.service.JobService;
 import com.jobosint.service.ai.CompanyDetailsService;
+import com.jobosint.util.ParseUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +66,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             } else if (url.startsWith("https://boards.greenhouse.io/")) {
 
                 // instead of parsing the page content, we can use the greenhouse API to get the job details
-                com.jobosint.model.greenhouse.GetJobResult result = greenhouseService.getJob(page.url());
+                GetJobResult result = greenhouseService.getJob(page.url());
 
                 var escapedContent = StringEscapeUtils.unescapeHtml4(result.job().content());
 
@@ -72,7 +74,9 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 HtmlToMarkdownConverter converter = new HtmlToMarkdownConverter();
                 String markdownContent = converter.convertToMarkdown(escapedContent);
 
-                jobDescriptionParserResult = new JobDescriptionParserResult(result.job().title(), result.boardToken(), markdownContent);
+                String[] salaryRange = ParseUtils.parseSalaryRange(markdownContent);
+
+                jobDescriptionParserResult = new JobDescriptionParserResult(result.job().title(), result.boardToken(), markdownContent, salaryRange);
                 jobSource = "Greenhouse";
             } else {
                 log.error("Unsupported job site: {}", page.url());
@@ -119,12 +123,24 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                            Company company,
                            String jobSource) {
 
+        String salaryMin = null, salaryMax = null;
+        if (jobDescriptionParserResult.salaryRange() != null) {
+            if (jobDescriptionParserResult.salaryRange().length == 1) {
+                salaryMin = jobDescriptionParserResult.salaryRange()[0];
+            } else if (jobDescriptionParserResult.salaryRange().length == 2) {
+                salaryMin = jobDescriptionParserResult.salaryRange()[0];
+                salaryMax = jobDescriptionParserResult.salaryRange()[1];
+            } else {
+                log.warn("Unexpected salary range length: {}", jobDescriptionParserResult.salaryRange().length);
+            }
+        }
+
         Job job = new Job(null,
                 company.id(),
                 jobDescriptionParserResult.title(),
                 page.url(),
-                null,
-                null,
+                salaryMin,
+                salaryMax,
                 jobSource,
                 null,
                 jobDescriptionParserResult.description(),

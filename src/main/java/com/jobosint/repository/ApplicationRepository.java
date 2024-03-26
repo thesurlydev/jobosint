@@ -2,6 +2,7 @@ package com.jobosint.repository;
 
 import com.jobosint.model.Application;
 import com.jobosint.model.ApplicationDetail;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -24,4 +25,8 @@ inner join public.company c on c.id = j.company
 
     @Query(APPLICATION_DETAIL_SELECT + "where a.id = :id")
     ApplicationDetail findApplicationDetailById(UUID id);
+
+    @Modifying
+    @Query("delete from jobosint.public.application where job = :jobId")
+    void deleteAllByJobId(UUID jobId);
 }

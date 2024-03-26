@@ -2,6 +2,7 @@ package com.jobosint.service;
 
 import com.jobosint.model.Job;
 import com.jobosint.model.JobDetail;
+import com.jobosint.repository.ApplicationRepository;
 import com.jobosint.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class JobService {
 
     private final JobRepository jobRepository;
+    private final ApplicationRepository applicationRepository;
 
     public List<JobDetail> getAllJobs() {
         return jobRepository.findAllJobDetailOrderByCreatedAt();
@@ -31,7 +33,11 @@ public class JobService {
     }
 
     public void deleteJob(UUID id) {
-        jobRepository.deleteById(id);
+        getJob(id).ifPresent(job -> {
+            applicationRepository.deleteAllByJobId(id);
+            jobRepository.delete(job);
+            log.info("Deleted job: {}", job);
+        });
     }
 
     public Job saveJob(Job job) {

@@ -2,6 +2,7 @@ package com.jobosint.parse;
 
 import com.jobosint.model.JobDescription;
 import com.jobosint.model.JobDescriptionParserResult;
+import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,7 +31,9 @@ public class LinkedInParser {
         String rawMarkdown = parseResult.getData().getMarkdownBody();
         String jobDescriptionMarkdown = rawMarkdown.replace("{#job-details}", "");
 
-        return new JobDescriptionParserResult(title, company, jobDescriptionMarkdown);
+        String[] salaryRange = ParseUtils.parseSalaryRange(jobDescriptionMarkdown);
+
+        return new JobDescriptionParserResult(title, company, jobDescriptionMarkdown, salaryRange);
     }
 
     public void parseSearchResults(String path) throws IOException {

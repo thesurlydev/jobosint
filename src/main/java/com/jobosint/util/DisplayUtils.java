@@ -12,11 +12,10 @@ public class DisplayUtils {
         } else if (salaryMin != null && !salaryMin.isBlank() && (salaryMax == null || salaryMax.isBlank())) {
             return salaryMin;
         } else {
-            var range = new StringJoiner(" to ")
-                    .add(salaryMin)
-                    .add(salaryMax)
+            return new StringJoiner(" to ")
+                    .add("$" + salaryMin + "K")
+                    .add("$" + salaryMax + "K")
                     .toString();
-            return "$" + range + "K";
         }
     }
 }
