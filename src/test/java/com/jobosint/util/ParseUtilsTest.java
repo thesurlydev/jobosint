@@ -30,6 +30,17 @@ public class ParseUtilsTest {
     }
 
     @Test
+    public void testParseSalaryRange3() {
+        String jobDescription = "$204,000 - $313,000 a year\n" +
+                "The base salary range for new hires in this role is $235,000 for a level 4 and $270,000 for a level 5 . ";
+        String[] salaryRange = ParseUtils.parseSalaryRange(jobDescription);
+
+        assertNotNull(salaryRange);
+        assertEquals("204.0", salaryRange[0]);
+        assertEquals("313.0", salaryRange[1]);
+    }
+
+    @Test
     public void testParseSalaryRangeNone() {
         String jobDescription = "The salary range for this position is.";
         String[] salaryRange = ParseUtils.parseSalaryRange(jobDescription);

@@ -9,6 +9,7 @@ import com.jobosint.model.Page;
 import com.jobosint.model.ai.CompanyDetail;
 import com.jobosint.model.greenhouse.GetJobResult;
 import com.jobosint.parse.BuiltinParser;
+import com.jobosint.parse.LeverParser;
 import com.jobosint.parse.LinkedInParser;
 import com.jobosint.parse.WorkdayParser;
 import com.jobosint.service.CompanyService;
@@ -38,6 +39,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
     private final LinkedInParser linkedInParser;
     private final BuiltinParser builtInParser;
     private final WorkdayParser workdayParser;
+    private final LeverParser leverParser;
 
     @Override
     public void onApplicationEvent(@NonNull PageCreatedEvent event) {
@@ -59,10 +61,11 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 jobDescriptionParserResult = linkedInParser.parseJobDescription(contentPath);
                 jobSource = "LinkedIn";
             } else if (url.contains(".myworkdayjobs.com/")) {
-
                 jobDescriptionParserResult = workdayParser.parseJobDescription(contentPath);
                 jobSource = "Workday";
-
+            } else if (url.startsWith("https://jobs.lever.co/")) {
+                jobDescriptionParserResult = leverParser.parseJobDescription(contentPath);
+                jobSource = "Lever";
             } else if (url.startsWith("https://boards.greenhouse.io/")) {
 
                 // instead of parsing the page content, we can use the greenhouse API to get the job details

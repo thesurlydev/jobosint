@@ -25,6 +25,10 @@
     <div class="alert alert-success" role="alert" th:if="${detail.job().status() == 'Applied'}">Applied</div>
     <div class="alert alert-primary" role="alert" th:if="${detail.job().status() != 'Applied'}"><strong><a th:href="@{/jobs/{id}/apply(id=${detail.job().id()})}">Apply</a></strong></div>
 
+    <p>
+        Original URL: <a th:href="${detail.job().url()}" th:text="${detail.job().url()}" target="_blank">URL</a>
+    </p>
+
     <div th:utext="${detail.job().htmlContent()}">content</div>
 
 </section>

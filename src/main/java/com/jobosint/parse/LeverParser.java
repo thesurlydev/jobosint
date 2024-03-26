@@ -3,7 +3,7 @@ package com.jobosint.parse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobosint.convert.HtmlToMarkdownConverter;
 import com.jobosint.model.JobDescriptionParserResult;
-import com.jobosint.model.workday.WorkdayLinkedData;
+import com.jobosint.model.lever.LeverLinkedData;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Component
-public class WorkdayParser {
+public class LeverParser {
     private final HtmlToMarkdownConverter htmlToMarkdownConverter;
 
     public JobDescriptionParserResult parseJobDescription(String path) throws IOException {
@@ -32,25 +32,16 @@ public class WorkdayParser {
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        WorkdayLinkedData workdayLinkedData = mapper.readValue(linkedDataJson, WorkdayLinkedData.class);
+        LeverLinkedData leverLinkedData = mapper.readValue(linkedDataJson, LeverLinkedData.class);
 
-        String descriptionSelector = "div[data-automation-id='jobPostingDescription']";
-        Element descEl = doc.selectFirst(descriptionSelector);
+        String markdown = htmlToMarkdownConverter.convertToMarkdown(leverLinkedData.getDescription());
 
-        String description;
-        if (descEl != null) {
-            String descHtml = descEl.html();
-            description = htmlToMarkdownConverter.convertToMarkdown(descHtml);
-        } else {
-            description = htmlToMarkdownConverter.convertToMarkdown(workdayLinkedData.getDescription());
-        }
-
-        String[] salaryRange = ParseUtils.parseSalaryRange(description);
+        String[] salaryRange = ParseUtils.parseSalaryRange(markdown);
 
         return new JobDescriptionParserResult(
-                workdayLinkedData.getTitle(),
-                workdayLinkedData.getHiringOrganization().getName(),
-                description,
+                leverLinkedData.getTitle(),
+                leverLinkedData.getHiringOrganization().getName(),
+                markdown,
                 salaryRange);
     }
 }

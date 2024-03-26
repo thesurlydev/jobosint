@@ -3,11 +3,11 @@ package com.jobosint.util;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.data.util.Pair;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +40,10 @@ public class ParseUtils {
         for (double salary : salaries) {
             double convertedSalary = salary / 1000.0;
             convertedSalaries.add(String.format("%.1f", convertedSalary));
+        }
+
+        if (convertedSalaries.size() > 2) {
+            convertedSalaries = convertedSalaries.subList(0, 2);
         }
 
         return convertedSalaries.toArray(new String[0]);
