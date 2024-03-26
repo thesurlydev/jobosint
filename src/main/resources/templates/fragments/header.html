@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
 <nav id="nav-section">
-    <a class="navbar-brand" href="/"><h3>jobOSINT</h3></a>
+    <a class="navbar-brand" href="/"><h3 style="color: purple" class="pt-2">jobOSINT</h3></a>
     <ul class="nav nav-tabs justify-content-end mb-3">
         <li class="nav-item">
             <a class="nav-link" href="/apps" th:classappend="${apps != null || app != null}?active">Applications</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/jobs" th:classappend="${jobs != null || job != null}?active">Jobs</a>
+            <a class="nav-link" href="/jobs" th:classappend="${jobs != null || job != null || detail != null}?active">Jobs</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/companies" th:classappend="${companies != null || company != null}?active">Companies</a>

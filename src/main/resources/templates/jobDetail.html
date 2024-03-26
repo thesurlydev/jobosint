@@ -10,11 +10,13 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <p><a th:href="@{/companies/{id}(id=${detail.job().companyId()})}" th:text="${detail.company().name()}">Company Name</a></p>
-                <div><span th:text="${detail.company().employeeCount()}">employee count</span> employees &middot; <span th:text="${detail.company().location()}">location</span></div>
+                <p><a th:href="@{/companies/{id}(id=${detail.job().companyId()})}" th:text="${detail.company().name()}">Company
+                    Name</a></p>
+                <div><span th:text="${detail.company().employeeCount()}">employee count</span> employees &middot; <span
+                        th:text="${detail.company().location()}">location</span></div>
                 <div th:text="${detail.company().summary()}">company summary</div>
             </div>
-            <div class="col">
+            <div class="col" style="text-align: right">
                 <h4 th:text="${'Salary Range: ' + detail.job().salaryDisplay()}">Salary</h4>
             </div>
         </div>
@@ -22,12 +24,68 @@
 
     <hr/>
 
-    <div class="alert alert-success" role="alert" th:if="${detail.job().status() == 'Applied'}">Applied</div>
-    <div class="alert alert-primary" role="alert" th:if="${detail.job().status() != 'Applied'}"><strong><a th:href="@{/jobs/{id}/apply(id=${detail.job().id()})}">Apply</a></strong></div>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </symbol>
+    </svg>
 
-    <p>
-        Original URL: <a th:href="${detail.job().url()}" th:text="${detail.job().url()}" target="_blank">URL</a>
-    </p>
+    <div class="container py-3">
+        <div class="row">
+            <div class="col">
+                <div><strong>Source:</strong> <span th:text="${detail.job().source()}">source</span></div>
+                <div><strong>Original URL:</strong> <a th:href="${detail.job().url()}" th:text="${detail.job().url()}" target="_blank">URL</a></div>
+            </div>
+            <div class="col-2" style="text-align: right">
+                <div class="alert alert-success d-flex align-items-center" role="alert" th:if="${detail.job().status() == 'Applied'}">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                    <div>Applied</div>
+                </div>
+                <a th:href="@{/jobs/{id}/apply(id=${detail.job().id()})}">
+                    <button class="btn btn-outline-success" type="button" th:if="${detail.job().status() != 'Applied'}">Apply</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-3">
+        <div class="row">
+            <div class="col">
+                <h4>Values</h4>
+                <ul>
+                    <li th:each="value : ${detail.job().cultureValues()}" th:text="${value}">value</li>
+                </ul>
+            </div>
+            <div class="col">
+                <h4>Qualifications</h4>
+                Required:
+                <ul>
+                    <li th:each="qualification : ${detail.job().requiredQualifications()}" th:text="${qualification}">qualification</li>
+                </ul>
+                Preferred:
+                <ul>
+                    <li th:each="qualification : ${detail.job().preferredQualifications()}" th:text="${qualification}">qualification</li>
+                </ul>
+            </div>
+            <div class="col">
+                <h4>Technology Stack</h4>
+                <div th:if="${!detail.job().programmingLanguages().isEmpty()}"><strong>Languages:</strong> <span th:each="language : ${#strings.listJoin(detail.job().programmingLanguages(), ', ')}" th:text="${language}">Value</span></div>
+                <div th:if="${!detail.job().frameworks().isEmpty()}"><strong>Frameworks:</strong> <span th:each="framework : ${#strings.listJoin(detail.job().frameworks(), ', ')}" th:text="${framework}">Value</span></div>
+                <div th:if="${!detail.job().databases().isEmpty()}"><strong>Databases:</strong> <span th:each="db : ${#strings.listJoin(detail.job().databases(), ', ')}" th:text="${db}">Value</span></div>
+                <div th:if="${!detail.job().cloudProviders().isEmpty()}"><strong>Cloud Providers:</strong> <span th:each="cloud : ${#strings.listJoin(detail.job().cloudProviders(), ', ')}" th:text="${cloud}">Value</span></div>
+                <div th:if="${!detail.job().cloudServices().isEmpty()}"><strong>Cloud Services:</strong> <span th:each="svc : ${#strings.listJoin(detail.job().cloudServices(), ', ')}" th:text="${svc}">Value</span></div>
+            </div>
+            <div class="col">
+                <h4>Interview Process</h4>
+                <p th:if="${detail.job().interviewSteps().isEmpty()}">Not specified</p>
+                <ol th:if="${!detail.job().interviewSteps().isEmpty()}">
+                    <li th:each="step : ${detail.job().interviewSteps()}" th:text="${step}">step</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <hr/>
 
     <div th:utext="${detail.job().htmlContent()}">content</div>
 

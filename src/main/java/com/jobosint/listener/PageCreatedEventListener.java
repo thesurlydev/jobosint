@@ -7,6 +7,7 @@ import com.jobosint.model.Job;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.model.Page;
 import com.jobosint.model.ai.CompanyDetail;
+import com.jobosint.model.ai.JobAttributes;
 import com.jobosint.model.greenhouse.GetJobResult;
 import com.jobosint.parse.BuiltinParser;
 import com.jobosint.parse.LeverParser;
@@ -16,6 +17,7 @@ import com.jobosint.service.CompanyService;
 import com.jobosint.service.GreenhouseService;
 import com.jobosint.service.JobService;
 import com.jobosint.service.ai.CompanyDetailsService;
+import com.jobosint.service.ai.JobAttributeService;
 import com.jobosint.util.ParseUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -40,6 +43,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
     private final BuiltinParser builtInParser;
     private final WorkdayParser workdayParser;
     private final LeverParser leverParser;
+    private final JobAttributeService jobAttributesService;
 
     @Override
     public void onApplicationEvent(@NonNull PageCreatedEvent event) {
@@ -138,18 +142,68 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             }
         }
 
-        Job job = new Job(null,
-                company.id(),
-                jobDescriptionParserResult.title(),
-                page.url(),
-                salaryMin,
-                salaryMax,
-                jobSource,
-                null,
-                jobDescriptionParserResult.description(),
-                "Active",
-                page.id()
-        );
+        String jobDescription = jobDescriptionParserResult.description();
+        Optional<JobAttributes> jobAttributes = jobAttributesService.parseJobDescription(jobDescription);
+        Job job;
+        if (jobAttributes.isPresent()) {
+            JobAttributes attributes = jobAttributes.get();
+            List<String> interviewSteps = attributes.interviewProcess().processSteps();
+            List<String> programmingLanguages = attributes.technologyStack().programmingLanguages();
+            List<String> databases = attributes.technologyStack().databases();
+            List<String> frameworks = attributes.technologyStack().frameworks();
+            List<String> cloudServices = attributes.technologyStack().cloudServices();
+            List<String> cloudProviders = attributes.technologyStack().cloudProviders();
+            List<String> requiredQualifications = attributes.jobQualifications().required();
+            List<String> preferredQualifications = attributes.jobQualifications().preferred();
+            List<String> cultureValues = attributes.culture().values();
+
+            job = new Job(null,
+                    company.id(),
+                    jobDescriptionParserResult.title(),
+                    page.url(),
+                    salaryMin,
+                    salaryMax,
+                    jobSource,
+                    null,
+                    jobDescription,
+                    "Active",
+                    page.id(),
+                    interviewSteps,
+                    programmingLanguages,
+                    databases,
+                    frameworks,
+                    cloudServices,
+                    cloudProviders,
+                    requiredQualifications,
+                    preferredQualifications,
+                    cultureValues
+            );
+
+        } else {
+            log.error("Failed to parse job attributes");
+            job = new Job(null,
+                    company.id(),
+                    jobDescriptionParserResult.title(),
+                    page.url(),
+                    salaryMin,
+                    salaryMax,
+                    jobSource,
+                    null,
+                    jobDescription,
+                    "Active",
+                    page.id(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
+
         return jobService.saveJob(job);
     }
 }

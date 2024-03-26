@@ -1,6 +1,7 @@
 package com.jobosint.service.ai;
 
-import com.jobosint.model.ai.JobDescriptionParseResult;
+import com.jobosint.model.ai.InterviewProcess;
+import com.jobosint.model.ai.JobAttributes;
 import com.jobosint.service.TokenizerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,16 +16,15 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 @Slf4j
-public class JobDescriptionParserService {
-
+public class JobAttributeService {
     private final ChatClient chatClient;
     private final TokenizerService tokenizerService;
 
-    public Optional<JobDescriptionParseResult> parseJobDescription(String jobDescriptionContent) {
-        var outputParser = new BeanOutputParser<>(JobDescriptionParseResult.class);
+    public Optional<JobAttributes> parseJobDescription(String jobDescriptionContent) {
+        var outputParser = new BeanOutputParser<>(JobAttributes.class);
 
         // determine the number of tokens in the raw text
         Integer tokenCount = tokenizerService.countTokens(jobDescriptionContent);
@@ -34,10 +34,25 @@ public class JobDescriptionParserService {
 
         String userMessage =
                 """
-                        Given the following job description return details about the job {jd}.
-                        Responsibilities and qualifications should be copied verbatim from the given job description.
-                        {format}
-                        """;
+                Given the following job description extract:
+                 - The interview process steps
+                 - The qualifications for the job
+                 - The technology stack
+                 - The cultural values
+                for the job:
+                {jd}
+                                
+                Interview steps should be separated into ordered steps.
+                If no interview process is mentioned, return empty list.
+                
+                Qualifications should be separated into required and preferred.
+                
+                Technology stack should be separated into programming languages, frameworks, databases, cloud providers, and cloud services.
+                
+                If no cultural values are mentioned, return empty list.
+                
+                {format}
+                """;
 
         PromptTemplate promptTemplate = new PromptTemplate(
                 userMessage, Map.of("jd", jobDescriptionContent, "format",
@@ -52,7 +67,7 @@ public class JobDescriptionParserService {
             return Optional.empty();
         }
 
-        JobDescriptionParseResult jdParseResult = outputParser.parse(generation.getOutput().getContent());
-        return Optional.of(jdParseResult);
+        JobAttributes jobAttributes = outputParser.parse(generation.getOutput().getContent());
+        return Optional.of(jobAttributes);
     }
 }

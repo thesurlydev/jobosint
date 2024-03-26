@@ -53,6 +53,15 @@ create table if not exists job
     page_id    uuid,
     notes      text,
     content    text,
+    interview_steps text[],
+    programming_languages text[],
+    databases text[],
+    frameworks text[],
+    cloud_services text[],
+    cloud_providers text[],
+    required_qualifications text[],
+    preferred_qualifications text[],
+    culture_values text[],
     constraint fk_job_company foreign key (company) references jobosint.public.company (id)
 );
 
