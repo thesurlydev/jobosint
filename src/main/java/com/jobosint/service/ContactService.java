@@ -32,4 +32,8 @@ public class ContactService {
     public Contact saveContact(Contact contact) {
         return contactRepository.save(contact);
     }
+
+    public List<ContactDetail> searchContacts(String query) {
+        return contactRepository.searchContacts(query);
+    }
 }

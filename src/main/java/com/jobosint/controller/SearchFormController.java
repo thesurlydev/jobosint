@@ -2,6 +2,7 @@ package com.jobosint.controller;
 
 import com.jobosint.model.form.SearchForm;
 import com.jobosint.service.CompanyService;
+import com.jobosint.service.ContactService;
 import com.jobosint.service.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class SearchFormController {
 
+    private final ContactService contactService;
     private final CompanyService companyService;
     private final JobService jobService;
 
@@ -29,15 +31,18 @@ public class SearchFormController {
 
         model.addAttribute("searchForm", searchForm);
 
+        var contactResults = contactService.searchContacts(searchForm.getQuery());
+        model.addAttribute("contactResults", contactResults);
+        var numContactResults = contactResults.size();
+        model.addAttribute("numContactResults", numContactResults);
+
         var companyResults = companyService.search(searchForm.getQuery());
         model.addAttribute("companyResults", companyResults);
-
         var numCompanyResults = companyResults.size();
         model.addAttribute("numCompanyResults", numCompanyResults);
 
         var jobResults = jobService.searchJobs(searchForm.getQuery());
         model.addAttribute("jobResults", jobResults);
-
         var numJobResults = jobResults.size();
         model.addAttribute("numJobResults", numJobResults);
 
