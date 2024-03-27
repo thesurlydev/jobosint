@@ -95,14 +95,6 @@ create table if not exists page
 create table if not exists attribute
 (
     id   uuid primary key default gen_random_uuid(),
-    name varchar(255) not null
-        constraint attribute_name_unique UNIQUE
-);
-
-create table if not exists attribute_value
-(
-    id        uuid primary key default gen_random_uuid(),
-    attribute uuid not null,
-    value     text not null,
-    constraint fk_attribute_value_attribute foreign key (attribute) references jobosint.public.attribute (id)
+    name varchar(255) not null constraint attribute_name_unique UNIQUE,
+    values text[]
 );

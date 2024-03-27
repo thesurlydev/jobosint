@@ -15,8 +15,6 @@ public interface AttributeRepository
     @NotNull
     @Override List<Attribute> findAll();
 
-    List<Attribute> findAllByOrderByName(Pageable pageable);
-
-//    Optional<Attribute> findById(UUID id);
+    Attribute findAttributeByName(String name);
 
 }

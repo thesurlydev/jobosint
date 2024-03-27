@@ -1,21 +1,16 @@
 package com.jobosint.controller;
 
 
-import com.jobosint.model.Attribute;
-import com.jobosint.model.AttributeValue;
-import com.jobosint.model.form.AttributeForm;
-import com.jobosint.model.form.DeleteForm;
 import com.jobosint.service.AttributeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.Arrays;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,9 +23,9 @@ public class AttributeController {
     public String attributes(Model model) {
         var attributes = attributeService.getAllAttributes();
         model.addAttribute("attributes", attributes);
-        model.addAttribute("attributeForm", new AttributeForm());
+        /*model.addAttribute("attributeForm", new AttributeForm());
         model.addAttribute("deleteAttributeForm", new DeleteForm());
-        model.addAttribute("deleteAttributeValueForm", new DeleteForm());
+        model.addAttribute("deleteAttributeValueForm", new DeleteForm());*/
         return "attributes";
     }
 
@@ -40,7 +35,7 @@ public class AttributeController {
         return "redirect:/attributes";
     }
 
-    @DeleteMapping("/attributes/{id}/values/{valueId}")
+    /*@DeleteMapping("/attributes/{id}/values/{valueId}")
     public String deleteAttributeValue(@PathVariable UUID id,
                                        @PathVariable UUID valueId) {
         attributeService.deleteAttributeValue(valueId);
@@ -62,5 +57,5 @@ public class AttributeController {
         Iterable<AttributeValue> pAttrValues = attributeService.saveAttributeValues(values);
         log.info("Saved attribute values: {}", pAttrValues);
         return "redirect:/attributes";
-    }
+    }*/
 }
