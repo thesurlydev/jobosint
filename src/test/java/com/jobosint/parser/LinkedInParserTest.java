@@ -1,6 +1,5 @@
 package com.jobosint.parser;
 
-import com.jobosint.convert.HtmlToMarkdownConverter;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.parse.JobDescriptionParser;
 import com.jobosint.parse.LinkedInParser;
@@ -13,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Tag("parse")
 public class LinkedInParserTest {
 
-    private final LinkedInParser parser = new LinkedInParser(new JobDescriptionParser(new HtmlToMarkdownConverter()));
+    private final LinkedInParser parser = new LinkedInParser(new JobDescriptionParser());
 
     @Test
     public void parseJobDescription() throws Exception {

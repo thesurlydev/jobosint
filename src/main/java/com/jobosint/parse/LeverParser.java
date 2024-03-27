@@ -1,9 +1,9 @@
 package com.jobosint.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jobosint.convert.HtmlToMarkdownConverter;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.model.lever.LeverLinkedData;
+import com.jobosint.util.ConversionUtils;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -17,7 +17,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Component
 public class LeverParser {
-    private final HtmlToMarkdownConverter htmlToMarkdownConverter;
 
     public JobDescriptionParserResult parseJobDescription(String path) throws IOException {
         File input = new File(path);
@@ -34,7 +33,7 @@ public class LeverParser {
         ObjectMapper mapper = new ObjectMapper();
         LeverLinkedData leverLinkedData = mapper.readValue(linkedDataJson, LeverLinkedData.class);
 
-        String markdown = htmlToMarkdownConverter.convertToMarkdown(leverLinkedData.getDescription());
+        String markdown = ConversionUtils.convertToMarkdown(leverLinkedData.getDescription());
 
         String[] salaryRange = ParseUtils.parseSalaryRange(markdown);
 

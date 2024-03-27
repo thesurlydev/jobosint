@@ -1,11 +1,9 @@
 package com.jobosint.parser;
 
-import com.jobosint.convert.HtmlToMarkdownConverter;
 import com.jobosint.model.JobDescription;
 import com.jobosint.parse.JobDescriptionParser;
 import com.jobosint.parse.ParseResult;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +18,7 @@ public class JobDescriptionParserTest {
 
     @BeforeEach
     public void setup() {
-        jobDescriptionParser = new JobDescriptionParser(new HtmlToMarkdownConverter());
+        jobDescriptionParser = new JobDescriptionParser();
     }
 
     @Test

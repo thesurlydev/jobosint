@@ -1,8 +1,8 @@
 package com.jobosint.parse;
 
 
-import com.jobosint.convert.HtmlToMarkdownConverter;
 import com.jobosint.model.JobDescription;
+import com.jobosint.util.ConversionUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -21,8 +21,6 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 @Slf4j
 public class JobDescriptionParser implements Parser<JobDescription> {
-
-    private final HtmlToMarkdownConverter htmlToMarkdownConverter;
 
     @Override
     public ParseResult<JobDescription> parse(String html, String selector) {
@@ -45,7 +43,7 @@ public class JobDescriptionParser implements Parser<JobDescription> {
         String text = body.text();
 
         Elements article = body.select(selector);
-        String markdown = htmlToMarkdownConverter.convertToMarkdown(article.toString());
+        String markdown = ConversionUtils.convertToMarkdown(article.toString());
 
         JobDescription jd = new JobDescription();
         jd.setRawHead(head.toString());

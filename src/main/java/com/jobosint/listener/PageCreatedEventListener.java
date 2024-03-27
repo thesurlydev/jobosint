@@ -1,12 +1,10 @@
 package com.jobosint.listener;
 
-import com.jobosint.convert.HtmlToMarkdownConverter;
 import com.jobosint.event.PageCreatedEvent;
 import com.jobosint.model.Company;
 import com.jobosint.model.Job;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.model.Page;
-import com.jobosint.model.ai.CompanyDetail;
 import com.jobosint.model.greenhouse.GetJobResult;
 import com.jobosint.parse.BuiltinParser;
 import com.jobosint.parse.LeverParser;
@@ -16,6 +14,7 @@ import com.jobosint.service.CompanyService;
 import com.jobosint.service.GreenhouseService;
 import com.jobosint.service.JobService;
 import com.jobosint.service.ai.CompanyDetailsService;
+import com.jobosint.util.ConversionUtils;
 import com.jobosint.util.ParseUtils;
 import com.jobosint.util.StringUtils;
 import lombok.NonNull;
@@ -76,8 +75,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 var escapedContent = StringEscapeUtils.unescapeHtml4(result.job().content());
 
                 // we need to convert the content to markdown
-                HtmlToMarkdownConverter converter = new HtmlToMarkdownConverter();
-                String markdownContent = converter.convertToMarkdown(escapedContent);
+                String markdownContent = ConversionUtils.convertToMarkdown(escapedContent);
 
                 String[] salaryRange = ParseUtils.parseSalaryRange(markdownContent);
 

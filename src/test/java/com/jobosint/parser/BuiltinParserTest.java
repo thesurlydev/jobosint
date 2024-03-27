@@ -1,6 +1,5 @@
 package com.jobosint.parser;
 
-import com.jobosint.convert.HtmlToMarkdownConverter;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.parse.BuiltinParser;
 import com.jobosint.parse.JobDescriptionParser;
@@ -14,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Tag("parse")
 public class BuiltinParserTest {
 
-    private final BuiltinParser parser = new BuiltinParser(new JobDescriptionParser(new HtmlToMarkdownConverter()));
+    private final BuiltinParser parser = new BuiltinParser(new JobDescriptionParser());
 
     @Test
     public void testParse() throws IOException {

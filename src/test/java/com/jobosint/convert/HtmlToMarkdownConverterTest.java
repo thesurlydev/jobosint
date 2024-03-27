@@ -1,5 +1,6 @@
 package com.jobosint.convert;
 
+import com.jobosint.util.ConversionUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,7 +9,7 @@ public class HtmlToMarkdownConverterTest {
 
     @Test
     public void convertToMarkdown() {
-        String markdown = new HtmlToMarkdownConverter().convertToMarkdown(HTML);
+        String markdown = ConversionUtils.convertToMarkdown(HTML);
         System.out.println(markdown);
         assertTrue(markdown.contains("About the job"));
         assertTrue(markdown.contains("**Who You'll Work With**"));

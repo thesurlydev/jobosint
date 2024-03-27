@@ -1,7 +1,7 @@
 package com.jobosint.model;
 
-import com.jobosint.convert.MarkdownToHtmlConverter;
 import com.jobosint.model.form.JobForm;
+import com.jobosint.util.ConversionUtils;
 import com.jobosint.util.DisplayUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -22,7 +22,7 @@ public record Job(@Id UUID id,
 ) {
 
     public String htmlContent() {
-        return MarkdownToHtmlConverter.convertToHtml(this.content);
+        return ConversionUtils.convertToHtml(this.content);
     }
 
     public String salaryDisplay() {
