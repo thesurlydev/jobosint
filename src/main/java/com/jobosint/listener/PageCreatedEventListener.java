@@ -1,10 +1,7 @@
 package com.jobosint.listener;
 
 import com.jobosint.event.PageCreatedEvent;
-import com.jobosint.model.Company;
-import com.jobosint.model.Job;
-import com.jobosint.model.JobDescriptionParserResult;
-import com.jobosint.model.Page;
+import com.jobosint.model.*;
 import com.jobosint.model.greenhouse.GetJobResult;
 import com.jobosint.parse.BuiltinParser;
 import com.jobosint.parse.LeverParser;
@@ -49,9 +46,11 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
         Page page = event.getPage();
         String contentPath = page.contentPath();
-        String jobSource;
 
+        String jobSource = null;
+        CompanyParserResult companyParserResult = null;
         JobDescriptionParserResult jobDescriptionParserResult = null;
+
         try {
 
             var url = page.url();
@@ -61,6 +60,10 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             } else if (url.startsWith("https://www.linkedin.com/jobs/view/")) {
                 jobDescriptionParserResult = linkedInParser.parseJobDescription(contentPath);
                 jobSource = "LinkedIn";
+            } else if (url.startsWith("https://www.linkedin.com/company/")) {
+
+                companyParserResult = linkedInParser.parseCompanyDescription(contentPath);
+
             } else if (url.contains(".myworkdayjobs.com/")) {
                 jobDescriptionParserResult = workdayParser.parseJobDescription(contentPath);
                 jobSource = "Workday";
@@ -82,11 +85,23 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 jobDescriptionParserResult = new JobDescriptionParserResult(result.job().title(), result.boardToken(), markdownContent, salaryRange);
                 jobSource = "Greenhouse";
             } else {
-                log.error("Unsupported job site: {}", page.url());
+                log.error("Unsupported url: {}", url);
                 return;
             }
+
+            if (companyParserResult != null) {
+                Company company = companyService.saveCompany(new Company(null,
+                        companyParserResult.name(),
+                        companyParserResult.websiteUrl(),
+                        null,
+                        companyParserResult.employeeCount(),
+                        companyParserResult.summary(),
+                        companyParserResult.location()));
+                processCompany(companyParserResult.name(), company);
+            }
+
             if (jobDescriptionParserResult != null) {
-                Company company = processCompany(jobDescriptionParserResult);
+                Company company = processCompany(jobDescriptionParserResult.companyName(), null);
                 if (company != null) {
                     processJob(jobDescriptionParserResult, page, company, jobSource);
                 }
@@ -96,8 +111,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         }
     }
 
-    private Company processCompany(JobDescriptionParserResult jobDescriptionParserResult) {
-        String companyName = jobDescriptionParserResult.companyName();
+    private Company processCompany(String companyName, Company companyCandidate) {
         Company company = null;
         if (companyName.isBlank()) {
             log.warn("Using N/A for company");
@@ -106,8 +120,11 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         } else {
             List<Company> companies = companyService.search(companyName);
             if (companies.isEmpty()) {
-                Company c = new Company(null, companyName, null, null,
-                        null, null, null);
+                Company c = companyCandidate;
+                if (c == null) {
+                    c = new Company(null, companyName, null, null,
+                            null, null, null);
+                }
                 log.info("Creating new company: {}", c);
                 company = companyService.saveCompany(c);
             } else if (companies.size() == 1) {

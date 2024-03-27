@@ -10,8 +10,11 @@ public record Company(@Id UUID id,
                       String name,
                       @Column("website_url") @JsonProperty("website_url") String websiteUrl,
                       @Column("stock_ticker") @JsonProperty("stock_ticker") String stockTicker,
-                      @Column("employee_count") @JsonProperty("employee_count") Long employeeCount,
+                      @Column("employee_count") @JsonProperty("employee_count") String employeeCount,
                       String summary,
                       String location
                       ) {
+    public boolean missingData() {
+        return name == null || websiteUrl == null || employeeCount == null || summary == null || location == null;
+    }
 }

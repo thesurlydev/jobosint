@@ -48,7 +48,7 @@ create table if not exists company
     updated_at     timestamptz      default now(),
     website_url    varchar(255),
     summary        text,
-    employee_count numeric,
+    employee_count text,
     stock_ticker   varchar(10),
     location       text
 );

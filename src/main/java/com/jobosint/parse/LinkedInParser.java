@@ -1,5 +1,6 @@
 package com.jobosint.parse;
 
+import com.jobosint.model.CompanyParserResult;
 import com.jobosint.model.JobDescription;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.util.ParseUtils;
@@ -18,6 +19,24 @@ import java.io.IOException;
 public class LinkedInParser {
 
     private final JobDescriptionParser jobDescriptionParser;
+
+    public CompanyParserResult parseCompanyDescription(String path) throws IOException {
+        File input = new File(path);
+        Document doc = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
+        Element body = doc.body();
+
+        String title = body.select("h1").text();
+        Element mainSection = body.select("section").get(2);
+        String summary = mainSection.selectFirst("p").text();
+        String employeeCountRaw = mainSection.selectFirst("dt:contains(Company size)").nextElementSibling().text();
+        String employeeCount = employeeCountRaw.split(" ")[0];
+
+        String websiteUrl = mainSection.selectFirst("dt:contains(Website)").nextElementSibling().text();
+        String industry = mainSection.selectFirst("dt:contains(Industry)").nextElementSibling().text();
+        String location = mainSection.selectFirst("dt:contains(Headquarters)").nextElementSibling().text();
+
+        return new CompanyParserResult(title, websiteUrl, summary, employeeCount, industry, location);
+    }
 
     public JobDescriptionParserResult parseJobDescription(String path) throws IOException {
         File input = new File(path);

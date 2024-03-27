@@ -26,9 +26,15 @@ public class CompanyCreatedEventListener implements ApplicationListener<CompanyC
     public void onApplicationEvent(@NonNull CompanyCreatedEvent event) {
         log.info("Received: {}", event);
         try {
-            CompanyDetail detail = companyDetailsService.getCompanyDetails(event.getCompany().name());
             companyService.getById(event.getCompany().id()).ifPresent(existingCompany -> {
-                Long numberOfEmployees = getNonNullOrDefault(existingCompany.employeeCount(), detail.numberOfEmployees());
+
+                if (!existingCompany.missingData()) {
+                    log.info("Company data is complete, skipping update: {}", existingCompany);
+                    return;
+                }
+
+                CompanyDetail detail = companyDetailsService.getCompanyDetails(event.getCompany().name());
+                String numberOfEmployees = getNonNullOrDefault(existingCompany.employeeCount(), detail.numberOfEmployees());
                 String ticker = getNonNullOrEmptyOrDefault(existingCompany.stockTicker(), detail.stockTicker());
                 String website = getNonNullOrEmptyOrDefault(existingCompany.websiteUrl(), detail.websiteLink());
                 String summary = getNonNullOrEmptyOrDefault(existingCompany.summary(), detail.summary());

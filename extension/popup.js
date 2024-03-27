@@ -5,7 +5,7 @@ document.getElementById('saveBtn').addEventListener('click', function () {
         const originalUrl = new URL(activeTab.url);
 
         let url;
-        if (originalUrl.hostname === 'www.linkedin.com') {
+        if (originalUrl.hostname === 'www.linkedin.com' && originalUrl.pathname.startsWith('/jobs/view/')) {
             let jobId = originalUrl.pathname.split('/')[3];
             url = `https://www.linkedin.com/jobs/view/${jobId}`;
         } else {

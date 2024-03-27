@@ -2,7 +2,6 @@ package com.jobosint.model.form;
 
 import com.jobosint.model.Company;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.UUID;
 
@@ -13,14 +12,14 @@ public class CompanyForm {
     private String name;
     private String websiteUrl;
     private String stockTicker;
-    private Long employeeCount;
+    private String employeeCount;
     private String summary;
     private String location;
 
     public CompanyForm() {
     }
 
-    public CompanyForm(UUID id, String name, String websiteUrl, String stockTicker, Long employeeCount, String summary, String location) {
+    public CompanyForm(UUID id, String name, String websiteUrl, String stockTicker, String employeeCount, String summary, String location) {
         this.id = id;
         this.name = name;
         this.websiteUrl = websiteUrl;

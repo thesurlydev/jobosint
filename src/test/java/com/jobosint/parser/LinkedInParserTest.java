@@ -1,5 +1,6 @@
 package com.jobosint.parser;
 
+import com.jobosint.model.CompanyParserResult;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.parse.JobDescriptionParser;
 import com.jobosint.parse.LinkedInParser;
@@ -29,4 +30,8 @@ public class LinkedInParserTest {
         parser.parseSearchResults("tester.html");
     }
 
+    @Test void parseCompany() throws Exception {
+        CompanyParserResult companyParserResult = parser.parseCompanyDescription("/home/shane/projects/jobosint/data/pages/20240327-0700/0f59631f-ee0f-4a8b-b044-8a6084a0105d.html");
+        System.out.println(companyParserResult);
+    }
 }
