@@ -1,14 +1,14 @@
 package com.jobosint.controller;
 
 
+import com.jobosint.model.Attribute;
+import com.jobosint.model.form.AttributeForm;
 import com.jobosint.service.AttributeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -23,9 +23,7 @@ public class AttributeController {
     public String attributes(Model model) {
         var attributes = attributeService.getAllAttributes();
         model.addAttribute("attributes", attributes);
-        /*model.addAttribute("attributeForm", new AttributeForm());
-        model.addAttribute("deleteAttributeForm", new DeleteForm());
-        model.addAttribute("deleteAttributeValueForm", new DeleteForm());*/
+        model.addAttribute("attributeForm", new AttributeForm());
         return "attributes";
     }
 
@@ -35,27 +33,12 @@ public class AttributeController {
         return "redirect:/attributes";
     }
 
-    /*@DeleteMapping("/attributes/{id}/values/{valueId}")
-    public String deleteAttributeValue(@PathVariable UUID id,
-                                       @PathVariable UUID valueId) {
-        attributeService.deleteAttributeValue(valueId);
-        return "redirect:/attributes";
-    }
 
     @PostMapping("/attributes")
     public String attributes(Model model, @ModelAttribute AttributeForm attributeForm) {
-
-        Attribute attr = new Attribute(null, attributeForm.getName(), Set.of());
+        Attribute attr = new Attribute(null, attributeForm.getName(), attributeForm.getValues());
         Attribute pAttr = attributeService.saveAttribute(attr);
         log.info("Saved attribute: {}", pAttr);
-        Set<AttributeValue> values = Arrays.stream(attributeForm.getValuesCsv()
-                        .split(","))
-                .map(String::trim)
-                .filter(val -> !val.isEmpty())
-                .map(val -> new AttributeValue(null, pAttr.id(), val))
-                .collect(Collectors.toSet());
-        Iterable<AttributeValue> pAttrValues = attributeService.saveAttributeValues(values);
-        log.info("Saved attribute values: {}", pAttrValues);
         return "redirect:/attributes";
-    }*/
+    }
 }

@@ -6,14 +6,14 @@
 <section>
     <h2>Attributes</h2>
 
-    <!--<form action="#" th:action="@{/attributes}" th:object="${attributeForm}" method="post">
+    <form action="#" th:action="@{/attributes}" th:object="${attributeForm}" method="post">
         <div class="row mb-10">
             <div class="col-sm-3">
                 <input type="text" class="form-control" th:field="*{name}" size="20" placeholder="Enter attribute name..."
                        aria-label="Attribute Name" onClick="this.select();"/>
             </div>
             <div class="col-sm-5">
-                <input type="text" class="form-control" th:field="*{valuesCsv}" size="50"
+                <input type="text" class="form-control" th:field="*{values}" size="50"
                    placeholder="Enter one or more comma separated values..."
                    aria-label="Attribute Values"
                    onClick="this.select();"/>
@@ -22,7 +22,7 @@
                 <button type="submit" class="btn btn-success">Add attribute</button>
             </div>
         </div>
-    </form>-->
+    </form>
 
     <div th:each="attribute : ${attributes}">
         <h3 th:text="${attribute.name()}">Name</h3>
