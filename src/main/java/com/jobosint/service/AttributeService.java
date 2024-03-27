@@ -17,19 +17,27 @@ import java.util.UUID;
 public class AttributeService {
     private final AttributeRepository attributeRepository;
 
-    public Set<String> findAttributeValuesByName(String name) {
-        return attributeRepository.findAttributeByName(name).values();
+    public List<String> findAttributeValuesByName(String name) {
+        return attributeRepository.findAttributeByName(name).values().stream().sorted().toList();
     }
 
-    public Set<String> getSources() {
+    public List<String> getEventTypes() {
+        return findAttributeValuesByName("event-type");
+    }
+
+    public List<String> getInterviewTypes() {
+        return findAttributeValuesByName("interview-type");
+    }
+
+    public List<String> getSources() {
         return findAttributeValuesByName("job-source");
     }
 
-    public Set<String> getJobStatuses() {
+    public List<String> getJobStatuses() {
         return findAttributeValuesByName("job-status");
     }
 
-    public Set<String> getApplicationStatuses() {
+    public List<String> getApplicationStatuses() {
         return findAttributeValuesByName("application-status");
     }
 

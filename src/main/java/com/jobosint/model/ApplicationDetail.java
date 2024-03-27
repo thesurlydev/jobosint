@@ -27,11 +27,14 @@ public record ApplicationDetail(@Id UUID id,
                                 @Column("companyName") String companyName,
                                 @Column("companyWebsiteUrl") String companyWebsiteUrl,
                                 @Column("companyStockTicker") String companyStockTicker,
-                                @Column("companyEmployeeCount") Long companyEmployeeCount,
+                                @Column("companyEmployeeCount") String companyEmployeeCount,
                                 @Column("companySummary") String companySummary,
                                 @Column("companyLocation") String companyLocation
 ) {
     public String salaryDisplay() {
         return DisplayUtils.salaryDisplay(this.jobSalaryMin, this.jobSalaryMax);
+    }
+    public String jobTitleCompanyDisplay() {
+        return this.jobTitle + " @" + this.companyName;
     }
 }
