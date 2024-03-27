@@ -1,7 +1,8 @@
 package com.jobosint.service.ai;
 
-import com.jobosint.model.ai.InterviewProcess;
+import com.jobosint.model.JobAttribute;
 import com.jobosint.model.ai.JobAttributes;
+import com.jobosint.repository.JobAttributeRepository;
 import com.jobosint.service.TokenizerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class JobAttributeService {
     private final ChatClient chatClient;
     private final TokenizerService tokenizerService;
+    private final JobAttributeRepository jobAttributeRepository;
 
     public Optional<JobAttributes> parseJobDescription(String jobDescriptionContent) {
         var outputParser = new BeanOutputParser<>(JobAttributes.class);
@@ -46,8 +48,10 @@ public class JobAttributeService {
                 If no interview process is mentioned, return empty list.
                 
                 Qualifications should be separated into required and preferred.
+                If no qualifications are mentioned, return empty list.
                 
                 Technology stack should be separated into programming languages, frameworks, databases, cloud providers, and cloud services.
+                If no technology stack is mentioned, return empty list.
                 
                 If no cultural values are mentioned, return empty list.
                 
@@ -69,5 +73,11 @@ public class JobAttributeService {
 
         JobAttributes jobAttributes = outputParser.parse(generation.getOutput().getContent());
         return Optional.of(jobAttributes);
+    }
+
+
+
+    public void saveJobAttributes(JobAttribute jobAttribute) {
+        jobAttributeRepository.save(jobAttribute);
     }
 }

@@ -2,6 +2,7 @@ drop table if exists attribute_value;
 drop table if exists attribute;
 drop table if exists page;
 drop table if exists application;
+drop table if exists job_attributes;
 drop table if exists job;
 drop table if exists company;
 --
@@ -25,8 +26,7 @@ CREATE INDEX ON vector_store USING HNSW (embedding vector_cosine_ops);
 create table if not exists company
 (
     id             uuid primary key default gen_random_uuid(),
-    name           varchar(255) not null
-        CONSTRAINT company_name_unique UNIQUE,
+    name           varchar(255) not null CONSTRAINT company_name_unique UNIQUE,
     created_at     timestamptz      default now(),
     updated_at     timestamptz      default now(),
     website_url    varchar(255),
@@ -53,16 +53,23 @@ create table if not exists job
     page_id    uuid,
     notes      text,
     content    text,
-    interview_steps text[],
-    programming_languages text[],
-    databases text[],
-    frameworks text[],
-    cloud_services text[],
-    cloud_providers text[],
-    required_qualifications text[],
-    preferred_qualifications text[],
-    culture_values text[],
     constraint fk_job_company foreign key (company) references jobosint.public.company (id)
+);
+
+create table if not exists job_attribute
+(
+    id                       uuid primary key default gen_random_uuid(),
+    job                      uuid not null,
+    interview_steps          text[],
+    programming_languages    text[],
+    databases                text[],
+    frameworks               text[],
+    cloud_services           text[],
+    cloud_providers          text[],
+    required_qualifications  text[],
+    preferred_qualifications text[],
+    culture_values           text[],
+    constraint fk_job_attributes_job foreign key (job) references jobosint.public.job (id)
 );
 
 create table if not exists application

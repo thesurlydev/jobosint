@@ -7,7 +7,6 @@ import com.jobosint.model.Job;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.model.Page;
 import com.jobosint.model.ai.CompanyDetail;
-import com.jobosint.model.ai.JobAttributes;
 import com.jobosint.model.greenhouse.GetJobResult;
 import com.jobosint.parse.BuiltinParser;
 import com.jobosint.parse.LeverParser;
@@ -17,7 +16,6 @@ import com.jobosint.service.CompanyService;
 import com.jobosint.service.GreenhouseService;
 import com.jobosint.service.JobService;
 import com.jobosint.service.ai.CompanyDetailsService;
-import com.jobosint.service.ai.JobAttributeService;
 import com.jobosint.util.ParseUtils;
 import com.jobosint.util.StringUtils;
 import lombok.NonNull;
@@ -29,7 +27,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -40,11 +37,11 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
     private final CompanyDetailsService companyDetailsService;
     private final GreenhouseService greenhouseService;
     private final JobService jobService;
+
     private final LinkedInParser linkedInParser;
     private final BuiltinParser builtInParser;
     private final WorkdayParser workdayParser;
     private final LeverParser leverParser;
-    private final JobAttributeService jobAttributesService;
 
     @Override
     public void onApplicationEvent(@NonNull PageCreatedEvent event) {
@@ -93,7 +90,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             if (jobDescriptionParserResult != null) {
                 Company company = processCompany(jobDescriptionParserResult);
                 if (company != null) {
-                    Job job = processJob(jobDescriptionParserResult, page, company, jobSource);
+                    processJob(jobDescriptionParserResult, page, company, jobSource);
                 }
             }
         } catch (IOException e) {
@@ -111,10 +108,8 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         } else {
             List<Company> companies = companyService.search(companyName);
             if (companies.isEmpty()) {
-                // use companydetailservice to get company details
-                CompanyDetail detail = companyDetailsService.getCompanyDetails(companyName);
-                Company c = new Company(null, companyName, detail.websiteLink(), detail.stockTicker(),
-                        detail.numberOfEmployees(), detail.summary(), detail.location());
+                Company c = new Company(null, companyName, null, null,
+                        null, null, null);
                 log.info("Creating new company: {}", c);
                 company = companyService.saveCompany(c);
             } else if (companies.size() == 1) {
@@ -126,9 +121,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         return company;
     }
 
-
-
-    private Job processJob(JobDescriptionParserResult jobDescriptionParserResult,
+    private void processJob(JobDescriptionParserResult jobDescriptionParserResult,
                            Page page,
                            Company company,
                            String jobSource) {
@@ -146,69 +139,21 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         }
 
         String url = StringUtils.removeQueryString(page.url());
-
         String jobDescription = jobDescriptionParserResult.description();
-        Optional<JobAttributes> jobAttributes = jobAttributesService.parseJobDescription(jobDescription);
-        Job job;
-        if (jobAttributes.isPresent()) {
-            JobAttributes attributes = jobAttributes.get();
-            List<String> interviewSteps = attributes.interviewProcess().processSteps();
-            List<String> programmingLanguages = attributes.technologyStack().programmingLanguages();
-            List<String> databases = attributes.technologyStack().databases();
-            List<String> frameworks = attributes.technologyStack().frameworks();
-            List<String> cloudServices = attributes.technologyStack().cloudServices();
-            List<String> cloudProviders = attributes.technologyStack().cloudProviders();
-            List<String> requiredQualifications = attributes.jobQualifications().required();
-            List<String> preferredQualifications = attributes.jobQualifications().preferred();
-            List<String> cultureValues = attributes.culture().values();
 
-            job = new Job(null,
-                    company.id(),
-                    jobDescriptionParserResult.title(),
-                    url,
-                    salaryMin,
-                    salaryMax,
-                    jobSource,
-                    null,
-                    jobDescription,
-                    "Active",
-                    page.id(),
-                    interviewSteps,
-                    programmingLanguages,
-                    databases,
-                    frameworks,
-                    cloudServices,
-                    cloudProviders,
-                    requiredQualifications,
-                    preferredQualifications,
-                    cultureValues
-            );
+        Job job = new Job(null,
+                company.id(),
+                jobDescriptionParserResult.title(),
+                url,
+                salaryMin,
+                salaryMax,
+                jobSource,
+                null,
+                jobDescription,
+                "Active",
+                page.id()
+        );
 
-        } else {
-            log.error("Failed to parse job attributes");
-            job = new Job(null,
-                    company.id(),
-                    jobDescriptionParserResult.title(),
-                    url,
-                    salaryMin,
-                    salaryMax,
-                    jobSource,
-                    null,
-                    jobDescription,
-                    "Active",
-                    page.id(),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-            );
-        }
-
-        return jobService.saveJob(job);
+        jobService.saveJob(job);
     }
 }

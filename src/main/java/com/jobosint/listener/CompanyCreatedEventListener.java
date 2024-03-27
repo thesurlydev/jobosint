@@ -22,34 +22,6 @@ public class CompanyCreatedEventListener implements ApplicationListener<CompanyC
     private final CompanyDetailsService companyDetailsService;
     private final CompanyService companyService;
 
-
-    /*@Override
-    public void onApplicationEvent(@NonNull CompanyCreatedEvent event) {
-
-        try {
-            CompanyDetail detail = companyDetailsService.getCompanyDetails(event.getCompany().name());
-            companyService.getById(event.getCompany().id())
-                    .ifPresent(existingCompany -> {
-                        Long numberOfEmployees = ofNullable(existingCompany.employeeCount()).orElse(detail.numberOfEmployees());
-                        String ticker = ofNullable(existingCompany.stockTicker()).orElse(detail.stockTicker());
-                        String website = ofNullable(existingCompany.websiteUrl()).orElse(detail.websiteLink());
-                        String summary = ofNullable(existingCompany.summary()).orElse(detail.summary());
-                        String location = ofNullable(existingCompany.location()).orElse(detail.location());
-
-                        Company updatedCompany = new Company(existingCompany.id(), existingCompany.name(),
-                                website, ticker, numberOfEmployees, summary, location);
-
-                        log.info("Updating company: {}", updatedCompany);
-                        companyService.saveCompany(updatedCompany);
-                    });
-
-            log.info("Received and processed CompanyCreatedEvent: {}", event);
-        } catch (Exception e) {
-            log.error("Error processing CompanyCreatedEvent: {}", event, e);
-            // Handle the error appropriately
-        }
-    }*/
-
     @Override
     public void onApplicationEvent(@NonNull CompanyCreatedEvent event) {
         log.info("Received: {}", event);

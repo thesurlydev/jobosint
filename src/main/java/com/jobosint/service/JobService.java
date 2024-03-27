@@ -1,11 +1,16 @@
 package com.jobosint.service;
 
+import com.jobosint.event.CompanyCreatedEvent;
+import com.jobosint.event.JobCreatedEvent;
 import com.jobosint.model.Job;
+import com.jobosint.model.JobAttribute;
 import com.jobosint.model.JobDetail;
 import com.jobosint.repository.ApplicationRepository;
+import com.jobosint.repository.JobAttributeRepository;
 import com.jobosint.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class JobService {
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final JobRepository jobRepository;
     private final ApplicationRepository applicationRepository;
 
@@ -41,7 +47,11 @@ public class JobService {
     }
 
     public Job saveJob(Job job) {
-        return jobRepository.save(job);
+        Job savedJob = jobRepository.save(job);
+        if (job.id() == null) {
+            applicationEventPublisher.publishEvent(new JobCreatedEvent(this, savedJob));
+        }
+        return savedJob;
     }
 
     public List<JobDetail> searchJobs(String query) {

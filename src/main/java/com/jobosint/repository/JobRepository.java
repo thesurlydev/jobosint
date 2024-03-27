@@ -13,9 +13,10 @@ import java.util.UUID;
 public interface JobRepository extends CrudRepository<Job, UUID> {
 
     String JOB_DETAIL_SELECT = """
-    select j.*, c.id as company_id, c.name, c.website_url, c.location, c.summary, c.stock_ticker, c.employee_count
-    from jobosint.public.job j, jobosint.public.company c
-    where j.company = c.id
+    select j.*, c.id as company_id, c.name, c.website_url, c.location, c.summary, c.stock_ticker, c.employee_count,
+    ja.cloud_providers, ja.cloud_services, ja.culture_values, ja.databases, ja.frameworks, ja.interview_steps, ja.required_qualifications, ja.preferred_qualifications, ja.programming_languages
+    from jobosint.public.job j, jobosint.public.company c, jobosint.public.job_attribute ja
+    where j.company = c.id and j.id = ja.job
     """;
 
     @Query(JOB_DETAIL_SELECT + "and j.status != 'Archived' order by j.created_at")

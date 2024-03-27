@@ -6,8 +6,6 @@ import com.jobosint.util.DisplayUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 public record Job(@Id UUID id,
@@ -20,16 +18,7 @@ public record Job(@Id UUID id,
                   String notes,
                   String content, // stored as markdown
                   String status,
-                  @Column("page_id") UUID pageId,
-                  @Column("interview_steps") List<String> interviewSteps,
-                  @Column("programming_languages") List<String> programmingLanguages,
-                  List<String> databases,
-                  List<String> frameworks,
-                  @Column("cloud_services") List<String> cloudServices,
-                  @Column("cloud_providers") List<String> cloudProviders,
-                  @Column("required_qualifications") List<String> requiredQualifications,
-                  @Column("preferred_qualifications") List<String> preferredQualifications,
-                  @Column("culture_values") List<String> cultureValues
+                  @Column("page_id") UUID pageId
 ) {
 
     public String htmlContent() {
@@ -51,16 +40,7 @@ public record Job(@Id UUID id,
                 job.notes(),
                 job.content(),
                 newStatus,
-                job.pageId(),
-                job.interviewSteps(),
-                job.programmingLanguages(),
-                job.databases(),
-                job.frameworks(),
-                job.cloudServices(),
-                job.cloudProviders(),
-                job.requiredQualifications(),
-                job.preferredQualifications(),
-                job.cultureValues()
+                job.pageId()
         );
     }
 
@@ -75,16 +55,7 @@ public record Job(@Id UUID id,
                 form.getNotes(),
                 form.getContent(),
                 form.getStatus(),
-                form.getPageId(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList()
+                form.getPageId()
         );
     }
 }

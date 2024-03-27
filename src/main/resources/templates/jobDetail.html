@@ -52,36 +52,37 @@
         <div class="row">
             <div class="col">
                 <h4>Values</h4>
+                <div th:if="${detail.attributes().cultureValues().isEmpty()}">n/a</div>
                 <ul>
-                    <li th:each="value : ${detail.job().cultureValues()}" th:text="${value}">value</li>
+                    <li th:each="value : ${detail.attributes().cultureValues()}" th:text="${value}">value</li>
                 </ul>
             </div>
             <div class="col">
                 <h4>Qualifications</h4>
                 <strong>Required</strong>
-                <div th:if="${detail.job().requiredQualifications().isEmpty()}">n/a</div>
-                <ul th:if="${!detail.job().requiredQualifications().isEmpty()}">
-                    <li th:each="qualification : ${detail.job().requiredQualifications()}" th:text="${qualification}">qualification</li>
+                <div th:if="${detail.attributes().requiredQualifications().isEmpty()}">n/a</div>
+                <ul th:if="${!detail.attributes().requiredQualifications().isEmpty()}">
+                    <li th:each="qualification : ${detail.attributes().requiredQualifications()}" th:text="${qualification}">qualification</li>
                 </ul>
                 <strong>Preferred</strong>
-                <div th:if="${detail.job().preferredQualifications().isEmpty()}">n/a</div>
-                <ul th:if="${!detail.job().preferredQualifications().isEmpty()}">
-                    <li th:each="qualification : ${detail.job().preferredQualifications()}" th:text="${qualification}">qualification</li>
+                <div th:if="${detail.attributes().preferredQualifications().isEmpty()}">n/a</div>
+                <ul th:if="${!detail.attributes().preferredQualifications().isEmpty()}">
+                    <li th:each="qualification : ${detail.attributes().preferredQualifications()}" th:text="${qualification}">qualification</li>
                 </ul>
             </div>
             <div class="col">
                 <h4>Technology Stack</h4>
-                <div th:if="${!detail.job().programmingLanguages().isEmpty()}"><strong>Languages:</strong> <span th:each="language : ${#strings.listJoin(detail.job().programmingLanguages(), ', ')}" th:text="${language}">Value</span></div>
-                <div th:if="${!detail.job().frameworks().isEmpty()}"><strong>Frameworks:</strong> <span th:each="framework : ${#strings.listJoin(detail.job().frameworks(), ', ')}" th:text="${framework}">Value</span></div>
-                <div th:if="${!detail.job().databases().isEmpty()}"><strong>Databases:</strong> <span th:each="db : ${#strings.listJoin(detail.job().databases(), ', ')}" th:text="${db}">Value</span></div>
-                <div th:if="${!detail.job().cloudProviders().isEmpty()}"><strong>Cloud Providers:</strong> <span th:each="cloud : ${#strings.listJoin(detail.job().cloudProviders(), ', ')}" th:text="${cloud}">Value</span></div>
-                <div th:if="${!detail.job().cloudServices().isEmpty()}"><strong>Cloud Services:</strong> <span th:each="svc : ${#strings.listJoin(detail.job().cloudServices(), ', ')}" th:text="${svc}">Value</span></div>
+                <div th:if="${!detail.attributes().programmingLanguages().isEmpty()}"><strong>Languages:</strong> <span th:each="language : ${#strings.listJoin(detail.attributes().programmingLanguages(), ', ')}" th:text="${language}">Value</span></div>
+                <div th:if="${!detail.attributes().frameworks().isEmpty()}"><strong>Frameworks:</strong> <span th:each="framework : ${#strings.listJoin(detail.attributes().frameworks(), ', ')}" th:text="${framework}">Value</span></div>
+                <div th:if="${!detail.attributes().databases().isEmpty()}"><strong>Databases:</strong> <span th:each="db : ${#strings.listJoin(detail.attributes().databases(), ', ')}" th:text="${db}">Value</span></div>
+                <div th:if="${!detail.attributes().cloudProviders().isEmpty()}"><strong>Cloud Providers:</strong> <span th:each="cloud : ${#strings.listJoin(detail.attributes().cloudProviders(), ', ')}" th:text="${cloud}">Value</span></div>
+                <div th:if="${!detail.attributes().cloudServices().isEmpty()}"><strong>Cloud Services:</strong> <span th:each="svc : ${#strings.listJoin(detail.attributes().cloudServices(), ', ')}" th:text="${svc}">Value</span></div>
             </div>
             <div class="col">
                 <h4>Interview Process</h4>
-                <p th:if="${detail.job().interviewSteps().isEmpty()}">Not specified</p>
-                <ol th:if="${!detail.job().interviewSteps().isEmpty()}">
-                    <li th:each="step : ${detail.job().interviewSteps()}" th:text="${step}">step</li>
+                <p th:if="${detail.attributes().interviewSteps().isEmpty()}">Not specified</p>
+                <ol th:if="${!detail.attributes().interviewSteps().isEmpty()}">
+                    <li th:each="step : ${detail.attributes().interviewSteps()}" th:text="${step}">step</li>
                 </ol>
             </div>
         </div>
