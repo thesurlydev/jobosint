@@ -5,6 +5,7 @@ drop table if exists application;
 drop table if exists job_attributes;
 drop table if exists job;
 drop table if exists company;
+drop table if exists contact;
 --
 -- start Spring AI vector store
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -23,10 +24,26 @@ CREATE INDEX ON vector_store USING HNSW (embedding vector_cosine_ops);
 -- end Spring AI vector store
 
 
+create table if not exists contact
+(
+    id                   uuid primary key default gen_random_uuid(),
+    full_name                 varchar(255) not null,
+    created_at           timestamptz      default now(),
+    updated_at           timestamptz      default now(),
+    linkedin_profile_url text,
+    title                text,
+    notes                text,
+    email                text,
+    phone_number         text,
+    company         uuid,
+    constraint fk_contact_company foreign key (company) references jobosint.public.company (id)
+);
+
 create table if not exists company
 (
     id             uuid primary key default gen_random_uuid(),
-    name           varchar(255) not null CONSTRAINT company_name_unique UNIQUE,
+    name           varchar(255) not null
+        CONSTRAINT company_name_unique UNIQUE,
     created_at     timestamptz      default now(),
     updated_at     timestamptz      default now(),
     website_url    varchar(255),
@@ -83,6 +100,20 @@ create table if not exists application
     constraint fk_app_job foreign key (job) references jobosint.public.job (id)
 );
 
+create table if not exists application_event
+(
+    id             uuid primary key default gen_random_uuid(),
+    created_at     timestamptz      default now(),
+    updated_at     timestamptz      default now(),
+    application    uuid,
+    interview_type text,
+    event_type     text,
+    event_date     timestamptz      default now(),
+    tools          text[],
+    notes          text,
+    constraint fk_app_event foreign key (application) references jobosint.public.application (id)
+);
+
 create table if not exists page
 (
     id           uuid primary key default gen_random_uuid(),
@@ -94,7 +125,8 @@ create table if not exists page
 
 create table if not exists attribute
 (
-    id   uuid primary key default gen_random_uuid(),
-    name varchar(255) not null constraint attribute_name_unique UNIQUE,
+    id     uuid primary key default gen_random_uuid(),
+    name   varchar(255) not null
+        constraint attribute_name_unique UNIQUE,
     values text[]
 );

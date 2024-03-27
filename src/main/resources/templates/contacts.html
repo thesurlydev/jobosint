@@ -1,0 +1,45 @@
+<html th:replace="~{layouts/default :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>jobosint - contacts</title>
+</head>
+<body>
+<section>
+    <div class="row">
+        <div class="col-sm-1">
+            <h2>Contacts</h2>
+        </div>
+        <div class="col-sm-11" style="text-align: right">
+            <a href="/contact"><button type="button" class="btn btn-success btn-sm">Add a contact</button></a>
+        </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Company</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>LinkedIn</th>
+            <th style="width: 1px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${contacts}">
+            <td th:text="${c.contact().fullName()}">Name</td>
+            <td th:text="${c.contact().title()}">Title</td>
+            <td th:text="${c.company().name()}">Company Name</td>
+            <td th:text="${c.contact().email()}">Email</td>
+            <td th:text="${c.contact().phoneNumberDisplay()}">Phone</td>
+            <td>
+                <a th:if="${c.contact().linkedInProfileUrl() != ''}" th:href="${c.contact().linkedInProfileUrl()}" target="_blank">Profile</a>
+            </td>
+            <td><a th:href="@{/contacts/{id}/edit(id=${c.contact().id()})}"><span class="badge bg-primary">Edit</span></a></td>
+        </tr>
+        </tbody>
+    </table>
+
+</section>
+</body>
+</html>
