@@ -18,7 +18,7 @@
             <div th:if="${contactResults != null}" class="col">
                 <p>Found <span th:text="${numContactResults}" style="font-weight: bold"></span> contacts</p>
                 <div th:each="detail : ${contactResults}">
-                    <p><a th:href="@{/contacts/{id}(id=${detail.contact().id()})}" th:text="${detail.contact().fullName()}">Full name</a>@<span th:text="${detail.company().name()}">company name</span></p>
+                    <p><a th:href="@{/contacts/{id}/edit(id=${detail.contact().id()})}" th:text="${detail.contact().fullName()}">Full name</a>@<span th:text="${detail.company().name()}">company name</span></p>
                 </div>
             </div>
 
