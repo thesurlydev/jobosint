@@ -90,13 +90,13 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             }
 
             if (companyParserResult != null) {
-                Company company = companyService.saveCompany(new Company(null,
+                Company company = new Company(null,
                         companyParserResult.name(),
                         companyParserResult.websiteUrl(),
                         null,
                         companyParserResult.employeeCount(),
                         companyParserResult.summary(),
-                        companyParserResult.location()));
+                        companyParserResult.location());
                 processCompany(companyParserResult.name(), company);
             }
 
@@ -128,7 +128,14 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 log.info("Creating new company: {}", c);
                 company = companyService.saveCompany(c);
             } else if (companies.size() == 1) {
-                company = companies.getFirst();
+                if (companyCandidate != null) {
+                    // merge
+                    Company existingCompany = companies.getFirst();
+                    company = companyService.mergeCompany(existingCompany, companyCandidate);
+                } else {
+                    company = companies.getFirst();
+                }
+
             } else {
                 log.error("Ambiguous company name: {}", companyName);
             }

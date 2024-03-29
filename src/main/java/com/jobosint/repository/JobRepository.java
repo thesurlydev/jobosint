@@ -13,23 +13,41 @@ import java.util.UUID;
 public interface JobRepository extends CrudRepository<Job, UUID> {
 
     String JOB_DETAIL_SELECT = """
-    select j.*, c.id as company_id, c.name, c.website_url, c.location, c.summary, c.stock_ticker, c.employee_count,
-    ja.cloud_providers, ja.cloud_services, ja.culture_values, ja.databases, ja.frameworks, ja.interview_steps, ja.required_qualifications, ja.preferred_qualifications, ja.programming_languages
-    from jobosint.public.job j, jobosint.public.company c, jobosint.public.job_attribute ja
-    where j.company = c.id and j.id = ja.job
-    """;
+            select j.*,
+                   c.id as company_id,
+                   c.name,
+                   c.website_url,
+                   c.location,
+                   c.summary,
+                   c.stock_ticker,
+                   c.employee_count,
+                   ja.cloud_providers,
+                   ja.cloud_services,
+                   ja.culture_values,
+                   ja.databases,
+                   ja.frameworks,
+                   ja.interview_steps,
+                   ja.required_qualifications,
+                   ja.preferred_qualifications,
+                   ja.programming_languages,
+                   a.applied_at
+            from jobosint.public.job j
+                     INNER JOIN jobosint.public.job_attribute ja on ja.job = j.id
+                     INNER JOIN jobosint.public.company c on j.company = c.id
+                     LEFT OUTER JOIN jobosint.public.application a on a.job = j.id  
+            """;
 
-    @Query(JOB_DETAIL_SELECT + "and j.status != 'Archived' order by j.created_at")
+    @Query(JOB_DETAIL_SELECT + " where j.status = 'Active' order by j.created_at")
     List<JobDetail> findAllJobDetailOrderByCreatedAt();
 
-    @Query(JOB_DETAIL_SELECT + " and j.id = :id")
+    @Query(JOB_DETAIL_SELECT + " where j.id = :id")
     Optional<JobDetail> findJobDetailbyId(UUID id);
 
     @Modifying
     @Query("delete from jobosint.public.job where company = :companyId")
     void deleteAllByCompanyId(UUID companyId);
 
-    @Query(JOB_DETAIL_SELECT + " and (title ilike '%' || :query || '%' or content ilike '%' || :query || '%')")
+    @Query(JOB_DETAIL_SELECT + " where (title ilike '%' || :query || '%' or content ilike '%' || :query || '%')")
     List<JobDetail> searchJobs(String query);
 
 }

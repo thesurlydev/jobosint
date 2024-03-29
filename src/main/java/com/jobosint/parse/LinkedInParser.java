@@ -5,6 +5,7 @@ import com.jobosint.model.JobDescription;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
+@Slf4j
 @Component
 public class LinkedInParser {
 
@@ -27,15 +30,37 @@ public class LinkedInParser {
 
         String title = body.select("h1").text();
         Element mainSection = body.select("section").get(2);
-        String summary = mainSection.selectFirst("p").text();
-        String employeeCountRaw = mainSection.selectFirst("dt:contains(Company size)").nextElementSibling().text();
+
+        String summary = "n/a";
+        Optional<Element> maybeSummaryEl =  Optional.ofNullable(mainSection.selectFirst("p"));
+        if (maybeSummaryEl.isPresent()) {
+            summary = maybeSummaryEl.get().text();
+        }
+
+        String employeeCountRaw = parseSection(mainSection, "Company size");
         String employeeCount = employeeCountRaw.split(" ")[0];
 
-        String websiteUrl = mainSection.selectFirst("dt:contains(Website)").nextElementSibling().text();
-        String industry = mainSection.selectFirst("dt:contains(Industry)").nextElementSibling().text();
-        String location = mainSection.selectFirst("dt:contains(Headquarters)").nextElementSibling().text();
+        String websiteUrl = parseSection(mainSection, "Website");
+        String industry = parseSection(mainSection, "Industry");
+        String location = parseSection(mainSection, "Headquarters");
 
         return new CompanyParserResult(title, websiteUrl, summary, employeeCount, industry, location);
+    }
+
+    private String parseSection(Element mainSectionEl, String dtName) {
+        String result = "n/a";
+        try {
+            Optional<Element> maybe = Optional.ofNullable(mainSectionEl.selectFirst("dt:contains(" + dtName + ")"));
+            if (maybe.isPresent()) {
+                Optional<Element> maybeSibling = Optional.ofNullable(maybe.get().nextElementSibling());
+                if (maybeSibling.isPresent()) {
+                    result = maybeSibling.get().text();
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Unable to parse {}: {}", dtName, e.getMessage());
+        }
+        return result;
     }
 
     public JobDescriptionParserResult parseJobDescription(String path) throws IOException {

@@ -5,7 +5,12 @@
 <body>
 <section>
 
-    <h2 th:text="${detail.job().title()}">title</h2>
+    <div class="container my-3">
+        <div class="row">
+            <div class="col"><h2 th:text="${detail.job().title()}">title</h2></div>
+            <div class="col-2" style="text-align: right"><a th:href="@{/jobs/{id}/edit(id=${detail.job().id()})}"><button type="button" class="btn btn-primary">Edit this job</button></a></div>
+        </div>
+    </div>
 
     <div class="container">
         <div class="row">
@@ -36,10 +41,10 @@
                 <div><strong>Source:</strong> <span th:text="${detail.job().source()}">source</span></div>
                 <div><strong>Original URL:</strong> <a th:href="${detail.job().url()}" th:text="${detail.job().url()}" target="_blank">URL</a></div>
             </div>
-            <div class="col-2" style="text-align: right">
+            <div class="col-3" style="text-align: right">
                 <div class="alert alert-success d-flex align-items-center" role="alert" th:if="${detail.job().status() == 'Applied'}">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    <div>Applied</div>
+                    <div>Applied (<span th:text="${detail.appliedAt()}">apply date</span>)</div>
                 </div>
                 <a th:href="@{/jobs/{id}/apply(id=${detail.job().id()})}">
                     <button class="btn btn-outline-success" type="button" th:if="${detail.job().status() != 'Applied'}">Apply</button>

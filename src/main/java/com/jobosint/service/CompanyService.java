@@ -49,6 +49,20 @@ public class CompanyService {
         return persistedCompany;
     }
 
+    public Company mergeCompany(Company company1, Company company2) {
+        UUID id = company1.id();
+        String name = company1.name() != null ? company1.name() : company2.name();
+        String websiteUrl = company1.websiteUrl() != null ? company1.websiteUrl() : company2.websiteUrl();
+        String stockTicker = company1.stockTicker() != null ? company1.stockTicker() : company2.stockTicker();
+        String employeeCount = company1.employeeCount() != null ? company1.employeeCount() : company2.employeeCount();
+        String summary = company1.summary() != null ? company1.summary() : company2.summary();
+        String location = company1.location() != null ? company1.location() : company2.location();
+
+        Company mergedCompany = new Company(id, name, websiteUrl, stockTicker, employeeCount, summary, location);
+
+        return companyRepository.save(mergedCompany);
+    }
+
     @Transactional
     public void deleteCompany(UUID id) {
         // delete any associated jobs first

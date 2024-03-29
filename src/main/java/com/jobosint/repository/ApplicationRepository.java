@@ -20,7 +20,7 @@ inner join public.job j on j.id = a.job
 inner join public.company c on c.id = j.company
             """;
 
-    @Query(APPLICATION_DETAIL_SELECT + "order by a.created_at")
+    @Query(APPLICATION_DETAIL_SELECT + "order by a.status, c.name")
     List<ApplicationDetail> findAllApplicationDetailOrderByCreatedAt();
 
     @Query(APPLICATION_DETAIL_SELECT + "where a.id = :id")

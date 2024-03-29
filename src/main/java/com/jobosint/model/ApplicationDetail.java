@@ -4,11 +4,14 @@ import com.jobosint.util.DisplayUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public record ApplicationDetail(@Id UUID id,
                                 @Column("created_at") LocalDateTime createdAt,
+                                @Column("applied_at") LocalDate appliedAt,
                                 String status,
                                 String notes,
 
@@ -36,5 +39,13 @@ public record ApplicationDetail(@Id UUID id,
     }
     public String jobTitleCompanyDisplay() {
         return this.jobTitle + " @" + this.companyName;
+    }
+
+    public String appliedAtDisplay() {
+        if (this.appliedAt == null) {
+            return "n/a";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM dd");
+        return this.appliedAt.format(formatter);
     }
 }

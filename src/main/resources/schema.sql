@@ -27,7 +27,7 @@ CREATE INDEX ON vector_store USING HNSW (embedding vector_cosine_ops);
 create table if not exists contact
 (
     id                   uuid primary key default gen_random_uuid(),
-    full_name                 varchar(255) not null,
+    full_name            varchar(255) not null,
     created_at           timestamptz      default now(),
     updated_at           timestamptz      default now(),
     linkedin_profile_url text,
@@ -35,7 +35,7 @@ create table if not exists contact
     notes                text,
     email                text,
     phone_number         text,
-    company         uuid,
+    company              uuid,
     constraint fk_contact_company foreign key (company) references jobosint.public.company (id)
 );
 
@@ -94,6 +94,7 @@ create table if not exists application
     id         uuid primary key default gen_random_uuid(),
     created_at timestamptz      default now(),
     updated_at timestamptz      default now(),
+    applied_at timestamptz      default now(),
     job        uuid,
     status     text,
     notes      text,
@@ -112,6 +113,15 @@ create table if not exists application_event
     tools          text[],
     notes          text,
     constraint fk_app_event foreign key (application) references jobosint.public.application (id)
+);
+
+create table if not exists application_event_participants
+(
+    application_event_id uuid,
+    participant_id uuid,
+    PRIMARY KEY (application_event_id, participant_id),
+    FOREIGN KEY (application_event_id) REFERENCES application_event(id),
+    FOREIGN KEY (participant_id) REFERENCES contact(id)
 );
 
 create table if not exists page
