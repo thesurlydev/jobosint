@@ -13,6 +13,19 @@
         </div>
     </div>
 
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="video-icon" fill="currentColor" class="bi bi-person-video" viewBox="0 0 16 16">
+            <path d="M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+            <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm10.798 11c-.453-1.27-1.76-3-4.798-3-3.037 0-4.345 1.73-4.798 3H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1z"/>
+        </symbol>
+        <symbol id="email-icon" fill="currentColor" class="bi bi-inbox-fill" viewBox="0 0 16 16">
+            <path d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm-1.17-.437A1.5 1.5 0 0 1 4.98 3h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z"/>
+        </symbol>
+        <symbol id="phone-icon" fill="currentColor" class="bi bi-telephone-inbound-fill" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877zM15.854.146a.5.5 0 0 1 0 .708L11.707 5H14.5a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 1 0v2.793L15.146.146a.5.5 0 0 1 .708 0"/>
+        </symbol>
+    </svg>
+
     <table class="table table-striped table-hover">
         <thead>
         <tr>
@@ -27,7 +40,12 @@
         <tbody>
         <tr th:each="e : ${events}">
             <td th:text="${e.eventDateDisplay()}">date/time</td>
-            <td th:text="${e.eventType()}">event type</td>
+            <td nowrap="true">
+                <svg th:if="${e.eventType() == 'Email'}" class="bi flex-shrink-0 me-2" width="1em" height="1em" role="img"><use xlink:href="#email-icon"/></svg>
+                <svg th:if="${e.eventType() == 'Phone call'}" class="bi flex-shrink-0 me-2" width="1em" height="1em" role="img"><use xlink:href="#phone-icon"/></svg>
+                <svg th:if="${e.eventType() == 'Video'}" class="bi flex-shrink-0 me-2" width="1em" height="1em" role="img"><use xlink:href="#video-icon"/></svg>
+                <span th:text="${e.eventType()}">event type</span>
+            </td>
             <td th:text="${e.interviewType()}">interview type</td>
             <td th:text="${e.jobTitle()}">job title</td>
             <td th:text="${e.companyName()}">company name</td>
