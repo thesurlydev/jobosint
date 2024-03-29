@@ -3,10 +3,7 @@ package com.jobosint.listener;
 import com.jobosint.event.PageCreatedEvent;
 import com.jobosint.model.*;
 import com.jobosint.model.greenhouse.GetJobResult;
-import com.jobosint.parse.BuiltinParser;
-import com.jobosint.parse.LeverParser;
-import com.jobosint.parse.LinkedInParser;
-import com.jobosint.parse.WorkdayParser;
+import com.jobosint.parse.*;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.GreenhouseService;
 import com.jobosint.service.JobService;
@@ -38,6 +35,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
     private final BuiltinParser builtInParser;
     private final WorkdayParser workdayParser;
     private final LeverParser leverParser;
+    private final SmartRecruiterParser smartRecruiterParser;
 
     @Override
     public void onApplicationEvent(@NonNull PageCreatedEvent event) {
@@ -54,7 +52,10 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         try {
 
             var url = page.url();
-            if (url.startsWith("https://builtin.com/job/")) {
+            if (url.startsWith("https://jobs.smartrecruiters.com/")) {
+                jobDescriptionParserResult = smartRecruiterParser.parseJobDescription(contentPath);
+                jobSource = "SmartRecruiters";
+            } else if (url.startsWith("https://builtin.com/job/")) {
                 jobDescriptionParserResult = builtInParser.parseJobDescription(contentPath);
                 jobSource = "Builtin";
             } else if (url.startsWith("https://www.linkedin.com/jobs/view/")) {
