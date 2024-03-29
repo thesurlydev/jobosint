@@ -2,6 +2,7 @@ package com.jobosint.controller;
 
 import com.jobosint.model.Company;
 import com.jobosint.model.ai.CompanyDetail;
+import com.jobosint.model.ai.CompanyFocus;
 import com.jobosint.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +36,41 @@ public class CompanyRestController {
 
         String userMessage =
                 """
-                Get the official details for the company {name}.
+                        Get the official details for the company {name}.
+                        {format}
+                        """;
+
+        PromptTemplate promptTemplate = new PromptTemplate(userMessage, Map.of("name", name, "format",
+                outputParser.getFormat()));
+        Prompt prompt = promptTemplate.create();
+        Generation generation = chatClient.call(prompt).getResult();
+
+        return outputParser.parse(generation.getOutput().getContent());
+    }
+
+    @GetMapping("/{name}/focus")
+    @Operation(summary = "Given a company name, return company focus in paragraph form suitable for embedding in a cover letter")
+    public CompanyFocus getCompanyFocus(@PathVariable String name) {
+        var outputParser = new BeanOutputParser<>(CompanyFocus.class);
+
+        String userMessage = """
+                I am a software engineer and writing a cover letter about why I want to work at a technology company.
+                Given a name of a company, I want you to provide no more than three paragraphs specific to the company's focus
+                that resonates with my professional ethos and makes me excited about the potential of working at the company.
+                The paragraphs should be in the first person and addressed to the company. The returned companyName should be capitalized.
+                        
+                The name of the company is: {name}
+                        
                 {format}
                 """;
 
-        PromptTemplate promptTemplate = new PromptTemplate(userMessage, Map.of("name", name, "format",
-                outputParser.getFormat() ));
+        PromptTemplate promptTemplate = new PromptTemplate(
+                userMessage,
+                Map.of(
+                        "name", name,
+                        "format", outputParser.getFormat()
+                )
+        );
         Prompt prompt = promptTemplate.create();
         Generation generation = chatClient.call(prompt).getResult();
 
