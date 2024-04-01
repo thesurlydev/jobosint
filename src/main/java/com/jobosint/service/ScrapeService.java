@@ -1,5 +1,6 @@
 package com.jobosint.service;
 
+import com.jobosint.collaboration.annotation.Tool;
 import com.jobosint.config.ScrapeConfig;
 import com.jobosint.model.ScrapeRequest;
 import com.jobosint.model.ScrapeResponse;
@@ -31,6 +32,7 @@ public class ScrapeService {
     private final ScrapeConfig config;
     private final Browser browser;
 
+    @Tool(name = "WebScraper", description = "Given a web URL and a CSS selector return a portion of the web page")
     public ScrapeResponse scrape(ScrapeRequest req) throws PlaywrightException {
         var downloadPath = config.downloadPath();
         var namespace = config.namespace();

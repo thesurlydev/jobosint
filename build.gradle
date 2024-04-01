@@ -23,7 +23,7 @@ allprojects {
 
 dependencies {
     implementation platform("org.springframework.ai:spring-ai-bom:_")
-    implementation 'org.springframework.ai:spring-ai-pgvector-store:_'
+//    implementation 'org.springframework.ai:spring-ai-pgvector-store:_'
     implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:_'
 
 
