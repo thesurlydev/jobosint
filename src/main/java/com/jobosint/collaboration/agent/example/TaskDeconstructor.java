@@ -19,11 +19,11 @@ import java.util.Map;
         tools= {"TaskDeconstructor"}
 )
 @RequiredArgsConstructor
-public class TaskPlanner extends Agent {
+public class TaskDeconstructor extends Agent {
 
     private final ChatClient chatClient;
 
-    @Tool(name = "TaskDeconstructor", description = "Break down a task into smaller sub-tasks")
+    @Tool(name = "DeconstructTask", description = "Break down a task into smaller sub-tasks")
     public DeconstructedTask deconstructTask(Task task) {
         var outputParser = new BeanOutputParser<>(DeconstructedTask.class);
 

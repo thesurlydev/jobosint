@@ -20,7 +20,7 @@ import java.nio.file.Path;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class JobDescriptionParser implements Parser<JobDescription> {
+public class JobDescriptionParser implements HtmlFileParser<JobDescription> {
 
     @Override
     public ParseResult<JobDescription> parse(String html, String selector) {

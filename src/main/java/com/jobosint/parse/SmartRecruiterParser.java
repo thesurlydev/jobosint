@@ -3,7 +3,6 @@ package com.jobosint.parse;
 
 import com.jobosint.model.JobDescription;
 import com.jobosint.model.JobDescriptionParserResult;
-import com.jobosint.util.ConversionUtils;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;

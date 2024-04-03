@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @AgentMeta(
         goal = "Search the internet for relevant information about a topic",
-        disabled = true,
         tools = {"WebScraper", "WebSearch"}
 )
 public class WebResearcher extends Agent {

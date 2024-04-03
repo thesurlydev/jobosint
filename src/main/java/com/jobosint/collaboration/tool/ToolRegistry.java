@@ -71,7 +71,7 @@ public class ToolRegistry implements BeanPostProcessor {
         log.info("args: {}", args);
 
         Object serviceInstance = serviceInstances.get(toolName);
-        log.info("Service instance: {}", serviceInstance);
+        log.info("Service instance: {}", serviceInstance.getClass().getName());
 
         if (args == null) {
             T result = (T) method.invoke(serviceInstance);

@@ -1,0 +1,26 @@
+package com.jobosint.collaboration.agent.example;
+
+import com.jobosint.collaboration.agent.Agent;
+import com.jobosint.collaboration.annotation.AgentMeta;
+import com.jobosint.collaboration.annotation.Tool;
+import com.jobosint.model.ScrapeRequest;
+import com.jobosint.model.ScrapeResponse;
+import com.jobosint.model.SelectAttribute;
+import com.jobosint.service.ScrapeService;
+import lombok.RequiredArgsConstructor;
+
+@AgentMeta(
+        goal = "Extract links from a given webpage",
+        tools = {"ExtractLinks"}
+)
+@RequiredArgsConstructor
+public class LinkExtractor extends Agent {
+
+    private final ScrapeService scrapeService;
+
+    @Tool(name = "ExtractLinks", description = "Extract links from a given webpage")
+    public ScrapeResponse extractLinks(String url) {
+        var req = new ScrapeRequest(url, "a", SelectAttribute.attr, "href", null);
+        return scrapeService.scrape(req);
+    }
+}

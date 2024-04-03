@@ -2,7 +2,6 @@ package com.jobosint.parse;
 
 import java.nio.file.Path;
 
-public interface Parser<T> {
-     ParseResult<T> parse(String html, String selector);
+public interface HtmlFileParser<T> extends HtmlParser<T> {
      ParseResult<T> parse(Path path, String selector);
 }
