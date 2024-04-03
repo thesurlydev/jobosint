@@ -4,6 +4,7 @@ import com.jobosint.collaboration.annotation.Tool;
 import com.jobosint.config.ScrapeConfig;
 import com.jobosint.model.ScrapeRequest;
 import com.jobosint.model.ScrapeResponse;
+import com.jobosint.model.SelectAttribute;
 import com.jobosint.util.FileUtils;
 import com.microsoft.playwright.*;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,15 @@ public class ScrapeService {
     private final ScrapeConfig config;
     private final Browser browser;
 
-    @Tool(name = "WebScraper", description = "Given a web URL and a CSS selector return a portion of the web page")
+    @Tool(name = "WebScraper", description = "Given a web URL scrape the HTML content")
+    public ScrapeResponse scrapeHtml(String url) {
+        if (!url.startsWith("http")) {
+            url = "https://" + url;
+        }
+        ScrapeRequest req = new ScrapeRequest(url, "html", SelectAttribute.html, null, Set.of());
+        return scrape(req);
+    }
+
     public ScrapeResponse scrape(ScrapeRequest req) throws PlaywrightException {
         var downloadPath = config.downloadPath();
         var namespace = config.namespace();

@@ -1,4 +1,4 @@
-package com.jobosint.collaboration;
+package com.jobosint.collaboration.tool;
 
 import java.lang.reflect.Method;
 

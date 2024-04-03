@@ -1,8 +1,12 @@
-package com.jobosint.collaboration;
+package com.jobosint.collaboration.agent;
 
+import com.jobosint.collaboration.Task;
 import com.jobosint.collaboration.annotation.AgentMeta;
-import com.jobosint.collaboration.annotation.Tool;
 import com.jobosint.collaboration.exception.ToolInvocationException;
+import com.jobosint.collaboration.exception.ToolNotFoundException;
+import com.jobosint.collaboration.task.TaskResult;
+import com.jobosint.collaboration.tool.ToolMetadata;
+import com.jobosint.collaboration.tool.ToolRegistry;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -14,9 +18,9 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @ToString
@@ -47,19 +51,20 @@ public class Agent {
         }
     }
 
-    public <T> T invokeTool(String toolName) throws Exception {
-        return toolRegistry.invokeTool(toolName);
+    private Object invokeToolForTask(ToolMetadata toolMetadata, Task task) throws Exception {
+        return toolRegistry.invokeTool(toolMetadata, task);
     }
 
-    public <T> Optional<T> processTask(Task task, Class<T> expectedType) throws ToolInvocationException {
-        return chooseTool(task).map(tool -> {
-            try {
-                return expectedType.cast(invokeTool(tool.name()));
-            } catch (Exception e) {
-                log.error("Error invoking tool", e);
-                throw new ToolInvocationException("Error invoking tool: " + tool.name(), e);
-            }
-        });
+    public TaskResult processTask(Task task) throws ToolInvocationException {
+        return chooseTool(task)
+                .map(toolMetadata -> {
+                    try {
+                        Object toolResult = invokeToolForTask(toolMetadata, task);
+                        return new TaskResult(toolResult);
+                    } catch (Exception e) {
+                        throw new ToolInvocationException("Error invoking tool: " + toolMetadata + " for task: " + task, e);
+                    }
+                }).orElseThrow(() -> new ToolNotFoundException("No tool available to process task: " + task));
     }
 
     /**
@@ -73,7 +78,6 @@ public class Agent {
 
         StringBuilder toolList = new StringBuilder();
         toolRegistry.getTools().stream()
-                .filter(tm -> Arrays.stream(this.tools).anyMatch(s -> s.equals(tm.name())))
                 .map(tm -> tm.name() + ": " + tm.description() + "\r\n")
                 .forEach(toolList::append);
 
@@ -105,4 +109,6 @@ public class Agent {
 
         return maybeToolName.map(s -> toolRegistry.getTool(s));
     }
+
+
 }

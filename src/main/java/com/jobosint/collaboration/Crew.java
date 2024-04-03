@@ -1,5 +1,8 @@
 package com.jobosint.collaboration;
 
+import com.jobosint.collaboration.agent.Agent;
+import com.jobosint.collaboration.exception.ToolInvocationException;
+import com.jobosint.collaboration.task.TaskResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.ChatClient;
@@ -14,15 +17,29 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Component
 @Slf4j
 public class Crew {
 
-    @Autowired private ChatClient chatClient;
-    @Autowired private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     public Map<String, Agent> agents() {
         return applicationContext.getBeansOfType(Agent.class);
+    }
+
+    public TaskResult processTask(ChatClient chatClient, Task task) throws ToolInvocationException {
+        return chooseAgent(chatClient, task)
+                .map(this::getAgent)
+                .map(agent -> agent.processTask(task))
+                .orElseThrow(() -> {
+                    log.error("No agent available to process task: {}", task);
+                    return new ToolInvocationException("No agent available to process task");
+                });
+    }
+
+    public Agent getAgent(String agentName) {
+        return applicationContext.getBean(agentName, Agent.class);
     }
 
     /**
@@ -32,8 +49,11 @@ public class Crew {
      * @param task
      * @return
      */
-    public Optional<String> chooseAgent(Task task) {
+    public Optional<String> chooseAgent(ChatClient chatClient, Task task) {
         Map<String, Agent> agents = agents();
+
+        log.info("Found {} agents", agents.size());
+
         if (agents.isEmpty()) {
             log.warn("No agents available");
             return Optional.empty();
@@ -48,21 +68,17 @@ public class Crew {
         var outputParser = new BeanOutputParser<>(String.class);
 
         StringBuilder agentList = new StringBuilder();
-        for (Map.Entry<String, Agent> entry: agents.entrySet()) {
+        for (Map.Entry<String, Agent> entry : agents.entrySet()) {
             agentList.append(entry.getKey()).append(": ").append(entry.getValue().getGoal()).append("\r\n");
         }
 
-        String userMessage =
-        """
+        String userMessage = """
                 Given a task and a list of agents, determine which of the agents is most capable of accomplishing the task.
-                Return just the name of the agent.
-                
+                Return just the name of the agent.                
                 The task is:
-                {task}
-                
+                {task}                
                 Each agent has a name and a goal. Here are the list of agents:
-                {agents}
-                                
+                {agents}                                
                 {format}
                 """;
 

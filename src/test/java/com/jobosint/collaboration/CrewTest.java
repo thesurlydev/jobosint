@@ -1,13 +1,18 @@
 package com.jobosint.collaboration;
 
+import com.jobosint.collaboration.agent.Agent;
+import com.jobosint.collaboration.agent.example.IndustryAnalyst;
+import com.jobosint.collaboration.task.TaskResult;
+import com.jobosint.model.GoogleSearchResponse;
+import com.jobosint.model.ScrapeResponse;
+import com.jobosint.model.ai.CompanyDetail;
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.chat.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,49 +20,65 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CrewTest {
 
     @Autowired
+    ChatClient chatClient;
+    @Autowired
     Crew crew;
 
-    @Autowired IndustryAnalyst industryAnalyst;
+    @Autowired
+    IndustryAnalyst industryAnalyst;
 
     @Test
     public void testToolAnnotations() {
         String[] tools = industryAnalyst.getTools();
-        System.out.println(Arrays.toString(tools));
+        assertEquals(1, tools.length);
+    }
+
+    @Test
+    public void sumTask() {
+        var task = new Task("Add the numbers 1, 2, 3, 4, 5");
+        TaskResult result = crew.processTask(chatClient, task);
+        assertInstanceOf(Integer.class, result.getData());
+    }
+
+    @Test
+    public void webSearchTask() {
+        var task = new Task("What are the top 5 search results for Java?");
+        TaskResult result = crew.processTask(chatClient, task);
+        assertInstanceOf(GoogleSearchResponse.class, result.getData());
+    }
+
+    @Test
+    public void companyDetailTask() {
+        var task = new Task("Give me information about Alphabet");
+        TaskResult result = crew.processTask(chatClient, task);
+        assertInstanceOf(CompanyDetail.class, result.getData());
+    }
+
+    @Test
+    public void scrapeTask() {
+        var task = new Task("Get the content of the page at https://surly.dev");
+        TaskResult result = crew.processTask(chatClient, task);
+        assertInstanceOf(ScrapeResponse.class, result.getData());
     }
 
     @Test
     public void chooseAgentTest() {
-//        var task = new Task("What is the meaning of the word sanctum");
-//        var task = new Task("What is the history of the word sanctum");
-//        var task = new Task("Describe the current state of the AI industry and predict hot topics in the next year");
         var task = new Task("Say hello");
-        Optional<String> agent = crew.chooseAgent(task);
+        Optional<String> agent = crew.chooseAgent(chatClient, task);
         assertTrue(agent.isPresent());
-        assertEquals("industryAnalyst", agent.get());
+        assertEquals("greeter", agent.get());
     }
 
     @Test
-    public void chooseToolTest() {
-//        var task = new Task("What is the meaning of the word sanctum");
-//        var task = new Task("What is the history of the word sanctum");
-//        var task = new Task("Describe the current state of the AI industry and predict hot topics in the next year");
+    public void sayHelloTask() {
         var task = new Task("Say hello");
-        Optional<ToolMetadata> tool = industryAnalyst.chooseTool(task);
-        assertTrue(tool.isPresent());
-        assertEquals("SayHello", tool.get().name());
+        TaskResult result = crew.processTask(chatClient, task);
+        assertEquals("Hello, World!", result.getData());
     }
 
     @Test
-    public void processTaskTest() {
-        var task = new Task("Say hello");
-        Optional<String> result = industryAnalyst.processTask(task, String.class);
-        assertTrue(result.isPresent());
-        assertEquals("Hello, World!", result.get());
-    }
-
-    @Test
-    public void hubTest() {
+    public void numberOfAgents() {
         Map<String, Agent> agentNames = crew.agents();
-        System.out.println(agentNames);
+        assertEquals(4, agentNames.size());
     }
 }
