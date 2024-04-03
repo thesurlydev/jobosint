@@ -131,12 +131,15 @@ public class ToolRegistry implements BeanPostProcessor {
                                         
                 The task is:
                 {task}
-                                        
-                The signature of the method is:
+                
+                The method signature is:
                 {signature}
                                 
                 {format}
                 """;
+
+        String format = outputParser.getFormat();
+        log.info("Output parser format:\n{}\n", format);
 
         PromptTemplate promptTemplate = new PromptTemplate(userMessage, Map.of(
                 "task", task.description(),
@@ -147,7 +150,7 @@ public class ToolRegistry implements BeanPostProcessor {
 
         Generation generation = chatClient.call(prompt).getResult();
         String out = generation.getOutput().getContent();
-        log.info("Generation output: {}", out);
+        log.info("Generation output:\n{}\n", out);
 
         return outputParser.parse(out);
     }

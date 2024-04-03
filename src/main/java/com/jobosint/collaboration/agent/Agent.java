@@ -19,6 +19,7 @@ import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,6 +39,8 @@ public class Agent {
     @Getter
     private final String goal;
     @Getter
+    private final Boolean disabled;
+    @Getter
     private final String[] tools;
 
     public Agent() {
@@ -45,6 +48,7 @@ public class Agent {
         if (this.getClass().isAnnotationPresent(AgentMeta.class)) {
             AgentMeta metadata = this.getClass().getAnnotation(AgentMeta.class);
             this.goal = metadata.goal();
+            this.disabled = metadata.disabled();
             this.tools = metadata.tools();
         } else {
             throw new IllegalStateException("Agent annotation is required on Agent classes");
@@ -56,15 +60,13 @@ public class Agent {
     }
 
     public TaskResult processTask(Task task) throws ToolInvocationException {
-        return chooseTool(task)
-                .map(toolMetadata -> {
-                    try {
-                        Object toolResult = invokeToolForTask(toolMetadata, task);
-                        return new TaskResult(toolResult);
-                    } catch (Exception e) {
-                        throw new ToolInvocationException("Error invoking tool: " + toolMetadata + " for task: " + task, e);
-                    }
-                }).orElseThrow(() -> new ToolNotFoundException("No tool available to process task: " + task));
+        ToolMetadata toolMetadata = chooseTool(task);
+        try {
+            Object toolResult = invokeToolForTask(toolMetadata, task);
+            return new TaskResult(toolResult);
+        } catch (Exception e) {
+            throw new ToolInvocationException("Error invoking tool: " + toolMetadata + " for task: " + task, e);
+        }
     }
 
     /**
@@ -74,11 +76,16 @@ public class Agent {
      * @param task
      * @return
      */
-    public Optional<ToolMetadata> chooseTool(Task task) {
+    public ToolMetadata chooseTool(Task task) {
+        log.info("Choosing tool for task: {}", task);
+
+        List<String> agentToolNames = Arrays.stream(tools).toList();
 
         StringBuilder toolList = new StringBuilder();
-        toolRegistry.getTools().stream()
-                .map(tm -> tm.name() + ": " + tm.description() + "\r\n")
+        toolRegistry.getTools()
+                .stream()
+                .filter(toolMetadata -> agentToolNames.contains(toolMetadata.name()))
+                .map(toolMetadata -> toolMetadata.name() + ": " + toolMetadata.description() + "\r\n")
                 .forEach(toolList::append);
 
         var outputParser = new BeanOutputParser<>(String.class);
@@ -105,9 +112,16 @@ public class Agent {
 
         Generation generation = chatClient.call(prompt).getResult();
 
-        Optional<String> maybeToolName = Optional.ofNullable(outputParser.parse(generation.getOutput().getContent()));
+        String out = generation.getOutput().getContent();
+        log.info("Generation output:\n{}\n", out);
 
-        return maybeToolName.map(s -> toolRegistry.getTool(s));
+        String toolName = outputParser.parse(out);
+        log.info("Selected tool name: {}", toolName);
+
+        ToolMetadata selectedTool = toolRegistry.getTool(toolName);
+        log.info("Selected tool: {}", selectedTool);
+
+        return selectedTool;
     }
 
 

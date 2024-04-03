@@ -1,5 +1,10 @@
 package com.jobosint.collaboration.task;
 
+import lombok.Data;
+import lombok.Getter;
+
+@Getter
+@Data
 public class TaskResult {
     private final Object data;
     private final String dataType;
@@ -9,11 +14,4 @@ public class TaskResult {
         this.dataType = data.getClass().getSimpleName();
     }
 
-    public Object getData() {
-        return data;
-    }
-
-    public String getDataType() {
-        return dataType;
-    }
 }

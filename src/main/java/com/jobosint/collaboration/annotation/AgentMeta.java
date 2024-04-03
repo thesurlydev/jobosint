@@ -12,5 +12,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE) // Apply to classes
 public @interface AgentMeta {
     String goal();
+    boolean disabled() default false;
     String[] tools() default {};
 }

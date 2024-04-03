@@ -10,12 +10,12 @@ import org.springframework.ai.chat.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.parser.BeanOutputParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -26,6 +26,12 @@ public class Crew {
 
     public Map<String, Agent> agents() {
         return applicationContext.getBeansOfType(Agent.class);
+    }
+
+    public Map<String, Agent> enabledAgents() {
+        return agents().entrySet().stream()
+                .filter(entry -> !entry.getValue().getDisabled())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public TaskResult processTask(ChatClient chatClient, Task task) throws ToolInvocationException {
@@ -50,9 +56,10 @@ public class Crew {
      * @return
      */
     public Optional<String> chooseAgent(ChatClient chatClient, Task task) {
-        Map<String, Agent> agents = agents();
+        Map<String, Agent> agents = enabledAgents();
 
-        log.info("Found {} agents", agents.size());
+        log.info("Found {} enabled agents", agents.size());
+        agents.forEach((k, v) -> log.info("Agent: {}, Goal: {}", k, v.getGoal()));
 
         if (agents.isEmpty()) {
             log.warn("No agents available");
@@ -74,11 +81,15 @@ public class Crew {
 
         String userMessage = """
                 Given a task and a list of agents, determine which of the agents is most capable of accomplishing the task.
-                Return just the name of the agent.                
+                Prioritize agents with goals that break down tasks into smaller sub-tasks.
+                Return just the name of the agent.
+                
                 The task is:
-                {task}                
+                {task}
+                
                 Each agent has a name and a goal. Here are the list of agents:
-                {agents}                                
+                {agents}
+                
                 {format}
                 """;
 
@@ -90,8 +101,10 @@ public class Crew {
         Prompt prompt = promptTemplate.create();
 
         Generation generation = chatClient.call(prompt).getResult();
+        String out = generation.getOutput().getContent();
+        log.info("Selected Agent: {}", out);
 
-        return Optional.ofNullable(outputParser.parse(generation.getOutput().getContent()));
+        return Optional.ofNullable(outputParser.parse(out));
     }
 
 }
