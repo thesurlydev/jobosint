@@ -12,17 +12,17 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.Generation;
+import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @ToString
@@ -43,6 +43,8 @@ public class Agent {
     @Getter
     private final String goal;
     @Getter
+    private final String background;
+    @Getter
     private final Boolean disabled;
     @Getter
     private final String[] tools;
@@ -52,6 +54,7 @@ public class Agent {
         if (this.getClass().isAnnotationPresent(AgentMeta.class)) {
             AgentMeta metadata = this.getClass().getAnnotation(AgentMeta.class);
             this.goal = metadata.goal();
+            this.background = metadata.background();
             this.disabled = metadata.disabled();
             this.tools = metadata.tools();
         } else {
@@ -64,6 +67,10 @@ public class Agent {
     }
 
     public TaskResult processTask(Task task) throws ToolInvocationException {
+        if (tools.length == 0) {
+            log.info("Agent has no tools configured, processing task via LLM");
+            return processTaskViaLLM(task);
+        }
         ToolMetadata toolMetadata = chooseTool(task);
         try {
             Object toolResult = invokeToolForTask(toolMetadata, task);
@@ -71,6 +78,26 @@ public class Agent {
         } catch (Exception e) {
             throw new ToolInvocationException("Error invoking tool: " + toolMetadata + " for task: " + task, e);
         }
+    }
+
+    private TaskResult processTaskViaLLM(Task task) {
+
+        List<Message> messages = new ArrayList<>();
+
+        if (this.background != null && !this.background.isEmpty()) {
+            SystemPromptTemplate systemTemplate = new SystemPromptTemplate(this.background);
+            messages.add(systemTemplate.createMessage());
+        }
+
+        var taskDescription = task.description();
+        UserMessage userMessage = new UserMessage(taskDescription);
+        messages.add(userMessage);
+
+        Prompt prompt = new Prompt(messages);
+        log.info("PROMPT:\n\n{}\n", prompt);
+        Generation generation = chatClient.call(prompt).getResult();
+        String answer = generation.getOutput().getContent();
+        return new TaskResult(answer);
     }
 
     /**
