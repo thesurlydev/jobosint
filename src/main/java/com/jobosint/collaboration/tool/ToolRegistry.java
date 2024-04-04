@@ -12,8 +12,10 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -25,6 +27,9 @@ import java.util.*;
 public class ToolRegistry implements BeanPostProcessor {
 
     private final ChatClient chatClient;
+
+    @Value("classpath:/prompts/tool-registry-choose-tool-args.st")
+    private Resource chooseToolArgsUserPrompt;
 
     // Map to store tool name and its corresponding method for quick access
     private final Map<String, Method> toolMethods = new HashMap<>();
@@ -65,7 +70,7 @@ public class ToolRegistry implements BeanPostProcessor {
         String toolName = toolMetadata.name();
         log.info("Tool name: {}", toolName);
         Object args = getToolArgs(toolMetadata, task);
-        log.info("args: {}", args);
+        log.info("Args: {}", args);
 
         Object serviceInstance = serviceInstances.get(toolName);
         log.info("Service instance: {}", serviceInstance.getClass().getName());
@@ -93,24 +98,10 @@ public class ToolRegistry implements BeanPostProcessor {
 
         var outputParser = new BeanOutputParser<>(paramType);
 
-        String userMessage = """
-                Given a task and the signature of a method extract the values from the task necessary to populate the method arguments.
-                Return just the method arguments.
-                If the method has no arguments return an empty list.
-                                        
-                The task is:
-                {task}
-                                
-                The method signature is:
-                {signature}
-                                
-                {format}
-                """;
-
         String format = outputParser.getFormat();
         log.info("Output parser format:\n{}\n", format);
 
-        PromptTemplate promptTemplate = new PromptTemplate(userMessage, Map.of(
+        PromptTemplate promptTemplate = new PromptTemplate(chooseToolArgsUserPrompt, Map.of(
                 "task", task.description(),
                 "signature", signature,
                 "format", outputParser.getFormat()

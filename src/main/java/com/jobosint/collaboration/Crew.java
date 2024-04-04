@@ -10,7 +10,9 @@ import org.springframework.ai.chat.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.parser.BeanOutputParser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -23,6 +25,9 @@ import java.util.stream.Collectors;
 public class Crew {
 
     private final ApplicationContext applicationContext;
+
+    @Value("classpath:/prompts/crew-choose-agent.st")
+    private Resource chooseAgentUserPrompt;
 
     public Map<String, Agent> agents() {
         return applicationContext.getBeansOfType(Agent.class);
@@ -79,21 +84,7 @@ public class Crew {
             agentList.append(entry.getKey()).append(": ").append(entry.getValue().getGoal()).append("\r\n");
         }
 
-        String userMessage = """
-                Given a task and a list of agents, determine which of the agents is most capable of accomplishing the task.
-                Prioritize agents with goals that break down tasks into smaller sub-tasks.
-                Return just the name of the agent.
-                
-                The task is:
-                {task}
-                
-                Each agent has a name and a goal. Here are the list of agents:
-                {agents}
-                
-                {format}
-                """;
-
-        PromptTemplate promptTemplate = new PromptTemplate(userMessage, Map.of(
+        PromptTemplate promptTemplate = new PromptTemplate(chooseAgentUserPrompt, Map.of(
                 "task", task.description(),
                 "agents", agentList.toString(),
                 "format", outputParser.getFormat()

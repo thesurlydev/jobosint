@@ -16,6 +16,8 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +34,9 @@ public class Agent {
 
     @Autowired
     private ToolRegistry toolRegistry;
+
+    @Value("classpath:/prompts/agent-choose-tool.st")
+    private Resource chooseAgentUserPrompt;
 
     @Getter
     private final String name;
@@ -89,20 +94,7 @@ public class Agent {
 
         var outputParser = new BeanOutputParser<>(String.class);
 
-        String userMessage = """
-                Given a task and a list of tools, determine which of the tools is most capable of accomplishing the task.
-                Return just the name of the tool.
-                                        
-                The task is:
-                {task}
-                                        
-                Each tool has a name and a description. Here are the list of tools:
-                {tools}
-                                
-                {format}
-                """;
-
-        PromptTemplate promptTemplate = new PromptTemplate(userMessage, Map.of(
+        PromptTemplate promptTemplate = new PromptTemplate(chooseAgentUserPrompt, Map.of(
                 "task", task.description(),
                 "tools", toolList.toString(),
                 "format", outputParser.getFormat()
