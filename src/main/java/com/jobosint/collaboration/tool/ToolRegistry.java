@@ -10,15 +10,12 @@ import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.parser.AbstractConversionServiceOutputParser;
 import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -82,34 +79,6 @@ public class ToolRegistry implements BeanPostProcessor {
         }
     }
 
-    public <T> T invokeTool(ToolMetadata toolMetadata) throws Exception {
-        Method method = toolMetadata.method();
-        String toolName = toolMetadata.name();
-        if (method != null) {
-            Object serviceInstance = serviceInstances.get(toolName);
-            @SuppressWarnings("unchecked")
-            T result = (T) method.invoke(serviceInstance);
-            return result;
-        } else {
-            throw new IllegalArgumentException("Tool not found: " + toolName);
-        }
-    }
-
-    public static class MethodSignatureOutputParser extends AbstractConversionServiceOutputParser<Array[]> {
-
-        public MethodSignatureOutputParser(DefaultConversionService defaultConversionService) {
-            super(defaultConversionService);
-        }
-
-        public String getFormat() {
-            return "Your response should be a list of comma separated values\neg: `foo, bar, baz`\n";
-        }
-
-        public Array[] parse(String text) {
-            return new Array[]{this.getConversionService().convert(text, Array.class)};
-        }
-    }
-
     public Object getToolArgs(ToolMetadata toolMetadata, Task task) {
 
         if (toolMetadata.method().getParameterCount() == 0) {
@@ -131,7 +100,7 @@ public class ToolRegistry implements BeanPostProcessor {
                                         
                 The task is:
                 {task}
-                
+                                
                 The method signature is:
                 {signature}
                                 
@@ -153,22 +122,6 @@ public class ToolRegistry implements BeanPostProcessor {
         log.info("Generation output:\n{}\n", out);
 
         return outputParser.parse(out);
-    }
-
-    public static int[] convertListStringToIntArray(List<String> stringList) {
-        int[] intArray = new int[stringList.size()]; // create an array of the same size as the list
-
-        for (int i = 0; i < stringList.size(); i++) {
-            try {
-                intArray[i] = Integer.parseInt(stringList.get(i)); // convert each string to an integer
-            } catch (NumberFormatException e) {
-                // Handle the case where the string cannot be converted to an integer
-                System.err.println("Error converting string to integer: " + stringList.get(i));
-                throw e;
-            }
-        }
-
-        return intArray;
     }
 
     public static String getMethodArgsAsString(Method method) {

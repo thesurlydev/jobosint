@@ -3,7 +3,6 @@ package com.jobosint.collaboration.agent;
 import com.jobosint.collaboration.Task;
 import com.jobosint.collaboration.annotation.AgentMeta;
 import com.jobosint.collaboration.exception.ToolInvocationException;
-import com.jobosint.collaboration.exception.ToolNotFoundException;
 import com.jobosint.collaboration.task.TaskResult;
 import com.jobosint.collaboration.tool.ToolMetadata;
 import com.jobosint.collaboration.tool.ToolRegistry;
