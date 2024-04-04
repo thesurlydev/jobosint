@@ -1,6 +1,6 @@
 package com.jobosint.collaboration.agent;
 
-import com.jobosint.collaboration.Task;
+import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.annotation.AgentMeta;
 import com.jobosint.collaboration.exception.ToolInvocationException;
 import com.jobosint.collaboration.task.TaskResult;
@@ -89,7 +89,7 @@ public class Agent {
             messages.add(systemTemplate.createMessage());
         }
 
-        var taskDescription = task.description();
+        var taskDescription = task.getDescription();
         UserMessage userMessage = new UserMessage(taskDescription);
         messages.add(userMessage);
 
@@ -122,7 +122,7 @@ public class Agent {
         var outputParser = new BeanOutputParser<>(String.class);
 
         PromptTemplate promptTemplate = new PromptTemplate(chooseAgentUserPrompt, Map.of(
-                "task", task.description(),
+                "task", task.getDescription(),
                 "tools", toolList.toString(),
                 "format", outputParser.getFormat()
         ));

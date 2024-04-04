@@ -1,8 +1,7 @@
 package com.jobosint.collaboration.tool;
 
-import com.jobosint.collaboration.Task;
+import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.agent.example.Greeter;
-import com.jobosint.collaboration.agent.example.IndustryAnalyst;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

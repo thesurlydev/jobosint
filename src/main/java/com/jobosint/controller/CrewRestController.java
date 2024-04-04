@@ -1,7 +1,7 @@
 package com.jobosint.controller;
 
 import com.jobosint.collaboration.Crew;
-import com.jobosint.collaboration.Task;
+import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.agent.Agent;
 import com.jobosint.collaboration.task.TaskResult;
 import lombok.RequiredArgsConstructor;

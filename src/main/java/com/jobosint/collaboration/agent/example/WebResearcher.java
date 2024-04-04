@@ -10,6 +10,4 @@ import org.springframework.stereotype.Component;
         tools = {"WebScraper", "WebSearch"}
 )
 public class WebResearcher extends Agent {
-    public WebResearcher() {
-    }
 }

@@ -1,6 +1,6 @@
 package com.jobosint.collaboration.agent.example;
 
-import com.jobosint.collaboration.Task;
+import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.agent.Agent;
 import com.jobosint.collaboration.annotation.AgentMeta;
 import com.jobosint.collaboration.annotation.Tool;
@@ -32,7 +32,7 @@ public class TaskDeconstructor extends Agent {
     public DeconstructedTask deconstructTask(Task task) {
         var outputParser = new BeanOutputParser<>(DeconstructedTask.class);
         PromptTemplate promptTemplate = new PromptTemplate(deconstructTaskUserPrompt, Map.of(
-                "task", task.description(),
+                "task", task.getDescription(),
                 "format", outputParser.getFormat()
         ));
         Prompt prompt = promptTemplate.create();

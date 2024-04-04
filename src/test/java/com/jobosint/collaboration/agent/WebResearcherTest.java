@@ -1,6 +1,6 @@
 package com.jobosint.collaboration.agent;
 
-import com.jobosint.collaboration.Task;
+import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.agent.example.WebResearcher;
 import com.jobosint.collaboration.task.TaskResult;
 import com.jobosint.model.ScrapeResponse;

@@ -11,7 +11,6 @@ public class TaskResult {
 
     public TaskResult(Object data) {
         this.data = data;
-        this.dataType = data.getClass().getSimpleName();
+        this.dataType = data.getClass().getName();
     }
-
 }

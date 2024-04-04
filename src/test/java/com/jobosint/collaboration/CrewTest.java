@@ -2,6 +2,7 @@ package com.jobosint.collaboration;
 
 import com.jobosint.collaboration.agent.Agent;
 import com.jobosint.collaboration.agent.example.IndustryAnalyst;
+import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.task.TaskResult;
 import com.jobosint.model.GoogleSearchResponse;
 import com.jobosint.model.ScrapeResponse;

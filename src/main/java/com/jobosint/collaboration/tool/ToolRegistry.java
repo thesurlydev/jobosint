@@ -1,6 +1,6 @@
 package com.jobosint.collaboration.tool;
 
-import com.jobosint.collaboration.Task;
+import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.annotation.Tool;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -102,7 +102,7 @@ public class ToolRegistry implements BeanPostProcessor {
         log.info("Output parser format:\n{}\n", format);
 
         PromptTemplate promptTemplate = new PromptTemplate(chooseToolArgsUserPrompt, Map.of(
-                "task", task.description(),
+                "task", task.getDescription(),
                 "signature", signature,
                 "format", outputParser.getFormat()
         ));

@@ -2,6 +2,7 @@ package com.jobosint.collaboration;
 
 import com.jobosint.collaboration.agent.Agent;
 import com.jobosint.collaboration.exception.ToolInvocationException;
+import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.task.TaskResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +65,12 @@ public class Crew {
         Map<String, Agent> agents = enabledAgents();
 
         log.info("Found {} enabled agents", agents.size());
+
+        if (task.getAgent() != null) {
+            log.info("Task specified agent: {}", task.getAgent());
+            return agents.keySet().stream().filter(s -> s.equals(task.getAgent())).findFirst();
+        }
+
         agents.forEach((k, v) -> log.info("Agent: {}, Goal: {}", k, v.getGoal()));
 
         if (agents.isEmpty()) {
@@ -85,7 +92,7 @@ public class Crew {
         }
 
         PromptTemplate promptTemplate = new PromptTemplate(chooseAgentUserPrompt, Map.of(
-                "task", task.description(),
+                "task", task.getDescription(),
                 "agents", agentList.toString(),
                 "format", outputParser.getFormat()
         ));
