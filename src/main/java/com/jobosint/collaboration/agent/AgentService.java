@@ -1,7 +1,7 @@
 package com.jobosint.collaboration.agent;
 
 import com.jobosint.collaboration.task.Task;
-import com.jobosint.collaboration.annotation.AgentMeta;
+import com.jobosint.collaboration.annotation.Agent;
 import com.jobosint.collaboration.exception.ToolInvocationException;
 import com.jobosint.collaboration.task.TaskResult;
 import com.jobosint.collaboration.tool.ToolMetadata;
@@ -27,7 +27,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @ToString
 @Slf4j
-public class Agent {
+public class AgentService {
 
     @Autowired
     private ChatClient chatClient;
@@ -49,10 +49,10 @@ public class Agent {
     @Getter
     private final String[] tools;
 
-    public Agent() {
+    public AgentService() {
         this.name = this.getClass().getSimpleName();
-        if (this.getClass().isAnnotationPresent(AgentMeta.class)) {
-            AgentMeta metadata = this.getClass().getAnnotation(AgentMeta.class);
+        if (this.getClass().isAnnotationPresent(Agent.class)) {
+            Agent metadata = this.getClass().getAnnotation(Agent.class);
             this.goal = metadata.goal();
             this.background = metadata.background();
             this.disabled = metadata.disabled();

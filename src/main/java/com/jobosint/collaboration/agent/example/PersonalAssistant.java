@@ -1,7 +1,7 @@
 package com.jobosint.collaboration.agent.example;
 
-import com.jobosint.collaboration.agent.Agent;
-import com.jobosint.collaboration.annotation.AgentMeta;
+import com.jobosint.collaboration.agent.AgentService;
+import com.jobosint.collaboration.annotation.Agent;
 import com.jobosint.collaboration.annotation.Tool;
 
 import java.net.MalformedURLException;
@@ -9,11 +9,11 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
 
-@AgentMeta(
+@Agent(
         goal = "Provide assistance to an individual in their personal life",
         tools = {"MyAge", "MyLinkedInProfile"}
 )
-public class PersonalAssistant extends Agent {
+public class PersonalAssistant extends AgentService {
     @Tool(name = "MyAge", description = "Get my age in years")
     public Integer getAge() {
         String specificDateString = "1974-02-05";

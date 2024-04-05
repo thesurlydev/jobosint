@@ -1,6 +1,6 @@
 package com.jobosint.collaboration;
 
-import com.jobosint.collaboration.agent.Agent;
+import com.jobosint.collaboration.agent.AgentService;
 import com.jobosint.collaboration.exception.ToolInvocationException;
 import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.task.TaskResult;
@@ -30,11 +30,11 @@ public class Crew {
     @Value("classpath:/prompts/crew-choose-agent.st")
     private Resource chooseAgentUserPrompt;
 
-    public Map<String, Agent> agents() {
-        return applicationContext.getBeansOfType(Agent.class);
+    public Map<String, AgentService> agents() {
+        return applicationContext.getBeansOfType(AgentService.class);
     }
 
-    public Map<String, Agent> enabledAgents() {
+    public Map<String, AgentService> enabledAgents() {
         return agents().entrySet().stream()
                 .filter(entry -> !entry.getValue().getDisabled())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -50,8 +50,8 @@ public class Crew {
                 });
     }
 
-    public Agent getAgent(String agentName) {
-        return applicationContext.getBean(agentName, Agent.class);
+    public AgentService getAgent(String agentName) {
+        return applicationContext.getBean(agentName, AgentService.class);
     }
 
     /**
@@ -62,7 +62,7 @@ public class Crew {
      * @return
      */
     public Optional<String> chooseAgent(ChatClient chatClient, Task task) {
-        Map<String, Agent> agents = enabledAgents();
+        Map<String, AgentService> agents = enabledAgents();
 
         log.info("Found {} enabled agents", agents.size());
 
@@ -87,7 +87,7 @@ public class Crew {
         var outputParser = new BeanOutputParser<>(String.class);
 
         StringBuilder agentList = new StringBuilder();
-        for (Map.Entry<String, Agent> entry : agents.entrySet()) {
+        for (Map.Entry<String, AgentService> entry : agents.entrySet()) {
             agentList.append(entry.getKey()).append(": ").append(entry.getValue().getGoal()).append("\r\n");
         }
 

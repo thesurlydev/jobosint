@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Component
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE) // Apply to classes
-public @interface AgentMeta {
+public @interface Agent {
     String goal();
     String background() default "";
     boolean disabled() default false;

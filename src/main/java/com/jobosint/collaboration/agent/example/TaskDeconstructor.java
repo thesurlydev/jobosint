@@ -1,8 +1,8 @@
 package com.jobosint.collaboration.agent.example;
 
 import com.jobosint.collaboration.task.Task;
-import com.jobosint.collaboration.agent.Agent;
-import com.jobosint.collaboration.annotation.AgentMeta;
+import com.jobosint.collaboration.agent.AgentService;
+import com.jobosint.collaboration.annotation.Agent;
 import com.jobosint.collaboration.annotation.Tool;
 import com.jobosint.collaboration.task.DeconstructedTask;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,12 @@ import org.springframework.core.io.Resource;
 
 import java.util.Map;
 
-@AgentMeta(
+@Agent(
         goal= "Given a task, break it down into smaller sub-tasks",
         tools= {"TaskDeconstructor"}
 )
 @RequiredArgsConstructor
-public class TaskDeconstructor extends Agent {
+public class TaskDeconstructor extends AgentService {
 
     private final ChatClient chatClient;
 

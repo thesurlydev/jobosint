@@ -1,7 +1,7 @@
 package com.jobosint.collaboration;
 
-import com.jobosint.collaboration.agent.Agent;
-import com.jobosint.collaboration.agent.example.IndustryAnalyst;
+import com.jobosint.collaboration.agent.AgentService;
+import com.jobosint.collaboration.agent.example.BusinessAnalyst;
 import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.task.TaskResult;
 import com.jobosint.model.GoogleSearchResponse;
@@ -26,11 +26,11 @@ public class CrewTest {
     Crew crew;
 
     @Autowired
-    IndustryAnalyst industryAnalyst;
+    BusinessAnalyst businessAnalyst;
 
     @Test
     public void testToolAnnotations() {
-        String[] tools = industryAnalyst.getTools();
+        String[] tools = businessAnalyst.getTools();
         assertEquals(1, tools.length);
     }
 
@@ -79,7 +79,7 @@ public class CrewTest {
 
     @Test
     public void numberOfAgents() {
-        Map<String, Agent> agentNames = crew.agents();
+        Map<String, AgentService> agentNames = crew.agents();
         assertEquals(4, agentNames.size());
     }
 }

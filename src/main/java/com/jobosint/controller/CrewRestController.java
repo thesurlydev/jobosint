@@ -2,7 +2,7 @@ package com.jobosint.controller;
 
 import com.jobosint.collaboration.Crew;
 import com.jobosint.collaboration.task.Task;
-import com.jobosint.collaboration.agent.Agent;
+import com.jobosint.collaboration.agent.AgentService;
 import com.jobosint.collaboration.task.TaskResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class CrewRestController {
     }
 
     @GetMapping("/crew/agents")
-    public List<Agent> crewAgents() {
+    public List<AgentService> crewAgents() {
         var agents = crew.agents();
         return agents.values().stream().toList();
     }
