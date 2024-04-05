@@ -4,7 +4,22 @@
 </head>
 <body>
 <section>
-    <p>Crew</p>
+    <form action="#" th:action="@{/crew}" th:object="${crewForm}" method="post">
+
+        <div class="row mb-3">
+            <label for="task" class="col-sm-2 col-form-label">Task</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="task" th:field="*{task}"/>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary">Submit task</button>
+            </div>
+        </div>
+    </form>
 </section>
 </body>
 </html>

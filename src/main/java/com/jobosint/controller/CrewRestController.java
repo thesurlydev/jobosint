@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
-@RestController
+@RestController("/api")
 @Slf4j
 public class CrewRestController {
 
