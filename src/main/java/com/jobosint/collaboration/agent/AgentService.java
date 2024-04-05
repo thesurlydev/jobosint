@@ -1,11 +1,10 @@
 package com.jobosint.collaboration.agent;
 
-import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.annotation.Agent;
 import com.jobosint.collaboration.exception.ToolInvocationException;
+import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.task.TaskResult;
 import com.jobosint.collaboration.tool.ToolMetadata;
-import com.jobosint.collaboration.tool.ToolRegistry;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -22,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -32,11 +32,11 @@ public class AgentService {
     @Autowired
     private ChatClient chatClient;
 
-    @Autowired
-    private ToolRegistry toolRegistry;
-
     @Value("classpath:/prompts/agent-choose-tool.st")
     private Resource chooseAgentUserPrompt;
+
+    @Value("classpath:/prompts/tool-registry-choose-tool-args.st")
+    private Resource chooseToolArgsUserPrompt;
 
     @Getter
     private final String name;
@@ -47,33 +47,38 @@ public class AgentService {
     @Getter
     private final Boolean disabled;
     @Getter
-    private final String[] tools;
+    private final Map<String, ToolMetadata> tools = new HashMap<>();
 
     public AgentService() {
         this.name = this.getClass().getSimpleName();
         if (this.getClass().isAnnotationPresent(Agent.class)) {
-            Agent metadata = this.getClass().getAnnotation(Agent.class);
-            this.goal = metadata.goal();
-            this.background = metadata.background();
-            this.disabled = metadata.disabled();
-            this.tools = metadata.tools();
+            Agent annotation = this.getClass().getAnnotation(Agent.class);
+            this.goal = annotation.goal();
+            this.background = annotation.background();
+            this.disabled = annotation.disabled();
         } else {
             throw new IllegalStateException("Agent annotation is required on Agent classes");
         }
     }
 
+    public void addTool(ToolMetadata toolMetadata) {
+        tools.put(toolMetadata.name(), toolMetadata);
+    }
+
     private Object invokeToolForTask(ToolMetadata toolMetadata, Task task) throws Exception {
-        return toolRegistry.invokeTool(toolMetadata, task);
+        log.info("Invoking tool: {} for task: {}", toolMetadata, task);
+        return invokeTool(toolMetadata, task);
     }
 
     public TaskResult processTask(Task task) throws ToolInvocationException {
-        if (tools.length == 0) {
+        if (tools.isEmpty()) {
             log.info("Agent has no tools configured, processing task via LLM");
             return processTaskViaLLM(task);
         }
         ToolMetadata toolMetadata = chooseTool(task);
         try {
             Object toolResult = invokeToolForTask(toolMetadata, task);
+            log.info("RESULT: \n\n{}\n", toolResult);
             return new TaskResult(toolResult);
         } catch (Exception e) {
             throw new ToolInvocationException("Error invoking tool: " + toolMetadata + " for task: " + task, e);
@@ -110,12 +115,8 @@ public class AgentService {
     public ToolMetadata chooseTool(Task task) {
         log.info("Choosing tool for task: {}", task);
 
-        List<String> agentToolNames = Arrays.stream(tools).toList();
-
         StringBuilder toolList = new StringBuilder();
-        toolRegistry.getTools()
-                .stream()
-                .filter(toolMetadata -> agentToolNames.contains(toolMetadata.name()))
+        tools.values().stream()
                 .map(toolMetadata -> toolMetadata.name() + ": " + toolMetadata.description() + "\r\n")
                 .forEach(toolList::append);
 
@@ -136,10 +137,79 @@ public class AgentService {
         String toolName = outputParser.parse(out);
         log.info("Selected tool name: {}", toolName);
 
-        ToolMetadata selectedTool = toolRegistry.getTool(toolName);
+        ToolMetadata selectedTool = tools.get(toolName);
         log.info("Selected tool: {}", selectedTool);
 
         return selectedTool;
+    }
+
+    public Object getToolArgs(ToolMetadata toolMetadata, Task task) {
+        log.info("Getting '{}' args for task: {}", toolMetadata.name(), task.toString());
+
+        if (toolMetadata.method().getParameterCount() == 0) {
+            return null;
+        }
+
+        Class<?> paramType = Arrays.stream(toolMetadata.method().getParameterTypes()).findFirst().orElseThrow();
+        log.info("Method parameter type: {}", paramType.getName());
+
+        String signature = getMethodArgsAsString(toolMetadata.method());
+        log.info("Method signature: {}", signature);
+
+        var outputParser = new BeanOutputParser<>(paramType);
+
+        String format = outputParser.getFormat();
+        log.info("Output parser format:\n{}\n", format);
+
+        PromptTemplate promptTemplate = new PromptTemplate(chooseToolArgsUserPrompt, Map.of(
+                "task", task.getDescription(),
+                "signature", signature,
+                "format", outputParser.getFormat()
+        ));
+        Prompt prompt = promptTemplate.create();
+
+        Generation generation = chatClient.call(prompt).getResult();
+        String out = generation.getOutput().getContent();
+        log.info("Generation output:\n{}\n", out);
+
+        return outputParser.parse(out);
+    }
+
+    public static String getMethodArgsAsString(Method method) {
+        // Get the parameter types
+        Class<?>[] parameterTypes = method.getParameterTypes();
+
+        // Build the string representation of the parameter types
+        StringBuilder parametersString = new StringBuilder("(");
+        for (int i = 0; i < parameterTypes.length; i++) {
+            parametersString.append(parameterTypes[i].getTypeName());
+            if (i < parameterTypes.length - 1) {
+                parametersString.append(", ");
+            }
+        }
+        parametersString.append(")");
+
+        return parametersString.toString();
+    }
+
+    public <T> T invokeTool(ToolMetadata toolMetadata, Task task) throws Exception {
+        Method method = toolMetadata.method();
+        log.info("Method: {}", method.getName());
+        String toolName = toolMetadata.name();
+        log.info("Tool name: {}", toolName);
+        Object args = getToolArgs(toolMetadata, task);
+        log.info("Args: {}", args);
+
+        Object serviceInstance = toolMetadata.agent();
+        log.info("Service instance: {}", serviceInstance.getClass().getName());
+
+        if (args == null) {
+            T result = (T) method.invoke(serviceInstance);
+            return result;
+        } else {
+            T result = (T) method.invoke(serviceInstance, args);
+            return result;
+        }
     }
 
 

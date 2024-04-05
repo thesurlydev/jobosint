@@ -14,5 +14,4 @@ public @interface Agent {
     String goal();
     String background() default "";
     boolean disabled() default false;
-    String[] tools() default {};
 }

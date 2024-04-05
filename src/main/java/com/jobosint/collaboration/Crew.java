@@ -1,5 +1,6 @@
 package com.jobosint.collaboration;
 
+import com.jobosint.collaboration.agent.AgentRegistry;
 import com.jobosint.collaboration.agent.AgentService;
 import com.jobosint.collaboration.exception.ToolInvocationException;
 import com.jobosint.collaboration.task.Task;
@@ -25,24 +26,15 @@ import java.util.stream.Collectors;
 @Slf4j
 public class Crew {
 
-    private final ApplicationContext applicationContext;
+    private final AgentRegistry agentRegistry;
 
     @Value("classpath:/prompts/crew-choose-agent.st")
     private Resource chooseAgentUserPrompt;
 
-    public Map<String, AgentService> agents() {
-        return applicationContext.getBeansOfType(AgentService.class);
-    }
-
-    public Map<String, AgentService> enabledAgents() {
-        return agents().entrySet().stream()
-                .filter(entry -> !entry.getValue().getDisabled())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
     public TaskResult processTask(ChatClient chatClient, Task task) throws ToolInvocationException {
+        log.info("Processing task: {}", task);
         return chooseAgent(chatClient, task)
-                .map(this::getAgent)
+                .map(agentRegistry::getAgent)
                 .map(agent -> agent.processTask(task))
                 .orElseThrow(() -> {
                     log.error("No agent available to process task: {}", task);
@@ -50,9 +42,6 @@ public class Crew {
                 });
     }
 
-    public AgentService getAgent(String agentName) {
-        return applicationContext.getBean(agentName, AgentService.class);
-    }
 
     /**
      * Given a task, determine which agent is most capable of accomplishing the task
@@ -62,7 +51,7 @@ public class Crew {
      * @return
      */
     public Optional<String> chooseAgent(ChatClient chatClient, Task task) {
-        Map<String, AgentService> agents = enabledAgents();
+        Map<String, AgentService> agents = agentRegistry.enabledAgents();
 
         log.info("Found {} enabled agents", agents.size());
 

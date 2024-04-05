@@ -1,6 +1,5 @@
 package com.jobosint.collaboration;
 
-import com.jobosint.collaboration.agent.AgentService;
 import com.jobosint.collaboration.agent.example.BusinessAnalyst;
 import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.task.TaskResult;
@@ -12,7 +11,6 @@ import org.springframework.ai.chat.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,11 +26,11 @@ public class CrewTest {
     @Autowired
     BusinessAnalyst businessAnalyst;
 
-    @Test
+    /*@Test
     public void testToolAnnotations() {
         String[] tools = businessAnalyst.getTools();
         assertEquals(1, tools.length);
-    }
+    }*/
 
     @Test
     public void sumTask() {
@@ -77,9 +75,5 @@ public class CrewTest {
         assertEquals("Hello, World!", result.getData());
     }
 
-    @Test
-    public void numberOfAgents() {
-        Map<String, AgentService> agentNames = crew.agents();
-        assertEquals(4, agentNames.size());
-    }
+
 }

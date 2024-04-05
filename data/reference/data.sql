@@ -72,4 +72,4 @@ insert into jobosint.public.attribute(name, values) values('job-status', '{"Acti
 insert into jobosint.public.attribute(name, values) values('tech-include', '{"kotlin"}');
 insert into jobosint.public.attribute(name, values) values('wishlist', '{"Small to medium sized company", "100% remote", "Medical benefits", "Minimum of 150K salary"}');
 insert into jobosint.public.attribute(name, values) values('interview-type', '{"Technical", "Behavioral", "System Design", "Initial Phone Screen"}');
-insert into jobosint.public.attribute(name, values) values('event-type', '{"Phone call", "Video", "Email", "In-person"}');
+insert into jobosint.public.attribute(name, values) values('event-type', '{"Phone call", "Video", "Email", "In-person", "Take-home assignment"}');

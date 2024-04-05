@@ -9,10 +9,7 @@ import com.jobosint.model.SelectAttribute;
 import com.jobosint.service.ScrapeService;
 import lombok.RequiredArgsConstructor;
 
-@Agent(
-        goal = "Extract links from a given webpage",
-        tools = {"ExtractLinks"}
-)
+@Agent(goal = "Extract links from a given webpage")
 @RequiredArgsConstructor
 public class LinkExtractor extends AgentService {
 
@@ -20,6 +17,9 @@ public class LinkExtractor extends AgentService {
 
     @Tool(name = "ExtractLinks", description = "Extract links from a given webpage")
     public ScrapeResponse extractLinks(String url) {
+        if (!url.startsWith("http")) {
+            url = "https://" + url;
+        }
         var req = new ScrapeRequest(url, "a", SelectAttribute.attr, "href", null);
         return scrapeService.scrape(req);
     }

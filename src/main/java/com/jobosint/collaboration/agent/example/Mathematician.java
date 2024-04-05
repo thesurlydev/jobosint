@@ -5,7 +5,7 @@ import com.jobosint.collaboration.agent.example.model.SumRequest;
 import com.jobosint.collaboration.annotation.Agent;
 import com.jobosint.collaboration.annotation.Tool;
 
-@Agent(goal = "Answer mathematical questions and solve problems", tools = "AddingMachine")
+@Agent(goal = "Answer mathematical questions and solve problems")
 public class Mathematician extends AgentService {
     @Tool(name = "AddingMachine", description = "Add a list of numbers together")
     public int sum(SumRequest sumRequest) {

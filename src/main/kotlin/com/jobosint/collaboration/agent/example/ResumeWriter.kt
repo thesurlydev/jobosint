@@ -11,15 +11,15 @@ import org.springframework.ai.parser.BeanOutputParser
 import java.util.Map
 
 @Agent(
-        goal = "Write professional resumes and cover letters",
-        tools = ["CoverLetterWriter"]
+    goal = "Write professional resumes and cover letters"
 )
-class ResumeWriter(val chatClient: ChatClient,
-                   val companyDetailsService: CompanyDetailsService): AgentService() {
+class ResumeWriter(
+    val chatClient: ChatClient,
+    val companyDetailsService: CompanyDetailsService,
+) : AgentService() {
 
-    @Tool(name = "CoverLetterWriter", description="Write a cover letter for a job application")
+    @Tool(name = "CoverLetterWriter", description = "Write a cover letter for a job application")
     fun coverLetterWriter(companyName: String, jobTitle: String): String {
-
 
 
         val userMessage =

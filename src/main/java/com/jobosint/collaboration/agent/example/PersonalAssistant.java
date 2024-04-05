@@ -9,10 +9,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
 
-@Agent(
-        goal = "Provide assistance to an individual in their personal life",
-        tools = {"MyAge", "MyLinkedInProfile"}
-)
+@Agent(goal = "Provide assistance to an individual in their personal life")
 public class PersonalAssistant extends AgentService {
     @Tool(name = "MyAge", description = "Get my age in years")
     public Integer getAge() {

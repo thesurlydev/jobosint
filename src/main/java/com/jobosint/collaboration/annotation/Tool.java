@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 public @interface Tool {
     String name();
     String description() default "";
+    boolean disabled() default false;
 }

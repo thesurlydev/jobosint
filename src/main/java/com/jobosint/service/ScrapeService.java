@@ -73,8 +73,6 @@ public class ScrapeService {
             if (!resp.ok()) {
                 return new ScrapeResponse(req, Set.of(resp.statusText()), null, getBaseUrl(req.url()));
             }
-// String navType = detectNavigationType(p);
-// log.info("Navigation type: {}, url: {}", navType, p.url());
 
             sr = scrape(req, page.content());
         }
@@ -162,7 +160,16 @@ public class ScrapeService {
             for (Element el : els) {
                 var ed = req.attribute().select(el, req.attributeValue());
                 if (!ed.isEmpty()) {
-                    data.add(ed);
+                    if ("a".equals(el.tagName()) && ed.startsWith("/")) {
+                        var baseUrl = req.url();
+                        if (baseUrl.endsWith("/")) {
+                            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+                        }
+                        ed = baseUrl + ed;
+                    }
+                    if (!ed.startsWith("#")) {
+                        data.add(ed);
+                    }
                 }
             }
         }
