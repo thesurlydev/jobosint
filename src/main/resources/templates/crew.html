@@ -33,7 +33,8 @@
 
     <div th:if="${taskResult != null}">
         <hr/>
-        <p>Type: <code th:text="${taskResult.getDataType()}"></code></p>
+        <p>Agent: <span th:text="${taskResult.getAgent().getName()}">agent</span></p>
+        <p>Type: <code th:text="${taskResult.getDataType()}">type</code></p>
         <code th:if="${taskResult.getDataType()} != 'java.lang.String'"
               th:text="${taskResult.display()}" style="white-space: pre">display task result as pretty json</code>
         <div th:if="${taskResult.getDataType()} == 'java.lang.String'"

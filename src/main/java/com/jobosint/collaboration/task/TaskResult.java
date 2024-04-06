@@ -3,6 +3,7 @@ package com.jobosint.collaboration.task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.jobosint.collaboration.agent.AgentService;
 import com.jobosint.util.ConversionUtils;
 import lombok.Data;
 import lombok.Getter;
@@ -10,10 +11,12 @@ import lombok.Getter;
 @Getter
 @Data
 public class TaskResult {
+    private final AgentService agent;
     private final Object data;
     private final String dataType;
 
-    public TaskResult(Object data) {
+    public TaskResult(AgentService agent, Object data) {
+        this.agent = agent;
         this.data = data;
         this.dataType = data.getClass().getName();
     }

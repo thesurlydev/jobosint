@@ -26,7 +26,7 @@ public class CrewAnnotationProcessor {
     private void addTools(AgentService agent) {
         Arrays.stream(agent.getClass().getDeclaredMethods())
                 .filter(this::hasToolAnnotation)
-                .map(method -> createTool(method, agent))
+                .map(this::createTool)
                 .forEach(agent::addTool);
     }
 
@@ -34,11 +34,11 @@ public class CrewAnnotationProcessor {
         return AnnotationUtils.findAnnotation(method, Tool.class) != null;
     }
 
-    private ToolMetadata createTool(Method method, AgentService agent) {
+    private ToolMetadata createTool(Method method) {
         Tool tool = AnnotationUtils.findAnnotation(method, Tool.class);
         String name = Objects.requireNonNull(tool).name() != null ? tool.name() : "";
         String description = tool.description() != null ? tool.description() : "";
         boolean disabled = tool.disabled();
-        return new ToolMetadata(name, description, agent, method, disabled);
+        return new ToolMetadata(name, description, method, disabled);
     }
 }

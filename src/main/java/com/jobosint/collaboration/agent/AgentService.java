@@ -79,7 +79,7 @@ public class AgentService {
         try {
             Object toolResult = invokeToolForTask(toolMetadata, task);
             log.info("RESULT: \n\n{}\n", toolResult);
-            return new TaskResult(toolResult);
+            return new TaskResult(this, toolResult);
         } catch (Exception e) {
             throw new ToolInvocationException("Error invoking tool: " + toolMetadata + " for task: " + task, e);
         }
@@ -102,7 +102,7 @@ public class AgentService {
         log.info("PROMPT:\n\n{}\n", prompt);
         Generation generation = chatClient.call(prompt).getResult();
         String answer = generation.getOutput().getContent();
-        return new TaskResult(answer);
+        return new TaskResult(this, answer);
     }
 
     /**
@@ -200,14 +200,11 @@ public class AgentService {
         Object args = getToolArgs(toolMetadata, task);
         log.info("Args: {}", args);
 
-        Object serviceInstance = toolMetadata.agent();
-        log.info("Service instance: {}", serviceInstance.getClass().getName());
-
         if (args == null) {
-            T result = (T) method.invoke(serviceInstance);
+            T result = (T) method.invoke(this);
             return result;
         } else {
-            T result = (T) method.invoke(serviceInstance, args);
+            T result = (T) method.invoke(this, args);
             return result;
         }
     }
