@@ -5,6 +5,7 @@ import com.jobosint.model.*;
 import com.jobosint.model.greenhouse.GetJobResult;
 import com.jobosint.parse.*;
 import com.jobosint.service.CompanyService;
+import com.jobosint.service.ContactService;
 import com.jobosint.service.GreenhouseService;
 import com.jobosint.service.JobService;
 import com.jobosint.service.ai.CompanyDetailsService;
@@ -27,7 +28,7 @@ import java.util.List;
 public class PageCreatedEventListener implements ApplicationListener<PageCreatedEvent> {
 
     private final CompanyService companyService;
-    private final CompanyDetailsService companyDetailsService;
+    private final ContactService contactService;
     private final GreenhouseService greenhouseService;
     private final JobService jobService;
 
@@ -47,6 +48,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
         String jobSource = null;
         CompanyParserResult companyParserResult = null;
+        ProfileParserResult profileParserResult = null;
         JobDescriptionParserResult jobDescriptionParserResult = null;
 
         try {
@@ -64,6 +66,10 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             } else if (url.startsWith("https://www.linkedin.com/company/")) {
 
                 companyParserResult = linkedInParser.parseCompanyDescription(contentPath);
+
+            } else if (url.startsWith("https://www.linkedin.com/in/")) {
+
+                profileParserResult = linkedInParser.parseProfile(contentPath, url);
 
             } else if (url.contains(".myworkdayjobs.com/")) {
                 jobDescriptionParserResult = workdayParser.parseJobDescription(contentPath);
@@ -99,6 +105,16 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                         companyParserResult.summary(),
                         companyParserResult.location());
                 processCompany(companyParserResult.name(), company);
+            }
+
+            if (profileParserResult != null) {
+                List<Company> companies = companyService.search("N/A");
+                Company company = companies.getFirst();
+                Contact contact = new Contact(null, company.id(), profileParserResult.fullName(),
+                        profileParserResult.linkedInProfileUrl(), profileParserResult.title(),
+                        null, null, null);
+                Contact savedContact = contactService.saveContact(contact);
+                log.info("Saved contact: {}", savedContact);
             }
 
             if (jobDescriptionParserResult != null) {

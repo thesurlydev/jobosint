@@ -3,6 +3,7 @@ package com.jobosint.parse;
 import com.jobosint.model.CompanyParserResult;
 import com.jobosint.model.JobDescription;
 import com.jobosint.model.JobDescriptionParserResult;
+import com.jobosint.model.ProfileParserResult;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,17 @@ import java.util.Optional;
 public class LinkedInParser {
 
     private final JobDescriptionParser jobDescriptionParser;
+
+    public ProfileParserResult parseProfile(String path, String linkedInProfileUrl) throws IOException {
+        File input = new File(path);
+        Document doc = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
+        Element body = doc.body();
+
+        String fullName = body.select("h1").text();
+        String title = body.select("div.text-body-medium").text();
+
+        return new ProfileParserResult(fullName, title, linkedInProfileUrl);
+    }
 
     public CompanyParserResult parseCompanyDescription(String path) throws IOException {
         File input = new File(path);

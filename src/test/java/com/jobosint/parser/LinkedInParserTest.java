@@ -2,6 +2,7 @@ package com.jobosint.parser;
 
 import com.jobosint.model.CompanyParserResult;
 import com.jobosint.model.JobDescriptionParserResult;
+import com.jobosint.model.ProfileParserResult;
 import com.jobosint.parse.JobDescriptionParser;
 import com.jobosint.parse.LinkedInParser;
 import org.junit.jupiter.api.Tag;
@@ -32,6 +33,12 @@ public class LinkedInParserTest {
 
     @Test void parseCompany() throws Exception {
         CompanyParserResult companyParserResult = parser.parseCompanyDescription("/home/shane/projects/jobosint/data/pages/20240327-0700/0f59631f-ee0f-4a8b-b044-8a6084a0105d.html");
-        System.out.println(companyParserResult);
+        assertNotNull(companyParserResult);
+    }
+
+    @Test
+    public void parseProfile() throws Exception {
+        ProfileParserResult profileParserResult = parser.parseProfile("/home/shane/projects/jobosint/data/pages/20240408-0700/38e4bd65-31fa-48df-95ad-594794f0bd46.html", "https://www.linkedin.com/in/paul-shevsky-03251b134/");
+        assertNotNull(profileParserResult);
     }
 }
