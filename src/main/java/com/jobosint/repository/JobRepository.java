@@ -4,13 +4,13 @@ import com.jobosint.model.Job;
 import com.jobosint.model.JobDetail;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface JobRepository extends CrudRepository<Job, UUID> {
+public interface JobRepository extends ListCrudRepository<Job, UUID> {
 
     String JOB_DETAIL_SELECT = """
             select j.*,
