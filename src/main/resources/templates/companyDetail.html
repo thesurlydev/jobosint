@@ -4,15 +4,27 @@
 </head>
 <body>
 <section>
-    <h2 th:text="${company.name()}">Company Name</h2>
+    <div class="container my-3">
+        <div class="row">
+            <div class="col"><h2 th:text="${company.name()}">Company Name</h2></div>
+            <div class="col-2" style="text-align: right"><a th:href="@{/companies/{id}/edit(id=${company.id()})}"><button type="button" class="btn btn-primary">Edit this company</button></a></div>
+        </div>
+    </div>
 
-    <p><a th:href="@{/companies/{id}/edit(id=${company.id()})}">Edit</a> - <a
-        th:href="@{/companies/{id}/delete(id=${company.id()})}">Delete</a></p>
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-3">
+                <p th:if="${company.location() != null}"><strong>Location:</strong> <span th:text="${company.location()}">location</span></p>
+                <p th:if="${company.employeeCount() != null}"><strong>Employees:</strong> <span th:text="${company.employeeCount()}">num employees</span></p>
+            </div>
+            <div class="col-7">
+                <p th:if="${company.stockTicker() != null && !company.stockTicker().isEmpty()}"><strong>Ticker:</strong> <span th:text="${company.stockTicker()}">ticker</span></p>
+                <p th:if="${company.websiteUrl() != null}"><strong>Website:</strong> <a th:href="${company.websiteUrl()}" th:text="${company.websiteUrl()}">website</a></p>
+                <p th:text="${company.summary()}">summary</p>
+            </div>
+        </div>
+    </div>
 
-    <p>Location: <span th:text="${company.location()}">location</span></p>
-    <p>Employees: <span th:text="${company.employeeCount()}">num employees</span></p>
-    <p>Ticker: <span th:text="${company.stockTicker()}">ticker</span></p>
-    <p th:text="${company.summary()}">summary</p>
 </section>
 </body>
 </html>
