@@ -2,6 +2,7 @@ package com.jobosint.service;
 
 import com.jobosint.model.ApplicationEvent;
 import com.jobosint.model.ApplicationEventDetail;
+import com.jobosint.model.ApplicationEventParticipant;
 import com.jobosint.repository.ApplicationEventRepository;
 import com.jobosint.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;

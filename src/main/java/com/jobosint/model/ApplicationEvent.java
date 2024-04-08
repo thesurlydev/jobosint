@@ -13,6 +13,7 @@ public record ApplicationEvent(@Id UUID id,
                                @Column("event_type") String eventType,
                                @Column("event_date") LocalDateTime eventDate,
                                Set<String> tools,
-                               String notes
+                               String notes,
+                               @Column("interviewer_id") UUID interviewerId
 ) {
 }

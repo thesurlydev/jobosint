@@ -1,11 +1,11 @@
 package com.jobosint.controller;
 
-import com.jobosint.model.ApplicationDetail;
-import com.jobosint.model.ApplicationEventDetail;
+import com.jobosint.model.*;
 import com.jobosint.model.form.ApplicationEventForm;
 import com.jobosint.service.ApplicationEventService;
 import com.jobosint.service.ApplicationService;
 import com.jobosint.service.AttributeService;
+import com.jobosint.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -26,6 +26,7 @@ public class ApplicationEventController {
     private final ApplicationService applicationService;
     private final ApplicationEventService applicationEventService;
     private final AttributeService attributeService;
+    private final ContactService contactService;
 
     @GetMapping("/event")
     public String eventForm(Model model) {
@@ -51,7 +52,7 @@ public class ApplicationEventController {
     @PostMapping("/event")
     public RedirectView eventSubmit(@ModelAttribute ApplicationEventForm eventForm) {
         var appEvent = eventForm.toApplicationEvent();
-        applicationEventService.save(appEvent);
+        ApplicationEvent event = applicationEventService.save(appEvent);
         return new RedirectView("events");
     }
 
@@ -71,5 +72,8 @@ public class ApplicationEventController {
 
         List<String> interviewTypes = attributeService.getInterviewTypes();
         model.addAttribute("interviewTypes", interviewTypes);
+
+        List<ContactDetail> contacts = contactService.getAllContactDetailOrderByName();
+        model.addAttribute("contactLookup", contacts);
     }
 }

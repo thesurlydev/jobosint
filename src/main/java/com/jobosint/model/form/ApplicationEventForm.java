@@ -19,6 +19,7 @@ public class ApplicationEventForm {
     private LocalDateTime eventDate;
     private Set<String> tools;
     private String notes;
+    private UUID interviewerId;
 
     public ApplicationEventForm() {
     }
@@ -31,9 +32,10 @@ public class ApplicationEventForm {
         this.tools = detail.tools();
         this.notes = detail.notes();
         this.interviewType = detail.interviewType();
+        this.interviewerId = detail.interviewerId();
     }
 
     public ApplicationEvent toApplicationEvent() {
-        return new ApplicationEvent(id, applicationId, interviewType, eventType, eventDate, tools, notes);
+        return new ApplicationEvent(id, applicationId, interviewType, eventType, eventDate, tools, notes, interviewerId);
     }
 }

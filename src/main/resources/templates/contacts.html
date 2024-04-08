@@ -27,15 +27,15 @@
         </thead>
         <tbody>
         <tr th:each="c : ${contacts}">
-            <td th:text="${c.contact().fullName()}">Name</td>
-            <td th:text="${c.contact().title()}">Title</td>
-            <td th:text="${c.company().name()}">Company Name</td>
-            <td th:text="${c.contact().email()}">Email</td>
-            <td th:text="${c.contact().phoneNumberDisplay()}">Phone</td>
+            <td th:text="${c.fullName()}">Name</td>
+            <td th:text="${c.title()}">Title</td>
+            <td th:text="${c.companyName()}">Company Name</td>
+            <td th:text="${c.email()}">Email</td>
+            <td th:text="${c.phoneNumberDisplay()}">Phone</td>
             <td>
-                <a th:if="${c.contact().linkedInProfileUrl() != ''}" th:href="${c.contact().linkedInProfileUrl()}" target="_blank">Profile</a>
+                <a th:if="${c.linkedInProfileUrl() != ''}" th:href="${c.linkedInProfileUrl()}" target="_blank">Profile</a>
             </td>
-            <td><a th:href="@{/contacts/{id}/edit(id=${c.contact().id()})}"><span class="badge bg-primary">Edit</span></a></td>
+            <td><a th:href="@{/contacts/{id}/edit(id=${c.id()})}"><span class="badge bg-primary">Edit</span></a></td>
         </tr>
         </tbody>
     </table>

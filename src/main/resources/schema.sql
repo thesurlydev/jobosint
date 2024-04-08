@@ -112,16 +112,8 @@ create table if not exists application_event
     event_date     timestamptz      default now(),
     tools          text[],
     notes          text,
+    interviewer_id uuid,
     constraint fk_app_event foreign key (application) references jobosint.public.application (id)
-);
-
-create table if not exists application_event_participants
-(
-    application_event_id uuid,
-    participant_id uuid,
-    PRIMARY KEY (application_event_id, participant_id),
-    FOREIGN KEY (application_event_id) REFERENCES application_event(id),
-    FOREIGN KEY (participant_id) REFERENCES contact(id)
 );
 
 create table if not exists page

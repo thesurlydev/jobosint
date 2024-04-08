@@ -6,6 +6,8 @@
 <section>
     <h2 th:if="${eventForm.id == null}">Add an Application Event</h2>
     <h2 th:if="${eventForm.id != null}">Edit Application Event</h2>
+    <br/>
+    <br/>
     <form action="#" th:action="@{/event}" th:object="${eventForm}" method="post">
         <input type="hidden" th:field="*{id}"/>
 
@@ -39,6 +41,16 @@
             <div class="col-sm-6">
                 <select class="form-select" id="app" th:field="*{applicationId}">
                     <option th:each="a: ${applicationLookup}" th:value="${a.id}" th:text="${a.jobTitleCompanyDisplay}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="interviewerId" class="col-sm-2 col-form-label">Interviewer</label>
+            <div class="col-sm-6">
+                <select class="form-select" id="interviewerId" th:field="*{interviewerId}">
+                    <option value="">No interviewer</option>
+                    <option th:each="c: ${contactLookup}" th:value="${c.id}" th:text="${c.nameTitleDisplay()}"></option>
                 </select>
             </div>
         </div>

@@ -33,6 +33,7 @@
             <th>Event Type</th>
             <th>Interview Type</th>
             <th>Title</th>
+            <th>Interviewer</th>
             <th>Company</th>
             <th style="width: 1px"></th>
         </tr>
@@ -48,7 +49,8 @@
             </td>
             <td th:text="${e.interviewType()}">interview type</td>
             <td th:text="${e.jobTitle()}">job title</td>
-            <td th:text="${e.companyName()}">company name</td>
+            <td th:utext="${e.interviewerNameTitleDisplay()}">interviewer, title</td>
+            <td th:utext="${e.companyName()}">company</td>
             <td><a th:href="@{/events/{id}/edit(id=${e.id()})}"><span class="badge bg-primary">Edit</span></a></td>
         </tr>
         </tbody>

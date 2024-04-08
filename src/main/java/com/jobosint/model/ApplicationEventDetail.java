@@ -20,8 +20,23 @@ public record ApplicationEventDetail(@Id UUID id,
                                      @Column("jobTitle") String jobTitle,
 
                                      @Column("companyId") UUID companyId,
-                                     @Column("companyName") String companyName
+                                     @Column("companyName") String companyName,
+                                     @Column("interviewer_id") UUID interviewerId,
+
+                                     @Column("interviewerFullName") String interviewerFullName,
+                                     @Column("interviewerTitle") String interviewerTitle
 ) {
+    public String interviewerNameTitleDisplay() {
+        StringBuilder out = new StringBuilder();
+        if (this.interviewerFullName != null) {
+            out.append(this.interviewerFullName);
+        }
+        if (this.interviewerTitle != null) {
+            out.append("<br/>").append(this.interviewerTitle);
+        }
+        return out.toString();
+    }
+
     public String jobTitleCompanyDisplay() {
         return this.jobTitle + " @" + this.companyName;
     }

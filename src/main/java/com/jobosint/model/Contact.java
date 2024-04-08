@@ -15,6 +15,7 @@ public record Contact(@Id UUID id,
                       String email,
                       @Column("phone_number") String phoneNumber
 ) {
+
     public String phoneNumberDisplay() {
         if (phoneNumber == null) {
             return null;
