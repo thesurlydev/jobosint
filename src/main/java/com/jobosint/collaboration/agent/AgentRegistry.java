@@ -13,12 +13,8 @@ import java.util.Set;
 public class AgentRegistry implements AgentsConsumer {
 
     private final Map<String, AgentService> allAgents = new HashMap<>();
-    private final Map<String, AgentService> enabledAgents = new HashMap<>();
 
     private void registerAgent(AgentService agent) {
-        if (!agent.getDisabled()) {
-            enabledAgents.put(agent.getName(), agent);
-        }
         allAgents.put(agent.getName(), agent);
     }
 
@@ -36,6 +32,8 @@ public class AgentRegistry implements AgentsConsumer {
     }
 
     public Map<String, AgentService> enabledAgents() {
-        return enabledAgents;
+        return allAgents.entrySet().stream()
+                .filter(entry -> !entry.getValue().getDisabled())
+                .collect(HashMap::new, (m, v) -> m.put(v.getKey(), v.getValue()), Map::putAll);
     }
 }
