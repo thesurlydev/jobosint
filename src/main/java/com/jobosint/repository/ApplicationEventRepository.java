@@ -4,13 +4,13 @@ import com.jobosint.model.ApplicationEvent;
 import com.jobosint.model.ApplicationEventDetail;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ApplicationEventRepository extends CrudRepository<ApplicationEvent, UUID> {
+public interface ApplicationEventRepository extends ListCrudRepository<ApplicationEvent, UUID> {
     @NotNull
     @Override
     List<ApplicationEvent> findAll();

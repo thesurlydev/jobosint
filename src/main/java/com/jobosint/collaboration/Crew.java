@@ -5,6 +5,7 @@ import com.jobosint.collaboration.agent.AgentService;
 import com.jobosint.collaboration.exception.ToolInvocationException;
 import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.task.TaskAssignment;
+import com.jobosint.collaboration.task.TaskDeconstructor;
 import com.jobosint.collaboration.task.TaskResult;
 import com.jobosint.collaboration.tool.ToolMetadata;
 import lombok.RequiredArgsConstructor;
@@ -16,20 +17,26 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.ai.parser.MapOutputParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Component
 @Slf4j
 public class Crew {
 
-    private final AgentRegistry agentRegistry;
+    @Autowired
+    protected AgentRegistry agentRegistry;
+    @Autowired
+    private ChatClient chatClient;
+    @Autowired
+    private TaskDeconstructor taskDeconstructor;
 
     @Value("classpath:/prompts/crew-choose-agent.st")
     private Resource chooseAgentUserPrompt;
@@ -37,53 +44,33 @@ public class Crew {
     @Value("classpath:/prompts/crew-choose-agents.st")
     private Resource chooseAgentsUserPrompt;
 
-    public List<TaskAssignment> assignTasks(ChatClient chatClient, List<Task> tasks) {
-        return tasks.stream()
-                .map(task -> new TaskAssignment(task, chooseAgent(chatClient, task).orElse(null)))
+    private final List<Task> tasks = new ArrayList<>();
+
+    public void clearTasks() {
+        tasks.clear();
+    }
+
+    public Crew addTasks(List<Task> tasks) {
+        clearTasks();
+        this.tasks.addAll(tasks);
+        for (Task task : tasks) {
+            log.info("Added task: {}", task);
+        }
+        return this;
+    }
+
+    public List<TaskResult> kickoff() {
+        return taskDeconstructor.deconstruct(tasks).stream()
+                .peek(task -> log.info("Deconstructed task: {}", task))
+                .map(task -> processTask(chatClient, task))
+                .peek(taskResult -> log.info("Task result: {}", taskResult))
                 .toList();
     }
 
-    public Map<String, Object> chooseAgents(ChatClient chatClient, List<Task> tasks) {
-        Map<String, AgentService> agents = agentRegistry.enabledAgents();
-
-        if (agents.isEmpty()) {
-            log.warn("No agents available");
-            return Map.of();
-        }
-
-        log.info("Found {} enabled agents", agents.size());
-        agents.forEach((k, v) -> log.info("Agent: {}, Goal: {}", k, v.getGoal()));
-
-        var outputParser = new MapOutputParser();
-
-        StringBuilder agentList = new StringBuilder();
-        for (Map.Entry<String, AgentService> entry : agents.entrySet()) {
-            var agentName = entry.getKey();
-            var agent = entry.getValue();
-            var agentGoal = agent.getGoal();
-            var tools = agent.getTools();
-            StringBuilder toolList = generateToolListForPrompt(tools);
-            agentList.append(agentName).append(": ").append(agentGoal)
-                    .append("\r\n")
-                    .append(toolList);
-        }
-
-        StringBuilder taskList = new StringBuilder();
-        for (Task task : tasks) {
-            taskList.append(task.getDescription()).append("\r\n");
-        }
-
-        PromptTemplate promptTemplate = new PromptTemplate(chooseAgentsUserPrompt, Map.of(
-                "tasks", taskList.toString(),
-                "agents", agentList.toString(),
-                "format", outputParser.getFormat()
-        ));
-        Prompt prompt = promptTemplate.create();
-
-        Generation generation = chatClient.call(prompt).getResult();
-        String out = generation.getOutput().getContent();
-
-        return outputParser.parse(out);
+    private List<TaskAssignment> assignTasks(List<Task> tasks) {
+        return tasks.stream()
+                .map(task -> new TaskAssignment(task, chooseAgent(chatClient, task).orElse(null)))
+                .toList();
     }
 
     private @NotNull StringBuilder generateToolListForPrompt(Map<String, ToolMetadata> tools) {
@@ -111,6 +98,18 @@ public class Crew {
                 });
     }
 
+    private List<TaskResult> processTasks(ChatClient chatClient, List<Task> tasks) throws ToolInvocationException {
+        return tasks.stream()
+                .map(task -> chooseAgent(chatClient, task)
+                        .map(agentRegistry::getAgent)
+                        .map(agent -> agent.processTask(task))
+                        .orElseThrow(() -> {
+                            log.error("No agent available to process task: {}", task);
+                            return new ToolInvocationException("No agent available to process task");
+                        }))
+                .toList();
+    }
+
 
     /**
      * Given a task, determine which agent is most capable of accomplishing the task
@@ -119,7 +118,7 @@ public class Crew {
      * @param task
      * @return
      */
-    public Optional<String> chooseAgent(ChatClient chatClient, Task task) {
+    private Optional<String> chooseAgent(ChatClient chatClient, Task task) {
         Map<String, AgentService> agents = agentRegistry.enabledAgents();
 
         log.info("Found {} enabled agents", agents.size());
@@ -161,6 +160,49 @@ public class Crew {
         log.info("Selected Agent: {}", out);
 
         return Optional.ofNullable(outputParser.parse(out));
+    }
+
+    private Map<String, Object> chooseAgents(ChatClient chatClient, List<Task> tasks) {
+        Map<String, AgentService> agents = agentRegistry.enabledAgents();
+
+        if (agents.isEmpty()) {
+            log.warn("No agents available");
+            return Map.of();
+        }
+
+        log.info("Found {} enabled agents", agents.size());
+        agents.forEach((k, v) -> log.info("Agent: {}, Goal: {}", k, v.getGoal()));
+
+        var outputParser = new MapOutputParser();
+
+        StringBuilder agentList = new StringBuilder();
+        for (Map.Entry<String, AgentService> entry : agents.entrySet()) {
+            var agentName = entry.getKey();
+            var agent = entry.getValue();
+            var agentGoal = agent.getGoal();
+            var tools = agent.getTools();
+            StringBuilder toolList = generateToolListForPrompt(tools);
+            agentList.append(agentName).append(": ").append(agentGoal)
+                    .append("\r\n")
+                    .append(toolList);
+        }
+
+        StringBuilder taskList = new StringBuilder();
+        for (Task task : tasks) {
+            taskList.append(task.getDescription()).append("\r\n");
+        }
+
+        PromptTemplate promptTemplate = new PromptTemplate(chooseAgentsUserPrompt, Map.of(
+                "tasks", taskList.toString(),
+                "agents", agentList.toString(),
+                "format", outputParser.getFormat()
+        ));
+        Prompt prompt = promptTemplate.create();
+
+        Generation generation = chatClient.call(prompt).getResult();
+        String out = generation.getOutput().getContent();
+
+        return outputParser.parse(out);
     }
 
 }

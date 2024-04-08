@@ -132,7 +132,6 @@ public class AgentService {
         Generation generation = chatClient.call(prompt).getResult();
 
         String out = generation.getOutput().getContent();
-        log.info("Generation output:\n{}\n", out);
 
         String toolName = outputParser.parse(out);
         log.info("Selected tool name: {}", toolName);
@@ -170,7 +169,7 @@ public class AgentService {
 
         Generation generation = chatClient.call(prompt).getResult();
         String out = generation.getOutput().getContent();
-        log.info("Generation output:\n{}\n", out);
+        log.info("'{}' tool args:\n{}\n", toolMetadata.name(), out);
 
         return outputParser.parse(out);
     }

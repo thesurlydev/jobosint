@@ -33,7 +33,6 @@ public class ScrapeService {
     private final ScrapeConfig config;
     private final Browser browser;
 
-    @Tool(name = "WebScraper", description = "Given a web URL scrape the HTML content. Only use this tool if a host name or URL is provided.")
     public ScrapeResponse scrapeHtml(String url) {
         if (!url.startsWith("http")) {
             url = "https://" + url;

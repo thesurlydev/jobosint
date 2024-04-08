@@ -3,7 +3,6 @@ package com.jobosint.collaboration.agent.example;
 import com.jobosint.collaboration.agent.AgentService;
 import com.jobosint.collaboration.annotation.Agent;
 import com.jobosint.collaboration.annotation.Tool;
-import com.jobosint.collaboration.task.DeconstructedTask;
 import com.jobosint.model.ai.CompanyDetail;
 import com.jobosint.service.ai.CompanyDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 

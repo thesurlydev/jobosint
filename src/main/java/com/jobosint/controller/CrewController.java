@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -38,7 +40,11 @@ public class CrewController {
         } else {
             task = new Task(crewForm.getTask());
         }
-        TaskResult taskResult = crew.processTask(chatClient, task);
+        List<TaskResult> taskResults = crew
+                .addTasks(List.of(task))
+                .kickoff();
+
+        TaskResult taskResult = taskResults.getFirst();
         model.addAttribute("taskResult", taskResult);
         model.addAttribute("agents", agentRegistry.enabledAgents());
         return "crew";

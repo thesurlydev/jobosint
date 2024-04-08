@@ -6,17 +6,20 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-
+@Slf4j
 @Service
 public class NlpService {
 
     public List<String> getSubtasks(String text) {
+
+        log.info("Extracting sub-tasks from: {}", text);
 
         // Set up pipeline properties
         Properties props = new Properties();
@@ -40,8 +43,6 @@ public class NlpService {
             // Extract actionable phrases as sub-tasks
             extractActionPhrases(parseTree, subTasks);
         }
-
-        subTasks.removeFirst();
 
         return subTasks;
     }

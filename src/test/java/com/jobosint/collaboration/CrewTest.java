@@ -63,27 +63,6 @@ public class CrewTest {
     }
 
     @Test
-    public void chooseAgentTest() {
-        var task = new Task("Say hello");
-        Optional<String> agent = crew.chooseAgent(chatClient, task);
-        assertTrue(agent.isPresent());
-        assertEquals("Greeter", agent.get());
-    }
-
-    @Test
-    public void chooseAgentsTest() {
-        var tasks = Lists.list(
-                new Task("Say hello"),
-                new Task("who is joe biden"),
-                new Task("Add the numbers 1, 2, 3, 4, 5")
-        );
-        Map<String, Object> assignments = crew.chooseAgents(chatClient, tasks);
-        // print the assignments
-        assignments.forEach((k, v) -> System.out.println(k + " -> " + v));
-        assertEquals(tasks.size(), assignments.size());
-    }
-
-    @Test
     public void sayHelloTask() {
         var task = new Task("Say hello");
         TaskResult result = crew.processTask(chatClient, task);

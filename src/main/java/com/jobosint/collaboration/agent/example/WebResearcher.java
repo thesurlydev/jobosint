@@ -16,7 +16,7 @@ public class WebResearcher extends AgentService {
     private final GoogleSearchService googleSearchService;
     private final ScrapeService scrapeService;
 
-    @Tool(name = "WebScraper", description = "Given a web URL scrape the HTML content. Only use this tool if a host name or URL is provided.")
+    @Tool(name = "WebScraper", description = "Given a web URL scrape the HTML content. Only use this tool if a host name or URL is provided. Always include the full URL including the query string.")
     public ScrapeResponse scrape(String url) {
         return scrapeService.scrapeHtml(url);
     }
