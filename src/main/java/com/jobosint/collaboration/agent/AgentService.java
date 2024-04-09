@@ -2,10 +2,12 @@ package com.jobosint.collaboration.agent;
 
 import com.jobosint.collaboration.annotation.Agent;
 import com.jobosint.collaboration.exception.ToolInvocationException;
+import com.jobosint.collaboration.exception.ToolNotFoundException;
 import com.jobosint.collaboration.task.Task;
 import com.jobosint.collaboration.task.TaskResult;
 import com.jobosint.collaboration.tool.ToolMetadata;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +24,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import java.lang.reflect.Method;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @ToString
@@ -52,6 +56,35 @@ public class AgentService {
     private final Boolean disabled;
     @Getter
     private final Map<String, ToolMetadata> tools = new HashMap<>();
+    @Getter
+    List<Message> messages = new ArrayList<>();
+
+    public Prompt createPrompt(Resource promptTemplateResource,
+                               Map<String, Object> promptModel) {
+        PromptTemplate promptTemplate = new PromptTemplate(promptTemplateResource, promptModel);
+        return promptTemplate.create();
+    }
+
+    public String callPromptForString(Prompt prompt) {
+        Generation generation = chatClient.call(prompt).getResult();
+        return generation.getOutput().getContent();
+    }
+
+    public Object callPromptForBean(Prompt prompt, BeanOutputParser beanOutputParser) {
+        Generation generation = chatClient.call(prompt).getResult();
+        String out = generation.getOutput().getContent();
+        return beanOutputParser.parse(out);
+    }
+
+    public void addSystemMessage(String message) {
+        SystemPromptTemplate systemTemplate = new SystemPromptTemplate(message);
+        messages.add(systemTemplate.createMessage());
+    }
+
+    public void addUserMessage(String message) {
+        UserMessage userMessage = new UserMessage(message);
+        messages.add(userMessage);
+    }
 
     public AgentService() {
         this.name = this.getClass().getSimpleName();
@@ -69,157 +102,86 @@ public class AgentService {
         tools.put(toolMetadata.name(), toolMetadata);
     }
 
-    private Object invokeToolForTask(ToolMetadata toolMetadata, Task task) throws Exception {
-        log.info("Invoking tool: {} for task: {}", toolMetadata, task);
-        return invokeTool(toolMetadata, task);
-    }
-
     public TaskResult processTask(Task task) throws ToolInvocationException {
         if (tools.isEmpty()) {
-            log.info("Agent has no tools configured, processing task via LLM");
+            log.info("{} agent has no tools configured, processing task via LLM", this.name);
             return processTaskViaLLM(task);
         }
         ToolMetadata toolMetadata = chooseTool(task);
+        Object args = getToolArgs(toolMetadata, task);
         try {
-            Object toolResult = invokeToolForTask(toolMetadata, task);
-            log.info("RESULT: \n\n{}\n", toolResult);
+            Object toolResult = invokeTool(toolMetadata.method(), args);
             return new TaskResult(this, toolResult);
         } catch (Exception e) {
             throw new ToolInvocationException("Error invoking tool: " + toolMetadata + " for task: " + task, e);
         }
     }
 
+    private <T> T invokeTool(Method method, Object args) throws Exception {
+        if (args == null) {
+            log.info("Invoking method: {}", method.toString());
+            T result = (T) method.invoke(this);
+            return result;
+        } else {
+            log.info("Invoking method: {} with args: {}", method.toString(), args);
+            log.info("args type: {}", args.getClass().getName());
+            T result = (T) method.invoke(this, args);
+            return result;
+        }
+    }
+
     private TaskResult processTaskViaLLM(Task task) {
 
-        List<Message> messages = new ArrayList<>();
-
         if (this.background != null && !this.background.isEmpty()) {
-            SystemPromptTemplate systemTemplate = new SystemPromptTemplate(this.background);
-            messages.add(systemTemplate.createMessage());
+            addSystemMessage(this.background);
         }
 
         StringBuilder dateContext = new StringBuilder();
         dateContext
                 .append("The date and time right now is: ")
                 .append(ZonedDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL)))
-                .append("Use this date to answer any questions related to the current date and time.");
-
-        SystemPromptTemplate dateContextSystemPrompt = new SystemPromptTemplate(dateContext.toString());
-        messages.add(dateContextSystemPrompt.createMessage());
+                .append(". Use this date to answer any questions related to the current date and time.");
+        addSystemMessage(dateContext.toString());
 
         var taskDescription = task.getDescription();
-        UserMessage userMessage = new UserMessage(taskDescription);
-        messages.add(userMessage);
+        addUserMessage(taskDescription);
 
         Prompt prompt = new Prompt(messages);
-        log.info("PROMPT:\n\n{}\n", prompt);
-        Generation generation = chatClient.call(prompt).getResult();
-        String answer = generation.getOutput().getContent();
-        return new TaskResult(this, answer);
+        String data = callPromptForString(prompt);
+
+        return new TaskResult(this, data);
     }
 
-    /**
-     * Given a task, determine which agent is most capable of accomplishing the task
-     * TODO add tools to prompt to aid in decisioning
-     *
-     * @param task
-     * @return
-     */
-    public ToolMetadata chooseTool(Task task) {
-        log.info("Choosing tool for task: {}", task);
-
+    private ToolMetadata chooseTool(Task task) {
         StringBuilder toolList = new StringBuilder();
         tools.values().stream()
                 .map(toolMetadata -> toolMetadata.name() + ": " + toolMetadata.description() + "\r\n")
                 .forEach(toolList::append);
-
-        var outputParser = new BeanOutputParser<>(String.class);
-
-        PromptTemplate promptTemplate = new PromptTemplate(chooseAgentUserPrompt, Map.of(
+        Prompt prompt = createPrompt(chooseAgentUserPrompt, Map.of(
                 "task", task.getDescription(),
-                "tools", toolList.toString(),
-                "format", outputParser.getFormat()
+                "tools", toolList.toString()
         ));
-        Prompt prompt = promptTemplate.create();
-
-        Generation generation = chatClient.call(prompt).getResult();
-
-        String out = generation.getOutput().getContent();
-
-        String toolName = outputParser.parse(out);
-        log.info("Selected tool name: {}", toolName);
-
-        ToolMetadata selectedTool = tools.get(toolName);
-        log.info("Selected tool: {}", selectedTool);
-
-        return selectedTool;
+        String toolName = callPromptForString(prompt);
+        ToolMetadata tool = tools.get(toolName);
+        if (tool == null) {
+            throw new ToolNotFoundException("No tool found with name: " + toolName);
+        }
+        return tool;
     }
 
-    public Object getToolArgs(ToolMetadata toolMetadata, Task task) {
-        log.info("Getting '{}' args for task: {}", toolMetadata.name(), task.toString());
-
-        if (toolMetadata.method().getParameterCount() == 0) {
+    private Object getToolArgs(@NonNull ToolMetadata toolMetadata, @NonNull Task task) {
+        Class<?> returnType = toolMetadata.getReturnType();
+        if (returnType == null) {
             return null;
         }
 
-        Class<?> paramType = Arrays.stream(toolMetadata.method().getParameterTypes()).findFirst().orElseThrow();
-        log.info("Method parameter type: {}", paramType.getName());
-
-        String signature = getMethodArgsAsString(toolMetadata.method());
-        log.info("Method signature: {}", signature);
-
-        var outputParser = new BeanOutputParser<>(paramType);
-
-        String format = outputParser.getFormat();
-        log.info("Output parser format:\n{}\n", format);
-
-        PromptTemplate promptTemplate = new PromptTemplate(chooseToolArgsUserPrompt, Map.of(
+        var outputParser = new BeanOutputParser<>(returnType);
+        Prompt prompt = createPrompt(chooseToolArgsUserPrompt, Map.of(
                 "task", task.getDescription(),
-                "signature", signature,
+                "signature", toolMetadata.getMethodArgsAsString(),
                 "format", outputParser.getFormat()
         ));
-        Prompt prompt = promptTemplate.create();
 
-        Generation generation = chatClient.call(prompt).getResult();
-        String out = generation.getOutput().getContent();
-        log.info("'{}' tool args:\n{}\n", toolMetadata.name(), out);
-
-        return outputParser.parse(out);
+        return callPromptForBean(prompt, outputParser);
     }
-
-    public static String getMethodArgsAsString(Method method) {
-        // Get the parameter types
-        Class<?>[] parameterTypes = method.getParameterTypes();
-
-        // Build the string representation of the parameter types
-        StringBuilder parametersString = new StringBuilder("(");
-        for (int i = 0; i < parameterTypes.length; i++) {
-            parametersString.append(parameterTypes[i].getTypeName());
-            if (i < parameterTypes.length - 1) {
-                parametersString.append(", ");
-            }
-        }
-        parametersString.append(")");
-
-        return parametersString.toString();
-    }
-
-    public <T> T invokeTool(ToolMetadata toolMetadata, Task task) throws Exception {
-        Method method = toolMetadata.method();
-        log.info("Method: {}", method.getName());
-        String toolName = toolMetadata.name();
-        log.info("Tool name: {}", toolName);
-        Object args = getToolArgs(toolMetadata, task);
-        log.info("Args: {}", args);
-
-        if (args == null) {
-            T result = (T) method.invoke(this);
-            return result;
-        } else {
-            T result = (T) method.invoke(this, args);
-            return result;
-        }
-    }
-
-
 }
