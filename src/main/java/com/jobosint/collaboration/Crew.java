@@ -60,8 +60,7 @@ public class Crew {
     }
 
     public List<TaskResult> kickoff() {
-        return taskDeconstructor.deconstruct(tasks).stream()
-                .peek(task -> log.info("Deconstructed task: {}", task))
+        return tasks.stream()
                 .map(task -> processTask(chatClient, task))
                 .peek(taskResult -> log.info("Task result: {}", taskResult))
                 .toList();
@@ -119,6 +118,7 @@ public class Crew {
      * @return
      */
     private Optional<String> chooseAgent(ChatClient chatClient, Task task) {
+        Long start = System.currentTimeMillis();
         Map<String, AgentService> agents = agentRegistry.enabledAgents();
 
         log.info("Found {} enabled agents", agents.size());
@@ -157,7 +157,8 @@ public class Crew {
 
         Generation generation = chatClient.call(prompt).getResult();
         String out = generation.getOutput().getContent();
-        log.info("Selected Agent: {}", out);
+        Long elapsed = System.currentTimeMillis() - start;
+        log.info("Selected Agent: {} in {} ms", out, elapsed);
 
         return Optional.ofNullable(outputParser.parse(out));
     }
