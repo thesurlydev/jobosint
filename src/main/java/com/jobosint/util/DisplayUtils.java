@@ -10,7 +10,10 @@ public class DisplayUtils {
         if ((salaryMin == null || salaryMin.isEmpty()) && (salaryMax == null || salaryMax.isBlank())) {
             return "n/a";
         } else if (salaryMin != null && !salaryMin.isBlank() && (salaryMax == null || salaryMax.isBlank())) {
-            return salaryMin;
+            return new StringJoiner(" to ")
+                    .add("$" + salaryMin + "K")
+                    .add("?")
+                    .toString();
         } else {
             return new StringJoiner(" to ")
                     .add("$" + salaryMin + "K")

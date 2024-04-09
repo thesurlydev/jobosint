@@ -22,6 +22,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -93,6 +97,15 @@ public class AgentService {
             SystemPromptTemplate systemTemplate = new SystemPromptTemplate(this.background);
             messages.add(systemTemplate.createMessage());
         }
+
+        StringBuilder dateContext = new StringBuilder();
+        dateContext
+                .append("The date and time right now is: ")
+                .append(ZonedDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL)))
+                .append("Use this date to answer any questions related to the current date and time.");
+
+        SystemPromptTemplate dateContextSystemPrompt = new SystemPromptTemplate(dateContext.toString());
+        messages.add(dateContextSystemPrompt.createMessage());
 
         var taskDescription = task.getDescription();
         UserMessage userMessage = new UserMessage(taskDescription);
