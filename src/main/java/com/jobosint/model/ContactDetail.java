@@ -1,23 +1,25 @@
 package com.jobosint.model;
 
+import org.springframework.data.relational.core.mapping.Column;
+
 import java.text.MessageFormat;
 import java.util.UUID;
 
 public record ContactDetail(UUID id,
                             String fullName,
                             String title,
-                            String linkedInProfileUrl,
+                            @Column("linkedin_profile_url") String linkedInProfileUrl,
                             String notes,
                             String email,
                             String phoneNumber,
 
-                            UUID companyId,
-                            String companyName,
-                            String companyWebsiteUrl,
-                            String companyLocation,
-                            String companySummary,
-                            String companyStockTicker,
-                            String companyEmployeeCount) {
+                            @Column("company_id") UUID companyId,
+                            @Column("name") String companyName,
+                            @Column("website_url") String companyWebsiteUrl,
+                            @Column("location") String companyLocation,
+                            @Column("summary") String companySummary,
+                            @Column("stock_ticker") String companyStockTicker,
+                            @Column("employee_count") String companyEmployeeCount) {
 
     public String nameTitleDisplay() {
         return MessageFormat.format("{0}, {1}",

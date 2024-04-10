@@ -19,9 +19,7 @@
             <th>Name</th>
             <th>Title</th>
             <th>Company</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>LinkedIn</th>
+            <th>LinkedIn Profile</th>
             <th style="width: 1px"></th>
         </tr>
         </thead>
@@ -29,11 +27,10 @@
         <tr th:each="c : ${contacts}">
             <td th:text="${c.fullName()}">Name</td>
             <td th:text="${c.title()}">Title</td>
-            <td th:text="${c.companyName()}">Company Name</td>
-            <td th:text="${c.email()}">Email</td>
-            <td th:text="${c.phoneNumberDisplay()}">Phone</td>
+            <td><a th:href="@{/companies/{id}(id=${c.companyId()})}" th:text="${c.companyName()}">Company Name</a></td>
             <td>
-                <a th:if="${c.linkedInProfileUrl() != ''}" th:href="${c.linkedInProfileUrl()}" target="_blank">Profile</a>
+                <a th:if="${c.linkedInProfileUrl() != null && c.linkedInProfileUrl() != ''}" th:href="${c.linkedInProfileUrl()}" target="_blank">Profile</a>
+                <span th:if="${c.linkedInProfileUrl() == null || c.linkedInProfileUrl() == ''}">n/a</span>
             </td>
             <td><a th:href="@{/contacts/{id}/edit(id=${c.id()})}"><span class="badge bg-primary">Edit</span></a></td>
         </tr>

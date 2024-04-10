@@ -48,9 +48,9 @@
                 <span th:text="${e.eventType()}">event type</span>
             </td>
             <td th:text="${e.interviewType()}">interview type</td>
-            <td th:text="${e.jobTitle()}">job title</td>
-            <td th:utext="${e.interviewerNameTitleDisplay()}">interviewer, title</td>
-            <td th:utext="${e.companyName()}">company</td>
+            <td><a th:href="@{/jobs/{id}(id=${e.jobId()})}" th:text="${e.jobTitle()}">Title</a></td>
+            <td><a th:href="@{/contacts/{id}/edit(id=${e.interviewerId()})}" th:utext="${e.interviewerNameTitleDisplay()}">interviewer, title</a></td>
+            <td><a th:href="@{/companies/{id}(id=${e.companyId()})}" th:text="${e.companyName()}">Company Name</a></td>
             <td><a th:href="@{/events/{id}/edit(id=${e.id()})}"><span class="badge bg-primary">Edit</span></a></td>
         </tr>
         </tbody>
