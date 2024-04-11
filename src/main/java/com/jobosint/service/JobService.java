@@ -38,6 +38,14 @@ public class JobService {
         return jobRepository.findById(id);
     }
 
+    public Optional<Job> getJobByUrl(String url) {
+        return jobRepository.findJobByUrl(url);
+    }
+
+    public Optional<Job> getJobBySourceJobId(String source, String jobId) {
+        return jobRepository.findJobBySourceJobId(source, jobId);
+    }
+
     public void deleteJob(UUID id) {
         getJob(id).ifPresent(job -> {
             applicationRepository.deleteAllByJobId(id);

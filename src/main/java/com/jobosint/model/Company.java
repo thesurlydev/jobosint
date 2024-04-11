@@ -17,6 +17,6 @@ public record Company(@Id UUID id,
                       @Column("greenhouse_token") String greenhouseToken
                       ) {
     public boolean missingData() {
-        return name == null || websiteUrl == null || employeeCount == null || summary == null || location == null;
+        return name == null || websiteUrl == null || employeeCount == null || summary == null || location == null || linkedinToken == null || greenhouseToken == null;
     }
 }

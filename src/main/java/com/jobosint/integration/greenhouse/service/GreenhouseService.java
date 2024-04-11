@@ -1,48 +1,66 @@
 package com.jobosint.integration.greenhouse.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jobosint.integration.greenhouse.GreenhouseTokenLoader;
 import com.jobosint.integration.greenhouse.config.GreenhouseConfig;
 import com.jobosint.integration.greenhouse.model.GetJobResult;
 import com.jobosint.integration.greenhouse.model.GreenhouseJobsResponse;
 import com.jobosint.integration.greenhouse.model.Job;
 import com.jobosint.model.Company;
-import com.jobosint.repository.CompanyRepository;
-import com.jobosint.repository.JobRepository;
+import com.jobosint.service.CompanyService;
+import com.jobosint.service.JobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class GreenhouseService {
 
+    private final CompanyService companyService;
+    private final JobService jobService;
     private final GreenhouseConfig greenhouseConfig;
-    private final GreenhouseTokenLoader greenhouseTokenLoader;
-    private final CompanyRepository companyRepository;
-    private final JobRepository jobRepository;
     private final ObjectMapper objectMapper;
+    private final RestClient restClient;
 
     private static final Set<String> titleIncludes = Set.of("engineer");
     private static final Set<String> titleExcludes = Set.of("manager");
+
+    @Value("classpath:data/greenhouse-board-tokens.txt")
+    private Resource greenhouseTokensFileResource;
+
+    public List<String> getGreenhouseTokens() {
+        try (Stream<String> lines = Files.lines(Paths.get(greenhouseTokensFileResource.getURI()))) {
+            List<String> tokens = lines.toList();
+            log.info("Loaded {} Greenhouse board tokens", tokens.size());
+            return tokens;
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading greenhouse tokens", e);
+        }
+    }
 
     public void fetchJobs() throws IOException {
         if (!greenhouseConfig.getFetchJobsEnabled()) {
             log.info("Greenhouse fetch jobs disabled; skipping");
             return;
         }
-        greenhouseTokenLoader.getGreenhouseTokens()
+        getGreenhouseTokens()
                 .forEach(boardToken -> {
                     log.info("Fetching jobs for: {}", boardToken);
                     File boardDir = createBoardDir(boardToken);
@@ -71,30 +89,32 @@ public class GreenhouseService {
                             })
                             .filter(Objects::nonNull)
                             .toList();
-                            /*.forEach(job -> {
-                                if (greenhouseConfig.getSaveToFileEnabled()) {
-                                    saveToFile(job, boardDir);
-                                }
-                                if (greenhouseConfig.getSaveToDbEnabled()) {
-                                    saveToDb(job);
-                                }
-                            });*/
+
                     if (greenhouseConfig.getSaveToFileEnabled()) {
                         jobResults.forEach(job -> saveToFile(job, boardDir));
                     }
                     if (greenhouseConfig.getSaveToDbEnabled()) {
-                        saveJobToDb(jobResults);
+                        com.jobosint.integration.greenhouse.model.Company company = getCompany(boardToken);
+                        Company c = saveCompanyToDb(company.name(), boardToken);
+                        saveJobToDb(c, jobResults);
                     }
                 });
     }
 
-    private Company saveCompanyToDb() {
-        // TODO
-        return null;
+    private Company saveCompanyToDb(String companyName, String boardToken) {
+        Company companyCandidate = new Company(null, companyName, null, null, null, null, null, null, boardToken);
+        return companyService.saveOrMergeCompany(companyName, companyCandidate);
     }
 
-    private void saveJobToDb(List<GetJobResult> getJobResults) {
-        // TODO
+    private void saveJobToDb(Company company, List<GetJobResult> getJobResults) {
+        getJobResults.stream()
+                .map(jr -> jr.toJob(company.id()))
+                .forEach(job -> {
+                    Optional<com.jobosint.model.Job> maybeExisting = jobService.getJobByUrl(job.url());
+                    if (maybeExisting.isEmpty()) {
+                        jobService.saveJob(job);
+                    }
+                });
     }
 
     private void saveToFile(GetJobResult job, File boardDir) {
@@ -125,8 +145,7 @@ public class GreenhouseService {
     public GreenhouseJobsResponse getJobList(String boardToken) {
         String url = greenhouseConfig.getBaseUrl() + boardToken + "/jobs";
         log.info("Fetching job list from: {}", url);
-        RestClient client = RestClient.create();
-        return client.get()
+        return restClient.get()
                 .uri(url)
                 .retrieve()
                 .body(GreenhouseJobsResponse.class);
@@ -147,21 +166,55 @@ public class GreenhouseService {
     }
 
     public GetJobResult getJob(String boardToken, String jobId) {
+
+        // first, look for existing record in db
+        Optional<GetJobResult> maybeDbGetJobResult = tryGetJobResultDatabase(boardToken, jobId);
+        if (maybeDbGetJobResult.isPresent()) {
+            log.info("Found db copy of job: {}", jobId);
+            return maybeDbGetJobResult.get();
+        }
+
+        // second, look for json serialized to disk
+        Optional<GetJobResult> maybeLocalGetJobResult = tryGetJobResultLocal(boardToken, jobId);
+        if (maybeLocalGetJobResult.isPresent()) {
+            log.info("Found local copy of job: {}", jobId);
+            return maybeLocalGetJobResult.get();
+        }
+
+        // if not found, then make the call to Greenhouse
         String url = greenhouseConfig.getBaseUrl() + boardToken + "/jobs/" + jobId;
         log.info("Fetching job from: {}", url);
-        RestClient client = RestClient.create();
-        Job job = client.get()
+        Job job = restClient.get()
                 .uri(url)
                 .retrieve()
                 .body(Job.class);
-        return new GetJobResult(jobId, boardToken, job);
+        return new GetJobResult(boardToken, jobId, job);
+    }
+
+    public Optional<GetJobResult> tryGetJobResultDatabase(String boardToken, String jobId) {
+        Optional<com.jobosint.model.Job> maybeJob = jobService.getJobBySourceJobId("Greenhouse", jobId);
+        return maybeJob.map(job -> GetJobResult.fromJob(boardToken, job));
+    }
+
+    public Optional<GetJobResult> tryGetJobResultLocal(String boardToken, String jobId) {
+        Path path = Path.of(greenhouseConfig.getDownloadDir(), boardToken, jobId + ".json");
+        File file = path.toFile();
+        if (file.exists()) {
+            try {
+                Job job = objectMapper.readValue(file, Job.class);
+                GetJobResult getJobResult = new GetJobResult(boardToken, jobId, job);
+                return Optional.of(getJobResult);
+            } catch (IOException ioe) {
+                return Optional.empty();
+            }
+        }
+        return Optional.empty();
     }
 
     public com.jobosint.integration.greenhouse.model.Company getCompany(String boardToken) {
         String url = greenhouseConfig.getBaseUrl() + boardToken;
         log.info("Fetching company from: {}", url);
-        RestClient client = RestClient.create();
-        return client.get()
+        return restClient.get()
                 .uri(url)
                 .retrieve()
                 .body(com.jobosint.integration.greenhouse.model.Company.class);

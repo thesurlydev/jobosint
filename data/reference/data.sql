@@ -68,7 +68,7 @@ insert into jobosint.public.company(name, website_url) values('Zillow', 'https:/
 delete from jobosint.public.attribute;
 insert into jobosint.public.attribute(name, values) values('application-status', '{"Applied", "Archived", "Declined", "Interviewing", "Interviewing Suspended", "Offer", "Offer Declined", "Rejected"}');
 insert into jobosint.public.attribute(name, values) values('job-source', '{"Builtin", "Google Jobs", "Greenhouse", "Indeed", "Lever", "LinkedIn", "Recruiter", "Remote Army", "TrueUp", "Workday"}');
-insert into jobosint.public.attribute(name, values) values('job-status', '{"Active", "Applied", "Archived", "Filled", "No longer accepting applications"}');
+insert into jobosint.public.attribute(name, values) values('job-status', '{"Active", "Applied", "Archived", "Discovered", "Filled", "No longer accepting applications"}');
 insert into jobosint.public.attribute(name, values) values('tech-include', '{"kotlin"}');
 insert into jobosint.public.attribute(name, values) values('wishlist', '{"Small to medium sized company", "100% remote", "Medical benefits", "Minimum of 150K salary"}');
 insert into jobosint.public.attribute(name, values) values('interview-type', '{"Technical", "Behavioral", "System Design", "Initial Phone Screen", "Hiring Manager"}');

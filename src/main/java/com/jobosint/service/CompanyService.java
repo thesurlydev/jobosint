@@ -49,6 +49,38 @@ public class CompanyService {
         return persistedCompany;
     }
 
+    public Company saveOrMergeCompany(String companyName, Company companyCandidate) {
+        Company company = null;
+        if (companyName.isBlank()) {
+            log.warn("Using N/A for company");
+            List<Company> companies = search("N/A");
+            company = companies.getFirst();
+        } else {
+            List<Company> companies = search(companyName);
+            if (companies.isEmpty()) {
+                Company c = companyCandidate;
+                if (c == null) {
+                    c = new Company(null, companyName, null, null,
+                            null, null, null, null, null);
+                }
+                log.info("Creating new company: {}", c);
+                company = saveCompany(c);
+            } else if (companies.size() == 1) {
+                if (companyCandidate != null) {
+                    // merge
+                    Company existingCompany = companies.getFirst();
+                    company = mergeCompany(existingCompany, companyCandidate);
+                } else {
+                    company = companies.getFirst();
+                }
+
+            } else {
+                log.error("Ambiguous company name: {}", companyName);
+            }
+        }
+        return company;
+    }
+
     public Company mergeCompany(Company company1, Company company2) {
         UUID id = company1.id();
         String name = company1.name() != null ? company1.name() : company2.name();

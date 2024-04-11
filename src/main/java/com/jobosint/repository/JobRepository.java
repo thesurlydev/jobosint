@@ -50,4 +50,9 @@ public interface JobRepository extends ListCrudRepository<Job, UUID> {
     @Query(JOB_DETAIL_SELECT + " where (title ilike '%' || :query || '%' or content ilike '%' || :query || '%')")
     List<JobDetail> searchJobs(String query);
 
+    @Query("select * from jobosint.public.job where job.url = :url")
+    Optional<Job> findJobByUrl(String url);
+
+    @Query("select * from jobosint.public.job where job.source = :source and job.job_board_id = :jobId")
+    Optional<Job> findJobBySourceJobId(String source, String jobId);
 }

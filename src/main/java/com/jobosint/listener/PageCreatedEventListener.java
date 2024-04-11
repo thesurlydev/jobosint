@@ -1,7 +1,6 @@
 package com.jobosint.listener;
 
 import com.jobosint.event.PageCreatedEvent;
-import com.jobosint.integration.greenhouse.GreenhouseTokenLoader;
 import com.jobosint.model.*;
 import com.jobosint.integration.greenhouse.model.GetJobResult;
 import com.jobosint.parse.*;
@@ -40,7 +39,6 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
     private final WorkdayParser workdayParser;
     private final LeverParser leverParser;
     private final SmartRecruiterParser smartRecruiterParser;
-    private final GreenhouseTokenLoader greenhouseTokenLoader;
 
     @Override
     public void onApplicationEvent(@NonNull PageCreatedEvent event) {
@@ -54,8 +52,6 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         String companyName = null;
         String greenhouseToken = null;
         String linkedInToken = null;
-        CompanyParserResult companyParserResult = null;
-        ProfileParserResult profileParserResult = null;
         JobDescriptionParserResult jobDescriptionParserResult = null;
 
         try {
@@ -73,11 +69,28 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             } else if (url.startsWith("https://www.linkedin.com/company/")) {
 
                 linkedInToken = linkedInService.getCompanyTokenFromUrl(page.url());
-                companyParserResult = linkedInParser.parseCompanyDescription(contentPath);
+                CompanyParserResult companyParserResult = linkedInParser.parseCompanyDescription(contentPath);
+                Company company = new Company(null,
+                        companyParserResult.name(),
+                        companyParserResult.websiteUrl(),
+                        null,
+                        companyParserResult.employeeCount(),
+                        companyParserResult.summary(),
+                        companyParserResult.location(),
+                        linkedInToken,
+                        greenhouseToken);
+                companyService.saveOrMergeCompany(companyParserResult.name(), company);
 
             } else if (url.startsWith("https://www.linkedin.com/in/")) {
 
-                profileParserResult = linkedInParser.parseProfile(contentPath, url);
+                ProfileParserResult profileParserResult = linkedInParser.parseProfile(contentPath, url);
+                List<Company> companies = companyService.search("N/A");
+                Company company = companies.getFirst();
+                Contact contact = new Contact(null, company.id(), profileParserResult.fullName(),
+                        profileParserResult.linkedInProfileUrl(), profileParserResult.title(),
+                        null, null, null);
+                Contact savedContact = contactService.saveContact(contact);
+                log.info("Saved contact: {}", savedContact);
 
             } else if (url.contains(".myworkdayjobs.com/")) {
                 jobDescriptionParserResult = workdayParser.parseJobDescription(contentPath);
@@ -113,76 +126,22 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 return;
             }
 
-            if (companyParserResult != null) {
-                Company company = new Company(null,
-                        companyParserResult.name(),
-                        companyParserResult.websiteUrl(),
-                        null,
-                        companyParserResult.employeeCount(),
-                        companyParserResult.summary(),
-                        companyParserResult.location(),
-                        linkedInToken,
-                        greenhouseToken);
-                processCompany(companyParserResult.name(), company);
-            }
-
-            if (profileParserResult != null) {
-                List<Company> companies = companyService.search("N/A");
-                Company company = companies.getFirst();
-                Contact contact = new Contact(null, company.id(), profileParserResult.fullName(),
-                        profileParserResult.linkedInProfileUrl(), profileParserResult.title(),
-                        null, null, null);
-                Contact savedContact = contactService.saveContact(contact);
-                log.info("Saved contact: {}", savedContact);
-            }
-
             if (jobDescriptionParserResult != null) {
-                Company company = processCompany(jobDescriptionParserResult.companyName(), null);
+                Company company = companyService.saveOrMergeCompany(jobDescriptionParserResult.companyName(), null);
                 if (company != null) {
                     processJob(jobDescriptionParserResult, page, company, jobSource);
                 }
             }
+
         } catch (IOException e) {
             log.error("Failed to parse job description: {}", contentPath, e);
         }
     }
 
-    private Company processCompany(String companyName, Company companyCandidate) {
-        Company company = null;
-        if (companyName.isBlank()) {
-            log.warn("Using N/A for company");
-            List<Company> companies = companyService.search("N/A");
-            company = companies.getFirst();
-        } else {
-            List<Company> companies = companyService.search(companyName);
-            if (companies.isEmpty()) {
-                Company c = companyCandidate;
-                if (c == null) {
-                    c = new Company(null, companyName, null, null,
-                            null, null, null, null, null);
-                }
-                log.info("Creating new company: {}", c);
-                company = companyService.saveCompany(c);
-            } else if (companies.size() == 1) {
-                if (companyCandidate != null) {
-                    // merge
-                    Company existingCompany = companies.getFirst();
-                    company = companyService.mergeCompany(existingCompany, companyCandidate);
-                } else {
-                    company = companies.getFirst();
-                }
-
-            } else {
-                log.error("Ambiguous company name: {}", companyName);
-            }
-        }
-        return company;
-    }
-
     private void processJob(JobDescriptionParserResult jobDescriptionParserResult,
-                           Page page,
-                           Company company,
-                           String jobSource) {
+                            Page page,
+                            Company company,
+                            String jobSource) {
 
         String salaryMin = null, salaryMax = null;
         if (jobDescriptionParserResult.salaryRange() != null) {
