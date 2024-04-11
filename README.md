@@ -4,6 +4,7 @@ Job open source intelligence (OSINT) and manager for job seekers.
 
 ## Technology Stack
 
+- Spring AI
 - Spring Boot
 - Spring Data JDBC
 - Java 21

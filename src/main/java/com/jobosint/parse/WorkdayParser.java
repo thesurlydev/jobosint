@@ -18,6 +18,8 @@ import java.io.IOException;
 @Component
 public class WorkdayParser {
 
+    private final ObjectMapper objectMapper;
+
     public JobDescriptionParserResult parseJobDescription(String path) throws IOException {
         File input = new File(path);
         Document doc = Jsoup.parse(input, "UTF-8");
@@ -30,8 +32,7 @@ public class WorkdayParser {
             linkedDataJson = linkedDataScript.data();
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-        WorkdayLinkedData workdayLinkedData = mapper.readValue(linkedDataJson, WorkdayLinkedData.class);
+        WorkdayLinkedData workdayLinkedData = objectMapper.readValue(linkedDataJson, WorkdayLinkedData.class);
 
         String descriptionSelector = "div[data-automation-id='jobPostingDescription']";
         Element descEl = doc.selectFirst(descriptionSelector);

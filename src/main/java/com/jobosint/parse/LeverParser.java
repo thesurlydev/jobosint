@@ -18,6 +18,8 @@ import java.io.IOException;
 @Component
 public class LeverParser {
 
+    private final ObjectMapper objectMapper;
+
     public JobDescriptionParserResult parseJobDescription(String path) throws IOException {
         File input = new File(path);
         Document doc = Jsoup.parse(input, "UTF-8");
@@ -30,8 +32,7 @@ public class LeverParser {
             linkedDataJson = linkedDataScript.data();
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-        LeverLinkedData leverLinkedData = mapper.readValue(linkedDataJson, LeverLinkedData.class);
+        LeverLinkedData leverLinkedData = objectMapper.readValue(linkedDataJson, LeverLinkedData.class);
 
         String markdown = ConversionUtils.convertToMarkdown(leverLinkedData.getDescription());
 

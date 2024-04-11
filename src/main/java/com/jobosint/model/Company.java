@@ -12,7 +12,9 @@ public record Company(@Id UUID id,
                       @Column("stock_ticker") @JsonProperty("stock_ticker") String stockTicker,
                       @Column("employee_count") @JsonProperty("employee_count") String employeeCount,
                       String summary,
-                      String location
+                      String location,
+                      @Column("linkedin_token") String linkedinToken,
+                      @Column("greenhouse_token") String greenhouseToken
                       ) {
     public boolean missingData() {
         return name == null || websiteUrl == null || employeeCount == null || summary == null || location == null;

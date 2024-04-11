@@ -75,7 +75,7 @@ public class GoogleSearchService {
                 }
 
                 if (!href.startsWith("/search")) {
-                    String text = link.querySelector("h3") != null ? link.querySelector("h3").textContent() : href;
+                    String text = link.innerText() != null ? link.innerText() : href;
                     GoogleSearchResult result = new GoogleSearchResult(href, text);
                     results.add(result);
                 }

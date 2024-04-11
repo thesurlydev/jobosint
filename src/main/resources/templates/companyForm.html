@@ -31,6 +31,20 @@
     </div>
 
     <div class="row mb-3">
+        <label for="linkedinToken" class="col-sm-2 col-form-label">LinkedIn Token</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="linkedinToken" th:field="*{linkedinToken}"/>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="greenhouseToken" class="col-sm-2 col-form-label">Greenhouse Token</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="greenhouseToken" th:field="*{greenhouseToken}"/>
+        </div>
+    </div>
+
+    <div class="row mb-3">
         <label for="stockTicker" class="col-sm-2 col-form-label">Ticker</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" id="stockTicker" placeholder="ACME" th:field="*{stockTicker}"/>

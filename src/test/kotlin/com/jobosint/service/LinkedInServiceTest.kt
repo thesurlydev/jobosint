@@ -12,6 +12,13 @@ class LinkedInServiceTest {
     @Autowired lateinit var linkedInService: LinkedInService
 
     @Test
+    fun getCompanyTokenFromUrl() {
+        val url = "https://www.linkedin.com/company/sleeperhq/about/"
+        val actual = linkedInService.getCompanyTokenFromUrl(url)
+        assertEquals("sleeperhq", actual)
+    }
+
+    @Test
     fun testSearchJobs() {
         val request = LinkedInJobSearchRequest("java")
         val results = linkedInService.searchJobs(request)

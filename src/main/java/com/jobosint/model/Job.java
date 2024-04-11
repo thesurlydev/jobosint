@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public record Job(@Id UUID id,
                   @Column("company") UUID companyId,
+                  @Column("job_board_id") String jobBoardId,
                   String title,
                   String url,
                   @Column("salary_min") String salaryMin,
@@ -32,6 +33,7 @@ public record Job(@Id UUID id,
     public static Job fromJobWithNewStatus(Job job, String newStatus) {
         return new Job(job.id(),
                 job.companyId(),
+                job.jobBoardId(),
                 job.title(),
                 job.url(),
                 job.salaryMin(),
@@ -47,6 +49,7 @@ public record Job(@Id UUID id,
     public static Job fromForm(JobForm form) {
         return new Job(form.getId(),
                 form.getCompanyId(),
+                form.getJobBoardId(),
                 form.getTitle(),
                 form.getUrl(),
                 form.getSalaryMin(),

@@ -41,35 +41,37 @@ create table if not exists contact
 
 create table if not exists company
 (
-    id             uuid primary key default gen_random_uuid(),
-    name           varchar(255) not null
+    id               uuid primary key default gen_random_uuid(),
+    name             varchar(255) not null
         CONSTRAINT company_name_unique UNIQUE,
-    created_at     timestamptz      default now(),
-    updated_at     timestamptz      default now(),
-    website_url    varchar(255),
-    summary        text,
-    employee_count text,
-    stock_ticker   varchar(10),
-    location       text
+    created_at       timestamptz      default now(),
+    updated_at       timestamptz      default now(),
+    website_url      varchar(255),
+    summary          text,
+    employee_count   text,
+    stock_ticker     varchar(10),
+    linkedin_token   text,
+    greenhouse_token text
 );
 
 create table if not exists job
 (
-    id         uuid primary key      default gen_random_uuid(),
-    created_at timestamptz  not null default now(),
-    updated_at timestamptz  not null default now(),
-    posted_at  timestamptz,
-    title      varchar(255) not null,
-    url        text
+    id           uuid primary key      default gen_random_uuid(),
+    created_at   timestamptz  not null default now(),
+    updated_at   timestamptz  not null default now(),
+    posted_at    timestamptz,
+    job_board_id text,
+    title        varchar(255) not null,
+    url          text
         CONSTRAINT job_url_unique UNIQUE,
-    company    uuid         not null,
-    salary_min text,
-    salary_max text,
-    source     text,
-    status     text,
-    page_id    uuid,
-    notes      text,
-    content    text,
+    company      uuid         not null,
+    salary_min   text,
+    salary_max   text,
+    source       text,
+    status       text,
+    page_id      uuid,
+    notes        text,
+    content      text,
     constraint fk_job_company foreign key (company) references jobosint.public.company (id)
 );
 

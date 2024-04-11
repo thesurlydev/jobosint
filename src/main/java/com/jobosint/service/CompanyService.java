@@ -57,8 +57,10 @@ public class CompanyService {
         String employeeCount = company1.employeeCount() != null ? company1.employeeCount() : company2.employeeCount();
         String summary = company1.summary() != null ? company1.summary() : company2.summary();
         String location = company1.location() != null ? company1.location() : company2.location();
+        String linkedinToken = company1.linkedinToken() != null ? company1.linkedinToken() : company2.linkedinToken();
+        String greenhouseToken = company1.greenhouseToken() != null ? company1.greenhouseToken() : company2.greenhouseToken();
 
-        Company mergedCompany = new Company(id, name, websiteUrl, stockTicker, employeeCount, summary, location);
+        Company mergedCompany = new Company(id, name, websiteUrl, stockTicker, employeeCount, summary, location, linkedinToken, greenhouseToken);
 
         return companyRepository.save(mergedCompany);
     }

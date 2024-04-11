@@ -1,4 +1,4 @@
-package com.jobosint.model.greenhouse;
+package com.jobosint.integration.greenhouse.model;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -11,4 +11,7 @@ public record Job(String absolute_url,
                   List<Department> departments,
                   List<Office> offices
 ) {
+    @Override public String toString() {
+        return String.format("%s: %s", this.id, this.title);
+    }
 }

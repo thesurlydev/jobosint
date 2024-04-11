@@ -22,7 +22,6 @@ import java.util.Optional;
 @Slf4j
 public class JobCreatedEventListener implements ApplicationListener<JobCreatedEvent> {
 
-    private final JobService jobService;
     private final JobAttributeService jobAttributesService;
 
     @Override

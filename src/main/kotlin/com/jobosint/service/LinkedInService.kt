@@ -13,6 +13,19 @@ import org.springframework.stereotype.Service
 @Service
 class LinkedInService(val browser: Browser) {
 
+    // https://www.linkedin.com/company/sleeperhq/about/ -> sleeperhq
+    fun getCompanyTokenFromUrl(url: String): String {
+        var baseUrl: String = url
+        if (baseUrl.contains("?")) {
+            baseUrl = url.substring(0, url.indexOf("?"))
+        }
+
+        // get the board token and job id from the page url
+        val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val token = urlParts[4]
+        return token
+    }
+
     fun searchJobs(jobSearchRequest: LinkedInJobSearchRequest): Set<LinkedInResult> {
         val allResults = mutableSetOf<LinkedInResult>()
 

@@ -39,9 +39,11 @@ public class CompanyCreatedEventListener implements ApplicationListener<CompanyC
                 String website = getNonNullOrEmptyOrDefault(existingCompany.websiteUrl(), detail.websiteLink());
                 String summary = getNonNullOrEmptyOrDefault(existingCompany.summary(), detail.summary());
                 String location = getNonNullOrEmptyOrDefault(existingCompany.location(), detail.location());
+                String linkedinToken = getNonNullOrEmptyOrDefault(existingCompany.linkedinToken(), detail.linkedinToken());
+                String greenhouseToken = getNonNullOrEmptyOrDefault(existingCompany.greenhouseToken(), detail.greenhouseToken());
 
                 Company updatedCompany = new Company(existingCompany.id(), existingCompany.name(),
-                        website, ticker, numberOfEmployees, summary, location);
+                        website, ticker, numberOfEmployees, summary, location, linkedinToken, greenhouseToken);
 
                 log.info("Updating company: {}", updatedCompany);
                 companyService.saveCompany(updatedCompany);

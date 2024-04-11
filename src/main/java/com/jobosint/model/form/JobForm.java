@@ -12,6 +12,7 @@ public class JobForm {
     private String title;
     private String url;
     private UUID companyId;
+    private String jobBoardId;
     private UUID pageId;
 
     private String source;
@@ -31,6 +32,7 @@ public class JobForm {
         this.id = job.id();
         this.notes = job.notes();
         this.companyId = job.companyId();
+        this.jobBoardId = job.jobBoardId();
         this.pageId = job.pageId();
         this.salaryMin = job.salaryMin();
         this.salaryMax = job.salaryMax();

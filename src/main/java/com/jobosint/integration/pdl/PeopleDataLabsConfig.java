@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "app.integrations.pdl")
+@ConfigurationProperties(prefix = "app.integration.pdl")
 public class PeopleDataLabsConfig {
     private String baseUrl;
     private String apiKey;

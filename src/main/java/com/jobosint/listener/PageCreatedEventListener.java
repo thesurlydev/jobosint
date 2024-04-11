@@ -1,14 +1,15 @@
 package com.jobosint.listener;
 
 import com.jobosint.event.PageCreatedEvent;
+import com.jobosint.integration.greenhouse.GreenhouseTokenLoader;
 import com.jobosint.model.*;
-import com.jobosint.model.greenhouse.GetJobResult;
+import com.jobosint.integration.greenhouse.model.GetJobResult;
 import com.jobosint.parse.*;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.ContactService;
-import com.jobosint.service.GreenhouseService;
+import com.jobosint.integration.greenhouse.service.GreenhouseService;
 import com.jobosint.service.JobService;
-import com.jobosint.service.ai.CompanyDetailsService;
+import com.jobosint.service.LinkedInService;
 import com.jobosint.util.ConversionUtils;
 import com.jobosint.util.ParseUtils;
 import com.jobosint.util.StringUtils;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.context.ApplicationListener;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -31,12 +33,14 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
     private final ContactService contactService;
     private final GreenhouseService greenhouseService;
     private final JobService jobService;
+    private final LinkedInService linkedInService;
 
     private final LinkedInParser linkedInParser;
     private final BuiltinParser builtInParser;
     private final WorkdayParser workdayParser;
     private final LeverParser leverParser;
     private final SmartRecruiterParser smartRecruiterParser;
+    private final GreenhouseTokenLoader greenhouseTokenLoader;
 
     @Override
     public void onApplicationEvent(@NonNull PageCreatedEvent event) {
@@ -47,6 +51,9 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         String contentPath = page.contentPath();
 
         String jobSource = null;
+        String companyName = null;
+        String greenhouseToken = null;
+        String linkedInToken = null;
         CompanyParserResult companyParserResult = null;
         ProfileParserResult profileParserResult = null;
         JobDescriptionParserResult jobDescriptionParserResult = null;
@@ -65,6 +72,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 jobSource = "LinkedIn";
             } else if (url.startsWith("https://www.linkedin.com/company/")) {
 
+                linkedInToken = linkedInService.getCompanyTokenFromUrl(page.url());
                 companyParserResult = linkedInParser.parseCompanyDescription(contentPath);
 
             } else if (url.startsWith("https://www.linkedin.com/in/")) {
@@ -79,8 +87,16 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 jobSource = "Lever";
             } else if (url.startsWith("https://boards.greenhouse.io/")) {
 
+                Pair<String, String> boardAndId = greenhouseService.getBoardTokenAndIdFromUrl(page.url());
+
+                greenhouseToken = boardAndId.getFirst();
+                String jobId = boardAndId.getSecond();
+
+                com.jobosint.integration.greenhouse.model.Company greenhouseCompany = greenhouseService.getCompany(greenhouseToken);
+                companyName = greenhouseCompany.name();
+
                 // instead of parsing the page content, we can use the greenhouse API to get the job details
-                GetJobResult result = greenhouseService.getJob(page.url());
+                GetJobResult result = greenhouseService.getJob(greenhouseToken, jobId);
 
                 var escapedContent = StringEscapeUtils.unescapeHtml4(result.job().content());
 
@@ -91,6 +107,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
                 jobDescriptionParserResult = new JobDescriptionParserResult(result.job().title(), result.boardToken(), markdownContent, salaryRange);
                 jobSource = "Greenhouse";
+
             } else {
                 log.error("Unsupported url: {}", url);
                 return;
@@ -103,7 +120,9 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                         null,
                         companyParserResult.employeeCount(),
                         companyParserResult.summary(),
-                        companyParserResult.location());
+                        companyParserResult.location(),
+                        linkedInToken,
+                        greenhouseToken);
                 processCompany(companyParserResult.name(), company);
             }
 
@@ -140,7 +159,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 Company c = companyCandidate;
                 if (c == null) {
                     c = new Company(null, companyName, null, null,
-                            null, null, null);
+                            null, null, null, null, null);
                 }
                 log.info("Creating new company: {}", c);
                 company = companyService.saveCompany(c);
@@ -182,6 +201,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
         Job job = new Job(null,
                 company.id(),
+                null,
                 jobDescriptionParserResult.title(),
                 url,
                 salaryMin,
