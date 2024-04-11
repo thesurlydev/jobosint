@@ -37,7 +37,7 @@ public interface JobRepository extends ListCrudRepository<Job, UUID> {
                      LEFT OUTER JOIN jobosint.public.application a on a.job = j.id  
             """;
 
-    @Query(JOB_DETAIL_SELECT + " where j.status = 'Active' order by j.created_at")
+    @Query(JOB_DETAIL_SELECT + " where j.status = 'Active' or j.status = 'Discovered' order by j.status, j.created_at")
     List<JobDetail> findAllJobDetailOrderByCreatedAt();
 
     @Query(JOB_DETAIL_SELECT + " where j.id = :id")

@@ -8,6 +8,7 @@ import com.jobosint.integration.greenhouse.model.Job;
 import com.jobosint.model.Company;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.JobService;
+import com.jobosint.util.ConversionUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -77,6 +78,7 @@ public class GreenhouseService {
                     Integer totalJobs = greenhouseJobsResponse.meta().total();
                     log.info("Found {} total jobs", totalJobs);
                     List<GetJobResult> jobResults = greenhouseJobsResponse.jobs().stream()
+                            .limit(10)
                             .filter(job -> titleIncludes.stream().anyMatch(include -> job.title().toLowerCase().contains(include)))
                             .filter(job -> titleExcludes.stream().noneMatch(exclude -> job.title().toLowerCase().contains(exclude)))
                             .map(job -> {
@@ -201,9 +203,16 @@ public class GreenhouseService {
         File file = path.toFile();
         if (file.exists()) {
             try {
-                Job job = objectMapper.readValue(file, Job.class);
-                GetJobResult getJobResult = new GetJobResult(boardToken, jobId, job);
-                return Optional.of(getJobResult);
+                GetJobResult getJobResult = objectMapper.readValue(file, GetJobResult.class);
+                Job ej = getJobResult.job();
+
+                // we need to convert the content to markdown
+                String markdownContent = ConversionUtils.convertToMarkdown(getJobResult.job().content());
+                Job job = new Job(ej.absolute_url(), ej.id(), ej.title(), markdownContent, ej.updated_at(), ej.departments(), ej.offices());
+
+                GetJobResult gjr = new GetJobResult(boardToken, jobId, job);
+
+                return Optional.of(gjr);
             } catch (IOException ioe) {
                 return Optional.empty();
             }

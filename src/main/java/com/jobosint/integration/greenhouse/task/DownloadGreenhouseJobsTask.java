@@ -14,7 +14,7 @@ import java.io.IOException;
 public class DownloadGreenhouseJobsTask {
     private final GreenhouseService greenhouseService;
 
-    @Scheduled(fixedRate = 600000, initialDelay = 10000)
+    @Scheduled(fixedRate = 600000, initialDelay = 5000)
     public void fetchJobs() throws IOException {
         greenhouseService.fetchJobs();
     }
