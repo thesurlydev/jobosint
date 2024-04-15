@@ -20,7 +20,7 @@ public interface ApplicationRepository extends ListCrudRepository<Application, U
             inner join public.company c on c.id = j.company
             """;
 
-    @Query(APPLICATION_DETAIL_SELECT + "order by a.status, c.name")
+    @Query(APPLICATION_DETAIL_SELECT + "order by a.status, a.applied_at desc, c.name")
     List<ApplicationDetail> findAllApplicationDetailOrderByCreatedAt();
 
     @Query(APPLICATION_DETAIL_SELECT + "where a.id = :id")
