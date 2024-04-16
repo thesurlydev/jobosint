@@ -1,6 +1,5 @@
 package com.jobosint.util;
 
-import org.apache.commons.text.StringEscapeUtils;
 import org.junit.jupiter.api.Test;
 
 public class ConversionUtilsTest {

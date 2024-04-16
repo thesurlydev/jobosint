@@ -24,14 +24,14 @@ public class GreenhouseServiceTest {
     }
 
     @Test
-    public void getJobList() {
+    public void getJobResultList() {
         GreenhouseJobsResponse greenhouseJobsResponse = greenhouseService.getJobList("gitlab");
         System.out.println(greenhouseJobsResponse);
     }
 
     @Test
-    public void getJob() {
-        GetJobResult result = greenhouseService.getJob("gitlab", "7096222002");
+    public void getJobResult() {
+        GetJobResult result = greenhouseService.getJobResult("gitlab", "7096222002");
         System.out.println(result);
     }
 }

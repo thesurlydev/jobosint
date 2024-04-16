@@ -6,6 +6,7 @@ import com.jobosint.integration.greenhouse.model.GetJobResult;
 import com.jobosint.integration.greenhouse.model.GreenhouseJobsResponse;
 import com.jobosint.integration.greenhouse.model.Job;
 import com.jobosint.model.Company;
+import com.jobosint.service.AttributeService;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.JobService;
 import com.jobosint.util.ConversionUtils;
@@ -34,6 +35,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class GreenhouseService {
 
+    private final AttributeService attributeService;
     private final CompanyService companyService;
     private final JobService jobService;
     private final GreenhouseConfig greenhouseConfig;
@@ -41,7 +43,6 @@ public class GreenhouseService {
     private final RestClient restClient;
 
     private static final Set<String> titleIncludes = Set.of("engineer");
-    private static final Set<String> titleExcludes = Set.of("manager");
 
     @Value("classpath:data/greenhouse-board-tokens.txt")
     private Resource greenhouseTokensFileResource;
@@ -61,6 +62,9 @@ public class GreenhouseService {
             log.info("Greenhouse fetch jobs disabled; skipping");
             return;
         }
+
+        List<String> titleExcludes = attributeService.getJobTitleExcludes();
+
         getGreenhouseTokens()
                 .forEach(boardToken -> {
                     log.info("Fetching jobs for: {}", boardToken);
@@ -83,7 +87,7 @@ public class GreenhouseService {
                             .filter(job -> titleExcludes.stream().noneMatch(exclude -> job.title().toLowerCase().contains(exclude)))
                             .map(job -> {
                                 try {
-                                    return getJob(boardToken, job.id().toString());
+                                    return getJobResult(boardToken, job.id().toString());
                                 } catch (Exception e) {
                                     log.error("Failed to get job: {}", job.id(), e);
                                     return null;
@@ -91,6 +95,8 @@ public class GreenhouseService {
                             })
                             .filter(Objects::nonNull)
                             .toList();
+
+                    log.info("Filtered jobs: {}", jobResults.size());
 
                     if (greenhouseConfig.getSaveToFileEnabled()) {
                         jobResults.forEach(job -> saveToFile(job, boardDir));
@@ -167,7 +173,7 @@ public class GreenhouseService {
         return Pair.of(boardToken, jobId);
     }
 
-    public GetJobResult getJob(String boardToken, String jobId) {
+    public GetJobResult getJobResult(String boardToken, String jobId) {
 
         // first, look for existing record in db
         Optional<GetJobResult> maybeDbGetJobResult = tryGetJobResultDatabase(boardToken, jobId);
@@ -190,6 +196,13 @@ public class GreenhouseService {
                 .uri(url)
                 .retrieve()
                 .body(Job.class);
+
+        // convert job content to markdown
+        assert job != null;
+        String escapedHtmlContent = job.content();
+        String markdownContent = ConversionUtils.convertToMarkdown(escapedHtmlContent);
+        job = job.updateContent(markdownContent);
+
         return new GetJobResult(boardToken, jobId, job);
     }
 

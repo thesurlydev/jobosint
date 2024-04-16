@@ -9,15 +9,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConversionUtils {
+
+    private static final Pattern HTML_ENTITY_PATTERN = Pattern.compile("&[a-zA-Z0-9#]+;");
+
     public static String convertToMarkdown(String html) {
         if (html == null) {
             return null;
         }
 
         // first, determine if the html is escaped.
-        String htmlEntityRegex = "&[a-zA-Z0-9#]+;";
-        Pattern pattern = Pattern.compile(htmlEntityRegex);
-        Matcher matcher = pattern.matcher(html);
+        Matcher matcher = HTML_ENTITY_PATTERN.matcher(html);
         if (matcher.find()) {
             html = StringEscapeUtils.unescapeHtml4(html);
         }

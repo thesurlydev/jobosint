@@ -109,7 +109,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 companyName = greenhouseCompany.name();
 
                 // instead of parsing the page content, we can use the greenhouse API to get the job details
-                GetJobResult result = greenhouseService.getJob(greenhouseToken, jobId);
+                GetJobResult result = greenhouseService.getJobResult(greenhouseToken, jobId);
 
                 var escapedContent = StringEscapeUtils.unescapeHtml4(result.job().content());
 

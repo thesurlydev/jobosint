@@ -7,7 +7,7 @@ import java.util.UUID;
 public record GetJobResult(String boardToken, String id, Job job) {
     public com.jobosint.model.Job toJob(UUID companyId) {
         return new com.jobosint.model.Job(null, companyId, id, job.title(), job.absolute_url(), null,
-                null, "Greenhouse", null, ConversionUtils.convertToMarkdown(job.content()), "Discovered", null);
+                null, "Greenhouse", null, job.content(), "Discovered", null);
     }
 
     public static GetJobResult fromJob(String boardToken, com.jobosint.model.Job job) {
