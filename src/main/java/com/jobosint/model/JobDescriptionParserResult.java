@@ -4,5 +4,5 @@ public record JobDescriptionParserResult(
         String title,
         String companyName,
         String description,
-        String[] salaryRange) {
+        SalaryRange salaryRange) {
 }

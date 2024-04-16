@@ -116,7 +116,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 // we need to convert the content to markdown
                 String markdownContent = ConversionUtils.convertToMarkdown(escapedContent);
 
-                String[] salaryRange = ParseUtils.parseSalaryRange(markdownContent);
+                SalaryRange salaryRange = ParseUtils.parseSalaryRange(markdownContent);
 
                 jobDescriptionParserResult = new JobDescriptionParserResult(result.job().title(), result.boardToken(), markdownContent, salaryRange);
                 jobSource = "Greenhouse";
@@ -143,17 +143,6 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                             Company company,
                             String jobSource) {
 
-        String salaryMin = null, salaryMax = null;
-        if (jobDescriptionParserResult.salaryRange() != null) {
-            if (jobDescriptionParserResult.salaryRange().length == 1) {
-                salaryMin = jobDescriptionParserResult.salaryRange()[0];
-            } else if (jobDescriptionParserResult.salaryRange().length == 2) {
-                salaryMin = jobDescriptionParserResult.salaryRange()[0];
-                salaryMax = jobDescriptionParserResult.salaryRange()[1];
-            } else {
-                log.warn("Unexpected salary range length: {}", jobDescriptionParserResult.salaryRange().length);
-            }
-        }
 
         String url = StringUtils.removeQueryString(page.url());
         String jobDescription = jobDescriptionParserResult.description();
@@ -163,8 +152,8 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 null,
                 jobDescriptionParserResult.title(),
                 url,
-                salaryMin,
-                salaryMax,
+                jobDescriptionParserResult.salaryRange().min(),
+                jobDescriptionParserResult.salaryRange().max(),
                 jobSource,
                 null,
                 jobDescription,

@@ -1,5 +1,6 @@
 package com.jobosint.util;
 
+import com.jobosint.model.SalaryRange;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,7 +20,7 @@ public class ParseUtils {
         return Jsoup.parse(path.toFile(), "UTF-8");
     }
 
-    public static String[] parseSalaryRange(String description) {
+    public static SalaryRange parseSalaryRange(String description) {
         // Define the regex pattern to match salary information
         String regexPattern = "\\$?\\d{1,3}(,\\d{3})*(\\.\\d{2})?";
         Pattern pattern = Pattern.compile(regexPattern);
@@ -46,7 +47,18 @@ public class ParseUtils {
             convertedSalaries = convertedSalaries.subList(0, 2);
         }
 
-        return convertedSalaries.toArray(new String[0]);
-    }
+        String[] salaryRange = convertedSalaries.toArray(new String[0]);
 
+        String salaryMin = null, salaryMax = null;
+        if (salaryRange.length == 1) {
+            salaryMin = salaryRange[0];
+        } else if (salaryRange.length == 2) {
+            salaryMin = salaryRange[0];
+            salaryMax = salaryRange[1];
+        } else {
+            log.warn("Unexpected salary range length: {}", salaryRange.length);
+        }
+
+        return new SalaryRange(salaryMin, salaryMax);
+    }
 }

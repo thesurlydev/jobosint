@@ -2,6 +2,7 @@ package com.jobosint.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobosint.model.JobDescriptionParserResult;
+import com.jobosint.model.SalaryRange;
 import com.jobosint.model.lever.LeverLinkedData;
 import com.jobosint.util.ConversionUtils;
 import com.jobosint.util.ParseUtils;
@@ -36,7 +37,7 @@ public class LeverParser {
 
         String markdown = ConversionUtils.convertToMarkdown(leverLinkedData.getDescription());
 
-        String[] salaryRange = ParseUtils.parseSalaryRange(markdown);
+        SalaryRange salaryRange = ParseUtils.parseSalaryRange(markdown);
 
         return new JobDescriptionParserResult(
                 leverLinkedData.getTitle(),

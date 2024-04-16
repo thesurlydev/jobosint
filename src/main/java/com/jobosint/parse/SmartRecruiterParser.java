@@ -3,6 +3,7 @@ package com.jobosint.parse;
 
 import com.jobosint.model.JobDescription;
 import com.jobosint.model.JobDescriptionParserResult;
+import com.jobosint.model.SalaryRange;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -61,7 +62,7 @@ public class SmartRecruiterParser {
         ParseResult<JobDescription> parseResult = jobDescriptionParser.parse(body.toString(), "div.job-sections");
         String rawMarkdown = parseResult.getData().getMarkdownBody();
 
-        String[] salaryRange = ParseUtils.parseSalaryRange(rawMarkdown);
+        SalaryRange salaryRange = ParseUtils.parseSalaryRange(rawMarkdown);
 
         return new JobDescriptionParserResult(title, company, rawMarkdown, salaryRange);
     }

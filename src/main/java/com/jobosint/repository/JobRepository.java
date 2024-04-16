@@ -14,27 +14,27 @@ public interface JobRepository extends ListCrudRepository<Job, UUID> {
 
     String JOB_DETAIL_SELECT = """
             select j.*,
-                   c.id as company_id,
-                   c.name,
-                   c.website_url,
-                   c.location,
-                   c.summary,
-                   c.stock_ticker,
-                   c.employee_count,
-                   ja.cloud_providers,
-                   ja.cloud_services,
-                   ja.culture_values,
-                   ja.databases,
-                   ja.frameworks,
-                   ja.interview_steps,
-                   ja.required_qualifications,
-                   ja.preferred_qualifications,
-                   ja.programming_languages,
-                   a.applied_at
+            c.id as company_id,
+            c.name,
+            c.website_url,
+            c.location,
+            c.summary,
+            c.stock_ticker,
+            c.employee_count,
+            ja.cloud_providers,
+            ja.cloud_services,
+            ja.culture_values,
+            ja.databases,
+            ja.frameworks,
+            ja.interview_steps,
+            ja.required_qualifications,
+            ja.preferred_qualifications,
+            ja.programming_languages,
+            a.applied_at
             from jobosint.public.job j
-                     INNER JOIN jobosint.public.job_attribute ja on ja.job = j.id
-                     INNER JOIN jobosint.public.company c on j.company = c.id
-                     LEFT OUTER JOIN jobosint.public.application a on a.job = j.id  
+            INNER JOIN jobosint.public.company c on j.company = c.id
+            LEFT OUTER JOIN jobosint.public.job_attribute ja on ja.job = j.id
+            LEFT OUTER JOIN jobosint.public.application a on a.job = j.id
             """;
 
     @Query(JOB_DETAIL_SELECT + " where j.status = 'Active' or j.status = 'Discovered' order by j.status, j.created_at")

@@ -1,5 +1,6 @@
 package com.jobosint.service.ai;
 
+import com.jobosint.config.AppConfig;
 import com.jobosint.model.JobAttribute;
 import com.jobosint.model.ai.JobAttributes;
 import com.jobosint.repository.JobAttributeRepository;
@@ -24,8 +25,15 @@ public class JobAttributeService {
     private final ChatClient chatClient;
     private final TokenizerService tokenizerService;
     private final JobAttributeRepository jobAttributeRepository;
+    private final AppConfig appConfig;
 
     public Optional<JobAttributes> parseJobDescription(String jobDescriptionContent) {
+
+        if (!appConfig.jobAttributesEnabled()) {
+            log.info("Job Attributes disabled; skipping parseJobDescription");
+            return Optional.empty();
+        }
+
         var outputParser = new BeanOutputParser<>(JobAttributes.class);
 
         // determine the number of tokens in the raw text

@@ -1,9 +1,6 @@
 package com.jobosint.parse;
 
-import com.jobosint.model.CompanyParserResult;
-import com.jobosint.model.JobDescription;
-import com.jobosint.model.JobDescriptionParserResult;
-import com.jobosint.model.ProfileParserResult;
+import com.jobosint.model.*;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -87,7 +84,7 @@ public class LinkedInParser {
         String rawMarkdown = parseResult.getData().getMarkdownBody();
         String jobDescriptionMarkdown = rawMarkdown.replace("{#job-details}", "");
 
-        String[] salaryRange = ParseUtils.parseSalaryRange(jobDescriptionMarkdown);
+        SalaryRange salaryRange = ParseUtils.parseSalaryRange(jobDescriptionMarkdown);
 
         return new JobDescriptionParserResult(title, company, jobDescriptionMarkdown, salaryRange);
     }

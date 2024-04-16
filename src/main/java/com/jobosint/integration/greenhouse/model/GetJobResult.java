@@ -1,7 +1,5 @@
 package com.jobosint.integration.greenhouse.model;
 
-import com.jobosint.util.ConversionUtils;
-
 import java.util.UUID;
 
 public record GetJobResult(String boardToken, String id, Job job) {

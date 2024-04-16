@@ -4,7 +4,6 @@ import com.jobosint.event.JobCreatedEvent;
 import com.jobosint.model.Job;
 import com.jobosint.model.JobAttribute;
 import com.jobosint.model.ai.JobAttributes;
-import com.jobosint.service.JobService;
 import com.jobosint.service.ai.JobAttributeService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

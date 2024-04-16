@@ -5,6 +5,7 @@ import com.jobosint.integration.greenhouse.config.GreenhouseConfig;
 import com.jobosint.integration.greenhouse.model.GetJobResult;
 import com.jobosint.integration.greenhouse.model.GreenhouseJobsResponse;
 import com.jobosint.integration.greenhouse.model.Job;
+import com.jobosint.integration.greenhouse.model.Office;
 import com.jobosint.model.Company;
 import com.jobosint.service.AttributeService;
 import com.jobosint.service.CompanyService;
@@ -81,8 +82,9 @@ public class GreenhouseService {
                     }
                     Integer totalJobs = greenhouseJobsResponse.meta().total();
                     log.info("Found {} total jobs", totalJobs);
+                    // GreenhouseJobsResponse only includes: id, abs_url, title, updated_at
                     List<GetJobResult> jobResults = greenhouseJobsResponse.jobs().stream()
-                            .limit(10)
+//                            .limit(10)
                             .filter(job -> titleIncludes.stream().anyMatch(include -> job.title().toLowerCase().contains(include)))
                             .filter(job -> titleExcludes.stream().noneMatch(exclude -> job.title().toLowerCase().contains(exclude)))
                             .map(job -> {
@@ -94,6 +96,7 @@ public class GreenhouseService {
                                 }
                             })
                             .filter(Objects::nonNull)
+                            .filter(this::locationFilter)
                             .toList();
 
                     log.info("Filtered jobs: {}", jobResults.size());
@@ -107,6 +110,16 @@ public class GreenhouseService {
                         saveJobToDb(c, jobResults);
                     }
                 });
+    }
+
+    private boolean locationFilter(GetJobResult getJobResult) {
+        if (getJobResult == null || getJobResult.job() == null) return true;
+        List<Office> offices = getJobResult.job().offices();
+        if (offices == null) return true;
+        if (!offices.isEmpty()) {
+            return offices.stream().anyMatch(office -> office.name().contains("Remote"));
+        }
+        return false;
     }
 
     private Company saveCompanyToDb(String companyName, String boardToken) {
@@ -201,9 +214,13 @@ public class GreenhouseService {
         assert job != null;
         String escapedHtmlContent = job.content();
         String markdownContent = ConversionUtils.convertToMarkdown(escapedHtmlContent);
-        job = job.updateContent(markdownContent);
+        Job updatedJob = updateContent(job, markdownContent);
 
-        return new GetJobResult(boardToken, jobId, job);
+        return new GetJobResult(boardToken, jobId, updatedJob);
+    }
+
+    public Job updateContent(Job job, String newContent) {
+        return new Job(job.absolute_url(), job.id(), job.title(), newContent, job.updated_at(), job.departments(), job.offices());
     }
 
     public Optional<GetJobResult> tryGetJobResultDatabase(String boardToken, String jobId) {

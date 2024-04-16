@@ -2,6 +2,7 @@ package com.jobosint.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobosint.model.JobDescriptionParserResult;
+import com.jobosint.model.SalaryRange;
 import com.jobosint.model.workday.WorkdayLinkedData;
 import com.jobosint.util.ConversionUtils;
 import com.jobosint.util.ParseUtils;
@@ -45,7 +46,7 @@ public class WorkdayParser {
             description = ConversionUtils.convertToMarkdown(workdayLinkedData.getDescription());
         }
 
-        String[] salaryRange = ParseUtils.parseSalaryRange(description);
+        SalaryRange salaryRange = ParseUtils.parseSalaryRange(description);
 
         return new JobDescriptionParserResult(
                 workdayLinkedData.getTitle(),

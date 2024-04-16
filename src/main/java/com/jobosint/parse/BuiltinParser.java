@@ -2,6 +2,7 @@ package com.jobosint.parse;
 
 import com.jobosint.model.JobDescription;
 import com.jobosint.model.JobDescriptionParserResult;
+import com.jobosint.model.SalaryRange;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -28,7 +29,7 @@ public class BuiltinParser {
         ParseResult<JobDescription> parseResult = jobDescriptionParser.parse(body.toString(), "#page-main-content > div > div > div > div > div.l-content.right > div.row.row-region-middle > div > div > div.block.block-ctools.block-entity-viewnode > article > div.node__content > div.job-description");
         String rawMarkdown = parseResult.getData().getMarkdownBody();
 
-        String[] salaryRange = ParseUtils.parseSalaryRange(rawMarkdown);
+        SalaryRange salaryRange = ParseUtils.parseSalaryRange(rawMarkdown);
 
         return new JobDescriptionParserResult(title, company, rawMarkdown, salaryRange);
     }
