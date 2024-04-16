@@ -37,6 +37,10 @@ public class AttributeService {
         return findAttributeValuesByName("job-status");
     }
 
+    public List<String> getJobTitleExcludes() {
+        return findAttributeValuesByName("job-title-exclude");
+    }
+
     public List<String> getApplicationStatuses() {
         return findAttributeValuesByName("application-status");
     }
