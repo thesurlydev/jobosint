@@ -1,26 +1,57 @@
 package com.jobosint.collaboration.agent;
 
-import com.jobosint.collaboration.AgentsConsumer;
+import com.jobosint.collaboration.annotation.Tool;
+import com.jobosint.collaboration.tool.ToolMetadata;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Method;
+import java.util.*;
 
 @Component
 @Slf4j
-public class AgentRegistry implements AgentsConsumer {
+public class AgentRegistry {
 
     private final Map<String, AgentService> allAgents = new HashMap<>();
+    private final ApplicationContext applicationContext;
+
+    public AgentRegistry(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    @PostConstruct
+    public void initializeAgents() {
+        Map<String, AgentService> agentBeans = applicationContext.getBeansOfType(AgentService.class);
+        agentBeans.values().forEach(agent -> {
+            addTools(agent);
+            registerAgent(agent);
+        });
+    }
+
+    private void addTools(AgentService agent) {
+        Arrays.stream(agent.getClass().getDeclaredMethods())
+                .filter(this::hasToolAnnotation)
+                .map(this::createTool)
+                .forEach(agent::addTool);
+    }
+
+    private boolean hasToolAnnotation(Method method) {
+        return AnnotationUtils.findAnnotation(method, Tool.class) != null;
+    }
+
+    private ToolMetadata createTool(Method method) {
+        Tool tool = AnnotationUtils.findAnnotation(method, Tool.class);
+        String name = Objects.requireNonNull(tool).name() != null ? tool.name() : "";
+        String description = tool.description() != null ? tool.description() : "";
+        boolean disabled = tool.disabled();
+        return new ToolMetadata(name, description, method, disabled);
+    }
 
     private void registerAgent(AgentService agent) {
         allAgents.put(agent.getName(), agent);
-    }
-
-    @Override
-    public void setAgents(Set<AgentService> agents) {
-        agents.forEach(this::registerAgent);
     }
 
     public AgentService getAgent(String agentName) {
