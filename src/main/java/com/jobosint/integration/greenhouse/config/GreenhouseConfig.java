@@ -11,6 +11,7 @@ public class GreenhouseConfig {
     private String baseUrl;
     private String downloadDir;
     private Boolean fetchJobsEnabled;
+    private String fetchJobsCron;
     private Boolean saveToDbEnabled;
     private Boolean saveToFileEnabled;
 }

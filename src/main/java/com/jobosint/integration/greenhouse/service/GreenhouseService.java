@@ -7,10 +7,12 @@ import com.jobosint.integration.greenhouse.model.GreenhouseJobsResponse;
 import com.jobosint.integration.greenhouse.model.Job;
 import com.jobosint.integration.greenhouse.model.Office;
 import com.jobosint.model.Company;
+import com.jobosint.model.SalaryRange;
 import com.jobosint.service.AttributeService;
 import com.jobosint.service.CompanyService;
 import com.jobosint.service.JobService;
 import com.jobosint.util.ConversionUtils;
+import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -68,6 +70,9 @@ public class GreenhouseService {
 
         getGreenhouseTokens()
                 .forEach(boardToken -> {
+                    if (boardToken.isBlank()) {
+                        return;
+                    }
                     log.info("Fetching jobs for: {}", boardToken);
                     File boardDir = createBoardDir(boardToken);
                     GreenhouseJobsResponse greenhouseJobsResponse = null;
@@ -84,7 +89,6 @@ public class GreenhouseService {
                     log.info("Found {} total jobs", totalJobs);
                     // GreenhouseJobsResponse only includes: id, abs_url, title, updated_at
                     List<GetJobResult> jobResults = greenhouseJobsResponse.jobs().stream()
-//                            .limit(10)
                             .filter(job -> titleIncludes.stream().anyMatch(include -> job.title().toLowerCase().contains(include)))
                             .filter(job -> titleExcludes.stream().noneMatch(exclude -> job.title().toLowerCase().contains(exclude)))
                             .map(job -> {
@@ -97,6 +101,7 @@ public class GreenhouseService {
                             })
                             .filter(Objects::nonNull)
                             .filter(this::locationFilter)
+                            .filter(this::salaryFilter)
                             .toList();
 
                     log.info("Filtered jobs: {}", jobResults.size());
@@ -112,12 +117,17 @@ public class GreenhouseService {
                 });
     }
 
+    private boolean salaryFilter(GetJobResult getJobResult) {
+        // TODO
+        return true;
+    }
+
     private boolean locationFilter(GetJobResult getJobResult) {
         if (getJobResult == null || getJobResult.job() == null) return true;
         List<Office> offices = getJobResult.job().offices();
         if (offices == null) return true;
         if (!offices.isEmpty()) {
-            return offices.stream().anyMatch(office -> office.name().contains("Remote"));
+            return offices.stream().map(Office::name).anyMatch(officeName -> officeName.contains("Remote"));
         }
         return false;
     }
@@ -216,7 +226,10 @@ public class GreenhouseService {
         String markdownContent = ConversionUtils.convertToMarkdown(escapedHtmlContent);
         Job updatedJob = updateContent(job, markdownContent);
 
-        return new GetJobResult(boardToken, jobId, updatedJob);
+        // parse salary range
+        SalaryRange salaryRange = ParseUtils.parseSalaryRange(markdownContent);
+
+        return new GetJobResult(boardToken, jobId, updatedJob, salaryRange);
     }
 
     public Job updateContent(Job job, String newContent) {
@@ -240,7 +253,9 @@ public class GreenhouseService {
                 String markdownContent = ConversionUtils.convertToMarkdown(getJobResult.job().content());
                 Job job = new Job(ej.absolute_url(), ej.id(), ej.title(), markdownContent, ej.updated_at(), ej.departments(), ej.offices());
 
-                GetJobResult gjr = new GetJobResult(boardToken, jobId, job);
+                SalaryRange salaryRange = ParseUtils.parseSalaryRange(markdownContent);
+
+                GetJobResult gjr = new GetJobResult(boardToken, jobId, job, salaryRange);
 
                 return Optional.of(gjr);
             } catch (IOException ioe) {
