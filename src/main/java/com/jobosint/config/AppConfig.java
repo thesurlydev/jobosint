@@ -18,12 +18,4 @@ public record AppConfig(Path pageDir, Boolean jobAttributesEnabled) {
     public RestClient restClient() {
         return RestClient.create();
     }
-
-    /*@Bean
-    @Primary // ensures that this overrides the default one provided by Spring Boot
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModules(new JavaTimeModule());
-        return mapper;
-    }*/
 }

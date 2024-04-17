@@ -49,7 +49,6 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         String contentPath = page.contentPath();
 
         String jobSource = null;
-        String companyName = null;
         String greenhouseToken = null;
         String linkedInToken = null;
         JobDescriptionParserResult jobDescriptionParserResult = null;
@@ -104,9 +103,6 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
                 greenhouseToken = boardAndId.getFirst();
                 String jobId = boardAndId.getSecond();
-
-                com.jobosint.integration.greenhouse.model.Company greenhouseCompany = greenhouseService.getCompany(greenhouseToken);
-                companyName = greenhouseCompany.name();
 
                 // instead of parsing the page content, we can use the greenhouse API to get the job details
                 GetJobResult result = greenhouseService.getJobResult(greenhouseToken, jobId);

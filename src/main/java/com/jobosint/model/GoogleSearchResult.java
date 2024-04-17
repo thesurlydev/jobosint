@@ -1,4 +1,4 @@
 package com.jobosint.model;
 
-public record GoogleSearchResult(String href, String text) {
+public record GoogleSearchResult(String url, String text) {
 }
