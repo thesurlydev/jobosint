@@ -12,7 +12,8 @@ import org.springframework.util.StopWatch;
 @Component
 @Slf4j
 public class MethodPerformanceLogger {
-    @Around("execution(* com.jobosint.service..*(..)))")
+//    @Around("execution(* com.jobosint.service..*(..)))")
+    @SuppressWarnings("unused")
     public Object profileAllMethods(ProceedingJoinPoint proceedingJoinPoint) throws Throwable
     {
         MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
@@ -29,7 +30,7 @@ public class MethodPerformanceLogger {
         stopWatch.stop();
 
         //Log method execution time
-        log.info("Execution time of " + className + "." + methodName + " :: " + stopWatch.getTotalTimeMillis() + " ms");
+        log.info("Execution time of {}.{} :: {} ms", className, methodName, stopWatch.getTotalTimeMillis());
 
         return result;
     }
