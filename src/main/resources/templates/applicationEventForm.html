@@ -11,10 +11,23 @@
     <form action="#" th:action="@{/event}" th:object="${eventForm}" method="post">
         <input type="hidden" th:field="*{id}"/>
 
+        <!-- https://icons.getbootstrap.com/ -->
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <svg id="calendar-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
+                <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2"/>
+                <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2m-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a13 13 0 0 1 1.313-.805h.632z"/>
+            </svg>
+        </svg>
+
         <div class="row mb-3">
             <label for="eventDate" class="col-sm-2 col-form-label">Date and Time</label>
             <div class="col-sm-6">
-                <input type="datetime-local" class="form-control" id="eventDate" th:field="*{eventDate}"/>
+                <div class="input-group" data-td-target-input="nearest" data-td-target-toggle="nearest" id="eventDatePicker">
+                    <input id="eventDate" type="text" class="form-control" data-td-target="#eventDatePicker" th:field="*{eventDate}"/>
+                    <span class="input-group-text" data-td-target="#eventDatePicker" data-td-toggle="datetimepicker">
+                        <svg class="bi flex-shrink-0 me-2" width="1em" height="1em" role="img"><use xlink:href="#calendar-icon"/></svg>
+                    </span>
+                </div>
             </div>
         </div>
 
@@ -69,6 +82,18 @@
             </div>
         </div>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new tempusDominus.TempusDominus(document.getElementById('eventDatePicker'), {
+                stepping: 15,
+                display: {
+                    sideBySide: true,
+                    theme: 'light'
+                }
+            });
+        });
+    </script>
 </section>
 </body>
 </html>

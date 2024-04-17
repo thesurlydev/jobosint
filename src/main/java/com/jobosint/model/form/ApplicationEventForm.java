@@ -15,7 +15,8 @@ public class ApplicationEventForm {
     private UUID applicationId;
     private String eventType;
     private String interviewType;
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm") // required for thymeleaf + datetime-local form field
+//    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm") // required for thymeleaf + datetime-local form field
+    @DateTimeFormat(pattern = "MM/dd/yyyy h:mm a") // required for thymeleaf + Tempus Dominus date picker form field
     private LocalDateTime eventDate;
     private Set<String> tools;
     private String notes;
