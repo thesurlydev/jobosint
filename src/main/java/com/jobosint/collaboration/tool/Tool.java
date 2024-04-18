@@ -1,4 +1,4 @@
-package com.jobosint.collaboration.annotation;
+package com.jobosint.collaboration.tool;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

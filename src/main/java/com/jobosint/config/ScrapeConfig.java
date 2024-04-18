@@ -9,5 +9,6 @@ public record ScrapeConfig(Path downloadPath,
                            String namespace,
                            String harFilename,
                            String screenshotFilename,
-                           String htmlFilename) {
+                           String htmlFilename,
+                           String pdfFilename) {
 }

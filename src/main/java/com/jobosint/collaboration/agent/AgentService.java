@@ -1,6 +1,5 @@
 package com.jobosint.collaboration.agent;
 
-import com.jobosint.collaboration.annotation.Agent;
 import com.jobosint.collaboration.exception.ToolInvocationException;
 import com.jobosint.collaboration.exception.ToolNotFoundException;
 import com.jobosint.collaboration.task.Task;
@@ -45,6 +44,9 @@ public class AgentService {
 
     @Value("classpath:/prompts/tool-registry-choose-tool-args.st")
     private Resource chooseToolArgsUserPrompt;
+
+    @Value("classpath:/prompts/tool-registry-choose-tool-args-no-format.st")
+    private Resource chooseToolArgsUserPromptNoFormat;
 
     @Getter
     private final String name;
@@ -103,6 +105,7 @@ public class AgentService {
     }
 
     public TaskResult processTask(Task task) throws ToolInvocationException {
+        log.info("Processing task: {}", task);
         if (tools.isEmpty()) {
             log.info("{} agent has no tools configured, processing task via LLM", this.name);
             return processTaskViaLLM(task);
@@ -111,7 +114,9 @@ public class AgentService {
         Object args = getToolArgs(toolMetadata, task);
         try {
             Object toolResult = invokeTool(toolMetadata.method(), args);
-            return new TaskResult(this, toolResult);
+            TaskResult tr = new TaskResult(this, toolResult);
+            log.info("TaskResult: {}", tr);
+            return tr;
         } catch (Exception e) {
             throw new ToolInvocationException("Error invoking tool: " + toolMetadata + " for task: " + task, e);
         }
@@ -163,6 +168,7 @@ public class AgentService {
         ));
         String toolName = callPromptForString(prompt);
         ToolMetadata tool = tools.get(toolName);
+        log.info("Chosen tool: {}", tool);
         if (tool == null) {
             throw new ToolNotFoundException("No tool found with name: " + toolName);
         }
@@ -175,13 +181,20 @@ public class AgentService {
             return null;
         }
 
-        var outputParser = new BeanOutputParser<>(returnType);
-        Prompt prompt = createPrompt(chooseToolArgsUserPrompt, Map.of(
-                "task", task.getDescription(),
-                "signature", toolMetadata.getMethodArgsAsString(),
-                "format", outputParser.getFormat()
-        ));
-
-        return callPromptForBean(prompt, outputParser);
+        if (returnType.isPrimitive() || "java.lang.String".equals(returnType.getName())) {
+            Prompt prompt = createPrompt(chooseToolArgsUserPromptNoFormat, Map.of(
+                    "task", task.getDescription(),
+                    "signature", toolMetadata.getMethodArgsAsString()
+            ));
+            return callPromptForString(prompt);
+        } else {
+            var outputParser = new BeanOutputParser<>(returnType);
+            Prompt prompt = createPrompt(chooseToolArgsUserPrompt, Map.of(
+                    "task", task.getDescription(),
+                    "signature", toolMetadata.getMethodArgsAsString(),
+                    "format", outputParser.getFormat()
+            ));
+            return callPromptForBean(prompt, outputParser);
+        }
     }
 }

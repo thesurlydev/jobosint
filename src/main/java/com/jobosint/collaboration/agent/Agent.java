@@ -1,4 +1,4 @@
-package com.jobosint.collaboration.annotation;
+package com.jobosint.collaboration.agent;
 
 import org.springframework.stereotype.Component;
 

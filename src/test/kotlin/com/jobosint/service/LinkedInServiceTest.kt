@@ -19,6 +19,15 @@ class LinkedInServiceTest {
     }
 
     @Test
+    fun getCompanyFromToken() {
+        val companyTag = "arcadiahq"
+        val company = linkedInService.scrapeCompany(companyTag)
+        println(company)
+        assertEquals("Archadia", company.name)
+        assertEquals(companyTag, company.linkedinToken)
+    }
+
+    @Test
     fun testSearchJobs() {
         val request = LinkedInJobSearchRequest("java")
         val results = linkedInService.searchJobs(request)

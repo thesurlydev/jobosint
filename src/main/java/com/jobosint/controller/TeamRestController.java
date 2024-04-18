@@ -1,6 +1,6 @@
 package com.jobosint.controller;
 
-import com.jobosint.collaboration.Crew;
+import com.jobosint.collaboration.Team;
 import com.jobosint.collaboration.agent.AgentRegistry;
 import com.jobosint.collaboration.agent.AgentService;
 import com.jobosint.collaboration.task.Task;
@@ -19,16 +19,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/crew")
 @Slf4j
-public class CrewRestController {
+public class TeamRestController {
 
-    private final ChatClient chatClient;
-    private final Crew crew;
+    private final Team team;
     private final AgentRegistry agentRegistry;
 
     @GetMapping()
-    public TaskResult crew(@RequestParam String task) {
+    public TaskResult team(@RequestParam String task) {
         log.info("Given task: {}", task);
-        List<TaskResult> taskResults = crew
+        List<TaskResult> taskResults = team
                 .addTasks(List.of(new Task(task)))
                 .kickoff();
         TaskResult taskResult = taskResults.getFirst();

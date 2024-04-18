@@ -106,7 +106,7 @@ public class CompanyService {
     }
 
     public List<Company> getAllSorted() {
-        Pageable pageable = Pageable.ofSize(100);
+        Pageable pageable = Pageable.ofSize(999);
         return companyRepository.findAllByOrderByName(pageable);
     }
 

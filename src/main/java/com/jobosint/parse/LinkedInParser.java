@@ -4,6 +4,7 @@ import com.jobosint.model.*;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,9 +36,23 @@ public class LinkedInParser {
     public CompanyParserResult parseCompanyDescription(String path) throws IOException {
         File input = new File(path);
         Document doc = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
+        return parseCompanyDescription(doc);
+    }
+
+    public CompanyParserResult parseCompanyDescriptionFromString(String content) {
+        Document doc = Jsoup.parse(content);
+        return parseCompanyDescription(doc);
+    }
+
+    private @NotNull CompanyParserResult parseCompanyDescription(Document doc) {
         Element body = doc.body();
 
         String title = body.select("h1").text();
+
+        if (title.equals("Sign in")) {
+            throw new RuntimeException("Encountered Sign in page; update cookies!");
+        }
+
         Element mainSection = body.select("section").get(2);
 
         String summary = "n/a";
@@ -46,17 +61,17 @@ public class LinkedInParser {
             summary = maybeSummaryEl.get().text();
         }
 
-        String employeeCountRaw = parseSection(mainSection, "Company size");
+        String employeeCountRaw = parseCompanySection(mainSection, "Company size");
         String employeeCount = employeeCountRaw.split(" ")[0];
 
-        String websiteUrl = parseSection(mainSection, "Website");
-        String industry = parseSection(mainSection, "Industry");
-        String location = parseSection(mainSection, "Headquarters");
+        String websiteUrl = parseCompanySection(mainSection, "Website");
+        String industry = parseCompanySection(mainSection, "Industry");
+        String location = parseCompanySection(mainSection, "Headquarters");
 
         return new CompanyParserResult(title, websiteUrl, summary, employeeCount, industry, location);
     }
 
-    private String parseSection(Element mainSectionEl, String dtName) {
+    private String parseCompanySection(Element mainSectionEl, String dtName) {
         String result = "n/a";
         try {
             Optional<Element> maybe = Optional.ofNullable(mainSectionEl.selectFirst("dt:contains(" + dtName + ")"));

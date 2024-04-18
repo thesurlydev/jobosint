@@ -1,7 +1,6 @@
 package com.jobosint.util;
 
 import com.github.slugify.Slugify;
-import com.jobosint.collaboration.annotation.Tool;
 
 import java.net.MalformedURLException;
 import java.net.URI;

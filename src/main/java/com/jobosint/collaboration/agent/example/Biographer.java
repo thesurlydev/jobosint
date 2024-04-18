@@ -1,7 +1,7 @@
 package com.jobosint.collaboration.agent.example;
 
 import com.jobosint.collaboration.agent.AgentService;
-import com.jobosint.collaboration.annotation.Agent;
+import com.jobosint.collaboration.agent.Agent;
 
 @Agent(
         goal = "Answer questions about who a person is.",

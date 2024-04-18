@@ -1,7 +1,11 @@
 package com.jobosint.service
 
+import com.jobosint.model.Company
+import com.jobosint.model.CompanyParserResult
 import com.jobosint.model.LinkedInJobSearchRequest
 import com.jobosint.model.LinkedInResult
+import com.jobosint.model.ScrapeResponse
+import com.jobosint.parse.LinkedInParser
 import com.jobosint.utils.getCookiesForHost
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.BrowserType.LaunchOptions
@@ -11,7 +15,9 @@ import com.microsoft.playwright.options.LoadState
 import org.springframework.stereotype.Service
 
 @Service
-class LinkedInService(val browser: Browser) {
+class LinkedInService(val browser: Browser,
+                      val linkedInParser: LinkedInParser,
+                      val scrapeService: ScrapeService) {
 
     // https://www.linkedin.com/company/sleeperhq/about/ -> sleeperhq
     fun getCompanyTokenFromUrl(url: String): String {
@@ -24,6 +30,32 @@ class LinkedInService(val browser: Browser) {
         val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val token = urlParts[4]
         return token
+    }
+
+    // https://www.linkedin.com/company/arcadiahq/about/
+    fun scrapeCompany(companyTag: String): Company {
+
+        val url = String.format("https://www.linkedin.com/company/%s/about/", companyTag)
+
+        val scrapeResponse: ScrapeResponse = scrapeService.scrapeHtml(url)
+
+        val linkedInToken: String = getCompanyTokenFromUrl(url)
+
+        val content = java.lang.String.join("\n", scrapeResponse.data)
+        val companyParserResult: CompanyParserResult = linkedInParser.parseCompanyDescriptionFromString(content)
+        val company = Company(
+            null,
+            companyParserResult.name,
+            companyParserResult.websiteUrl,
+            null,
+            companyParserResult.employeeCount,
+            companyParserResult.summary,
+            companyParserResult.location,
+            linkedInToken,
+            null
+        )
+
+        return company
     }
 
     fun searchJobs(jobSearchRequest: LinkedInJobSearchRequest): Set<LinkedInResult> {
@@ -40,7 +72,7 @@ class LinkedInService(val browser: Browser) {
             .setHeadless(true) // Run in headful mode
 //            .setSlowMo(2000.0) // Slow motion delay in milliseconds
 
-        val linkedInCookies = getCookiesForHost( "linkedin.com")
+        val linkedInCookies = getCookiesForHost("linkedin.com")
 
         Playwright.create().use { playwright ->
 

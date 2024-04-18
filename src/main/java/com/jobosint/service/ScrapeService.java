@@ -1,12 +1,15 @@
 package com.jobosint.service;
 
-import com.jobosint.collaboration.annotation.Tool;
 import com.jobosint.config.ScrapeConfig;
+import com.jobosint.model.FetchAttribute;
 import com.jobosint.model.ScrapeRequest;
 import com.jobosint.model.ScrapeResponse;
 import com.jobosint.model.SelectAttribute;
 import com.jobosint.util.FileUtils;
+import com.jobosint.utils.CookieUtilsKt;
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.Cookie;
+import com.microsoft.playwright.options.RouteFromHarUpdateContentPolicy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +25,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -34,10 +39,26 @@ public class ScrapeService {
     private final Browser browser;
 
     public ScrapeResponse scrapeHtml(String url) {
+        return downloadAs(url, FetchAttribute.html);
+    }
+
+    public ScrapeResponse downloadAsPdf(String url) {
+        return downloadAs(url, FetchAttribute.pdf);
+    }
+
+    public ScrapeResponse downloadAsHar(String url) {
+        return downloadAs(url, FetchAttribute.har);
+    }
+
+    public ScrapeResponse downloadAsScreenshot(String url) {
+        return downloadAs(url, FetchAttribute.screenshot);
+    }
+
+    private ScrapeResponse downloadAs(String url, FetchAttribute fetchAttribute) {
         if (!url.startsWith("http")) {
             url = "https://" + url;
         }
-        ScrapeRequest req = new ScrapeRequest(url, "html", SelectAttribute.html, null, Set.of());
+        ScrapeRequest req = new ScrapeRequest(url, "html", SelectAttribute.html, null, Set.of(fetchAttribute));
         return scrape(req);
     }
 
@@ -53,27 +74,59 @@ public class ScrapeService {
             contextOptions.setRecordHarPath(harPath);
         }
 
-        ScrapeResponse sr;
-        try (BrowserContext context = browser.newContext(contextOptions);
-             Page page = context.newPage()
-        ) {
+        String host = URI.create(url).getHost();
+        log.info("Getting cookies for host: {}", host);
+        List<Cookie> cookiesForHost = CookieUtilsKt.getCookiesForHost(host);
+
+        log.info("Found {} cookies for {}", cookiesForHost.size(), host);
+
+        ScrapeResponse sr = null;
+        EnumMap<FetchAttribute, String> downloadPaths = new EnumMap<>(FetchAttribute.class);
+        try (BrowserContext context = browser.newContext(contextOptions)) {
+            context.addCookies(cookiesForHost);
+            Page page = context.newPage();
             page.onDOMContentLoaded(p -> {
                 String html = p.content();
                 if (req.fetchHtml()) {
                     Path htmlPath = downloadPath.resolve(Path.of(namespace, slug, config.htmlFilename()));
                     try {
                         FileUtils.saveToFile(html, htmlPath);
+                        downloadPaths.put(FetchAttribute.html, htmlPath.toFile().getAbsolutePath());
                     } catch (IOException e) {
                         log.error("Error saving html to file: {}", htmlPath, e);
                     }
                 }
+                if (req.fetchPdf()) {
+                    Path pdfPath = downloadPath.resolve(Path.of(namespace, slug, config.pdfFilename()));
+                    Page.PdfOptions pdfOptions = new Page.PdfOptions()
+                            .setPath(pdfPath);
+                    p.pdf(pdfOptions);
+                    downloadPaths.put(FetchAttribute.html, pdfPath.toFile().getAbsolutePath());
+                }
+                if (req.fetchScreenshot()) {
+                    Path ssPath = downloadPath.resolve(Path.of(namespace, slug, config.screenshotFilename()));
+                    Page.ScreenshotOptions screenshotOptions = new Page.ScreenshotOptions().setPath(ssPath);
+                    p.screenshot(screenshotOptions);
+                    downloadPaths.put(FetchAttribute.screenshot, ssPath.toFile().getAbsolutePath());
+                }
+                if (req.fetchHar()) {
+                    Path harPath = downloadPath.resolve(Path.of(namespace, slug, config.harFilename()));
+                    Page.RouteFromHAROptions routeFromHAROptions = new Page.RouteFromHAROptions();
+                    routeFromHAROptions.setUpdate(true);
+                    routeFromHAROptions.setUpdateContent(RouteFromHarUpdateContentPolicy.ATTACH);
+                    p.routeFromHAR(harPath, routeFromHAROptions);
+                    downloadPaths.put(FetchAttribute.har, harPath.toFile().getAbsolutePath());
+                }
             });
+
             Response resp = page.navigate(url);
             if (!resp.ok()) {
-                return new ScrapeResponse(req, Set.of(resp.statusText()), null, getBaseUrl(req.url()));
+                return new ScrapeResponse(req, Set.of(resp.statusText()), null, null, getBaseUrl(req.url()));
             }
 
-            sr = scrape(req, page.content());
+            sr = scrape(req, page.content(), downloadPaths);
+        } catch (Exception e) {
+            log.error("Error during scraping: {}", req.toString(), e);
         }
         return sr;
     }
@@ -147,7 +200,7 @@ public class ScrapeService {
     }
 
     @NotNull
-    private ScrapeResponse scrape(ScrapeRequest req, String htmlContent) {
+    private ScrapeResponse scrape(ScrapeRequest req, String htmlContent, EnumMap<FetchAttribute, String> downloadPaths) {
         Set<String> errors = new HashSet<>();
         Set<String> data = new HashSet<>();
         Document doc;
@@ -175,14 +228,7 @@ public class ScrapeService {
 
         String baseUrl = getBaseUrl(req.url());
 
-        // TODO: prepend base url to relative links
-        /*if (req.isLinkData()) {
-
-        }*/
-
-        // TODO: sort and dedupe data
-
-        return new ScrapeResponse(req, errors, data, baseUrl);
+        return new ScrapeResponse(req, errors, data, downloadPaths, baseUrl);
     }
 
     public String getBaseUrl(String s) {

@@ -1,21 +1,17 @@
 package com.jobosint.collaboration.agent.example;
 
+import com.jobosint.collaboration.agent.Agent
 import com.jobosint.collaboration.agent.AgentService
-import com.jobosint.collaboration.annotation.Agent
-import com.jobosint.collaboration.annotation.Tool
-import com.jobosint.model.ai.CompanyDetail
-import com.jobosint.service.ai.CompanyDetailsService
+import com.jobosint.collaboration.tool.Tool
 import org.springframework.ai.chat.ChatClient
 import org.springframework.ai.chat.prompt.PromptTemplate
-import org.springframework.ai.parser.BeanOutputParser
 import java.util.Map
 
 @Agent(
     goal = "Write professional resumes and cover letters"
 )
 class ResumeWriter(
-    val chatClient: ChatClient,
-    val companyDetailsService: CompanyDetailsService,
+    val chatClient: ChatClient
 ) : AgentService() {
 
     @Tool(name = "CoverLetterWriter", description = "Write a cover letter for a job application")

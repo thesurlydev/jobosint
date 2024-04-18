@@ -1,12 +1,8 @@
-package com.jobosint.collaboration;
+package com.jobosint.collaboration.task;
 
 import com.jobosint.collaboration.agent.AgentRegistry;
 import com.jobosint.collaboration.agent.AgentService;
-import com.jobosint.collaboration.exception.ToolInvocationException;
-import com.jobosint.collaboration.task.Task;
-import com.jobosint.collaboration.task.TaskAssignment;
-import com.jobosint.collaboration.task.TaskDeconstructor;
-import com.jobosint.collaboration.task.TaskResult;
+import com.jobosint.collaboration.tool.Tool;
 import com.jobosint.collaboration.tool.ToolMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,98 +13,34 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.ai.parser.MapOutputParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Component
 @Slf4j
-public class Crew {
+@RequiredArgsConstructor
+public class TaskPlanner {
 
-    @Autowired
-    protected AgentRegistry agentRegistry;
-    @Autowired
-    private ChatClient chatClient;
-    @Autowired
-    private TaskDeconstructor taskDeconstructor;
-
-    @Value("classpath:/prompts/crew-choose-agent.st")
-    private Resource chooseAgentUserPrompt;
+    private final ChatClient chatClient;
+    private final AgentRegistry agentRegistry;
 
     @Value("classpath:/prompts/crew-choose-agents.st")
     private Resource chooseAgentsUserPrompt;
 
-    private final List<Task> tasks = new ArrayList<>();
+    @Value("classpath:/prompts/crew-choose-agent.st")
+    private Resource chooseAgentUserPrompt;
 
-    public void clearTasks() {
-        tasks.clear();
-    }
-
-    public Crew addTasks(List<Task> tasks) {
-        clearTasks();
-        this.tasks.addAll(tasks);
-        for (Task task : tasks) {
-            log.info("Added task: {}", task);
-        }
-        return this;
-    }
-
-    public List<TaskResult> kickoff() {
-        return tasks.stream()
-                .map(task -> processTask(chatClient, task))
-                .peek(taskResult -> log.info("Task result: {}", taskResult))
-                .toList();
-    }
-
-    private List<TaskAssignment> assignTasks(List<Task> tasks) {
+    @Tool(name = "TaskAssigner")
+    public List<TaskAssignment> assign(List<Task> tasks) {
         return tasks.stream()
                 .map(task -> new TaskAssignment(task, chooseAgent(chatClient, task).orElse(null)))
                 .toList();
     }
-
-    private @NotNull StringBuilder generateToolListForPrompt(Map<String, ToolMetadata> tools) {
-        StringBuilder toolList = new StringBuilder();
-        toolList.append("The tools available from this agent are: ");
-        for (Map.Entry<String, ToolMetadata> toolEntry : tools.entrySet()) {
-            var toolName = toolEntry.getKey();
-            var toolDesc = toolEntry.getValue().description();
-            boolean toolDisabled = toolEntry.getValue().disabled();
-            if (!toolDisabled) {
-                toolList.append("- ").append(toolName).append(": ").append(toolDesc).append("\r\n");
-            }
-        }
-        return toolList;
-    }
-
-    public TaskResult processTask(ChatClient chatClient, Task task) throws ToolInvocationException {
-        log.info("Processing task: {}", task);
-        return chooseAgent(chatClient, task)
-                .map(agentRegistry::getAgent)
-                .map(agent -> agent.processTask(task))
-                .orElseThrow(() -> {
-                    log.error("No agent available to process task: {}", task);
-                    return new ToolInvocationException("No agent available to process task");
-                });
-    }
-
-    private List<TaskResult> processTasks(ChatClient chatClient, List<Task> tasks) throws ToolInvocationException {
-        return tasks.stream()
-                .map(task -> chooseAgent(chatClient, task)
-                        .map(agentRegistry::getAgent)
-                        .map(agent -> agent.processTask(task))
-                        .orElseThrow(() -> {
-                            log.error("No agent available to process task: {}", task);
-                            return new ToolInvocationException("No agent available to process task");
-                        }))
-                .toList();
-    }
-
 
     /**
      * Given a task, determine which agent is most capable of accomplishing the task
@@ -117,8 +49,8 @@ public class Crew {
      * @param task
      * @return
      */
-    private Optional<String> chooseAgent(ChatClient chatClient, Task task) {
-        Long start = System.currentTimeMillis();
+    public Optional<String> chooseAgent(ChatClient chatClient, Task task) {
+        long start = System.currentTimeMillis();
         Map<String, AgentService> agents = agentRegistry.enabledAgents();
 
         log.info("Found {} enabled agents", agents.size());
@@ -206,4 +138,17 @@ public class Crew {
         return outputParser.parse(out);
     }
 
+    private @NotNull StringBuilder generateToolListForPrompt(Map<String, ToolMetadata> tools) {
+        StringBuilder toolList = new StringBuilder();
+        toolList.append("The tools available from this agent are: ");
+        for (Map.Entry<String, ToolMetadata> toolEntry : tools.entrySet()) {
+            var toolName = toolEntry.getKey();
+            var toolDesc = toolEntry.getValue().description();
+            boolean toolDisabled = toolEntry.getValue().disabled();
+            if (!toolDisabled) {
+                toolList.append("- ").append(toolName).append(": ").append(toolDesc).append("\r\n");
+            }
+        }
+        return toolList;
+    }
 }

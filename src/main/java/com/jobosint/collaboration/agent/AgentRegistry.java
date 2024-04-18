@@ -1,6 +1,6 @@
 package com.jobosint.collaboration.agent;
 
-import com.jobosint.collaboration.annotation.Tool;
+import com.jobosint.collaboration.tool.Tool;
 import com.jobosint.collaboration.tool.ToolMetadata;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;

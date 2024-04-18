@@ -1,6 +1,6 @@
 package com.jobosint.service.ai;
 
-import com.jobosint.collaboration.annotation.Tool;
+import com.jobosint.collaboration.tool.Tool;
 import com.jobosint.model.ai.CompanyDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

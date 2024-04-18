@@ -1,8 +1,8 @@
 package com.jobosint.collaboration.agent.example;
 
 import com.jobosint.collaboration.agent.AgentService;
-import com.jobosint.collaboration.annotation.Agent;
-import com.jobosint.collaboration.annotation.Tool;
+import com.jobosint.collaboration.agent.Agent;
+import com.jobosint.collaboration.tool.Tool;
 
 import java.net.MalformedURLException;
 import java.net.URL;

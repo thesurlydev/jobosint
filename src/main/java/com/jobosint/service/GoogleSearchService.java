@@ -1,6 +1,6 @@
 package com.jobosint.service;
 
-import com.jobosint.collaboration.annotation.Tool;
+import com.jobosint.collaboration.tool.Tool;
 import com.jobosint.model.GoogleSearchRequest;
 import com.jobosint.model.GoogleSearchResponse;
 import com.jobosint.model.GoogleSearchResult;

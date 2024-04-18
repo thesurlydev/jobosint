@@ -24,6 +24,10 @@ public record ScrapeRequest(String url,
         return fetch != null && fetch.contains(FetchAttribute.html);
     }
 
+    public boolean fetchPdf() {
+        return fetch != null && fetch.contains(FetchAttribute.pdf);
+    }
+
     public boolean fetchScreenshot() {
         return fetch != null && fetch.contains(FetchAttribute.screenshot);
     }

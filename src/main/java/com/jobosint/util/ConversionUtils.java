@@ -34,6 +34,8 @@ public class ConversionUtils {
         }
         Parser parser = Parser.builder().build();
         HtmlRenderer renderer = HtmlRenderer.builder().build();
-        return renderer.render(parser.parse(markdownContent));
+        String rawHtml = renderer.render(parser.parse(markdownContent));
+        String out = rawHtml.replaceFirst("```", "<pre><code>").replace("```", "</code></pre>");
+        return out;
     }
 }

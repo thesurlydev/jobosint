@@ -8,18 +8,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.victools.jsonschema.generator.*;
 import com.github.victools.jsonschema.module.jackson.JacksonModule;
+import com.jobosint.collaboration.agent.Agent;
 import com.jobosint.collaboration.agent.AgentService;
-import com.jobosint.collaboration.annotation.Agent;
-import com.jobosint.collaboration.annotation.Tool;
+import com.jobosint.collaboration.tool.Tool;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
 
-@Agent(goal = "Interpret and write software code")
+@Agent(goal = "Interpret and answer questions about software")
+@Slf4j
 public class SoftwareEngineer extends AgentService {
-    @Tool(name = "SchemaGenerator", description = "Given an instance of a bean, generate a JSON schema")
-    public String generateSchema(Object obj) {
-        Class<?> clazz = obj.getClass();
-        return generateSchema(clazz);
+    @Tool(name = "SchemaGenerator", description = "Given the fully qualified name of a class, generate a JSON schema for it")
+    public String generateSchema(String className) {
+        log.info("Generating schema for: {}", className);
+        Class<?> aClass;
+        try {
+            aClass = Class.forName(className, false, this.getClass().getClassLoader());
+        } catch (ClassNotFoundException e) {
+            log.error("Class not found", e);
+            return "Class not found";
+        }
+        return generateSchema(aClass);
     }
 
     /*
