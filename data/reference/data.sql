@@ -66,7 +66,7 @@ insert into jobosint.public.company(name, website_url) values('Vivint', 'https:/
 insert into jobosint.public.company(name, website_url) values('Zillow', 'https://www.zillow.com') ON CONFLICT DO NOTHING;
 
 delete from jobosint.public.attribute;
-insert into jobosint.public.attribute(name, values) values('application-status', '{"Applied", "Archived", "Declined", "Interviewing", "Interviewing Suspended", "Offer", "Offer Declined", "Rejected"}');
+insert into jobosint.public.attribute(name, values) values('application-status', '{"Applied", "Archived", "Declined", "Filled", "Interviewing", "Interviewing Suspended", "Offer", "Offer Declined", "Rejected"}');
 insert into jobosint.public.attribute(name, values) values('job-source', '{"Builtin", "Google Jobs", "Greenhouse", "Indeed", "Lever", "LinkedIn", "Recruiter", "Remote Army", "TrueUp", "Workday"}');
 insert into jobosint.public.attribute(name, values) values('job-status', '{"Active", "Applied", "Archived", "Discovered", "Filled", "No longer accepting applications", "Not a match"}');
 insert into jobosint.public.attribute(name, values) values('tech-include', '{"kotlin"}');
