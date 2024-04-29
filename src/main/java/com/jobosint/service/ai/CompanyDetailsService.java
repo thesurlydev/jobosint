@@ -1,6 +1,5 @@
 package com.jobosint.service.ai;
 
-import com.jobosint.collaboration.tool.Tool;
 import com.jobosint.model.ai.CompanyDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,6 @@ public class CompanyDetailsService {
 
     private final ChatClient chatClient;
 
-    @Tool(name = "GetCompanyDetail", description = "Given a company name, get the details about the company including website URL")
     public CompanyDetail getCompanyDetails(String name) {
         var outputParser = new BeanOutputParser<>(CompanyDetail.class);
 

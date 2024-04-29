@@ -48,4 +48,12 @@ public record ApplicationEventDetail(@Id UUID id,
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM dd hh:mm a");
         return this.eventDate.format(formatter);
     }
+
+    public boolean isPast() {
+        return this.eventDate.isBefore(LocalDateTime.now());
+    }
+
+    public boolean isFuture() {
+        return this.eventDate.isAfter(LocalDateTime.now());
+    }
 }

@@ -1,6 +1,5 @@
 package com.jobosint.service;
 
-import com.jobosint.collaboration.tool.Tool;
 import com.jobosint.model.GoogleSearchRequest;
 import com.jobosint.model.GoogleSearchResponse;
 import com.jobosint.model.GoogleSearchResult;
@@ -25,7 +24,6 @@ public class GoogleSearchService {
 
     private final Browser browser;
 
-    @Tool(name = "WebSearch", description = "Search the web for the given term")
     public GoogleSearchResponse search(GoogleSearchRequest searchRequest) {
 
         String term = searchRequest.query();

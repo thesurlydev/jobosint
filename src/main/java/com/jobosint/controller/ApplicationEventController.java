@@ -59,7 +59,10 @@ public class ApplicationEventController {
     @GetMapping("/events")
     public String events(Model model) {
         List<ApplicationEventDetail> events = applicationEventService.getAllApplicationEventDetails();
-        model.addAttribute("events", events);
+        List<ApplicationEventDetail> previousEvents = events.stream().filter(ApplicationEventDetail::isPast).toList();
+        model.addAttribute("previousEvents", previousEvents);
+        List<ApplicationEventDetail> futureEvents = events.stream().filter(ApplicationEventDetail::isFuture).toList();
+        model.addAttribute("futureEvents", futureEvents);
         return "applicationEvents";
     }
 
