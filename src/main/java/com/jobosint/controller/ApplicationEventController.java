@@ -64,7 +64,7 @@ public class ApplicationEventController {
     }
 
     private void prepareEventForm(Model model) {
-        Iterable<ApplicationDetail> apps = applicationService.getAllApplications();
+        Iterable<ApplicationDetail> apps = applicationService.getAllApplicationsSortedByCompany();
         model.addAttribute("applicationLookup", apps);
 
         List<String> eventTypes = attributeService.getEventTypes();

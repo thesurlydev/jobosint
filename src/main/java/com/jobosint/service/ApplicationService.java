@@ -2,14 +2,12 @@ package com.jobosint.service;
 
 import com.jobosint.model.Application;
 import com.jobosint.model.ApplicationDetail;
-import com.jobosint.model.Job;
 import com.jobosint.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,8 +25,12 @@ public class ApplicationService {
         return applicationRepository.findApplicationDetailById(id);
     }
 
-    public Iterable<ApplicationDetail> getAllApplications() {
-        return applicationRepository.findAllApplicationDetailOrderByCreatedAt();
+    public List<ApplicationDetail> getAllApplications() {
+        return applicationRepository.findAllApplicationDetail();
+    }
+
+    public List<ApplicationDetail> getAllApplicationsSortedByCompany() {
+        return applicationRepository.findAllApplicationDetailSortByCompany();
     }
 
     public Application saveApplication(Application application) {

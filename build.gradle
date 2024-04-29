@@ -55,7 +55,7 @@ dependencies {
 //    implementation 'com.jayway.jsonpath:json-path:_'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:_'
     // https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/service
-    implementation 'com.theokanning.openai-gpt3-java:service:_'
+//    implementation 'com.theokanning.openai-gpt3-java:service:_'
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation 'org.jsoup:jsoup:_'
     // https://github.com/serpapi/google-search-results-java

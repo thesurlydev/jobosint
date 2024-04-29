@@ -21,7 +21,10 @@ public interface ApplicationRepository extends ListCrudRepository<Application, U
             """;
 
     @Query(APPLICATION_DETAIL_SELECT + "order by a.status, a.applied_at desc, c.name")
-    List<ApplicationDetail> findAllApplicationDetailOrderByCreatedAt();
+    List<ApplicationDetail> findAllApplicationDetail();
+
+    @Query(APPLICATION_DETAIL_SELECT + "order by c.name, a.applied_at desc")
+    List<ApplicationDetail> findAllApplicationDetailSortByCompany();
 
     @Query(APPLICATION_DETAIL_SELECT + "where a.id = :id")
     ApplicationDetail findApplicationDetailById(UUID id);

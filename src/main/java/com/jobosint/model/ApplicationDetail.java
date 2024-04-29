@@ -38,7 +38,7 @@ public record ApplicationDetail(@Id UUID id,
         return DisplayUtils.salaryDisplay(this.jobSalaryMin, this.jobSalaryMax);
     }
     public String jobTitleCompanyDisplay() {
-        return this.jobTitle + " @" + this.companyName;
+        return this.companyName + ": " + this.jobTitle;
     }
 
     public String appliedAtDisplay() {
