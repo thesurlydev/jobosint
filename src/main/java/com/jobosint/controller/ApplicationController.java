@@ -1,11 +1,9 @@
 package com.jobosint.controller;
 
 import com.jobosint.model.Application;
-import com.jobosint.model.Company;
 import com.jobosint.model.form.ApplicationForm;
 import com.jobosint.service.ApplicationService;
 import com.jobosint.service.AttributeService;
-import com.jobosint.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -23,7 +20,6 @@ import java.util.UUID;
 public class ApplicationController {
     private final AttributeService attributeService;
     private final ApplicationService applicationService;
-    private final CompanyService companyService;
 
     @GetMapping("/apps")
     public String applications(Model model) {
@@ -58,5 +54,8 @@ public class ApplicationController {
     private void prepareAppForm(Model model) {
         var statuses = attributeService.getApplicationStatuses();
         model.addAttribute("statuses", statuses);
+
+        var resumes = attributeService.getResumes();
+        model.addAttribute("resumes", resumes);
     }
 }

@@ -137,7 +137,7 @@ class LinkedInService(val browser: Browser,
                             .let { links ->
                                 links?.forEach { link ->
                                     val href = link.getAttribute("href") ?: return@forEach
-                                    val text = link.textContent()
+                                    val text = link.textContent().replace("\n", "").trim()
                                     val result = LinkedInResult(href, text)
                                     allResults.add(result)
                                     if (allResults.size == maxResults) {

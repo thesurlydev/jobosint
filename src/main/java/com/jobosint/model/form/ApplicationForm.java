@@ -19,6 +19,7 @@ public class ApplicationForm {
     private String notes;
     @DateTimeFormat(pattern = "yyyy-MM-dd") // required for date form field
     private LocalDate appliedAt;
+    private String resume;
 
     public ApplicationForm() {
     }
@@ -32,5 +33,6 @@ public class ApplicationForm {
         this.status = detail.status();
         this.notes = detail.notes();
         this.appliedAt = detail.appliedAt();
+        this.resume = detail.resume();
     }
 }

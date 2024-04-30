@@ -21,6 +21,10 @@ public class AttributeService {
         return attributeRepository.findAttributeByName(name).values().stream().sorted().toList();
     }
 
+    public List<String> getResumes() {
+        return findAttributeValuesByName("resume");
+    }
+
     public List<String> getEventTypes() {
         return findAttributeValuesByName("event-type");
     }

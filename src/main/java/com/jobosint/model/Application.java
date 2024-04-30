@@ -14,7 +14,8 @@ public record Application(@Id UUID id,
                           @Column("applied_at") LocalDate appliedAt,
                           @Column("job") UUID jobId,
                           String status,
-                          String notes) {
+                          String notes,
+                          String resume) {
 
 
     public static Application fromJob(JobDetail jobDetail) {
@@ -24,6 +25,7 @@ public record Application(@Id UUID id,
                 LocalDate.now(),
                 jobDetail.job().id(),
                 "Applied",
+                null,
                 null
         );
     }
@@ -35,7 +37,8 @@ public record Application(@Id UUID id,
                 form.getAppliedAt(),
                 form.getJobId(),
                 form.getStatus(),
-                form.getNotes()
+                form.getNotes(),
+                form.getResume()
         );
     }
 }

@@ -30,6 +30,15 @@
         </div>
 
         <div class="row mb-3">
+            <label for="resume" class="col-sm-2 col-form-label">Resume</label>
+            <div class="col-sm-6">
+                <select class="form-select" id="resume" th:field="*{resume}">
+                    <option th:each="r: ${resumes}" th:value="${r}" th:text="${r}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
             <label for="notes" class="col-sm-2 col-form-label">Notes</label>
             <div class="col-sm-6">
                 <textarea id="notes" class="form-control" th:field="*{notes}"></textarea>

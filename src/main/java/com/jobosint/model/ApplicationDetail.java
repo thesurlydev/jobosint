@@ -14,6 +14,7 @@ public record ApplicationDetail(@Id UUID id,
                                 @Column("applied_at") LocalDate appliedAt,
                                 String status,
                                 String notes,
+                                String resume,
 
                                 @Column("jobId") UUID jobId,
                                 @Column("jobTitle") String jobTitle,
