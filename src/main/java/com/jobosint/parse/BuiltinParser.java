@@ -31,6 +31,6 @@ public class BuiltinParser {
 
         SalaryRange salaryRange = ParseUtils.parseSalaryRange(rawMarkdown);
 
-        return new JobDescriptionParserResult(title, company, rawMarkdown, salaryRange);
+        return new JobDescriptionParserResult(title, company, null, rawMarkdown, salaryRange);
     }
 }

@@ -24,6 +24,7 @@ public class LinkedInParserTest {
         assertNotNull(jobDescriptionParserResult.description());
         assertEquals("Enterprise Architect", jobDescriptionParserResult.title());
         assertEquals("Slalom", jobDescriptionParserResult.companyName());
+        assertEquals("slalom-consulting", jobDescriptionParserResult.companySlug());
     }
 
     @Test

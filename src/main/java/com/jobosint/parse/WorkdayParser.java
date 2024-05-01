@@ -51,6 +51,7 @@ public class WorkdayParser {
         return new JobDescriptionParserResult(
                 workdayLinkedData.getTitle(),
                 workdayLinkedData.getHiringOrganization().getName(),
+                null,
                 description,
                 salaryRange);
     }

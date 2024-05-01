@@ -65,6 +65,10 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             } else if (url.startsWith("https://www.linkedin.com/jobs/view/")) {
                 jobDescriptionParserResult = linkedInParser.parseJobDescription(contentPath);
                 jobSource = "LinkedIn";
+                if (jobDescriptionParserResult.companySlug() != null) {
+                    Company company = linkedInService.scrapeCompany(jobDescriptionParserResult.companySlug());
+                    companyService.saveOrMergeCompany(company.name(), company);
+                }
             } else if (url.startsWith("https://www.linkedin.com/company/")) {
 
                 linkedInToken = linkedInService.getCompanyTokenFromUrl(page.url());
@@ -114,7 +118,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
 
                 SalaryRange salaryRange = ParseUtils.parseSalaryRange(markdownContent);
 
-                jobDescriptionParserResult = new JobDescriptionParserResult(result.job().title(), result.boardToken(), markdownContent, salaryRange);
+                jobDescriptionParserResult = new JobDescriptionParserResult(result.job().title(), result.boardToken(),result.boardToken(), markdownContent, salaryRange);
                 jobSource = "Greenhouse";
 
             } else {

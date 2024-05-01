@@ -42,6 +42,7 @@ public class LeverParser {
         return new JobDescriptionParserResult(
                 leverLinkedData.getTitle(),
                 leverLinkedData.getHiringOrganization().getName(),
+                null,
                 markdown,
                 salaryRange);
     }

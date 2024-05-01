@@ -64,7 +64,7 @@ public class SmartRecruiterParser {
 
         SalaryRange salaryRange = ParseUtils.parseSalaryRange(rawMarkdown);
 
-        return new JobDescriptionParserResult(title, company, rawMarkdown, salaryRange);
+        return new JobDescriptionParserResult(title, company, null, rawMarkdown, salaryRange);
     }
 
     private String getOgMetaContent(Document doc, String property) {
