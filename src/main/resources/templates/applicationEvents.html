@@ -30,7 +30,9 @@
     <br/>
     <h3>Upcoming</h3>
 
-    <table class="table table-striped table-hover">
+    <p th:if="${futureEvents.isEmpty()}">No upcoming events</p>
+
+    <table class="table table-striped table-hover" th:if="${!futureEvents.isEmpty()}">
         <thead>
         <tr>
             <th>Date</th>
@@ -65,7 +67,9 @@
     <br/>
     <h3>Previous</h3>
 
-    <table class="table table-striped table-hover">
+    <p th:if="${previousEvents.isEmpty()}">No previous events</p>
+
+    <table class="table table-striped table-hover" th:if="${!previousEvents.isEmpty()}">
         <thead>
         <tr>
             <th>Date</th>

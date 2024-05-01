@@ -1,15 +1,16 @@
 package com.jobosint.controller;
 
-import com.jobosint.event.PageCreatedEvent;
 import com.jobosint.model.Page;
 import com.jobosint.model.extension.SavePageRequest;
 import com.jobosint.service.PageService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +35,7 @@ public class PageRestController {
             Page page = savePageRequest.toPage(savedPath);
             savedPage = pageService.savePage(page);
         } catch (Exception e) {
-            log.error("Error saving page: " + savePageRequest, e);
+            log.error("Error saving page: {}", savePageRequest, e);
             return ResponseEntity.internalServerError().build();
         }
         return ResponseEntity.ok(savedPage);
