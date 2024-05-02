@@ -4,5 +4,6 @@ public enum FetchAttribute {
     har,
     html,
     pdf,
-    screenshot;
+    screenshot,
+    text;
 }

@@ -1,12 +1,14 @@
 package com.jobosint.service;
 
 import com.jobosint.config.ScrapeConfig;
-import com.jobosint.model.FetchAttribute;
-import com.jobosint.model.ScrapeRequest;
-import com.jobosint.model.ScrapeResponse;
-import com.jobosint.model.SelectAttribute;
+import com.jobosint.model.*;
+import com.jobosint.parse.GenericHtmlParser;
+import com.jobosint.parse.HtmlParser;
+import com.jobosint.parse.ParseResult;
 import com.jobosint.util.FileUtils;
+import com.jobosint.util.UrlUtils;
 import com.jobosint.utils.CookieUtilsKt;
+import com.microsoft.playwright.Page;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.Cookie;
 import com.microsoft.playwright.options.RouteFromHarUpdateContentPolicy;
@@ -20,15 +22,13 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.jobosint.model.FetchAttribute.*;
+import static com.jobosint.util.UrlUtils.getBaseUrl;
 
 @Service
 @Log4j2
@@ -38,86 +38,75 @@ public class ScrapeService {
     private final ScrapeConfig config;
     private final Browser browser;
 
+    @SuppressWarnings("unused")
     public ScrapeResponse scrapeHtml(String url) {
-        return downloadAs(url, FetchAttribute.html);
+        return scrape(url, html);
     }
 
-    public ScrapeResponse downloadAsPdf(String url) {
-        return downloadAs(url, FetchAttribute.pdf);
+    @SuppressWarnings("unused")
+    public ScrapeResponse pdf(String url) {
+        return scrape(url, pdf);
     }
 
-    public ScrapeResponse downloadAsHar(String url) {
-        return downloadAs(url, FetchAttribute.har);
+    @SuppressWarnings("unused")
+    public ScrapeResponse har(String url) {
+        return scrape(url, har);
     }
 
-    public ScrapeResponse downloadAsScreenshot(String url) {
-        return downloadAs(url, FetchAttribute.screenshot);
+    @SuppressWarnings("unused")
+    public ScrapeResponse screenshot(String url) {
+        return scrape(url, screenshot);
     }
 
-    private ScrapeResponse downloadAs(String url, FetchAttribute fetchAttribute) {
+    @SuppressWarnings("unused")
+    public ScrapeResponse scrape(String url, FetchAttribute... fetchAttributes) {
         if (!url.startsWith("http")) {
             url = "https://" + url;
         }
-        ScrapeRequest req = new ScrapeRequest(url, "html", SelectAttribute.html, null, Set.of(fetchAttribute));
+        var attributes = Arrays.stream(fetchAttributes).collect(Collectors.toSet());
+        ScrapeRequest req = new ScrapeRequest(url, "html", SelectAttribute.html, null, attributes);
         return scrape(req);
     }
 
+    @SuppressWarnings("unused")
     public ScrapeResponse scrape(ScrapeRequest req) throws PlaywrightException {
         var downloadPath = config.downloadPath();
         var namespace = config.namespace();
         var url = req.url();
-        var slug = slugify(url);
+        var slug = UrlUtils.slugify(url);
 
         Browser.NewContextOptions contextOptions = new Browser.NewContextOptions();
         if (req.fetchHar()) {
             Path harPath = downloadPath.resolve(Path.of(namespace, slug, config.harFilename()));
             contextOptions.setRecordHarPath(harPath);
         }
+        if (config.viewportWidth() != null && config.viewportHeight() != null) {
+            contextOptions.setViewportSize(config.viewportWidth(), config.viewportHeight());
+        }
 
-        String host = URI.create(url).getHost();
-        log.info("Getting cookies for host: {}", host);
-        List<Cookie> cookiesForHost = CookieUtilsKt.getCookiesForHost(host);
+        List<Cookie> cookiesForHost = null;
 
-        log.info("Found {} cookies for {}", cookiesForHost.size(), host);
+        if (config.cookiesEnabled() != null && config.cookiesEnabled()) {
+            String host = URI.create(url).getHost();
+            log.info("Getting cookies for host: {}", host);
+            cookiesForHost = CookieUtilsKt.getCookiesForHost(host);
+            log.info("Found {} cookies for {}", cookiesForHost.size(), host);
+        }
 
         ScrapeResponse sr = null;
+        Set<String> errors = new HashSet<>();
         EnumMap<FetchAttribute, String> downloadPaths = new EnumMap<>(FetchAttribute.class);
         try (BrowserContext context = browser.newContext(contextOptions)) {
-            context.addCookies(cookiesForHost);
+            if (config.cookiesEnabled() != null && config.cookiesEnabled()) {
+                context.addCookies(cookiesForHost);
+            }
             Page page = context.newPage();
-            page.onDOMContentLoaded(p -> {
-                String html = p.content();
-                if (req.fetchHtml()) {
-                    Path htmlPath = downloadPath.resolve(Path.of(namespace, slug, config.htmlFilename()));
-                    try {
-                        FileUtils.saveToFile(html, htmlPath);
-                        downloadPaths.put(FetchAttribute.html, htmlPath.toFile().getAbsolutePath());
-                    } catch (IOException e) {
-                        log.error("Error saving html to file: {}", htmlPath, e);
-                    }
-                }
-                if (req.fetchPdf()) {
-                    Path pdfPath = downloadPath.resolve(Path.of(namespace, slug, config.pdfFilename()));
-                    Page.PdfOptions pdfOptions = new Page.PdfOptions()
-                            .setPath(pdfPath);
-                    p.pdf(pdfOptions);
-                    downloadPaths.put(FetchAttribute.html, pdfPath.toFile().getAbsolutePath());
-                }
-                if (req.fetchScreenshot()) {
-                    Path ssPath = downloadPath.resolve(Path.of(namespace, slug, config.screenshotFilename()));
-                    Page.ScreenshotOptions screenshotOptions = new Page.ScreenshotOptions().setPath(ssPath);
-                    p.screenshot(screenshotOptions);
-                    downloadPaths.put(FetchAttribute.screenshot, ssPath.toFile().getAbsolutePath());
-                }
-                if (req.fetchHar()) {
-                    Path harPath = downloadPath.resolve(Path.of(namespace, slug, config.harFilename()));
-                    Page.RouteFromHAROptions routeFromHAROptions = new Page.RouteFromHAROptions();
-                    routeFromHAROptions.setUpdate(true);
-                    routeFromHAROptions.setUpdateContent(RouteFromHarUpdateContentPolicy.ATTACH);
-                    p.routeFromHAR(harPath, routeFromHAROptions);
-                    downloadPaths.put(FetchAttribute.har, harPath.toFile().getAbsolutePath());
-                }
-            });
+
+            if (config.defaultTimeoutMillis() != null) {
+                page.setDefaultTimeout(config.defaultTimeoutMillis());
+            }
+
+            page.onDOMContentLoaded(p -> handleContent(req, p, downloadPath, namespace, slug, downloadPaths));
 
             Response resp = page.navigate(url);
             if (!resp.ok()) {
@@ -126,11 +115,64 @@ public class ScrapeService {
 
             sr = scrape(req, page.content(), downloadPaths);
         } catch (Exception e) {
-            log.error("Error during scraping: {}", req.toString(), e);
+            errors.add(String.format("Error scraping: error=%s, url=%s", e.getMessage(), req));
+            sr = new ScrapeResponse(req, errors, null, downloadPaths, getBaseUrl(req.url()));
         }
         return sr;
     }
 
+    private void handleContent(ScrapeRequest req,
+                               Page p,
+                               Path downloadPath,
+                               String namespace,
+                               String slug,
+                               EnumMap<FetchAttribute, String> downloadPaths) {
+        String html = p.content();
+        if (req.fetchHtml()) {
+            Path htmlPath = downloadPath.resolve(Path.of(namespace, slug, config.htmlFilename()));
+            try {
+                FileUtils.saveToFile(html, htmlPath);
+                downloadPaths.put(FetchAttribute.html, htmlPath.toFile().getAbsolutePath());
+            } catch (IOException e) {
+                log.error("Error saving html to file: {}", htmlPath, e);
+            }
+        }
+        if (req.fetchText()) {
+            Path textPath = downloadPath.resolve(Path.of(namespace, slug, config.textFilename()));
+            try {
+                HtmlParser<HtmlContent> htmlParser = new GenericHtmlParser();
+                ParseResult<HtmlContent> pr = htmlParser.parse(html);
+                String text = pr.getData().text();
+                FileUtils.saveToFile(text, textPath);
+                downloadPaths.put(FetchAttribute.text, textPath.toFile().getAbsolutePath());
+            } catch (IOException e) {
+                log.error("Error saving text to file: {}", textPath, e);
+            }
+        }
+        if (req.fetchPdf()) {
+            Path pdfPath = downloadPath.resolve(Path.of(namespace, slug, config.pdfFilename()));
+            Page.PdfOptions pdfOptions = new Page.PdfOptions()
+                    .setPath(pdfPath);
+            p.pdf(pdfOptions);
+            downloadPaths.put(FetchAttribute.html, pdfPath.toFile().getAbsolutePath());
+        }
+        if (req.fetchScreenshot()) {
+            Path ssPath = downloadPath.resolve(Path.of(namespace, slug, config.screenshotFilename()));
+            Page.ScreenshotOptions screenshotOptions = new Page.ScreenshotOptions().setPath(ssPath);
+            p.screenshot(screenshotOptions);
+            downloadPaths.put(screenshot, ssPath.toFile().getAbsolutePath());
+        }
+        if (req.fetchHar()) {
+            Path harPath = downloadPath.resolve(Path.of(namespace, slug, config.harFilename()));
+            Page.RouteFromHAROptions routeFromHAROptions = new Page.RouteFromHAROptions();
+            routeFromHAROptions.setUpdate(true);
+            routeFromHAROptions.setUpdateContent(RouteFromHarUpdateContentPolicy.ATTACH);
+            p.routeFromHAR(harPath, routeFromHAROptions);
+            downloadPaths.put(har, harPath.toFile().getAbsolutePath());
+        }
+    }
+
+    @SuppressWarnings("unused")
     private String detectNavigationType(Page page) {
         // Check for the presence of typical pagination link attributes
         Locator paginationLinks = page.locator("a[href*='p='], a[href*='page='], a[href*='Page='], a[href*='PAGE='], a[href*='/page/']");
@@ -229,29 +271,5 @@ public class ScrapeService {
         String baseUrl = getBaseUrl(req.url());
 
         return new ScrapeResponse(req, errors, data, downloadPaths, baseUrl);
-    }
-
-    public String getBaseUrl(String s) {
-        String baseUrl = null;
-        try {
-            URI uri = new URI(s);
-            URL url = uri.toURL();
-            int port = url.getPort();
-            if (port == -1) {
-                baseUrl = url.getProtocol() + "://" + url.getHost();
-            } else {
-                baseUrl = url.getProtocol() + "://" + url.getHost() + ":" + port;
-            }
-        } catch (URISyntaxException | MalformedURLException e) {
-            log.warn("Unable to parse base url from url: {}", s);
-        }
-        return baseUrl;
-    }
-
-    private String slugify(String url) {
-        if (url == null) {
-            return "";
-        }
-        return url.replaceFirst("https://", "").replaceAll("[^a-zA-Z0-9]", "_");
     }
 }

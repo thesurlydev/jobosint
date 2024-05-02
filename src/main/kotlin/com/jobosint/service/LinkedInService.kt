@@ -41,7 +41,7 @@ class LinkedInService(val browser: Browser,
 
         val linkedInToken: String = getCompanyTokenFromUrl(url)
 
-        val content = java.lang.String.join("\n", scrapeResponse.data)
+        val content = java.lang.String.join(System.lineSeparator(), scrapeResponse.data())
         val companyParserResult: CompanyParserResult = linkedInParser.parseCompanyDescriptionFromString(content)
         val company = Company(
             null,

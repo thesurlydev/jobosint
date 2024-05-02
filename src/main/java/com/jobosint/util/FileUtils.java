@@ -5,11 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Slf4j
 public class FileUtils {
+
+    public static List<String> readAsStrings(String path) {
+        try {
+            return Files.readAllLines(Path.of(path));
+        } catch (IOException e) {
+            log.error("Error reading file {}", path, e);
+            return List.of();
+        }
+    }
 
     public static void writeToFile(String path, String content) {
         try (FileWriter fileWriter = new FileWriter(path)) {

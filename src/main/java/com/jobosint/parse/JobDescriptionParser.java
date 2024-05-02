@@ -23,6 +23,11 @@ import java.nio.file.Path;
 public class JobDescriptionParser implements HtmlFileParser<JobDescription> {
 
     @Override
+    public ParseResult<JobDescription> parse(String html) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
     public ParseResult<JobDescription> parse(String html, String selector) {
         Document doc = Jsoup.parse(html, "UTF-8");
 
@@ -54,6 +59,11 @@ public class JobDescriptionParser implements HtmlFileParser<JobDescription> {
         result.setData(jd);
 
         return result;
+    }
+
+    @Override
+    public ParseResult<JobDescription> parse(Path path) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override

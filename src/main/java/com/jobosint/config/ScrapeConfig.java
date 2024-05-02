@@ -10,5 +10,10 @@ public record ScrapeConfig(Path downloadPath,
                            String harFilename,
                            String screenshotFilename,
                            String htmlFilename,
-                           String pdfFilename) {
+                           String textFilename,
+                           String pdfFilename,
+                           Integer viewportWidth,
+                           Integer viewportHeight,
+                           Boolean cookiesEnabled,
+                           Double defaultTimeoutMillis) {
 }

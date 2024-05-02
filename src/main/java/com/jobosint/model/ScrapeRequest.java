@@ -2,6 +2,7 @@ package com.jobosint.model;
 
 import com.jobosint.exception.InvalidScrapeRequestException;
 import org.jetbrains.annotations.NotNull;
+import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Selector;
 
@@ -9,15 +10,42 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Set;
 
-public record ScrapeRequest(String url,
-                            String selector,
-                            SelectAttribute attribute,
-                            String attributeValue,
-                            Set<FetchAttribute> fetch) {
+public final class ScrapeRequest {
+    private final String url;
+    private final String selector;
+    private final SelectAttribute attribute;
+    private final String attributeValue;
+    private final Set<FetchAttribute> fetch;
+
+    public ScrapeRequest(String url,
+                         String selector,
+                         SelectAttribute attribute,
+                         String attributeValue,
+                         Set<FetchAttribute> fetch) {
+        this.url = url;
+        this.selector = selector;
+        this.attribute = attribute;
+        this.attributeValue = attributeValue;
+        this.fetch = fetch;
+    }
+
+    public ScrapeRequest(String url) {
+        this(url, "html", SelectAttribute.html, null, Set.of(FetchAttribute.html));
+    }
+
+    public ScrapeRequest(String url, FetchAttribute... attributes) {
+        this(url, "html", SelectAttribute.html, null, Set.of(attributes));
+    }
+
     public boolean fetchHar() {
         return fetch != null && fetch.contains(FetchAttribute.har);
+    }
+
+    public boolean fetchText() {
+        return fetch != null && fetch.contains(FetchAttribute.text);
     }
 
     public boolean fetchHtml() {
@@ -74,10 +102,58 @@ public record ScrapeRequest(String url,
     private boolean isValidSelector(String selector) {
         try {
             Parser.parse(selector, "");
-            Selector.select(selector, new org.jsoup.nodes.Element("root"));
+            Selector.select(selector, new Element("root"));
             return true;
         } catch (Selector.SelectorParseException e) {
             return false;
         }
     }
+
+    public String url() {
+        return url;
+    }
+
+    public String selector() {
+        return selector;
+    }
+
+    public SelectAttribute attribute() {
+        return attribute;
+    }
+
+    public String attributeValue() {
+        return attributeValue;
+    }
+
+    public Set<FetchAttribute> fetch() {
+        return fetch;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (ScrapeRequest) obj;
+        return Objects.equals(this.url, that.url) &&
+                Objects.equals(this.selector, that.selector) &&
+                Objects.equals(this.attribute, that.attribute) &&
+                Objects.equals(this.attributeValue, that.attributeValue) &&
+                Objects.equals(this.fetch, that.fetch);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(url, selector, attribute, attributeValue, fetch);
+    }
+
+    @Override
+    public String toString() {
+        return "ScrapeRequest[" +
+                "url=" + url + ", " +
+                "selector=" + selector + ", " +
+                "attribute=" + attribute + ", " +
+                "attributeValue=" + attributeValue + ", " +
+                "fetch=" + fetch + ']';
+    }
+
 }
