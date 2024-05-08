@@ -37,6 +37,7 @@ public class JobForm {
         this.salaryMin = job.salaryMin();
         this.salaryMax = job.salaryMax();
         this.source = job.source();
+        this.status = job.status();
         this.title = job.title();
         this.url = job.url();
         this.content = job.content();
