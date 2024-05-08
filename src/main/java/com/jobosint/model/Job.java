@@ -6,6 +6,8 @@ import com.jobosint.util.DisplayUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public record Job(@Id UUID id,
@@ -19,8 +21,17 @@ public record Job(@Id UUID id,
                   String notes,
                   String content, // stored as markdown
                   String status,
-                  @Column("page_id") UUID pageId
+                  @Column("page_id") UUID pageId,
+                  @Column("created_at") LocalDateTime createdAt
 ) {
+
+    public String createdAtDisplay() {
+        if (this.createdAt == null) {
+            return "n/a";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM dd");
+        return this.createdAt.format(formatter);
+    }
 
     public String htmlContent() {
         return ConversionUtils.convertToHtml(this.content);
@@ -42,7 +53,8 @@ public record Job(@Id UUID id,
                 job.notes(),
                 job.content(),
                 newStatus,
-                job.pageId()
+                job.pageId(),
+                job.createdAt()
         );
     }
 
@@ -58,7 +70,8 @@ public record Job(@Id UUID id,
                 form.getNotes(),
                 form.getContent(),
                 form.getStatus(),
-                form.getPageId()
+                form.getPageId(),
+                form.getCreatedAt()
         );
     }
 }

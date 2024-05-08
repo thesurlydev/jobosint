@@ -158,7 +158,8 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 null,
                 jobDescription,
                 "Active",
-                page.id()
+                page.id(),
+                null
         );
 
         jobService.saveJob(job);
