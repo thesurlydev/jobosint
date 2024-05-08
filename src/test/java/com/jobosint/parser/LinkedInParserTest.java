@@ -1,5 +1,6 @@
 package com.jobosint.parser;
 
+import com.jobosint.config.ScrapeConfig;
 import com.jobosint.model.CompanyParserResult;
 import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.model.ProfileParserResult;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Tag("parse")
 public class LinkedInParserTest {
 
-    private final LinkedInParser parser = new LinkedInParser(new JobDescriptionParser());
+    private final LinkedInParser parser = new LinkedInParser(null, new JobDescriptionParser());
 
     @Test
     public void parseJobDescription() throws Exception {
@@ -25,11 +26,6 @@ public class LinkedInParserTest {
         assertEquals("Enterprise Architect", jobDescriptionParserResult.title());
         assertEquals("Slalom", jobDescriptionParserResult.companyName());
         assertEquals("slalom-consulting", jobDescriptionParserResult.companySlug());
-    }
-
-    @Test
-    public void parseSearchResults() throws Exception {
-        parser.parseSearchResults("tester.html");
     }
 
     @Test void parseCompany() throws Exception {

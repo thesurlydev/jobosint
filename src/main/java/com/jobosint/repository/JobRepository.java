@@ -2,6 +2,7 @@ package com.jobosint.repository;
 
 import com.jobosint.model.Job;
 import com.jobosint.model.JobDetail;
+import com.jobosint.model.JobPageDetail;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
@@ -37,6 +38,17 @@ public interface JobRepository extends ListCrudRepository<Job, UUID> {
             LEFT OUTER JOIN jobosint.public.application a on a.job = j.id
             """;
 
+    String JOB_PAGE_SELECT = """
+        select j.id,
+                j.page_id,
+                j.job_board_id,
+                j.source,
+                p.url as page_url
+         from jobosint.public.job j
+                  INNER JOIN jobosint.public.page p on j.page_id = p.id
+         where job_board_id is null and j.source = :source
+    """;
+
     @Query(JOB_DETAIL_SELECT + " where j.status = 'Active' or j.status = 'Discovered' order by j.status, j.created_at")
     List<JobDetail> findAllJobDetailOrderByCreatedAt();
 
@@ -55,4 +67,11 @@ public interface JobRepository extends ListCrudRepository<Job, UUID> {
 
     @Query("select * from jobosint.public.job where job.source = :source and job.job_board_id = :jobId")
     Optional<Job> findJobBySourceJobId(String source, String jobId);
+
+    @Query(JOB_PAGE_SELECT)
+    List<JobPageDetail> findAllJobPageDetail(String source);
+
+    @Modifying
+    @Query("update jobosint.public.job set job_board_id = :jobBoardId where id = :id")
+    void updateJobBoardId(UUID id, String jobBoardId);
 }

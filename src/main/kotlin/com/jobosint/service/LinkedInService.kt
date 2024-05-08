@@ -2,6 +2,7 @@ package com.jobosint.service
 
 import com.jobosint.model.Company
 import com.jobosint.model.CompanyParserResult
+import com.jobosint.model.JobPageDetail
 import com.jobosint.model.LinkedInJobSearchRequest
 import com.jobosint.model.LinkedInResult
 import com.jobosint.model.ScrapeResponse
@@ -12,19 +13,69 @@ import com.microsoft.playwright.BrowserType.LaunchOptions
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
 import com.microsoft.playwright.options.LoadState
+import org.jsoup.Jsoup
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.util.function.Consumer
 
 @Service
-class LinkedInService(val browser: Browser,
-                      val linkedInParser: LinkedInParser,
-                      val scrapeService: ScrapeService) {
+class LinkedInService(
+    val browser: Browser,
+    val linkedInParser: LinkedInParser,
+    val jobService: JobService,
+    val scrapeService: ScrapeService,
+) {
 
-    // https://www.linkedin.com/company/sleeperhq/about/ -> sleeperhq
-    fun getCompanyTokenFromUrl(url: String): String {
+    private val log = LoggerFactory.getLogger(LinkedInService::class.java)
+
+    fun updateJobBoardIds() {
+        jobService.findAllJobPageDetail("LinkedIn").forEach(Consumer { jobPageDetail: JobPageDetail ->
+            println(jobPageDetail)
+            val pageUrl = jobPageDetail.pageUrl
+            try {
+                val jobBoardId = getJobBoardIdFromUrl(pageUrl)
+                jobService.updateJobBoardId(jobPageDetail.id, jobBoardId)
+            } catch (e: IllegalArgumentException) {
+                log.warn("Invalid jobId: $pageUrl")
+            }
+        })
+    }
+
+    fun jobStillAcceptingApplications(jobId: String): Boolean {
+        val url = String.format("https://www.linkedin.com/jobs/view/%s", jobId)
+        val scrapeResponse: ScrapeResponse = scrapeService.scrapeHtml(url)
+        val content = java.lang.String.join(System.lineSeparator(), scrapeResponse.data())
+        println(content)
+        val doc = Jsoup.parse(content)
+
+        val figure = doc.select("figure.closed-job")
+        return figure.isEmpty()
+    }
+
+    fun getJobBoardIdFromUrl(url: String): String {
+        val baseUrl: String = getBaseUrl(url)
+
+        // get the board token and job id from the page url
+        val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val jobId = urlParts[5]
+        // verify jobId is a number
+        if (!jobId.matches("\\d+".toRegex())) {
+            throw IllegalArgumentException("Invalid jobId: $jobId")
+        }
+        return jobId
+    }
+
+    private fun getBaseUrl(url: String): String {
         var baseUrl: String = url
         if (baseUrl.contains("?")) {
             baseUrl = url.substring(0, url.indexOf("?"))
         }
+        return baseUrl
+    }
+
+    // https://www.linkedin.com/company/sleeperhq/about/ -> sleeperhq
+    fun getCompanyTokenFromUrl(url: String): String {
+        val baseUrl = getBaseUrl(url)
 
         // get the board token and job id from the page url
         val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()

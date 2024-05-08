@@ -1,12 +1,10 @@
 package com.jobosint.service;
 
-import com.jobosint.event.CompanyCreatedEvent;
 import com.jobosint.event.JobCreatedEvent;
 import com.jobosint.model.Job;
-import com.jobosint.model.JobAttribute;
 import com.jobosint.model.JobDetail;
+import com.jobosint.model.JobPageDetail;
 import com.jobosint.repository.ApplicationRepository;
-import com.jobosint.repository.JobAttributeRepository;
 import com.jobosint.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,4 +63,13 @@ public class JobService {
     public List<JobDetail> searchJobs(String query) {
         return jobRepository.searchJobs(query);
     }
+
+    public List<JobPageDetail> findAllJobPageDetail(String source) {
+        return jobRepository.findAllJobPageDetail(source);
+    }
+
+    public void updateJobBoardId(UUID jobId, String boardId) {
+        jobRepository.updateJobBoardId(jobId, boardId);
+    }
+
 }

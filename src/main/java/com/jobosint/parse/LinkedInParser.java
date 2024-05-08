@@ -1,5 +1,6 @@
 package com.jobosint.parse;
 
+import com.jobosint.config.ScrapeConfig;
 import com.jobosint.model.*;
 import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @Component
 public class LinkedInParser {
 
+    private final ScrapeConfig config;
     private final JobDescriptionParser jobDescriptionParser;
 
     public ProfileParserResult parseProfile(String path, String linkedInProfileUrl) throws IOException {
@@ -50,7 +52,11 @@ public class LinkedInParser {
         String title = body.select("h1").text();
 
         if (title.equals("Sign in")) {
-            throw new RuntimeException("Encountered Sign in page; update cookies!");
+            if (config.cookiesEnabled()) {
+                throw new RuntimeException("Encountered Sign in page; update cookies!");
+            } else {
+                throw new RuntimeException("Encountered Sign in page; enable cookies!");
+            }
         }
 
         Element mainSection = body.select("section").get(2);
