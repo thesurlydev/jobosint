@@ -28,6 +28,10 @@ public class JobService {
         return jobRepository.findAllJobDetailOrderByCreatedAt();
     }
 
+    public List<JobDetail> getJobsByCompany(UUID companyId) {
+        return jobRepository.findJobsbyCompanyId(companyId);
+    }
+
     public Optional<JobDetail> getJobDetail(UUID id) {
         return jobRepository.findJobDetailbyId(id);
     }

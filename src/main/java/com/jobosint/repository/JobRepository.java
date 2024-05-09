@@ -55,6 +55,9 @@ public interface JobRepository extends ListCrudRepository<Job, UUID> {
     @Query(JOB_DETAIL_SELECT + " where j.id = :id")
     Optional<JobDetail> findJobDetailbyId(UUID id);
 
+    @Query(JOB_DETAIL_SELECT + " where c.id = :id")
+    List<JobDetail> findJobsbyCompanyId(UUID id);
+
     @Modifying
     @Query("delete from jobosint.public.job where company = :companyId")
     void deleteAllByCompanyId(UUID companyId);

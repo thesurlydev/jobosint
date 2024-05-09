@@ -56,7 +56,7 @@ public class CompanyService {
             List<Company> companies = search("N/A");
             company = companies.getFirst();
         } else {
-            List<Company> companies = search(companyName);
+            List<Company> companies = search("\"" + companyName + "\"");
             if (companies.isEmpty()) {
                 Company c = companyCandidate;
                 if (c == null) {

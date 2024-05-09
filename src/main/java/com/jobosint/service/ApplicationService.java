@@ -36,4 +36,8 @@ public class ApplicationService {
     public Application saveApplication(Application application) {
         return applicationRepository.save(application);
     }
+
+    public List<ApplicationDetail> getApplicationsByCompany(UUID companyId) {
+        return applicationRepository.findApplicationsByCompany(companyId);
+    }
 }

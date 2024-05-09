@@ -26,6 +26,87 @@
         </div>
     </div>
 
+    <p th:if="${companyApps.isEmpty()}">No applications found.</p>
+    <div th:if="${!companyApps.isEmpty()}">
+        <br/>
+        <h3>Applications</h3>
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="applied-icon" fill="gray" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+                <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
+            </symbol>
+            <symbol id="interviewing-icon" fill="orange" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </symbol>
+            <symbol id="offer-icon" fill="green" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </symbol>
+            <symbol id="rejected-icon" fill="#CC0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+            </symbol>
+        </svg>
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Date Applied</th>
+                <th scope="col">Status</th>
+                <th scope="col">Title</th>
+                <th scope="col">Company</th>
+                <th scope="col">Salary</th>
+                <th scope="col">Source</th>
+                <th style="width: 1px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="detail : ${companyApps}">
+                <td th:text="${detail.appliedAtDisplay()}"></td>
+                <td nowrap="true">
+                    <svg th:if="${detail.status() == 'Applied'}" class="bi flex-shrink-0 me-2" width="1em" height="1em" role="img" aria-label="Success:"><use xlink:href="#applied-icon"/></svg>
+                    <svg th:if="${detail.status() == 'Interviewing'}" class="bi flex-shrink-0 me-2" width="1em" height="1em" role="img" aria-label="Success:"><use xlink:href="#interviewing-icon"/></svg>
+                    <svg th:if="${detail.status() == 'Offer'}" class="bi flex-shrink-0 me-2" width="1em" height="1em" role="img" aria-label="Success:"><use xlink:href="#offer-icon"/></svg>
+                    <svg th:if="${detail.status() == 'Rejected'}" class="bi flex-shrink-0 me-2" width="1em" height="1em" role="img" aria-label="Success:"><use xlink:href="#rejected-icon"/></svg>
+                    <span th:text="${detail.status()}">status</span></td>
+                <td><a th:href="@{/jobs/{id}(id=${detail.jobId()})}" th:text="${detail.jobTitle()}">Title</a></td>
+                <td><a th:href="@{/companies/{id}(id=${detail.companyId()})}" th:text="${detail.companyName()}">Company Name</a></td>
+                <td th:text="${detail.salaryDisplay()}"></td>
+                <td th:text="${detail.jobSource()}"></td>
+                <td><a th:href="@{/apps/{id}/edit(id=${detail.id()})}"><span class="badge bg-primary">Edit</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p th:if="${companyJobs.isEmpty()}">No jobs found.</p>
+    <div th:if="${!companyJobs.isEmpty()}">
+        <br/>
+        <br/>
+        <h3>Jobs</h3>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Company</th>
+                <th scope="col">Salary</th>
+                <th scope="col">Source</th>
+                <th scope="col">Status</th>
+                <th scope="col">Created</th>
+                <th style="width: 1px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="detail : ${companyJobs}">
+                <td><a th:href="@{/jobs/{id}(id=${detail.job().id()})}" th:text="${detail.job().title()}">Title</a></td>
+                <td><a th:href="@{/companies/{id}(id=${detail.job().companyId()})}" th:text="${detail.company().name()}">Company Name</a></td>
+                <td th:text="${detail.job().salaryDisplay()}">Salary</td>
+                <td th:text="${detail.job().source()}">Source</td>
+                <td th:text="${detail.job().status()}">Status</td>
+                <td th:text="${detail.job().createdAtDisplay()}">Created</td>
+                <td><a th:href="@{/jobs/{id}/edit(id=${detail.job().id()})}"><span class="badge bg-primary">Edit</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </section>
 </body>
 </html>
