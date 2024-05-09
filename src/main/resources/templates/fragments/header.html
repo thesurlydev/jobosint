@@ -5,25 +5,25 @@
     <a class="navbar-brand" href="/"><h3 style="color: purple" class="pt-2">jobOSINT</h3></a>
     <ul class="nav nav-tabs justify-content-end mb-3">
         <li class="nav-item">
+            <a class="nav-link" href="/jobs" th:classappend="${jobs != null || job != null || detail != null}?active">Jobs</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="/apps" th:classappend="${apps != null || app != null}?active">Applications</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/events" th:classappend="${events != null}?active">Events</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/jobs" th:classappend="${jobs != null || job != null || detail != null}?active">Jobs</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" href="/companies" th:classappend="${companies != null || company != null}?active">Companies</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/search" th:classappend="${searchForm != null}?active">Search</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/contacts" th:classappend="${contacts != null}?active">Contacts</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/attributes" th:classappend="${attributeForm != null}?active">Attributes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/search" th:classappend="${searchForm != null}?active">Search</a>
         </li>
     </ul>
 </nav>
