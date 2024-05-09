@@ -21,6 +21,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -68,6 +69,11 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 if (jobDescriptionParserResult.companySlug() != null) {
                     Company company = linkedInService.scrapeCompany(jobDescriptionParserResult.companySlug());
                     companyService.saveOrMergeCompany(company.name(), company);
+                    jobDescriptionParserResult = new JobDescriptionParserResult(jobDescriptionParserResult.title(),
+                            company.name(),
+                            jobDescriptionParserResult.companySlug(),
+                            jobDescriptionParserResult.description(),
+                            jobDescriptionParserResult.salaryRange());
                 }
             } else if (url.startsWith("https://www.linkedin.com/company/")) {
 
@@ -159,7 +165,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 jobDescription,
                 "Active",
                 page.id(),
-                null
+                LocalDateTime.now()
         );
 
         jobService.saveJob(job);
