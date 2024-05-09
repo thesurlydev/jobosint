@@ -71,7 +71,26 @@ public record Job(@Id UUID id,
                 form.getContent(),
                 form.getStatus(),
                 form.getPageId(),
-                form.getCreatedAt()
+                form.getCreatedAt() == null ? LocalDateTime.now() : form.getCreatedAt()
         );
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "id=" + id +
+                ", companyId=" + companyId +
+                ", jobBoardId='" + jobBoardId + '\'' +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", salaryMin='" + salaryMin + '\'' +
+                ", salaryMax='" + salaryMax + '\'' +
+                ", source='" + source + '\'' +
+                ", notes='" + notes + '\'' +
+                ", content='..." + '\'' +
+                ", status='" + status + '\'' +
+                ", pageId=" + pageId +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
