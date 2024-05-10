@@ -16,6 +16,7 @@ import com.microsoft.playwright.options.LoadState
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.util.*
 import java.util.function.Consumer
 
 @Service
@@ -84,11 +85,19 @@ class LinkedInService(
     }
 
     // https://www.linkedin.com/company/arcadiahq/about/
-    fun scrapeCompany(companyTag: String): Company {
+    fun scrapeCompany(companyTag: String): Company? {
 
         val url = String.format("https://www.linkedin.com/company/%s/about/", companyTag)
 
+        log.info("Scraping company: $url")
+
         val scrapeResponse: ScrapeResponse = scrapeService.scrapeHtml(url)
+
+        log.info("Scrape response: $scrapeResponse")
+
+        if (scrapeResponse.data() == null || scrapeResponse.data().isEmpty()) {
+            return null
+        }
 
         val linkedInToken: String = getCompanyTokenFromUrl(url)
 

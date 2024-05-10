@@ -25,6 +25,10 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final JobRepository jobRepository;
 
+    public Optional<Company> getCompanyByLinkedInToken(String token) {
+        return companyRepository.findCompanyByLinkedInToken(token);
+    }
+
     public List<Company> search(String query) {
         if (query.startsWith("\"") && query.endsWith("\"")) {
             var exact = query.replaceAll("\"", "");

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -67,13 +68,26 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                 jobDescriptionParserResult = linkedInParser.parseJobDescription(contentPath);
                 jobSource = "LinkedIn";
                 if (jobDescriptionParserResult.companySlug() != null) {
-                    Company company = linkedInService.scrapeCompany(jobDescriptionParserResult.companySlug());
-                    companyService.saveOrMergeCompany(company.name(), company);
-                    jobDescriptionParserResult = new JobDescriptionParserResult(jobDescriptionParserResult.title(),
-                            company.name(),
-                            jobDescriptionParserResult.companySlug(),
-                            jobDescriptionParserResult.description(),
-                            jobDescriptionParserResult.salaryRange());
+                    // first, check if company already exists - get company by slug
+                    Optional<Company> maybeExistingCompany = companyService.getCompanyByLinkedInToken(jobDescriptionParserResult.companySlug());
+                    if (maybeExistingCompany.isPresent()) {
+                        Company existingCompany = maybeExistingCompany.get();
+                        jobDescriptionParserResult = new JobDescriptionParserResult(jobDescriptionParserResult.title(),
+                                existingCompany.name(),
+                                jobDescriptionParserResult.companySlug(),
+                                jobDescriptionParserResult.description(),
+                                jobDescriptionParserResult.salaryRange());
+                    } else {
+                        Company company = linkedInService.scrapeCompany(jobDescriptionParserResult.companySlug());
+                        if (company != null) {
+                            companyService.saveOrMergeCompany(company.name(), company);
+                            jobDescriptionParserResult = new JobDescriptionParserResult(jobDescriptionParserResult.title(),
+                                    company.name(),
+                                    jobDescriptionParserResult.companySlug(),
+                                    jobDescriptionParserResult.description(),
+                                    jobDescriptionParserResult.salaryRange());
+                        }
+                    }
                 }
             } else if (url.startsWith("https://www.linkedin.com/company/")) {
 

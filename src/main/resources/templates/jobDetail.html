@@ -56,13 +56,6 @@
     <div class="container py-3">
         <div class="row">
             <div class="col">
-                <h4>Values</h4>
-                <div th:if="${detail.attributes().cultureValues().isEmpty()}">n/a</div>
-                <ul>
-                    <li th:each="value : ${detail.attributes().cultureValues()}" th:text="${value}">value</li>
-                </ul>
-            </div>
-            <div class="col">
                 <h4>Qualifications</h4>
                 <strong>Required</strong>
                 <div th:if="${detail.attributes().requiredQualifications().isEmpty()}">n/a</div>
@@ -89,6 +82,13 @@
                 <ol th:if="${!detail.attributes().interviewSteps().isEmpty()}">
                     <li th:each="step : ${detail.attributes().interviewSteps()}" th:text="${step}">step</li>
                 </ol>
+            </div>
+            <div class="col">
+                <h4>Values</h4>
+                <div th:if="${detail.attributes().cultureValues().isEmpty()}">n/a</div>
+                <ul>
+                    <li th:each="value : ${detail.attributes().cultureValues()}" th:text="${value}">value</li>
+                </ul>
             </div>
         </div>
     </div>

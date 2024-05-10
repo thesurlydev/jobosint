@@ -99,7 +99,14 @@ public class LinkedInParser {
         Element body = doc.body();
 
         String title = body.select("h1").text();
-        String company = body.select("body > div.application-outlet > div.authentication-outlet > div.scaffold-layout.scaffold-layout--breakpoint-xl.scaffold-layout--main-aside.scaffold-layout--reflow.job-view-layout.jobs-details > div > div > main > div > div:nth-child(1) > div > div:nth-child(1) > div > div > div.p5 > div.job-details-jobs-unified-top-card__primary-description-container > div > a").text();
+        String company = null;
+        Elements c1 = body.select("div.job-details-jobs-unified-top-card__company-name > a");
+        Elements c2 = body.select("div.job-details-jobs-unified-top-card__primary-description-container > div > a");
+        if (!c1.isEmpty()) {
+            company = c1.text();
+        } else if (!c2.isEmpty()) {
+            company = c2.text();
+        }
         String companySlug = body.select("a").stream().map(a -> a.attr("href")).filter(h -> h.startsWith("/company")).map(h-> h.split("/")[2]).findFirst().orElse(null);
         ParseResult<JobDescription> parseResult = jobDescriptionParser.parse(body.toString(), "article");
         String rawMarkdown = parseResult.getData().getMarkdownBody();
