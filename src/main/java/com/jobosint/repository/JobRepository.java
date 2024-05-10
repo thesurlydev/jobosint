@@ -49,7 +49,7 @@ public interface JobRepository extends ListCrudRepository<Job, UUID> {
          where job_board_id is null and j.source = :source
     """;
 
-    @Query(JOB_DETAIL_SELECT + " where j.status = 'Active' or j.status = 'Discovered' order by j.status, j.created_at")
+    @Query(JOB_DETAIL_SELECT + " where j.status = 'Active' or j.status = 'Discovered' order by j.status, j.created_at desc")
     List<JobDetail> findAllJobDetailOrderByCreatedAt();
 
     @Query(JOB_DETAIL_SELECT + " where j.id = :id")
