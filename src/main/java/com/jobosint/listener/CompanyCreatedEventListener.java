@@ -36,6 +36,9 @@ public class CompanyCreatedEventListener implements ApplicationListener<CompanyC
                 CompanyDetail detail = companyDetailsService.getCompanyDetails(event.getCompany().name());
                 String numberOfEmployees = getNonNullOrDefault(existingCompany.employeeCount(), detail.numberOfEmployees());
                 String ticker = getNonNullOrEmptyOrDefault(existingCompany.stockTicker(), detail.stockTicker());
+                if (ticker != null && ticker.length() > 10) {
+                    ticker = null;
+                }
                 String website = getNonNullOrEmptyOrDefault(existingCompany.websiteUrl(), detail.websiteLink());
                 String summary = getNonNullOrEmptyOrDefault(existingCompany.summary(), detail.summary());
                 String location = getNonNullOrEmptyOrDefault(existingCompany.location(), detail.location());
