@@ -2,7 +2,6 @@ package com.jobosint.service;
 
 import com.jobosint.model.FetchAttribute;
 import com.jobosint.model.GoogleSearchRequest;
-import com.jobosint.model.ScrapeRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
