@@ -46,7 +46,7 @@ public record ApplicationDetail(@Id UUID id,
         if (this.appliedAt == null) {
             return "n/a";
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd");
         return this.appliedAt.format(formatter);
     }
 }
