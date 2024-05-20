@@ -24,6 +24,7 @@
             <th scope="col">Status</th>
             <th scope="col">Created</th>
             <th style="width: 1px"></th>
+            <th style="width: 1px"></th>
         </tr>
         </thead>
         <tbody>
@@ -35,6 +36,7 @@
             <td th:text="${detail.job().status()}">Status</td>
             <td th:text="${detail.job().createdAtDisplay()}">Created</td>
             <td><a th:href="@{/jobs/{id}/edit(id=${detail.job().id()})}"><span class="badge bg-primary">Edit</span></a></td>
+            <td><a th:href="@{/jobs/{id}/apply(id=${detail.job().id()})}"><span class="badge bg-success">Apply</span></a></td>
         </tr>
         </tbody>
     </table>
