@@ -2,12 +2,13 @@ package com.jobosint.integration.greenhouse.model;
 
 import com.jobosint.model.SalaryRange;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record GetJobResult(String boardToken, String id, Job job, SalaryRange salaryRange) {
     public com.jobosint.model.Job toJob(UUID companyId) {
         return new com.jobosint.model.Job(null, companyId, id, job.title(), job.absolute_url(), salaryRange.min(),
-                salaryRange.max(), "Greenhouse", null, job.content(), "Discovered", null, null);
+                salaryRange.max(), "Greenhouse", null, job.content(), "Discovered", null, LocalDateTime.now());
     }
 
     public static GetJobResult fromJob(String boardToken, com.jobosint.model.Job job) {

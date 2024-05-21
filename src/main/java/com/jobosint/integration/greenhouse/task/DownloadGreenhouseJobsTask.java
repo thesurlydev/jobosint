@@ -1,6 +1,5 @@
 package com.jobosint.integration.greenhouse.task;
 
-import com.jobosint.integration.greenhouse.config.GreenhouseConfig;
 import com.jobosint.integration.greenhouse.service.GreenhouseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import java.io.IOException;
 @Slf4j
 public class DownloadGreenhouseJobsTask {
     private final GreenhouseService greenhouseService;
-    private final GreenhouseConfig greenhouseConfig;
 
     @Scheduled(cron="#{greenhouseConfig.fetchJobsCron}")
     public void fetchJobs() throws IOException {

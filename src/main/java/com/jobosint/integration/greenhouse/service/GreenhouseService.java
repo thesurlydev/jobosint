@@ -67,6 +67,7 @@ public class GreenhouseService {
         }
 
         List<String> titleExcludes = attributeService.getJobTitleExcludes();
+        log.info("Found {} title excludes", titleExcludes.size());
 
         getGreenhouseTokens()
                 .forEach(boardToken -> {
@@ -86,7 +87,8 @@ public class GreenhouseService {
                         return;
                     }
                     Integer totalJobs = greenhouseJobsResponse.meta().total();
-                    log.info("Found {} total jobs", totalJobs);
+                    log.info("Found {} jobs for {}", totalJobs, boardToken);
+
                     // GreenhouseJobsResponse only includes: id, abs_url, title, updated_at
                     List<GetJobResult> jobResults = greenhouseJobsResponse.jobs().stream()
                             .filter(job -> titleIncludes.stream().anyMatch(include -> job.title().toLowerCase().contains(include)))
@@ -104,7 +106,7 @@ public class GreenhouseService {
                             .filter(this::salaryFilter)
                             .toList();
 
-                    log.info("Filtered jobs: {}", jobResults.size());
+                    log.info("Filtered jobs: {} for {}", jobResults.size(), boardToken);
 
                     if (greenhouseConfig.getSaveToFileEnabled()) {
                         jobResults.forEach(job -> saveToFile(job, boardDir));
@@ -199,11 +201,11 @@ public class GreenhouseService {
     public GetJobResult getJobResult(String boardToken, String jobId) {
 
         // first, look for existing record in db
-        Optional<GetJobResult> maybeDbGetJobResult = tryGetJobResultDatabase(boardToken, jobId);
+        /*Optional<GetJobResult> maybeDbGetJobResult = tryGetJobResultDatabase(boardToken, jobId);
         if (maybeDbGetJobResult.isPresent()) {
             log.info("Found db copy of job: {}", jobId);
             return maybeDbGetJobResult.get();
-        }
+        }*/
 
         // second, look for json serialized to disk
         Optional<GetJobResult> maybeLocalGetJobResult = tryGetJobResultLocal(boardToken, jobId);
