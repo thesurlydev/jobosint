@@ -80,7 +80,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                     } else {
                         Company company = linkedInService.scrapeCompany(jobDescriptionParserResult.companySlug());
                         if (company != null) {
-                            companyService.saveOrMergeCompany(company.name(), company);
+                            companyService.upsertCompany(company.name(), company);
                             jobDescriptionParserResult = new JobDescriptionParserResult(jobDescriptionParserResult.title(),
                                     company.name(),
                                     jobDescriptionParserResult.companySlug(),
@@ -102,7 +102,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                         companyParserResult.location(),
                         linkedInToken,
                         greenhouseToken);
-                companyService.saveOrMergeCompany(companyParserResult.name(), company);
+                companyService.upsertCompany(companyParserResult.name(), company);
 
             } else if (url.startsWith("https://www.linkedin.com/in/")) {
 
@@ -147,7 +147,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             }
 
             if (jobDescriptionParserResult != null) {
-                Company company = companyService.saveOrMergeCompany(jobDescriptionParserResult.companyName(), null);
+                Company company = companyService.upsertCompany(jobDescriptionParserResult.companyName(), null);
                 if (company != null) {
                     processJob(jobDescriptionParserResult, page, company, jobSource);
                 }

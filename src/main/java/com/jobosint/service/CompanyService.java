@@ -53,7 +53,7 @@ public class CompanyService {
         return persistedCompany;
     }
 
-    public Company saveOrMergeCompany(String companyName, Company companyCandidate) {
+    public Company upsertCompany(String companyName, Company companyCandidate) {
         Company company = null;
         if (companyName.isBlank()) {
             log.warn("Using N/A for company");
