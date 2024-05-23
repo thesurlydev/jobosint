@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Side Panel Parser",
+  "version": "1.0",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "sidePanel",
+    "tabs"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "host_permissions": [
+    "http://localhost:8080/*",
+    "https://www.linkedin.com/*",
+    "https://jobs.smartrecruiters.com/*",
+    "https://builtin.com/*",
+    "https://jobs.lever.co/*",
+    "https://boards.greenhouse.io/*",
+    "https://*.myworkdayjobs.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
