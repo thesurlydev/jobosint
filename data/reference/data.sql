@@ -71,7 +71,7 @@ insert into jobosint.public.attribute(name, values) values('job-source', '{"Buil
 insert into jobosint.public.attribute(name, values) values('job-status', '{"Active", "Applied", "Archived", "Discovered", "Filled", "No longer accepting applications", "Not a match"}');
 insert into jobosint.public.attribute(name, values) values('tech-include', '{"kotlin"}');
 insert into jobosint.public.attribute(name, values) values('wishlist', '{"Small to medium sized company", "100% remote", "Medical benefits", "Minimum of 150K salary"}');
-insert into jobosint.public.attribute(name, values) values('interview-type', '{"Technical", "Behavioral", "System Design", "Initial Screen", "Hiring Manager"}');
+insert into jobosint.public.attribute(name, values) values('interview-type', '{"Technical", "Behavioral", "System Design", "Initial Screen", "Hiring Manager", "Follow-up"}');
 insert into jobosint.public.attribute(name, values) values('event-type', '{"Phone call", "Video", "Email", "In-person", "Take-home assignment"}');
 insert into jobosint.public.attribute(name, values) values('job-title-exclude', '{"manager", "sap", "game", "servicenow", "ruby", "principal", "sre", "solution", "blockchain", "machine learning", "cobol", "scala", "full stack", "front end"}');
 insert into jobosint.public.attribute(name, values) values('resume', '{"Shane_Witbeck_Resume_202405.pdf"}');
