@@ -7,6 +7,7 @@ import com.jobosint.integration.greenhouse.model.GreenhouseJobsResponse;
 import com.jobosint.integration.greenhouse.model.Job;
 import com.jobosint.integration.greenhouse.model.Office;
 import com.jobosint.model.Company;
+import com.jobosint.model.JobDetail;
 import com.jobosint.model.SalaryRange;
 import com.jobosint.service.AttributeService;
 import com.jobosint.service.CompanyService;
@@ -16,6 +17,7 @@ import com.jobosint.util.ParseUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.data.util.Pair;
@@ -27,10 +29,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -68,55 +68,73 @@ public class GreenhouseService {
 
         List<String> titleExcludes = attributeService.getJobTitleExcludes();
         log.info("Found {} title excludes", titleExcludes.size());
+        titleExcludes.forEach(log::info);
 
         getGreenhouseTokens()
                 .forEach(boardToken -> {
                     if (boardToken.isBlank()) {
                         return;
                     }
-                    log.info("Fetching jobs for: {}", boardToken);
-                    File boardDir = createBoardDir(boardToken);
-                    GreenhouseJobsResponse greenhouseJobsResponse = null;
-                    try {
-                        greenhouseJobsResponse = getJobList(boardToken);
-                    } catch (Exception e) {
-                        log.error("Failed to get job list for board token: {}", boardToken, e);
-                    }
-                    if (greenhouseJobsResponse == null) {
-                        log.warn("GreenhouseJobsResponse was null");
+                    List<GetJobResult> jobResults = getFilteredJobResults(boardToken, titleExcludes);
+                    boolean foundJobs = jobResults != null && !jobResults.isEmpty();
+                    if (!foundJobs) {
+                        log.warn("No jobs found for: {}", boardToken);
                         return;
                     }
-                    Integer totalJobs = greenhouseJobsResponse.meta().total();
-                    log.info("Found {} jobs for {}", totalJobs, boardToken);
-
-                    // GreenhouseJobsResponse only includes: id, abs_url, title, updated_at
-                    List<GetJobResult> jobResults = greenhouseJobsResponse.jobs().stream()
-                            .filter(job -> titleIncludes.stream().anyMatch(include -> job.title().toLowerCase().contains(include)))
-                            .filter(job -> titleExcludes.stream().noneMatch(exclude -> job.title().toLowerCase().contains(exclude)))
-                            .map(job -> {
-                                try {
-                                    return getJobResult(boardToken, job.id().toString());
-                                } catch (Exception e) {
-                                    log.error("Failed to get job: {}", job.id(), e);
-                                    return null;
-                                }
-                            })
-                            .filter(Objects::nonNull)
-                            .filter(this::locationFilter)
-                            .filter(this::salaryFilter)
-                            .toList();
-
-                    log.info("Filtered jobs: {} for {}", jobResults.size(), boardToken);
 
                     if (greenhouseConfig.getSaveToFileEnabled()) {
+                        File boardDir = createBoardDirIfNotExists(boardToken);
                         jobResults.forEach(job -> saveToFile(job, boardDir));
                     }
                     if (greenhouseConfig.getSaveToDbEnabled()) {
-                        com.jobosint.integration.greenhouse.model.Company company = getCompany(boardToken);
-                        Company c = saveCompanyToDb(company.name(), boardToken);
-                        saveJobToDb(c, jobResults);
+                        com.jobosint.integration.greenhouse.model.Company greenhouseCompany = getCompany(boardToken);
+                        Company company = saveCompanyToDb(greenhouseCompany.name(), boardToken);
+                        saveJobsToDb(company.id(), jobResults);
                     }
                 });
+    }
+
+    private @Nullable List<GetJobResult> getFilteredJobResults(String boardToken, List<String> titleExcludes) {
+        log.info("Fetching jobs for: {}", boardToken);
+
+        GreenhouseJobsResponse greenhouseJobsResponse = null;
+        try {
+            greenhouseJobsResponse = getJobList(boardToken);
+        } catch (Exception e) {
+            log.error("Failed to get job list for board token: {}", boardToken, e);
+        }
+        if (greenhouseJobsResponse == null) {
+            log.warn("GreenhouseJobsResponse was null");
+            return null;
+        }
+        Integer totalJobs = greenhouseJobsResponse.meta().total();
+        log.info("Found {} jobs for {}", totalJobs, boardToken);
+
+        // GreenhouseJobsResponse only includes: id, abs_url, title, updated_at
+        List<GetJobResult> jobResults = greenhouseJobsResponse.jobs().stream()
+                .filter(job -> titleIncludes.stream().anyMatch(include -> job.title().toLowerCase().contains(include)))
+                .filter(job -> titleExcludes.stream().noneMatch(exclude -> job.title().toLowerCase().contains(exclude)))
+                .collect(Collectors.toMap(
+                        Job::title, // Use title as key
+                        job -> job, // Use job as value
+                        (existing, replacement) -> existing // Resolve duplicates by keeping the existing one
+                ))
+                .values().stream()
+                .map(job -> {
+                    try {
+                        return getJobResult(boardToken, job.id().toString());
+                    } catch (Exception e) {
+                        log.error("Failed to get job: {}", job.id(), e);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .filter(this::locationFilter)
+                .filter(this::salaryFilter)
+                .toList();
+
+        log.info("Filtered jobs: {} for {}", jobResults.size(), boardToken);
+        return jobResults;
     }
 
     private boolean salaryFilter(GetJobResult getJobResult) {
@@ -134,20 +152,21 @@ public class GreenhouseService {
         return false;
     }
 
-    private Company saveCompanyToDb(String companyName, String boardToken) {
-        Company companyCandidate = new Company(null, companyName, null, null, null, null, null, null, boardToken);
-        return companyService.saveOrMergeCompany(companyName, companyCandidate);
+    private Company saveCompanyToDb(String companyName, String greenhouseToken) {
+        Company companyCandidate = new Company(null, companyName, null, null, null, null, null, null, greenhouseToken);
+        return companyService.upsertCompany(companyName, companyCandidate);
     }
 
-    private void saveJobToDb(Company company, List<GetJobResult> getJobResults) {
+    private void saveJobsToDb(UUID companyId, List<GetJobResult> getJobResults) {
+        List<JobDetail> existingJobs = jobService.getAllJobs();
         getJobResults.stream()
-                .map(jr -> jr.toJob(company.id()))
-                .forEach(job -> {
-                    Optional<com.jobosint.model.Job> maybeExisting = jobService.getJobByUrl(job.url());
-                    if (maybeExisting.isEmpty()) {
-                        jobService.saveJob(job);
-                    }
-                });
+                .filter(jobResult -> !jobExists(existingJobs, jobResult.job().absolute_url()))
+                .map(jr -> jr.toJob(companyId))
+                .forEach(jobService::saveJob);
+    }
+
+    private boolean jobExists(List<JobDetail> existingJobs, String jobUrl) {
+        return existingJobs.stream().anyMatch(jd -> jd.job().url().equals(jobUrl));
     }
 
     private void saveToFile(GetJobResult job, File boardDir) {
@@ -163,7 +182,7 @@ public class GreenhouseService {
         }
     }
 
-    private @NotNull File createBoardDir(String boardToken) {
+    private @NotNull File createBoardDirIfNotExists(String boardToken) {
         File boardDir = Paths.get(greenhouseConfig.getDownloadDir(), boardToken).toFile();
         if (!boardDir.exists()) {
             boolean success = boardDir.mkdirs();
