@@ -8,6 +8,10 @@ function getContentFromSearchPage() {
     return document.querySelector('div.jobs-search__job-details--wrapper').innerHTML;
 }
 
+function getDocumentFromSearchPage() {
+    return document.documentElement;
+}
+
 function savePageListener() {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         const activeTab = tabs[0];
@@ -67,34 +71,54 @@ function savePageListener() {
     });
 }
 
+
 function refreshListener() {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         const activeTab = tabs[0];
-        alert(activeTab);
+        const originalUrl = new URL(activeTab.url);
+
+        let url;
+        let functionToExecute;
+        if (originalUrl.hostname === 'www.linkedin.com' && originalUrl.pathname.startsWith('/jobs/view/')) {
+            let jobId = originalUrl.pathname.split('/')[3];
+            url = `https://www.linkedin.com/jobs/view/${jobId}`;
+            functionToExecute = getPageContent;
+        } else if (originalUrl.hostname === 'www.linkedin.com'
+            && (originalUrl.pathname.startsWith('/jobs/search/') || originalUrl.pathname.startsWith('/jobs/collections'))) {
+            let jobId = originalUrl.searchParams.get('currentJobId')
+            url = `https://www.linkedin.com/jobs/view/${jobId}`;
+            functionToExecute = getDocumentFromSearchPage;
+        } else {
+            url = originalUrl;
+            functionToExecute = getPageContent;
+        }
+
+        chrome.scripting.executeScript(
+            {
+                target: {tabId: activeTab.id},
+                function: functionToExecute
+            },
+            function (result) {
+                const doc = result[0].result;
+
+                alert(doc);
+            }
+        );
     });
+
 }
 
 function run() {
     document.getElementById('saveBtn').addEventListener('click', savePageListener);
     document.getElementById('refreshBtn').addEventListener('click', refreshListener);
-    // document.querySelector('div.job-card-container--clickable').addEventListener('click', function () {
-    //     alert('changed');
-    //     const title = document.querySelector('h1').textContent
-    //     document.getElementById('msg').innerText = title;
-    // });
 
-
-
-    // const targetNode = document.querySelector('div.jobs-search__job-details--wrapper');
-    // const config = { attributes: true, childList: true, subtree: true };
-    // const callback = (mutationsList) => {
-    //     for(const mutation of mutationsList) {
-    //         alert('boo');
-    //     }
-    // };
-    // const observer = new MutationObserver(callback);
-    // observer.observe(targetNode, config);
-
+    // detect if local storage with 'foo' key has changed
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (changes.foo) {
+            const message = changes.foo.newValue;
+            console.log('Storage foo has changed:', message);
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', run);
