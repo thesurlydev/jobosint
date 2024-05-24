@@ -1,11 +1,11 @@
 //file:noinspection GroovyUnusedAssignment
 plugins {
-    id 'org.jetbrains.kotlin.jvm'
-    id 'org.jetbrains.kotlin.plugin.serialization'
-    id 'org.jetbrains.kotlin.plugin.spring'
-    id 'java'
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
+    id "org.jetbrains.kotlin.jvm" version "2.0.0"
+    id "org.jetbrains.kotlin.plugin.serialization" version "2.0.0"
+    id "org.jetbrains.kotlin.plugin.spring" version "2.0.0"
+    id "java"
+    id "org.springframework.boot" version "3.3.0"
+    id "io.spring.dependency-management" version "1.1.5"
 }
 
 group = 'com.jobosint'
@@ -30,50 +30,48 @@ allprojects {
     }
 }
 
+configurations.configureEach {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 dependencies {
-    implementation platform("org.springframework.ai:spring-ai-bom:_")
-//    implementation 'org.springframework.ai:spring-ai-pgvector-store:_'
-    implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:_'
+    implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-SNAPSHOT")
+    implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
 
-    implementation 'edu.stanford.nlp:stanford-corenlp:_'
-    implementation 'edu.stanford.nlp:stanford-corenlp:4.5.6:models'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    implementation KotlinX.serialization.json
-    implementation 'com.microsoft.playwright:playwright:_'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3'
+    implementation 'com.microsoft.playwright:playwright:1.44.0'
 
-    implementation 'org.apache.commons:commons-text:_'
-    implementation 'com.vladsch.flexmark:flexmark-all:_'
-    implementation 'com.vladsch.flexmark:flexmark-html2md-converter:_'
+    implementation 'org.apache.commons:commons-text:1.11.0'
+    implementation 'com.vladsch.flexmark:flexmark-all:0.64.8'
+    implementation 'com.vladsch.flexmark:flexmark-html2md-converter:0.64.8'
 
-    implementation Spring.boot.thymeleaf
-    implementation Spring.boot.actuator
-    implementation Spring.boot.data.jdbc
-    implementation Spring.boot.web
-    implementation 'org.springframework.boot:spring-boot-starter-aop:_'
     // https://github.com/mizosoft/methanol
-    implementation 'com.github.mizosoft.methanol:methanol:_'
-//    implementation 'com.jayway.jsonpath:json-path:_'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:_'
-    // https://mvnrepository.com/artifact/com.theokanning.openai-gpt3-java/service
-//    implementation 'com.theokanning.openai-gpt3-java:service:_'
+    implementation 'com.github.mizosoft.methanol:methanol:1.7.0'
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
-    implementation 'org.jsoup:jsoup:_'
+    implementation 'org.jsoup:jsoup:1.17.2'
+
     // https://github.com/serpapi/google-search-results-java
-    implementation 'com.github.serpapi:google-search-results-java:_'
+    implementation 'com.github.serpapi:google-search-results-java:2.0.3'
 
-    implementation 'com.github.slugify:slugify:_'
+    implementation 'com.github.slugify:slugify:3.0.6'
 
-    developmentOnly Spring.boot.devTools
-    compileOnly 'org.projectlombok:lombok:_'
-    annotationProcessor 'org.projectlombok:lombok:_'
-    runtimeOnly 'org.postgresql:postgresql:_'
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    runtimeOnly 'org.postgresql:postgresql:42.7.3'
 
-    testImplementation Spring.boot.test
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:_'
-    testImplementation Kotlin.test
-//	testImplementation 'org.springframework.boot:spring-boot-testcontainers:_'
-//	testImplementation 'org.testcontainers:junit-jupiter:_'
-//	testImplementation 'org.testcontainers:postgresql:_'
+    testImplementation 'org.springframework.boot:spring-boot-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
 
 test {

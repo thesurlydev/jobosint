@@ -4,8 +4,9 @@ import com.jobosint.model.ai.JobQualifications;
 import com.jobosint.service.TokenizerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.Generation;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.openai.api.common.OpenAiApiClientErrorException;
@@ -20,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 public class JobQualificationsService {
 
-    private final ChatClient chatClient;
+    private final ChatModel chatModel;
     private final TokenizerService tokenizerService;
 
     public Optional<JobQualifications> parseJobDescription(String jobDescriptionContent) {
@@ -47,7 +48,7 @@ public class JobQualificationsService {
         Prompt prompt = promptTemplate.create();
         Generation generation;
         try {
-            generation = chatClient.call(prompt).getResult();
+            generation = chatModel.call(prompt).getResult();
         } catch (OpenAiApiClientErrorException e) {
             log.error("Error calling OpenAI API", e);
             return Optional.empty();

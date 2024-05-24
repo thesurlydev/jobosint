@@ -7,8 +7,8 @@ import com.jobosint.repository.JobAttributeRepository;
 import com.jobosint.service.TokenizerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.Generation;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.openai.api.common.OpenAiApiClientErrorException;
@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class JobAttributeService {
-    private final ChatClient chatClient;
+    private final ChatModel chatModel;
     private final TokenizerService tokenizerService;
     private final JobAttributeRepository jobAttributeRepository;
     private final AppConfig appConfig;
@@ -51,7 +51,7 @@ public class JobAttributeService {
                  - The cultural values
                 for the job:
                 {jd}
-                                
+
                 Interview steps should be separated into ordered steps.
                 If no interview process is mentioned, return empty list.
                 
@@ -73,7 +73,8 @@ public class JobAttributeService {
         Prompt prompt = promptTemplate.create();
         Generation generation;
         try {
-            generation = chatClient.call(prompt).getResult();
+
+            generation = chatModel.call(prompt).getResult();
         } catch (OpenAiApiClientErrorException e) {
             log.error("Error calling OpenAI API", e);
             return Optional.empty();

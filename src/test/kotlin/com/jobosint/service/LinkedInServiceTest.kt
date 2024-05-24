@@ -62,8 +62,8 @@ class LinkedInServiceTest {
         val companyTag = "arcadiahq"
         val company = linkedInService.scrapeCompany(companyTag)
         println(company)
-        assertEquals("Arcadia", company.name)
-        assertEquals(companyTag, company.linkedinToken)
+        assertEquals("Arcadia", company?.name)
+        assertEquals(companyTag, company?.linkedinToken)
     }
 
     @Test

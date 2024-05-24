@@ -3,8 +3,8 @@ package com.jobosint.service.ai;
 import com.jobosint.model.ai.CompanyDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.Generation;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.parser.BeanOutputParser;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Slf4j
 public class CompanyDetailsService {
 
-    private final ChatClient chatClient;
+    private final ChatModel chatModel;
 
     public CompanyDetail getCompanyDetails(String name) {
         var outputParser = new BeanOutputParser<>(CompanyDetail.class);
@@ -35,7 +35,7 @@ public class CompanyDetailsService {
 
         log.info("Prompt: {}", prompt.toString());
 
-        Generation generation = chatClient.call(prompt).getResult();
+        Generation generation = chatModel.call(prompt).getResult();
 
         CompanyDetail detail = outputParser.parse(generation.getOutput().getContent());
         log.info("CompanyDetail: {}", detail);
