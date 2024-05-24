@@ -4,13 +4,12 @@ import com.jobosint.model.ai.InterviewProcess;
 import com.jobosint.service.TokenizerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.openai.api.common.OpenAiApiClientErrorException;
-import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -24,7 +23,7 @@ public class JobInterviewProcessService {
     private final TokenizerService tokenizerService;
 
     public Optional<InterviewProcess> parseJobDescription(String jobDescriptionContent) {
-        var outputParser = new BeanOutputParser<>(InterviewProcess.class);
+        var outputParser = new BeanOutputConverter<>(InterviewProcess.class);
 
         // determine the number of tokens in the raw text
         Integer tokenCount = tokenizerService.countTokens(jobDescriptionContent);
@@ -32,8 +31,7 @@ public class JobInterviewProcessService {
 
         // TODO if the token count exceeds the limit, we should return an error
 
-        String userMessage =
-                """
+        String userMessage = """
                 Given the following job description extract the interview process steps for the job:
                 {jd}
                 Interview steps should be separated into ordered steps.
@@ -54,7 +52,7 @@ public class JobInterviewProcessService {
             return Optional.empty();
         }
 
-        InterviewProcess interviewProcess = outputParser.parse(generation.getOutput().getContent());
-        return Optional.of(interviewProcess);
+        InterviewProcess interviewProcess = outputParser.convert(generation.getOutput().getContent());
+        return Optional.ofNullable(interviewProcess);
     }
 }

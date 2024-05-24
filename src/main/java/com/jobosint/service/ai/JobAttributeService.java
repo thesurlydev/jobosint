@@ -11,8 +11,8 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.openai.api.common.OpenAiApiClientErrorException;
-import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -34,7 +34,7 @@ public class JobAttributeService {
             return Optional.empty();
         }
 
-        var outputParser = new BeanOutputParser<>(JobAttributes.class);
+        var outputParser = new BeanOutputConverter<>(JobAttributes.class);
 
         // determine the number of tokens in the raw text
         Integer tokenCount = tokenizerService.countTokens(jobDescriptionContent);
@@ -80,8 +80,8 @@ public class JobAttributeService {
             return Optional.empty();
         }
 
-        JobAttributes jobAttributes = outputParser.parse(generation.getOutput().getContent());
-        return Optional.of(jobAttributes);
+        JobAttributes jobAttributes = outputParser.convert(generation.getOutput().getContent());
+        return Optional.ofNullable(jobAttributes);
     }
 
 

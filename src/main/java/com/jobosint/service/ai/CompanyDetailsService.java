@@ -7,7 +7,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.parser.BeanOutputParser;
+import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -20,7 +20,7 @@ public class CompanyDetailsService {
     private final ChatModel chatModel;
 
     public CompanyDetail getCompanyDetails(String name) {
-        var outputParser = new BeanOutputParser<>(CompanyDetail.class);
+        var outputParser = new BeanOutputConverter<>(CompanyDetail.class);
 
         String userMessage =
                 """
@@ -37,7 +37,7 @@ public class CompanyDetailsService {
 
         Generation generation = chatModel.call(prompt).getResult();
 
-        CompanyDetail detail = outputParser.parse(generation.getOutput().getContent());
+        CompanyDetail detail = outputParser.convert(generation.getOutput().getContent());
         log.info("CompanyDetail: {}", detail);
         return detail;
     }

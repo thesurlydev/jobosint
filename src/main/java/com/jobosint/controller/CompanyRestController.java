@@ -10,7 +10,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.parser.BeanOutputParser;
+import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -32,7 +32,7 @@ public class CompanyRestController {
     @GetMapping("/{name}/detail")
     @Operation(summary = "Return website given a company name")
     public CompanyDetail getCompanyWebsite(@PathVariable String name) {
-        var outputParser = new BeanOutputParser<>(CompanyDetail.class);
+        var outputParser = new BeanOutputConverter<>(CompanyDetail.class);
 
         String userMessage = """
                 Get the official details for the company {name}.
@@ -50,7 +50,7 @@ public class CompanyRestController {
     @GetMapping("/{name}/focus")
     @Operation(summary = "Given a company name, return company focus in paragraph form suitable for embedding in a cover letter")
     public CompanyFocus getCompanyFocus(@PathVariable String name) {
-        var outputParser = new BeanOutputParser<>(CompanyFocus.class);
+        var outputParser = new BeanOutputConverter<>(CompanyFocus.class);
 
         String userMessage = """
                 I am a software engineer and writing a cover letter about why I want to work at a technology company.
@@ -73,7 +73,7 @@ public class CompanyRestController {
         Prompt prompt = promptTemplate.create();
         Generation generation = chatModel.call(prompt).getResult();
 
-        return outputParser.parse(generation.getOutput().getContent());
+        return outputParser.convert(generation.getOutput().getContent());
     }
 
     @PostMapping()

@@ -4,13 +4,12 @@ import com.jobosint.model.ai.TechnologyStack;
 import com.jobosint.service.TokenizerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.openai.api.common.OpenAiApiClientErrorException;
-import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -24,7 +23,7 @@ public class JobTechnologyStackService {
     private final TokenizerService tokenizerService;
 
     public Optional<TechnologyStack> parseJobDescription(String jobDescriptionContent) {
-        var outputParser = new BeanOutputParser<>(TechnologyStack.class);
+        var outputParser = new BeanOutputConverter<>(TechnologyStack.class);
 
         // determine the number of tokens in the raw text
         Integer tokenCount = tokenizerService.countTokens(jobDescriptionContent);
@@ -32,8 +31,7 @@ public class JobTechnologyStackService {
 
         // TODO if the token count exceeds the limit, we should return an error
 
-        String userMessage =
-                """
+        String userMessage = """
                 Given the following job description extract the technology stack mentioned about the job:
                 {jd}
                 Technology stack should be separated into programming languages, frameworks, databases, cloud providers, and cloud services.
@@ -53,7 +51,7 @@ public class JobTechnologyStackService {
             return Optional.empty();
         }
 
-        TechnologyStack technologyStack = outputParser.parse(generation.getOutput().getContent());
-        return Optional.of(technologyStack);
+        TechnologyStack technologyStack = outputParser.convert(generation.getOutput().getContent());
+        return Optional.ofNullable(technologyStack);
     }
 }

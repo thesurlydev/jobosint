@@ -4,13 +4,12 @@ import com.jobosint.model.ai.JobQualifications;
 import com.jobosint.service.TokenizerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.openai.api.common.OpenAiApiClientErrorException;
-import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -25,7 +24,7 @@ public class JobQualificationsService {
     private final TokenizerService tokenizerService;
 
     public Optional<JobQualifications> parseJobDescription(String jobDescriptionContent) {
-        var outputParser = new BeanOutputParser<>(JobQualifications.class);
+        var outputParser = new BeanOutputConverter<>(JobQualifications.class);
 
         // determine the number of tokens in the raw text
         Integer tokenCount = tokenizerService.countTokens(jobDescriptionContent);
@@ -33,8 +32,7 @@ public class JobQualificationsService {
 
         // TODO if the token count exceeds the limit, we should return an error
 
-        String userMessage =
-                """
+        String userMessage = """
                 Given the following job description extract qualifications about the job:
                 {jd}
                 Qualifications should be separated into required and preferred.
@@ -54,7 +52,7 @@ public class JobQualificationsService {
             return Optional.empty();
         }
 
-        JobQualifications jobQualifications = outputParser.parse(generation.getOutput().getContent());
-        return Optional.of(jobQualifications);
+        JobQualifications jobQualifications = outputParser.convert(generation.getOutput().getContent());
+        return Optional.ofNullable(jobQualifications);
     }
 }
