@@ -41,3 +41,4 @@ data/pages
 report.*
 
 .env
+data/cookies
