@@ -7,7 +7,6 @@ import com.jobosint.model.LinkedInJobSearchRequest
 import com.jobosint.model.LinkedInResult
 import com.jobosint.model.ScrapeResponse
 import com.jobosint.parse.LinkedInParser
-import com.jobosint.utils.getCookiesForHost
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.BrowserType.LaunchOptions
 import com.microsoft.playwright.Page
@@ -85,13 +84,13 @@ class LinkedInService(
     }
 
     // https://www.linkedin.com/company/arcadiahq/about/
-    fun scrapeCompany(companyTag: String): Company? {
+    fun scrapeCompany(companyTag: String, cookies: List<Map<String, String>>?): Company? {
 
         val url = String.format("https://www.linkedin.com/company/%s/about/", companyTag)
 
         log.info("Scraping company: $url")
 
-        val scrapeResponse: ScrapeResponse = scrapeService.scrapeHtml(url)
+        val scrapeResponse: ScrapeResponse = scrapeService.scrapeHtml(url, cookies)
 
         log.info("Scrape response: $scrapeResponse")
 
@@ -132,7 +131,7 @@ class LinkedInService(
             .setHeadless(true) // Run in headful mode
 //            .setSlowMo(2000.0) // Slow motion delay in milliseconds
 
-        val linkedInCookies = getCookiesForHost("linkedin.com")
+//        val linkedInCookies = getCookiesForHost("linkedin.com")
 
         Playwright.create().use { playwright ->
 
@@ -145,7 +144,7 @@ class LinkedInService(
                         .setPermissions(listOf("geolocation"))
                 )
 
-            context.addCookies(linkedInCookies)
+//            context.addCookies(linkedInCookies)
 
             val page: Page = context.newPage()
 

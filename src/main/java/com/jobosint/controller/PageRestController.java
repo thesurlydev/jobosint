@@ -33,7 +33,7 @@ public class PageRestController {
             String decodedContent = decodeContent(savePageRequest.content());
             Path savedPath = pageService.saveContent(decodedContent);
             Page page = savePageRequest.toPage(savedPath);
-            savedPage = pageService.savePage(page);
+            savedPage = pageService.savePage(page, savePageRequest.cookies());
         } catch (Exception e) {
             log.error("Error saving page: {}", savePageRequest, e);
             return ResponseEntity.internalServerError().build();

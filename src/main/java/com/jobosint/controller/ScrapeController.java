@@ -33,7 +33,7 @@ public class ScrapeController {
         if (!url.startsWith("http")) {
             url = "https://" + url;
         }
-        var req = new ScrapeRequest(url, sel, attr, attrVal, fetch);
+        var req = new ScrapeRequest(url, sel, attr, attrVal, fetch, null);
         req.validate();
 
         return scrapeService.scrape(req);

@@ -33,6 +33,7 @@
   ],
   "permissions": [
     "activeTab",
+    "cookies",
     "scripting",
     "sidePanel",
     "tabs"

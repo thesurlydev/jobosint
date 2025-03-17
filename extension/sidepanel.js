@@ -41,31 +41,54 @@ function savePageListener() {
             function (result) {
                 const content = result[0].result;
 
-                const source = "chrome-extension";
-                const body = JSON.stringify({url, content, source});
-                // console.log('Body: ', body);
+                // Get cookies for the current domain
+                chrome.cookies.getAll({domain: originalUrl.hostname}, function(cookies) {
+                    // Format cookies for inclusion in the request body
+                    const cookiesArray = cookies.map(cookie => ({
+                        name: cookie.name,
+                        value: cookie.value,
+                        domain: cookie.domain,
+                        path: cookie.path,
+                        expires: cookie.expirationDate,
+                        httpOnly: cookie.httpOnly,
+                        secure: cookie.secure
+                    }));
 
-                fetch('http://localhost:8080/api/pages', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: body
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            document.getElementById('msg').innerText = 'Page saved successfully';
-                            return response.json();
-                        }
-                        document.getElementById('msg').innerText = 'Error: ' + response.status;
+                    const source = "chrome-extension";
 
-                    })
-                    .then(data => {
-                        console.log('Response from server:', data);
-                    })
-                    .catch(error => {
-                        document.getElementById('msg').innerText = 'Error saving page!';
+                    // Include cookies in the request body
+                    const body = JSON.stringify({
+                        url,
+                        content,
+                        source,
+                        cookies: cookiesArray
                     });
+
+                    // console.log('Body: ', body);
+
+                    fetch('http://localhost:8080/api/pages', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: body
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                document.getElementById('msg').innerText = 'Page saved successfully';
+                                return response.json();
+                            }
+                            document.getElementById('msg').innerText = 'Error: ' + response.status;
+
+                        })
+                        .then(data => {
+                            console.log('Response from server:', data);
+                        })
+                        .catch(error => {
+                            document.getElementById('msg').innerText = 'Error saving page!';
+                            console.error('Error details:', error);
+                        });
+                });
             }
         );
     });

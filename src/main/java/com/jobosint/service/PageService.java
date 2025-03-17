@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -26,10 +28,10 @@ public class PageService {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
-    public Page savePage(Page page) {
+    public Page savePage(Page page, List<Map<String, String>> cookies) {
         Page savedPage = pageRepository.save(page);
         if (page.id() == null) {
-            applicationEventPublisher.publishEvent(new PageCreatedEvent(this, savedPage));
+            applicationEventPublisher.publishEvent(new PageCreatedEvent(this, savedPage, cookies));
         }
         return savedPage;
     }

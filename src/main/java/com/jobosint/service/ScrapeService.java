@@ -12,6 +12,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.Cookie;
 import com.microsoft.playwright.options.RouteFromHarUpdateContentPolicy;
+import kotlin.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 import static com.jobosint.model.FetchAttribute.*;
 import static com.jobosint.util.UrlUtils.getBaseUrl;
 
+@SuppressWarnings("CssInvalidPseudoSelector")
 @Service
 @Log4j2
 @RequiredArgsConstructor
@@ -41,6 +43,14 @@ public class ScrapeService {
     @SuppressWarnings("unused")
     public ScrapeResponse scrapeHtml(String url) {
         return scrape(url, html);
+    }
+
+    public ScrapeResponse scrapeHtml(String url, List<Map<String, String>> cookies) {
+        return scrape(url, cookies, html);
+    }
+
+    public ScrapeResponse scrapeText(String url, List<Map<String, String>> cookies) {
+        return scrape(url, cookies, text);
     }
 
     @SuppressWarnings("unused")
@@ -68,6 +78,15 @@ public class ScrapeService {
         return scrape(req);
     }
 
+    public ScrapeResponse scrape(String url, List<Map<String, String>> cookies, FetchAttribute... fetchAttributes) {
+        if (!url.startsWith("http")) {
+            url = "https://" + url;
+        }
+        var attributes = Arrays.stream(fetchAttributes).collect(Collectors.toSet());
+        ScrapeRequest req = new ScrapeRequest(url, "html", SelectAttribute.html, null, attributes, cookies);
+        return scrape(req);
+    }
+
     @SuppressWarnings("unused")
     public ScrapeResponse scrape(ScrapeRequest req) throws PlaywrightException {
         var downloadPath = config.downloadPath();
@@ -86,11 +105,16 @@ public class ScrapeService {
 
         List<Cookie> cookiesForHost = null;
 
-        if (config.cookiesEnabled() != null && config.cookiesEnabled()) {
-            String host = URI.create(url).getHost();
-            log.info("Getting cookies for host: {}", host);
-            cookiesForHost = CookieUtilsKt.getCookiesForHost(host);
-            log.info("Found {} cookies for {}", cookiesForHost.size(), host);
+        if (config.cookiesEnabled() != null && config.cookiesEnabled() && req.cookies() != null) {
+            // TODO convert cookies to Cookie objects
+
+
+            // convert req.cookies to Cookie objects
+            cookiesForHost = req.cookies().stream()
+                    .map(cookie -> new Cookie(cookie.entrySet().stream().findFirst().get().getKey(), cookie.entrySet().stream().findFirst().get().getValue()))
+                    .collect(Collectors.toList());
+
+            log.info("Found {} cookies", cookiesForHost.size());
         }
 
         ScrapeResponse sr = null;

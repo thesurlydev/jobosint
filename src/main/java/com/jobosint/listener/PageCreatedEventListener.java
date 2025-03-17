@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -48,6 +49,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         log.info("Received: {}", event);
 
         Page page = event.getPage();
+        List<Map<String, String>> cookies = event.getCookies();
         String contentPath = page.contentPath();
 
         String jobSource = null;
@@ -78,7 +80,7 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
                                 jobDescriptionParserResult.description(),
                                 jobDescriptionParserResult.salaryRange());
                     } else {
-                        Company company = linkedInService.scrapeCompany(jobDescriptionParserResult.companySlug());
+                        Company company = linkedInService.scrapeCompany(jobDescriptionParserResult.companySlug(), cookies);
                         if (company != null) {
                             companyService.upsertCompany(company.name(), company);
                             jobDescriptionParserResult = new JobDescriptionParserResult(jobDescriptionParserResult.title(),

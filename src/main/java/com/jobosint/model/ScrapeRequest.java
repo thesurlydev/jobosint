@@ -1,6 +1,7 @@
 package com.jobosint.model;
 
 import com.jobosint.exception.InvalidScrapeRequestException;
+import org.apache.logging.log4j.util.Strings;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
@@ -10,6 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,25 +22,40 @@ public final class ScrapeRequest {
     private final SelectAttribute attribute;
     private final String attributeValue;
     private final Set<FetchAttribute> fetch;
+    private final List<Map<String, String>> cookies;
 
     public ScrapeRequest(String url,
                          String selector,
                          SelectAttribute attribute,
                          String attributeValue,
-                         Set<FetchAttribute> fetch) {
+                         Set<FetchAttribute> fetch,
+                         List<Map<String, String>> cookies) {
         this.url = url;
         this.selector = selector;
         this.attribute = attribute;
         this.attributeValue = attributeValue;
         this.fetch = fetch;
+        this.cookies = cookies;
+    }
+
+    public ScrapeRequest(String url, List<Map<String, String>> cookies) {
+        this(url, "html", SelectAttribute.html, null, Set.of(FetchAttribute.html), cookies);
     }
 
     public ScrapeRequest(String url) {
-        this(url, "html", SelectAttribute.html, null, Set.of(FetchAttribute.html));
+        this(url, "html", SelectAttribute.html, null, Set.of(FetchAttribute.html), null);
     }
 
     public ScrapeRequest(String url, FetchAttribute... attributes) {
-        this(url, "html", SelectAttribute.html, null, Set.of(attributes));
+        this(url, "html", SelectAttribute.html, null, Set.of(attributes), null);
+    }
+
+    public ScrapeRequest(String url, List<Map<String, String>> cookies, FetchAttribute... attributes) {
+        this(url, "html", SelectAttribute.html, null, Set.of(attributes), cookies);
+    }
+
+    public ScrapeRequest(String url, String html, SelectAttribute selectAttribute, Object o, Set<FetchAttribute> attributes) {
+        this(url, html, selectAttribute, null, attributes, null);
     }
 
     public boolean fetchHar() {
@@ -109,6 +127,8 @@ public final class ScrapeRequest {
         }
     }
 
+    public List<Map<String, String>> cookies() { return cookies; }
+
     public String url() {
         return url;
     }
@@ -138,12 +158,13 @@ public final class ScrapeRequest {
                 Objects.equals(this.selector, that.selector) &&
                 Objects.equals(this.attribute, that.attribute) &&
                 Objects.equals(this.attributeValue, that.attributeValue) &&
+                Objects.equals(this.cookies, that.cookies) &&
                 Objects.equals(this.fetch, that.fetch);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(url, selector, attribute, attributeValue, fetch);
+        return Objects.hash(url, selector, attribute, attributeValue, cookies, fetch);
     }
 
     @Override
@@ -153,6 +174,7 @@ public final class ScrapeRequest {
                 "selector=" + selector + ", " +
                 "attribute=" + attribute + ", " +
                 "attributeValue=" + attributeValue + ", " +
+                "cookies=" + Strings.join(cookies,    ',') +
                 "fetch=" + fetch + ']';
     }
 
