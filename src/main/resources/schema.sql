@@ -1,11 +1,12 @@
-drop table if exists attribute_value;
-drop table if exists attribute;
-drop table if exists page;
-drop table if exists application;
-drop table if exists job_attributes;
-drop table if exists job;
-drop table if exists company;
-drop table if exists contact;
+drop table if exists attribute cascade;
+drop table if exists attribute_value cascade;
+drop table if exists page cascade;
+drop table if exists application cascade;
+drop table if exists application_event cascade;
+drop table if exists job cascade;
+drop table if exists job_attributes cascade;
+drop table if exists contact cascade;
+drop table if exists company cascade;
 --
 -- start Spring AI vector store
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -23,6 +24,21 @@ CREATE TABLE IF NOT EXISTS vector_store
 CREATE INDEX ON vector_store USING HNSW (embedding vector_cosine_ops);
 -- end Spring AI vector store
 
+create table if not exists company
+(
+    id               uuid primary key default gen_random_uuid(),
+    name             varchar(255) not null
+        CONSTRAINT company_name_unique UNIQUE,
+    created_at       timestamptz      default now(),
+    updated_at       timestamptz      default now(),
+    website_url      varchar(255),
+    summary          text,
+    location         text,
+    employee_count   text,
+    stock_ticker     varchar(10),
+    linkedin_token   text,
+    greenhouse_token text
+);
 
 create table if not exists contact
 (
@@ -37,21 +53,6 @@ create table if not exists contact
     phone_number         text,
     company              uuid,
     constraint fk_contact_company foreign key (company) references jobosint.public.company (id)
-);
-
-create table if not exists company
-(
-    id               uuid primary key default gen_random_uuid(),
-    name             varchar(255) not null
-        CONSTRAINT company_name_unique UNIQUE,
-    created_at       timestamptz      default now(),
-    updated_at       timestamptz      default now(),
-    website_url      varchar(255),
-    summary          text,
-    employee_count   text,
-    stock_ticker     varchar(10),
-    linkedin_token   text,
-    greenhouse_token text
 );
 
 create table if not exists job

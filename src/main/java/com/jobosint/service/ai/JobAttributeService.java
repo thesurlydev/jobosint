@@ -80,7 +80,7 @@ public class JobAttributeService {
             return Optional.empty();
         }
 
-        JobAttributes jobAttributes = outputParser.convert(generation.getOutput().getContent());
+        JobAttributes jobAttributes = outputParser.convert(generation.getOutput().getText());
         return Optional.ofNullable(jobAttributes);
     }
 

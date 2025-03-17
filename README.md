@@ -15,7 +15,7 @@ Job open source intelligence (OSINT) and manager for job seekers.
 To connect to the database, use the following command:
 
 ```shell
-PGPASSWORD=shane psql -h bleepboop -U shane -d jobosint
+PGPASSWORD=shane psql -h localhost -U shane -d jobosint
 ```
 
 ## Versions

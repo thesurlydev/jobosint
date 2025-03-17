@@ -52,7 +52,7 @@ public class JobInterviewProcessService {
             return Optional.empty();
         }
 
-        InterviewProcess interviewProcess = outputParser.convert(generation.getOutput().getContent());
+        InterviewProcess interviewProcess = outputParser.convert(generation.getOutput().getText());
         return Optional.ofNullable(interviewProcess);
     }
 }

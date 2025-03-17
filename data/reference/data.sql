@@ -1,5 +1,5 @@
-delete from jobosint.public.job;
-delete from jobosint.public.company;
+delete from jobosint.public.job where true;
+delete from jobosint.public.company where true;
 insert into jobosint.public.company(name, website_url) values('Affirm', 'https://www.affirm.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Ascension', 'https://healthcare.ascension.org') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Atlassian', 'https://www.atlassian.com') ON CONFLICT DO NOTHING;
@@ -65,7 +65,7 @@ insert into jobosint.public.company(name, website_url) values('Vida Health', 'ht
 insert into jobosint.public.company(name, website_url) values('Vivint', 'https://www.vivint.com') ON CONFLICT DO NOTHING;
 insert into jobosint.public.company(name, website_url) values('Zillow', 'https://www.zillow.com') ON CONFLICT DO NOTHING;
 
-delete from jobosint.public.attribute;
+delete from jobosint.public.attribute where true;
 insert into jobosint.public.attribute(name, values) values('application-status', '{"Applied", "Archived", "Declined", "Filled", "Interviewing", "Interviewing Suspended", "Offer", "Offer Declined", "Rejected", "Rejected w/o Interview"}');
 insert into jobosint.public.attribute(name, values) values('job-source', '{"Builtin", "Google Jobs", "Greenhouse", "Indeed", "Lever", "LinkedIn", "Recruiter", "Remote Army", "TrueUp", "Workday", "ZipRecruiter"}');
 insert into jobosint.public.attribute(name, values) values('job-status', '{"Active", "Applied", "Archived", "Discovered", "Filled", "No longer accepting applications", "Not a match"}');

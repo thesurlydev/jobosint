@@ -1,7 +1,6 @@
 services:
   db:
-#    image: postgres:16-alpine
-    image: pgvector/pgvector:pg16
+    image: pgvector/pgvector:pg17
     container_name: jobosint-postgres
     hostname: postgres
     env_file:

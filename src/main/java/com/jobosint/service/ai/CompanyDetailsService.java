@@ -37,7 +37,7 @@ public class CompanyDetailsService {
 
         Generation generation = chatModel.call(prompt).getResult();
 
-        CompanyDetail detail = outputParser.convert(generation.getOutput().getContent());
+        CompanyDetail detail = outputParser.convert(generation.getOutput().getText());
         log.info("CompanyDetail: {}", detail);
         return detail;
     }

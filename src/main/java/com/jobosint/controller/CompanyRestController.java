@@ -44,7 +44,7 @@ public class CompanyRestController {
         Prompt prompt = promptTemplate.create();
         Generation generation = chatModel.call(prompt).getResult();
 
-        return outputParser.parse(generation.getOutput().getContent());
+        return outputParser.convert(generation.getOutput().getText());
     }
 
     @GetMapping("/{name}/focus")
@@ -73,7 +73,7 @@ public class CompanyRestController {
         Prompt prompt = promptTemplate.create();
         Generation generation = chatModel.call(prompt).getResult();
 
-        return outputParser.convert(generation.getOutput().getContent());
+        return outputParser.convert(generation.getOutput().getText());
     }
 
     @PostMapping()

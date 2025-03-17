@@ -51,7 +51,7 @@ public class JobTechnologyStackService {
             return Optional.empty();
         }
 
-        TechnologyStack technologyStack = outputParser.convert(generation.getOutput().getContent());
+        TechnologyStack technologyStack = outputParser.convert(generation.getOutput().getText());
         return Optional.ofNullable(technologyStack);
     }
 }

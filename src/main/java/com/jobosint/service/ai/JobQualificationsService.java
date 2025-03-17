@@ -52,7 +52,7 @@ public class JobQualificationsService {
             return Optional.empty();
         }
 
-        JobQualifications jobQualifications = outputParser.convert(generation.getOutput().getContent());
+        JobQualifications jobQualifications = outputParser.convert(generation.getOutput().getText());
         return Optional.ofNullable(jobQualifications);
     }
 }
