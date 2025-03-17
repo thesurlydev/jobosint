@@ -101,6 +101,7 @@ create table if not exists application
     job        uuid,
     status     text,
     notes      text,
+    resume     text,
     constraint fk_app_job foreign key (job) references jobosint.public.job (id)
 );
 

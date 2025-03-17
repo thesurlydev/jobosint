@@ -74,4 +74,4 @@ insert into jobosint.public.attribute(name, values) values('wishlist', '{"Small 
 insert into jobosint.public.attribute(name, values) values('interview-type', '{"Technical", "Behavioral", "System Design", "Initial Screen", "Hiring Manager", "Follow-up"}');
 insert into jobosint.public.attribute(name, values) values('event-type', '{"Phone call", "Video", "Email", "In-person", "Take-home assignment"}');
 insert into jobosint.public.attribute(name, values) values('job-title-exclude', '{"manager", "sap", "game", "servicenow", "ruby", "principal", "sre", "solution", "blockchain", "machine learning", "cobol", "scala", "full stack", "front end"}');
-insert into jobosint.public.attribute(name, values) values('resume', '{"Shane_Witbeck_Resume_202405.pdf"}');
+insert into jobosint.public.attribute(name, values) values('resume', '{"shane-witbeck-2025.pdf"}');
