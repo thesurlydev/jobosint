@@ -35,6 +35,7 @@ public class JobFormController {
     public String home(Model model) {
         var jobs = jobService.getAllJobs();
         model.addAttribute("jobs", jobs);
+        model.addAttribute("numJobs", jobs.size());
         return "jobs";
     }
 
