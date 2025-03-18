@@ -1,12 +1,12 @@
-drop table if exists attribute cascade;
-drop table if exists attribute_value cascade;
-drop table if exists page cascade;
-drop table if exists application cascade;
-drop table if exists application_event cascade;
-drop table if exists job cascade;
-drop table if exists job_attributes cascade;
-drop table if exists contact cascade;
-drop table if exists company cascade;
+-- drop table if exists attribute cascade;
+-- drop table if exists attribute_value cascade;
+-- drop table if exists page cascade;
+-- drop table if exists application cascade;
+-- drop table if exists application_event cascade;
+-- drop table if exists job cascade;
+-- drop table if exists job_attributes cascade;
+-- drop table if exists contact cascade;
+-- drop table if exists company cascade;
 --
 -- start Spring AI vector store
 CREATE EXTENSION IF NOT EXISTS vector;
