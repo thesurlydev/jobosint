@@ -28,8 +28,15 @@ To update the versions, run the following command:
 ./gradlew refreshVersions
 ```
 
+## Roadmap
+
+- Add company reviews.
+- Add company stock performance.
+- Confirm job is not a ghost job. Visit company job page. 
+
 ## TODO
 
+- Port to maven build
 - Add support for additional job boards:
   - smartrecruiters
 - Containerization
