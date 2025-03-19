@@ -1,3 +1,34 @@
+// Function to extract job ID from URL
+function extractJobId(url) {
+    try {
+        const urlObj = new URL(url);
+        
+        // LinkedIn job view page
+        if (urlObj.hostname === 'www.linkedin.com' && urlObj.pathname.startsWith('/jobs/view/')) {
+            return urlObj.pathname.split('/')[3];
+        }
+        
+        // LinkedIn job search page with job selected
+        if (urlObj.hostname === 'www.linkedin.com' && 
+            (urlObj.pathname.startsWith('/jobs/search/') || urlObj.pathname.startsWith('/jobs/collections'))) {
+            return urlObj.searchParams.get('currentJobId');
+        }
+        
+        return null;
+    } catch (error) {
+        console.error('Error extracting job ID:', error);
+        return null;
+    }
+}
+
+// Function to extract job title from the page
+function extractJobTitle() {
+    // Try to find the job title in the h1 tag
+    const h1Element = document.querySelector('h1');
+    return h1Element ? h1Element.textContent.trim() : 'Unknown Job Title';
+}
+
+// Initial page load
 (async () => {
     try {
         // First get the active tab ID
@@ -16,13 +47,91 @@
         });
         
         if (results && results.length > 0) {
-            // Send a message to the service worker with the document and the current tab url
+            // Get the job title from the page
+            const titleResults = await chrome.scripting.executeScript({
+                target: { tabId: activeTab.id },
+                function: extractJobTitle
+            });
+            
+            const jobTitle = titleResults && titleResults.length > 0 ? 
+                titleResults[0].result : 'Unknown Job Title';
+            
+            // Send a message to the service worker with the document, url, and job title
             await chrome.runtime.sendMessage({
+                type: 'pageLoad',
                 document: results[0].result,
-                url: activeTab.url
+                url: activeTab.url,
+                jobId: extractJobId(activeTab.url),
+                jobTitle: jobTitle
             });
         }
     } catch (error) {
         console.error('Error in content script:', error);
     }
 })();
+
+// Listen for URL changes (for LinkedIn job navigation)
+let lastUrl = window.location.href;
+const observer = new MutationObserver(() => {
+    if (window.location.href !== lastUrl) {
+        const oldUrl = lastUrl;
+        lastUrl = window.location.href;
+        
+        // Only send message if we're on LinkedIn and the URL has changed
+        if (window.location.hostname === 'www.linkedin.com') {
+            const jobId = extractJobId(window.location.href);
+            
+            // Only send if we have a job ID or if we're moving away from a job
+            if (jobId || extractJobId(oldUrl)) {
+                chrome.runtime.sendMessage({
+                    type: 'urlChange',
+                    url: window.location.href,
+                    jobId: jobId
+                });
+            }
+        }
+    }
+});
+
+// Start observing URL changes
+observer.observe(document, { subtree: true, childList: true });
+
+// Listen for clicks on job cards in the LinkedIn jobs search interface
+document.addEventListener('click', (event) => {
+    // Check if we're on LinkedIn jobs page
+    if (window.location.hostname !== 'www.linkedin.com' || 
+        !(window.location.pathname.startsWith('/jobs/search/') || 
+          window.location.pathname.startsWith('/jobs/collections'))) {
+        return;
+    }
+    
+    // Find if the click was on a job card or its children
+    let element = event.target;
+    let jobCard = null;
+    
+    // Traverse up to find job card
+    while (element && !jobCard) {
+        // LinkedIn job cards typically have data attributes or specific classes
+        if (element.classList && 
+            (element.classList.contains('job-card-container') || 
+             element.classList.contains('jobs-search-results__list-item'))) {
+            jobCard = element;
+        }
+        element = element.parentElement;
+    }
+    
+    // If we found a job card, extract the job ID and send a message
+    if (jobCard) {
+        // Wait a short time for the URL to update after the click
+        setTimeout(() => {
+            const jobId = extractJobId(window.location.href);
+            if (jobId) {
+                chrome.runtime.sendMessage({
+                    type: 'jobCardClick',
+                    url: window.location.href,
+                    jobId: jobId
+                });
+            }
+        }, 300);
+    }
+});

@@ -207,69 +207,146 @@ function showMessage(message, type = 'info') {
 
 // Update current page info
 function updateCurrentPageInfo() {
+    // First check if we have a stored job ID from a recent click
+    chrome.storage.local.get(['currentJobId', 'currentJobUrl'], function(data) {
+        if (data.currentJobId && data.currentJobUrl) {
+            // We have a stored job ID, use it to update the UI
+            updateUIWithJobInfo(data.currentJobId, data.currentJobUrl);
+            return;
+        }
+        
+        // If no stored job ID, fall back to the current tab URL
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            if (tabs && tabs[0]) {
+                updateUIWithTabInfo(tabs[0]);
+            }
+        });
+    });
+}
+
+// Function to extract job title from the active tab
+function getJobTitleFromActiveTab(callback) {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        if (tabs && tabs[0]) {
-            const currentPage = document.getElementById('current-page');
-            const pageDetails = document.getElementById('page-details');
-            const url = new URL(tabs[0].url);
-            
-            // Format the URL nicely
-            let displayText = '';
-            let detailsText = '';
-            let platformBadge = document.querySelector('header + main > div:nth-child(2) > div:first-child > span');
-            
-            // Handle different job platforms
-            if (url.hostname === 'www.linkedin.com' && url.pathname.startsWith('/jobs/view/')) {
-                const jobId = url.pathname.split('/')[3];
-                displayText = `LinkedIn Job #${jobId}`;
-                detailsText = `Captured at ${new Date().toLocaleTimeString()}`;
-                if (platformBadge) platformBadge.textContent = 'LinkedIn';
-            } else if (url.hostname === 'www.linkedin.com' && 
-                      (url.pathname.startsWith('/jobs/search/') || url.pathname.startsWith('/jobs/collections'))) {
-                const jobId = url.searchParams.get('currentJobId');
-                displayText = jobId ? `LinkedIn Job #${jobId}` : 'LinkedIn Jobs';
-                detailsText = `Job search results page`;
-                if (platformBadge) platformBadge.textContent = 'LinkedIn';
-            } else if (url.hostname.includes('greenhouse.io')) {
-                displayText = `Greenhouse Job Posting`;
-                detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
-                if (platformBadge) platformBadge.textContent = 'Greenhouse';
-            } else if (url.hostname.includes('lever.co')) {
-                displayText = `Lever Job Posting`;
-                detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
-                if (platformBadge) platformBadge.textContent = 'Lever';
-            } else if (url.hostname.includes('myworkdayjobs.com')) {
-                displayText = `Workday Job Posting`;
-                detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
-                if (platformBadge) platformBadge.textContent = 'Workday';
-            } else if (url.hostname.includes('smartrecruiters.com')) {
-                displayText = `SmartRecruiters Job`;
-                detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
-                if (platformBadge) platformBadge.textContent = 'SmartRecruiters';
-            } else if (url.hostname.includes('glassdoor.com')) {
-                displayText = `Glassdoor Job Listing`;
-                detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
-                if (platformBadge) platformBadge.textContent = 'Glassdoor';
-            } else if (url.hostname.includes('builtin.com')) {
-                displayText = `BuiltIn Job Listing`;
-                detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
-                if (platformBadge) platformBadge.textContent = 'BuiltIn';
-            } else {
-                // For other pages, show the hostname and truncated path
-                displayText = url.hostname;
-                detailsText = url.pathname !== '/' ? url.pathname.substring(0, 30) + (url.pathname.length > 30 ? '...' : '') : '';
-                if (platformBadge) platformBadge.textContent = 'Web Page';
-            }
-            
-            currentPage.textContent = displayText;
-            currentPage.title = tabs[0].url; // Set full URL as tooltip
-            
-            if (pageDetails) {
-                pageDetails.textContent = detailsText || tabs[0].url;
-                pageDetails.title = tabs[0].url; // Set full URL as tooltip
-            }
+        if (tabs && tabs.length > 0) {
+            chrome.scripting.executeScript({
+                target: {tabId: tabs[0].id},
+                function: () => {
+                    // Try to find the job title in the h1 tag
+                    const h1Element = document.querySelector('h1');
+                    return h1Element ? h1Element.textContent.trim() : 'Unknown Job Title';
+                }
+            }, function(results) {
+                if (results && results.length > 0 && results[0].result) {
+                    callback(results[0].result);
+                } else {
+                    callback('Unknown Job Title');
+                }
+            });
+        } else {
+            callback('Unknown Job Title');
         }
     });
+}
+
+// Update UI with job information
+function updateUIWithJobInfo(jobId, jobUrl, title) {
+    const jobTitle = document.getElementById('job-title');
+    const currentPage = document.getElementById('current-page');
+    const pageDetails = document.getElementById('page-details');
+    const platformBadge = document.querySelector('header + main > div:nth-child(2) > div:first-child > span');
+    
+    try {
+        const url = new URL(jobUrl);
+        
+        // Handle LinkedIn job
+        if (url.hostname === 'www.linkedin.com') {
+            // Update UI elements
+            currentPage.textContent = `LinkedIn Job #${jobId}`;
+            pageDetails.textContent = `Captured at ${new Date().toLocaleTimeString()}`;
+            if (platformBadge) platformBadge.textContent = 'LinkedIn';
+            
+            // Set tooltips
+            currentPage.title = jobUrl;
+            if (pageDetails) pageDetails.title = jobUrl;
+            
+            // Always try to get the job title directly from the active tab
+            getJobTitleFromActiveTab(function(fetchedTitle) {
+                jobTitle.textContent = fetchedTitle;
+                jobTitle.title = fetchedTitle; // Set tooltip
+                
+                // Also save to storage for future reference
+                chrome.storage.local.set({currentJobTitle: fetchedTitle});
+            });
+            
+            // Log activity
+            activityLog.add('Job Selected', 'success', `LinkedIn Job #${jobId}`);
+        }
+    } catch (error) {
+        console.error('Error updating UI with job info:', error);
+    }
+}
+
+// Update UI with tab information
+function updateUIWithTabInfo(tab) {
+    const currentPage = document.getElementById('current-page');
+    const pageDetails = document.getElementById('page-details');
+    const url = new URL(tab.url);
+    
+    // Format the URL nicely
+    let displayText = '';
+    let detailsText = '';
+    let platformBadge = document.querySelector('header + main > div:nth-child(2) > div:first-child > span');
+    
+    // Handle different job platforms
+    if (url.hostname === 'www.linkedin.com' && url.pathname.startsWith('/jobs/view/')) {
+        const jobId = url.pathname.split('/')[3];
+        displayText = `LinkedIn Job #${jobId}`;
+        detailsText = `Captured at ${new Date().toLocaleTimeString()}`;
+        if (platformBadge) platformBadge.textContent = 'LinkedIn';
+    } else if (url.hostname === 'www.linkedin.com' && 
+              (url.pathname.startsWith('/jobs/search/') || url.pathname.startsWith('/jobs/collections'))) {
+        const jobId = url.searchParams.get('currentJobId');
+        displayText = jobId ? `LinkedIn Job #${jobId}` : 'LinkedIn Jobs';
+        detailsText = `Job search results page`;
+        if (platformBadge) platformBadge.textContent = 'LinkedIn';
+    } else if (url.hostname.includes('greenhouse.io')) {
+        displayText = `Greenhouse Job Posting`;
+        detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
+        if (platformBadge) platformBadge.textContent = 'Greenhouse';
+    } else if (url.hostname.includes('lever.co')) {
+        displayText = `Lever Job Posting`;
+        detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
+        if (platformBadge) platformBadge.textContent = 'Lever';
+    } else if (url.hostname.includes('myworkdayjobs.com')) {
+        displayText = `Workday Job Posting`;
+        detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
+        if (platformBadge) platformBadge.textContent = 'Workday';
+    } else if (url.hostname.includes('smartrecruiters.com')) {
+        displayText = `SmartRecruiters Job`;
+        detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
+        if (platformBadge) platformBadge.textContent = 'SmartRecruiters';
+    } else if (url.hostname.includes('glassdoor.com')) {
+        displayText = `Glassdoor Job Listing`;
+        detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
+        if (platformBadge) platformBadge.textContent = 'Glassdoor';
+    } else if (url.hostname.includes('builtin.com')) {
+        displayText = `BuiltIn Job Listing`;
+        detailsText = url.pathname.replace(/\//g, ' › ').substring(1);
+        if (platformBadge) platformBadge.textContent = 'BuiltIn';
+    } else {
+        // For other pages, show the hostname and truncated path
+        displayText = url.hostname;
+        detailsText = url.pathname !== '/' ? url.pathname.substring(0, 30) + (url.pathname.length > 30 ? '...' : '') : '';
+        if (platformBadge) platformBadge.textContent = 'Web Page';
+    }
+    
+    currentPage.textContent = displayText;
+    currentPage.title = tab.url; // Set full URL as tooltip
+    
+    if (pageDetails) {
+        pageDetails.textContent = detailsText || tab.url;
+        pageDetails.title = tab.url; // Set full URL as tooltip
+    }
 }
 
 // Save page functionality
@@ -382,49 +459,35 @@ function savePageListener() {
     });
 }
 
-// Refresh functionality
-function refreshListener() {
-    // Show loading state
-    const refreshBtn = document.getElementById('refreshBtn');
-    const originalBtnText = refreshBtn.innerHTML;
-    refreshBtn.innerHTML = `
-        <svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        Refreshing...
-    `;
-    refreshBtn.disabled = true;
-    
-    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        const activeTab = tabs[0];
-        const originalUrl = new URL(activeTab.url);
-
-        updateCurrentPageInfo();
-        showMessage('Page information refreshed', 'info');
-        activityLog.add('Refresh', 'success', originalUrl.toString());
-        
-        // Restore button state
-        refreshBtn.innerHTML = originalBtnText;
-        refreshBtn.disabled = false;
-    });
-}
+// Removed refresh functionality as it's no longer needed with automatic updates
 
 // Initialize the extension
 function run() {
     // Set up event listeners
     document.getElementById('saveBtn').addEventListener('click', savePageListener);
-    document.getElementById('refreshBtn').addEventListener('click', refreshListener);
 
     // Initialize UI components
     updateCurrentPageInfo();
     activityLog.updateUI();
     
+    // Get the job title on initial load
+    getJobTitleFromActiveTab(function(fetchedTitle) {
+        const jobTitle = document.getElementById('job-title');
+        if (jobTitle) {
+            jobTitle.textContent = fetchedTitle;
+            jobTitle.title = fetchedTitle; // Set tooltip
+        }
+    });
+    
     // Listen for storage changes
     chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (changes.foo) {
-            const message = changes.foo.newValue;
-            console.log('Storage foo has changed:', message);
+        if (changes.currentJobId) {
+            console.log('Job ID has changed:', changes.currentJobId.newValue);
+            // Update the UI when job ID changes in storage
+            if (changes.currentJobId.newValue && changes.currentJobUrl && changes.currentJobUrl.newValue) {
+                const jobTitle = changes.currentJobTitle ? changes.currentJobTitle.newValue : null;
+                updateUIWithJobInfo(changes.currentJobId.newValue, changes.currentJobUrl.newValue, jobTitle);
+            }
         }
     });
     
@@ -433,9 +496,40 @@ function run() {
         updateCurrentPageInfo();
     });
     
+    // Listen for runtime messages from the service worker
+    chrome.runtime.onMessage.addListener(function(message) {
+        if (message.type === 'jobUpdate') {
+            console.log('Received job update message:', message);
+            updateUIWithJobInfo(message.jobId, message.url, message.jobTitle);
+        }
+    });
+    
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         if (changeInfo.status === 'complete') {
             updateCurrentPageInfo();
+            
+            // Also refresh the job title when the tab updates
+            getJobTitleFromActiveTab(function(fetchedTitle) {
+                const jobTitle = document.getElementById('job-title');
+                if (jobTitle) {
+                    jobTitle.textContent = fetchedTitle;
+                    jobTitle.title = fetchedTitle; // Set tooltip
+                }
+            });
+        }
+    });
+    
+    // Set up message listener for job updates
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        console.log('Sidepanel received message:', message);
+        
+        // Handle job update messages
+        if (message.type === 'jobUpdate' && message.jobId) {
+            // Update the UI with the new job information
+            updateUIWithJobInfo(message.jobId, message.url);
+            
+            // Show a notification
+            showMessage(`Job updated to #${message.jobId}`, 'info');
         }
     });
 }

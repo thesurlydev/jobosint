@@ -28,14 +28,32 @@ chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
 // handle messages from content.js and update side panel
 chrome.runtime.onMessage.addListener((message) => {
-    const {document, url} = message;
-    // handle message
-    console.log('Received message from content script:', document, url);
-
-    // save message to storage with 'foo' as key
-    chrome.storage.local.set({foo: message}, () => {
+    console.log('Received message from content script:', message);
+    
+    // Store the last message for the sidepanel to access
+    chrome.storage.local.set({lastMessage: message}, () => {
         console.log('Message saved to storage:', message);
     });
-
-
+    
+    // If this is a job-related message, store the job ID, URL, and title
+    if (message.jobId) {
+        chrome.storage.local.set({
+            currentJobId: message.jobId,
+            currentJobUrl: message.url,
+            currentJobTitle: message.jobTitle || 'Unknown Job Title'
+        }, () => {
+            console.log('Job information saved:', message.jobId, message.jobTitle);
+        });
+        
+        // Notify any open sidepanels about the job change
+        chrome.runtime.sendMessage({
+            type: 'jobUpdate',
+            jobId: message.jobId,
+            url: message.url,
+            jobTitle: message.jobTitle || 'Unknown Job Title'
+        }).catch(error => {
+            // This error is expected if no sidepanel is open to receive the message
+            console.log('No receivers for the message, this is normal if sidepanel is not open');
+        });
+    }
 });
