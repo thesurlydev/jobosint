@@ -38,13 +38,18 @@ function extractJobTitle() {
         const jobTitle = extractJobTitle();
         
         // Send a message to the service worker with the job information
-        await chrome.runtime.sendMessage({
-            type: 'pageLoad',
-            document: document.documentElement.innerHTML,
-            url: currentUrl,
-            jobId: jobId,
-            jobTitle: jobTitle
-        });
+        try {
+            await chrome.runtime.sendMessage({
+                type: 'pageLoad',
+                document: document.documentElement.innerHTML,
+                url: currentUrl,
+                jobId: jobId,
+                jobTitle: jobTitle
+            });
+        } catch (e) {
+            console.log('Extension communication error:', e.message);
+            // If the extension context is invalidated, we can't do much but log it
+        }
     } catch (error) {
         console.error('Error in content script:', error);
     }
@@ -63,11 +68,16 @@ const observer = new MutationObserver(() => {
             
             // Only send if we have a job ID or if we're moving away from a job
             if (jobId || extractJobId(oldUrl)) {
-                chrome.runtime.sendMessage({
-                    type: 'urlChange',
-                    url: window.location.href,
-                    jobId: jobId
-                });
+                try {
+                    chrome.runtime.sendMessage({
+                        type: 'urlChange',
+                        url: window.location.href,
+                        jobId: jobId
+                    });
+                } catch (e) {
+                    console.log('Extension communication error:', e.message);
+                    // If the extension context is invalidated, we can't do much but log it
+                }
             }
         }
     }
@@ -106,11 +116,16 @@ document.addEventListener('click', (event) => {
         setTimeout(() => {
             const jobId = extractJobId(window.location.href);
             if (jobId) {
-                chrome.runtime.sendMessage({
-                    type: 'jobCardClick',
-                    url: window.location.href,
-                    jobId: jobId
-                });
+                try {
+                    chrome.runtime.sendMessage({
+                        type: 'jobCardClick',
+                        url: window.location.href,
+                        jobId: jobId
+                    });
+                } catch (e) {
+                    console.log('Extension communication error:', e.message);
+                    // If the extension context is invalidated, we can't do much but log it
+                }
             }
         }, 300);
     }
