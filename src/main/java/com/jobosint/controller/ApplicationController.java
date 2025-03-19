@@ -25,6 +25,7 @@ public class ApplicationController {
     public String applications(Model model) {
         var apps = applicationService.getAllApplications();
         model.addAttribute("apps", apps);
+        model.addAttribute("numApps", apps.size());
         return "applications";
     }
 
