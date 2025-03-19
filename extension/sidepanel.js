@@ -40,7 +40,10 @@ const activityLog = {
         const logContainer = document.getElementById('activity-log');
         const log = JSON.parse(localStorage.getItem('activityLog') || '[]');
         
-        if (log.length === 0) {
+        // Filter out "Job Selected" events - only keep "Save Page" events
+        const filteredLog = log.filter(entry => entry.action === 'Save Page');
+        
+        if (filteredLog.length === 0) {
             logContainer.innerHTML = '<div class="flex items-center justify-center py-4">' +
                 '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">' +
                 '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />' +
@@ -53,7 +56,7 @@ const activityLog = {
         
         // Group logs by date
         const groupedLogs = {};
-        log.forEach(entry => {
+        filteredLog.forEach(entry => {
             if (!groupedLogs[entry.date]) {
                 groupedLogs[entry.date] = [];
             }

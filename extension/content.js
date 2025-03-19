@@ -31,40 +31,20 @@ function extractJobTitle() {
 // Initial page load
 (async () => {
     try {
-        // First get the active tab ID
-        const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-        if (!tabs || tabs.length === 0) {
-            console.error('No active tab found');
-            return;
-        }
+        // Content scripts can't use chrome.tabs API directly
+        // We'll use the current window location and document instead
+        const currentUrl = window.location.href;
+        const jobId = extractJobId(currentUrl);
+        const jobTitle = extractJobTitle();
         
-        const activeTab = tabs[0];
-        
-        // Get the document from the active tab
-        const results = await chrome.scripting.executeScript({
-            target: { tabId: activeTab.id },
-            function: () => document.documentElement.innerHTML
+        // Send a message to the service worker with the job information
+        await chrome.runtime.sendMessage({
+            type: 'pageLoad',
+            document: document.documentElement.innerHTML,
+            url: currentUrl,
+            jobId: jobId,
+            jobTitle: jobTitle
         });
-        
-        if (results && results.length > 0) {
-            // Get the job title from the page
-            const titleResults = await chrome.scripting.executeScript({
-                target: { tabId: activeTab.id },
-                function: extractJobTitle
-            });
-            
-            const jobTitle = titleResults && titleResults.length > 0 ? 
-                titleResults[0].result : 'Unknown Job Title';
-            
-            // Send a message to the service worker with the document, url, and job title
-            await chrome.runtime.sendMessage({
-                type: 'pageLoad',
-                document: results[0].result,
-                url: activeTab.url,
-                jobId: extractJobId(activeTab.url),
-                jobTitle: jobTitle
-            });
-        }
     } catch (error) {
         console.error('Error in content script:', error);
     }

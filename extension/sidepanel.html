@@ -32,7 +32,7 @@
             
             <!-- Current Page Card -->
             <div class="bg-white shadow-sm hover:shadow transition-all p-4 mx-4 rounded-lg border border-slate-100">
-                <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center justify-between mb-3">
                     <h2 class="text-base font-semibold text-slate-800 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-primary-500" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" />
@@ -42,23 +42,24 @@
                     <span class="px-2 py-0.5 bg-primary-50 text-primary-700 text-xs font-medium rounded-full">LinkedIn</span>
                 </div>
                 
-                <div class="bg-slate-50 rounded-lg p-2 border border-slate-100 mb-3">
+                <div class="bg-slate-50 rounded-lg p-3 border border-slate-100 mb-4">
                     <div id="job-title" class="text-sm font-bold text-slate-800 mb-1.5 truncate">Job Title</div>
                     <div id="current-page" class="text-sm font-medium text-slate-700 truncate">Loading current page...</div>
                     <div id="page-details" class="text-xs text-slate-500 mt-0.5 truncate"></div>
                 </div>
                 
-                <!-- Action Button - Full Width within card -->
-                <button id="saveBtn" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                <!-- Save Job button -->
+                <br>
+                <button id="saveBtn" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 mt-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-6" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z" />
                     </svg>
-                    Save Job
+                    <span class="ml-6">Save Job</span>
                 </button>
             </div>
             
             <!-- Recent Activity Card -->
-            <div class="bg-white rounded-lg shadow-sm hover:shadow transition-all p-4 border border-slate-100">
+            <div class="bg-white rounded-lg shadow-sm hover:shadow transition-all p-4 mx-4 border border-slate-100 flex-grow flex flex-col mb-5">
                 <h2 class="text-base font-semibold text-slate-800 mb-3 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-primary-500" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
@@ -66,7 +67,7 @@
                     Recent Activity
                 </h2>
                 
-                <div id="activity-log" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                <div id="activity-log" class="space-y-2 overflow-y-auto pr-1 flex-grow pb-5">
                     <p class="text-sm text-slate-500 italic">No recent activity</p>
                 </div>
             </div>
