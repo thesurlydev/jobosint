@@ -68,6 +68,10 @@
                     <li th:each="qualification : ${detail.attributes().preferredQualifications()}" th:text="${qualification}">qualification</li>
                 </ul>
             </div>
+        </div>
+    </div>
+    <div class="container py-3">
+        <div class="row">
             <div class="col">
                 <h4>Technology Stack</h4>
                 <div th:if="${!detail.attributes().programmingLanguages().isEmpty()}"><strong>Languages:</strong> <span th:each="language : ${#strings.listJoin(detail.attributes().programmingLanguages(), ', ')}" th:text="${language}">Value</span></div>
