@@ -10,7 +10,7 @@
 <div class="min-h-screen flex flex-col">
     <!-- Header with gradient background -->
     <header class="bg-gradient-to-r from-primary-700 to-primary-600 text-white py-3 px-4 shadow-md">
-        <div class="flex items-center">
+        <div class="flex justify-between w-full">
             <div class="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -20,10 +20,10 @@
                 </svg>
                 <span style="width: 10px; display: inline-block;"></span>
                 <h1 class="text-lg font-bold">JobOSINT</h1>
+                <span class="text-xs font-medium bg-white/20 px-2 py-0.5 rounded-full ml-3">v0.0.1</span>
             </div>
-            <div class="flex items-center ml-auto">
-                <span class="text-xs font-medium bg-white/20 px-2 py-0.5 rounded-full">v0.0.1</span>
-                <span class="text-xs ml-2 opacity-80">Job Intelligence Tool</span>
+            <div class="flex items-center">
+                <span class="text-xs opacity-80">Job Intelligence Tool</span>
             </div>
         </div>
     </header>
@@ -49,20 +49,25 @@
             </div>
 
             <div class="bg-slate-50 rounded-lg p-3 border border-slate-100 mb-4">
-                <div id="job-title" class="text-sm font-bold text-slate-800 mb-1.5 truncate">Job Title</div>
+                <div class="flex justify-between items-start mb-2">
+                    <div class="flex-grow">
+                        <div id="job-title" class="text-sm font-bold text-slate-800 mb-1.5 truncate">Job Title</div>
+                    </div>
+                    <!-- Save Job button -->
+                    <button id="saveBtn" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-3
+                        rounded-lg transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow
+                        focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 ml-2 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z"/>
+                        </svg>&nbsp;Save Job
+                    </button>
+                </div>
                 <div id="current-page" class="text-sm font-medium text-slate-700 truncate">Loading current page...</div>
                 <div id="page-details" class="text-xs text-slate-500 mt-0.5 truncate"></div>
-            </div>
-
-            <!-- Save Job button -->
-            <button id="saveBtn" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-3
-                rounded-lg transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow
-                focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-6" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z"/>
-                </svg>&nbsp;Save Job
-            </button>
         </div>
+
+        <!-- Add spacing between panels -->
+        <div class="h-4"></div>
 
         <!-- Recent Activity Card -->
         <div class="bg-white rounded-lg shadow-sm hover:shadow transition-all p-4 mx-4 border border-slate-100 flex-grow flex flex-col mb-5">

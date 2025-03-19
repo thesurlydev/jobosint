@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "JobOSINT Extension",
+  "name": "JobOSINT",
   "version": "0.0.1",
   "description": "This extension is used to gather information about a job posting",
   "background": {
