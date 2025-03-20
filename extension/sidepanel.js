@@ -26,11 +26,8 @@ const activityLog = {
         // Add new entry at the beginning
         existingLog.unshift(logEntry);
         
-        // Keep only the last 15 entries
-        const trimmedLog = existingLog.slice(0, 15);
-        
-        // Save back to localStorage
-        localStorage.setItem('activityLog', JSON.stringify(trimmedLog));
+        // Save back to localStorage - no entry limit
+        localStorage.setItem('activityLog', JSON.stringify(existingLog));
         
         // Update the UI
         this.updateUI();
@@ -373,20 +370,40 @@ function savePageListener() {
         const activeTab = tabs[0];
         const originalUrl = new URL(activeTab.url);
 
+        // Check if we're on LinkedIn
+        if (originalUrl.hostname !== 'www.linkedin.com') {
+            // Not on LinkedIn, show warning message
+            showMessage('This feature only works on LinkedIn job pages', 'warning');
+            activityLog.add('Save Page', 'warning', 'Not a LinkedIn page: ' + originalUrl.toString());
+            saveBtn.innerHTML = originalBtnText;
+            saveBtn.disabled = false;
+            return;
+        }
+
         let url;
         let functionToExecute;
-        if (originalUrl.hostname === 'www.linkedin.com' && originalUrl.pathname.startsWith('/jobs/view/')) {
+        if (originalUrl.pathname.startsWith('/jobs/view/')) {
             let jobId = originalUrl.pathname.split('/')[3];
             url = `https://www.linkedin.com/jobs/view/${jobId}`;
             functionToExecute = getPageContent;
-        } else if (originalUrl.hostname === 'www.linkedin.com'
-            && (originalUrl.pathname.startsWith('/jobs/search/') || originalUrl.pathname.startsWith('/jobs/collections'))) {
-            let jobId = originalUrl.searchParams.get('currentJobId')
+        } else if (originalUrl.pathname.startsWith('/jobs/search/') || originalUrl.pathname.startsWith('/jobs/collections')) {
+            let jobId = originalUrl.searchParams.get('currentJobId');
+            if (!jobId) {
+                showMessage('No job selected on this LinkedIn page', 'warning');
+                activityLog.add('Save Page', 'warning', 'No job selected on LinkedIn search page');
+                saveBtn.innerHTML = originalBtnText;
+                saveBtn.disabled = false;
+                return;
+            }
             url = `https://www.linkedin.com/jobs/view/${jobId}`;
             functionToExecute = getContentFromSearchPage;
         } else {
-            url = originalUrl;
-            functionToExecute = getPageContent;
+            // On LinkedIn but not on a job page
+            showMessage('This feature only works on LinkedIn job pages', 'warning');
+            activityLog.add('Save Page', 'warning', 'Not a LinkedIn job page: ' + originalUrl.toString());
+            saveBtn.innerHTML = originalBtnText;
+            saveBtn.disabled = false;
+            return;
         }
 
         chrome.scripting.executeScript(
