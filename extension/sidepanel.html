@@ -49,19 +49,23 @@
             </div>
 
             <div class="bg-slate-50 rounded-lg p-3 border border-slate-100 mb-4">
-                <div class="flex justify-between items-start mb-2">
-                    <div class="flex-grow">
-                        <div id="job-title" class="text-base font-bold text-slate-800 mb-1.5 truncate">Job Title</div>
+                <div class="flex flex-col mb-2">
+                    <div class="w-full mb-2">
+                        <div id="job-title" class="text-base font-bold text-slate-800 mb-1.5 break-words">Job Title</div>
                         <div id="company-name" class="text-xs font-bold text-slate-800 mb-1.5 truncate">Company Name</div>
                     </div>
                     <!-- Save Job button -->
-                    <button id="saveBtn" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-3
-                        rounded-lg transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow
-                        focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 ml-2 flex-shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z"/>
-                        </svg>&nbsp;Save Job
-                    </button>
+                    <div class="flex justify-end">
+                        <button id="saveBtn" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-3
+                            rounded-lg transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow
+                            focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 flex-shrink-0
+                            whitespace-nowrap w-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z"/>
+                            </svg>
+                            <span class="whitespace-nowrap">Save Job</span>
+                        </button>
+                    </div>
                 </div>
                 <div id="current-page" class="text-sm font-medium text-slate-700 truncate">Loading current page...</div>
                 <div id="page-details" class="text-xs text-slate-500 mt-0.5 truncate"></div>
