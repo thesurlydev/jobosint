@@ -251,9 +251,34 @@ function getJobTitleFromActiveTab(callback) {
     });
 }
 
+// Function to extract job title from the active tab
+function getCompanyNameFromActiveTab(callback) {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        if (tabs && tabs.length > 0) {
+            chrome.scripting.executeScript({
+                target: {tabId: tabs[0].id},
+                function: () => {
+                    // Try to find the job title in the h1 tag
+                    const companyEl = document.querySelector('div.job-details-jobs-unified-top-card__company-name');
+                    return companyEl ? companyEl.textContent.trim() : 'Unknown Company Name';
+                }
+            }, function(results) {
+                if (results && results.length > 0 && results[0].result) {
+                    callback(results[0].result);
+                } else {
+                    callback('Unknown Company Name');
+                }
+            });
+        } else {
+            callback('Unknown Company Name');
+        }
+    });
+}
+
 // Update UI with job information
 function updateUIWithJobInfo(jobId, jobUrl, title) {
     const jobTitle = document.getElementById('job-title');
+    const companyName = document.getElementById('company-name');
     const currentPage = document.getElementById('current-page');
     const pageDetails = document.getElementById('page-details');
     const platformBadge = document.querySelector('header + main > div:nth-child(2) > div:first-child > span');
@@ -279,6 +304,14 @@ function updateUIWithJobInfo(jobId, jobUrl, title) {
                 
                 // Also save to storage for future reference
                 chrome.storage.local.set({currentJobTitle: fetchedTitle});
+            });
+
+            getCompanyNameFromActiveTab(function(fetchedCompany) {
+                companyName.textContent = fetchedCompany;
+                companyName.title = fetchedCompany; // Set tooltip
+
+                // Also save to storage for future reference
+                chrome.storage.local.set({currentCompanyName: fetchedCompany});
             });
             
             // Log activity
@@ -501,6 +534,15 @@ function run() {
             jobTitle.title = fetchedTitle; // Set tooltip
         }
     });
+
+    // Get the company name on initial load
+    getCompanyNameFromActiveTab(function(fetchedCompany) {
+        const companyName = document.getElementById('company-name');
+        if (companyName) {
+            companyName.textContent = fetchedCompany;
+            companyName.title = fetchedCompany; // Set tooltip
+        }
+    });
     
     // Listen for storage changes
     chrome.storage.onChanged.addListener((changes, namespace) => {
@@ -539,6 +581,15 @@ function run() {
                     jobTitle.title = fetchedTitle; // Set tooltip
                 }
             });
+
+            // Also refresh the job title when the tab updates
+            getCompanyNameFromActiveTab(function(fetchedCompanyName) {
+                const companyName = document.getElementById('company-name');
+                if (companyName) {
+                    companyName.textContent = fetchedCompanyName;
+                    companyName.title = fetchedCompanyName; // Set tooltip
+                }
+            });
         }
     });
     
@@ -550,9 +601,6 @@ function run() {
         if (message.type === 'jobUpdate' && message.jobId) {
             // Update the UI with the new job information
             updateUIWithJobInfo(message.jobId, message.url);
-            
-            // Show a notification
-            showMessage(`Job updated to #${message.jobId}`, 'info');
         }
     });
 }

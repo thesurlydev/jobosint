@@ -35,14 +35,15 @@ chrome.runtime.onMessage.addListener((message) => {
         console.log('Message saved to storage:', message);
     });
     
-    // If this is a job-related message, store the job ID, URL, and title
+    // If this is a job-related message, store the job ID, URL, title, and company name
     if (message.jobId) {
         chrome.storage.local.set({
             currentJobId: message.jobId,
             currentJobUrl: message.url,
-            currentJobTitle: message.jobTitle || 'Unknown Job Title'
+            currentJobTitle: message.jobTitle || 'Unknown Job Title',
+            currentCompanyName: message.companyName || 'Unknown Company Name'
         }, () => {
-            console.log('Job information saved:', message.jobId, message.jobTitle);
+            console.log('Job information saved:', message.jobId, message.jobTitle, message.companyName);
         });
         
         // Notify any open sidepanels about the job change
@@ -50,7 +51,8 @@ chrome.runtime.onMessage.addListener((message) => {
             type: 'jobUpdate',
             jobId: message.jobId,
             url: message.url,
-            jobTitle: message.jobTitle || 'Unknown Job Title'
+            jobTitle: message.jobTitle || 'Unknown Job Title',
+            companyName: message.companyName || 'Unknown Company Name'
         }).catch(error => {
             // This error is expected if no sidepanel is open to receive the message
             console.log('No receivers for the message, this is normal if sidepanel is not open');

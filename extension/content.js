@@ -111,7 +111,7 @@ document.addEventListener('click', (event) => {
     }
     
     // If we found a job card, extract the job ID and send a message
-    if (jobCard) {
+    /*if (jobCard) {
         // Wait a short time for the URL to update after the click
         setTimeout(() => {
             const jobId = extractJobId(window.location.href);
@@ -128,5 +128,5 @@ document.addEventListener('click', (event) => {
                 }
             }
         }, 300);
-    }
+    }*/
 });
