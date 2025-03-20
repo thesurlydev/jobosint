@@ -111,16 +111,19 @@ document.addEventListener('click', (event) => {
     }
     
     // If we found a job card, extract the job ID and send a message
-    /*if (jobCard) {
+    if (jobCard) {
         // Wait a short time for the URL to update after the click
         setTimeout(() => {
             const jobId = extractJobId(window.location.href);
+            const jobTitle = extractJobTitle();
             if (jobId) {
                 try {
+                    console.log('Job card clicked, sending message with jobId:', jobId);
                     chrome.runtime.sendMessage({
                         type: 'jobCardClick',
                         url: window.location.href,
-                        jobId: jobId
+                        jobId: jobId,
+                        jobTitle: jobTitle
                     });
                 } catch (e) {
                     console.log('Extension communication error:', e.message);
@@ -128,5 +131,5 @@ document.addEventListener('click', (event) => {
                 }
             }
         }, 300);
-    }*/
+    }
 });

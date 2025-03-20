@@ -15,7 +15,7 @@ function getDocumentFromSearchPage() {
 
 // Activity log management
 const activityLog = {
-    add: function(action, status, details = '') {
+    add: function(action, status, details = '', updateUI = false) {
         const timestamp = new Date().toLocaleTimeString();
         const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         const logEntry = { timestamp, date, action, status, details };
@@ -29,8 +29,10 @@ const activityLog = {
         // Save back to localStorage - no entry limit
         localStorage.setItem('activityLog', JSON.stringify(existingLog));
         
-        // Update the UI
-        this.updateUI();
+        // Only update the UI when explicitly requested
+        if (updateUI) {
+            this.updateUI();
+        }
     },
     
     updateUI: function() {
@@ -133,6 +135,7 @@ const activityLog = {
     
     clear: function() {
         localStorage.removeItem('activityLog');
+        // This is explicitly called by the clear button, so we always update the UI
         this.updateUI();
         showMessage('Activity log cleared', 'info');
     }
@@ -407,7 +410,7 @@ function savePageListener() {
         if (originalUrl.hostname !== 'www.linkedin.com') {
             // Not on LinkedIn, show warning message
             showMessage('This feature only works on LinkedIn job pages', 'warning');
-            activityLog.add('Save Page', 'warning', 'Not a LinkedIn page: ' + originalUrl.toString());
+            activityLog.add('Save Page', 'warning', 'Not a LinkedIn page: ' + originalUrl.toString(), true);
             saveBtn.innerHTML = originalBtnText;
             saveBtn.disabled = false;
             return;
@@ -423,7 +426,7 @@ function savePageListener() {
             let jobId = originalUrl.searchParams.get('currentJobId');
             if (!jobId) {
                 showMessage('No job selected on this LinkedIn page', 'warning');
-                activityLog.add('Save Page', 'warning', 'No job selected on LinkedIn search page');
+                activityLog.add('Save Page', 'warning', 'No job selected on LinkedIn search page', true);
                 saveBtn.innerHTML = originalBtnText;
                 saveBtn.disabled = false;
                 return;
@@ -433,7 +436,7 @@ function savePageListener() {
         } else {
             // On LinkedIn but not on a job page
             showMessage('This feature only works on LinkedIn job pages', 'warning');
-            activityLog.add('Save Page', 'warning', 'Not a LinkedIn job page: ' + originalUrl.toString());
+            activityLog.add('Save Page', 'warning', 'Not a LinkedIn job page: ' + originalUrl.toString(), true);
             saveBtn.innerHTML = originalBtnText;
             saveBtn.disabled = false;
             return;
@@ -447,7 +450,7 @@ function savePageListener() {
             function (result) {
                 if (!result || result.length === 0) {
                     showMessage('Failed to extract content from page', 'error');
-                    activityLog.add('Save Page', 'error', originalUrl.toString());
+                    activityLog.add('Save Page', 'error', originalUrl.toString(), true);
                     saveBtn.innerHTML = originalBtnText;
                     saveBtn.disabled = false;
                     return;
@@ -488,11 +491,11 @@ function savePageListener() {
                     .then(response => {
                         if (response.ok) {
                             showMessage('Job information saved successfully!', 'success');
-                            activityLog.add('Save Page', 'success', url);
+                            activityLog.add('Save Page', 'success', url, true);
                             return response.json();
                         } else {
                             showMessage(`Error: ${response.status}`, 'error');
-                            activityLog.add('Save Page', 'error', `Status: ${response.status}`);
+                            activityLog.add('Save Page', 'error', `Status: ${response.status}`, true);
                             throw new Error(`Server responded with ${response.status}`);
                         }
                     })
@@ -502,7 +505,7 @@ function savePageListener() {
                     .catch(error => {
                         showMessage('Error saving page!', 'error');
                         console.error('Error details:', error);
-                        activityLog.add('Save Page', 'error', error.message);
+                        activityLog.add('Save Page', 'error', error.message, true);
                     })
                     .finally(() => {
                         // Restore button state
@@ -524,6 +527,7 @@ function run() {
 
     // Initialize UI components
     updateCurrentPageInfo();
+    // Initialize the activity log UI once on startup
     activityLog.updateUI();
     
     // Get the job title on initial load
