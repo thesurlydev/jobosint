@@ -5,7 +5,11 @@ function extractJobId(url) {
         
         // LinkedIn job view page
         if (urlObj.hostname === 'www.linkedin.com' && urlObj.pathname.startsWith('/jobs/view/')) {
-            return urlObj.pathname.split('/')[3];
+            // Extract the job ID and remove any trailing slashes or other characters
+            const jobIdWithPossibleTrailing = urlObj.pathname.split('/')[3];
+            // Extract only the numeric part of the job ID
+            const numericJobId = jobIdWithPossibleTrailing.match(/^\d+/);
+            return numericJobId ? numericJobId[0] : null;
         }
         
         // LinkedIn job search page with job selected
@@ -118,7 +122,6 @@ document.addEventListener('click', (event) => {
             const jobTitle = extractJobTitle();
             if (jobId) {
                 try {
-                    console.log('Job card clicked, sending message with jobId:', jobId);
                     chrome.runtime.sendMessage({
                         type: 'jobCardClick',
                         url: window.location.href,
