@@ -7,6 +7,7 @@
 -- drop table if exists job_attributes cascade;
 -- drop table if exists contact cascade;
 -- drop table if exists company cascade;
+-- drop table if exists keyword cascade;
 --
 -- start Spring AI vector store
 CREATE EXTENSION IF NOT EXISTS vector;
@@ -135,4 +136,34 @@ create table if not exists attribute
     name   varchar(255) not null
         constraint attribute_name_unique UNIQUE,
     values text[]
+);
+
+create table if not exists keyword
+(
+    name varchar(50) primary key
+        constraint keyword_name_unique UNIQUE
+);
+
+create table if not exists resume
+(
+    id         uuid primary key default gen_random_uuid(),
+    name       varchar(255),
+    content    text,
+    created_at timestamptz      default current_timestamp
+);
+
+create table if not exists resume_keyword
+(
+    resume_id uuid,
+    keyword   varchar(50),
+    constraint fk_resume_id foreign key (resume_id) references jobosint.public.resume(id),
+    constraint fk_keyword foreign key (keyword) references jobosint.public.keyword(name)
+);
+
+create table if not exists job_keyword
+(
+    job_id  uuid,
+    keyword varchar(50),
+    constraint fk_resume_id foreign key (job_id) references jobosint.public.job(id),
+    constraint fk_keyword foreign key (keyword) references jobosint.public.keyword(name)
 );
