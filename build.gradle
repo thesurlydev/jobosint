@@ -41,6 +41,7 @@ dependencies {
 //    implementation 'org.springframework.ai:spring-ai-qdrant-store-spring-boot-starter'
     implementation 'org.springframework.ai:spring-ai-qdrant-store:1.0.0-M6'
 
+    implementation 'org.springframework.ai:spring-ai-markdown-document-reader'
     implementation 'org.springframework.ai:spring-ai-pdf-document-reader'
 
     implementation 'org.springframework.boot:spring-boot-starter-aop'
