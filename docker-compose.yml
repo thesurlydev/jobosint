@@ -1,4 +1,16 @@
 services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: jobosint-qdrant
+    hostname: qdrant
+    env_file:
+      - .env
+    ports:
+      - 6333:6333
+      - 6334:6334
+    restart: always
+    volumes:
+      - ./data/qdrant:/var/lib/qdrant
   db:
     image: pgvector/pgvector:pg17
     container_name: jobosint-postgres

@@ -14,15 +14,25 @@ CREATE EXTENSION IF NOT EXISTS vector;
 CREATE EXTENSION IF NOT EXISTS hstore;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE IF NOT EXISTS vector_store
+CREATE TABLE IF NOT EXISTS job.vector_store
 (
-    id        uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id        varchar(255) PRIMARY KEY,
     content   text,
     metadata  json,
     embedding vector(1536)
 );
 
-CREATE INDEX ON vector_store USING HNSW (embedding vector_cosine_ops);
+CREATE INDEX ON job.vector_store USING HNSW (embedding vector_cosine_ops);
+
+CREATE TABLE IF NOT EXISTS resume.vector_store
+(
+    id        varchar(255) PRIMARY KEY,
+    content   text,
+    metadata  json,
+    embedding vector(1536)
+);
+
+CREATE INDEX ON resume.vector_store USING HNSW (embedding vector_cosine_ops);
 -- end Spring AI vector store
 
 create table if not exists company
