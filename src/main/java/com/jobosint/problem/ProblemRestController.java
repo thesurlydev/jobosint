@@ -2,6 +2,7 @@ package com.jobosint.problem;
 
 import com.jobosint.brave.BraveMcpClient;
 import com.jobosint.brave.BraveSearchResponse;
+import com.jobosint.fetch.FetchMcpClient;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ public class ProblemRestController {
 
     private final ProblemService problemService;
     private final BraveMcpClient braveMcpClient;
+    private final FetchMcpClient fetchMcpClient;
 
     @GetMapping("/problems")
     @Operation(summary = "Get all problems")
@@ -43,5 +45,11 @@ public class ProblemRestController {
     @Operation(summary = "Given the query, use Brave to do a web search")
     public BraveSearchResponse search(@RequestParam String query) {
         return braveMcpClient.search(query);
+    }
+
+    @GetMapping("/fetch")
+    @Operation(summary = "Given the url and instructions, use fetch MCP to do a web fetch")
+    public Object fetch(@RequestParam String url, @RequestParam String instructions) {
+        return fetchMcpClient.fetch(url, instructions);
     }
 }

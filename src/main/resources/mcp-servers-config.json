@@ -9,6 +9,13 @@
       "env": {
         "DEBUG": "true"
       }
+    },
+    "fetch": {
+      "command": "podman",
+      "args": ["run", "-i", "--rm", "mcp/fetch"],
+      "env": {
+        "DEBUG": "true"
+      }
     }
   }
 }
