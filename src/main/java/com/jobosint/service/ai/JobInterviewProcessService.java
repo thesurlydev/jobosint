@@ -40,8 +40,10 @@ public class JobInterviewProcessService {
                 """;
 
         PromptTemplate promptTemplate = new PromptTemplate(
-                userMessage, Map.of("jd", jobDescriptionContent, "format",
-                outputParser.getFormat())
+                userMessage, Map.of(
+                "jd", jobDescriptionContent,
+                "format", outputParser.getFormat()
+        )
         );
         Prompt prompt = promptTemplate.create();
         Generation generation;

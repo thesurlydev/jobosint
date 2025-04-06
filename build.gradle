@@ -36,10 +36,17 @@ configurations.configureEach {
 
 dependencies {
     implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-SNAPSHOT")
-    implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
-    implementation 'org.springframework.ai:spring-ai-pgvector-store-spring-boot-starter'
+    implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+    implementation 'org.springframework.ai:spring-ai-starter-vector-store-pgvector'
 //    implementation 'org.springframework.ai:spring-ai-qdrant-store-spring-boot-starter'
-    implementation 'org.springframework.ai:spring-ai-qdrant-store:1.0.0-M6'
+//    implementation 'org.springframework.ai:spring-ai-qdrant-store:1.0.0-M6'
+    implementation 'org.springframework.ai:spring-ai-qdrant-store'
+    implementation 'org.springframework.ai:spring-ai-starter-mcp-client'
+    
+    // gRPC dependencies for Qdrant
+    implementation 'io.grpc:grpc-netty-shaded:1.71.0'
+    implementation 'io.grpc:grpc-protobuf:1.71.0'
+    implementation 'io.grpc:grpc-stub:1.71.0'
 
     implementation 'org.springframework.ai:spring-ai-markdown-document-reader'
     implementation 'org.springframework.ai:spring-ai-pdf-document-reader'
@@ -83,6 +90,3 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-
-
-

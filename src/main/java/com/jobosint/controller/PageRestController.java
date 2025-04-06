@@ -1,7 +1,9 @@
 package com.jobosint.controller;
 
+import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.model.Page;
 import com.jobosint.model.extension.SavePageRequest;
+import com.jobosint.parse.LinkedInParser;
 import com.jobosint.service.PageService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,23 @@ import java.nio.file.Path;
 public class PageRestController {
 
     private final PageService pageService;
+    private final LinkedInParser linkedInParser;
+
+    @PostMapping("/parse")
+    @Operation(summary = "Parse a page")
+    public ResponseEntity<JobDescriptionParserResult> parsePage(@RequestBody SavePageRequest savePageRequest) {
+        log.info("Parsing page from {}", savePageRequest.url());
+        try {
+            String decodedContent = decodeContent(savePageRequest.content());
+            JobDescriptionParserResult jobDescriptionParserResult = linkedInParser.parseJobDescriptionFromContent(decodedContent);
+            return ResponseEntity.ok(jobDescriptionParserResult);
+
+        } catch (Exception e) {
+            log.error("Error parsing page: {}", savePageRequest, e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 
     @PostMapping()
     @Operation(summary = "Save a page")

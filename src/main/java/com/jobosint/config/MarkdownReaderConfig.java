@@ -5,10 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MardownReaderConfig {
+public class MarkdownReaderConfig {
 
     @Bean
     public MarkdownDocumentReaderConfig.Builder markdownDocumentReaderConfig() {
-        return MarkdownDocumentReaderConfig.builder();
+        return MarkdownDocumentReaderConfig
+                .builder()
+                .withIncludeCodeBlock(false)
+                .withHorizontalRuleCreateDocument(false)
+                .withIncludeBlockquote(false)
+                ;
     }
 }

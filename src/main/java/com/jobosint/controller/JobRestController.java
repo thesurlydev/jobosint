@@ -1,5 +1,6 @@
 package com.jobosint.controller;
 
+import com.jobosint.match.JobMatchRequest;
 import com.jobosint.model.JobDetail;
 import com.jobosint.service.JobService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,5 +33,17 @@ public class JobRestController {
     public Optional<JobDetail> getJobDetail(@PathVariable UUID id) {
         return jobService.getJobDetail(id);
     }
+
+    /*@GetMapping("/{id}/score")
+    @Operation(summary = "Get job score")
+    public void getJobScore(@PathVariable UUID id) {
+        JobDetail jobDetail = jobService.getJobDetail(id).get();
+
+        String jobDescriptionMarkdown = jobDetail.job().content();
+
+        JobMatchRequest req = new JobMatchRequest(jobDetail.job().content());
+
+
+    }*/
 
 }

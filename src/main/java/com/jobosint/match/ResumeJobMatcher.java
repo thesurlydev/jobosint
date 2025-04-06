@@ -1,10 +1,9 @@
-package com.jobosint.score;
+package com.jobosint.match;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ResumeJobMatcher {
 

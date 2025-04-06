@@ -93,6 +93,29 @@ public class LinkedInParser {
         return result;
     }
 
+    public JobDescriptionParserResult parseJobDescriptionFromContent(String content) throws IOException {
+        Document doc = Jsoup.parse(content);
+        Element body = doc.body();
+
+        String title = body.select("h1").text();
+        String company = null;
+        Elements c1 = body.select("div.job-details-jobs-unified-top-card__company-name > a");
+        Elements c2 = body.select("div.job-details-jobs-unified-top-card__primary-description-container > div > a");
+        if (!c1.isEmpty()) {
+            company = c1.text();
+        } else if (!c2.isEmpty()) {
+            company = c2.text();
+        }
+        String companySlug = body.select("a").stream().map(a -> a.attr("href")).filter(h -> h.startsWith("/company")).map(h-> h.split("/")[2]).findFirst().orElse(null);
+        ParseResult<JobDescription> parseResult = jobDescriptionParser.parse(body.toString(), "article");
+        String rawMarkdown = parseResult.getData().getMarkdownBody();
+        String jobDescriptionMarkdown = rawMarkdown.replace("{#job-details}", "");
+
+        SalaryRange salaryRange = ParseUtils.parseSalaryRange(jobDescriptionMarkdown);
+
+        return new JobDescriptionParserResult(title, company, companySlug, jobDescriptionMarkdown, salaryRange);
+    }
+
     public JobDescriptionParserResult parseJobDescription(String path) throws IOException {
         File input = new File(path);
         Document doc = Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");

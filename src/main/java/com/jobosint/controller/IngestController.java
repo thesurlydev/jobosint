@@ -22,17 +22,19 @@ public class IngestController {
     private final IngestService ingestService;
     private final JobService jobService;
 
+    private static final String RESUME_PATH = "file:///Users/shane/projects/jobosint/data/resumes/shane-witbeck-2025.pdf";
+
     @GetMapping("/resume")
     @Operation(summary = "Ingest resume")
     public ResponseEntity<String> ingest() {
-        ingestService.ingestResume("file:///Users/shane/projects/jobosint/data/resumes/shane-witbeck-2025.pdf");
+        ingestService.ingestResume(RESUME_PATH);
         return ResponseEntity.ok("ok");
     }
 
     @GetMapping("/sync")
     @Operation(summary = "Sync resume and all jobs")
     public ResponseEntity<String> sync() {
-        ingestService.ingestResume("file:///Users/shane/projects/jobosint/data/resumes/shane-witbeck-2025.pdf");
+        ingestService.ingestResume(RESUME_PATH);
         jobService.getAllJobs().forEach(job -> ingestService.ingestJob(job.job().id()));
         return ResponseEntity.ok("ok");
     }

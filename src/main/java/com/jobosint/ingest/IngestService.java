@@ -4,9 +4,13 @@ import com.jobosint.service.JobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.reader.TextReader;
 import org.springframework.ai.vectorstore.qdrant.QdrantVectorStore;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,16 +29,23 @@ public class IngestService {
     private final QdrantVectorStore jobQdrantVectorStore;
     private final QdrantVectorStore resumeQdrantVectorStore;
     private final JobService jobService;
-    private final MarkdownDocumentReader markdownDocumentReader;
+//    private final MarkdownDocumentReader markdownDocumentReader;
+
+
 
     public void ingestJob(UUID jobId) {
         log.info("Ingesting job: " + jobId);
 
-        jobService.getJob(jobId).ifPresent(job -> {
-            String jobContent = job.content();
-            List<Document> documents = markdownDocumentReader.read(jobContent);
+        jobService.getJobDetail(jobId).ifPresent(jd ->{
+            String jobContent = jd.job().content();
+
+            byte[] markdownContentBytes = jobContent.getBytes(StandardCharsets.UTF_8);
+            Resource resource = new ByteArrayResource(markdownContentBytes);
+
+            TextReader textReader = new TextReader(resource);
+            List<Document> documents = textReader.get();
             List<Document> splitDocuments = textSplitter.splitDocuments(documents);
-            List<Document> enrichedDocuments = keywordEnricher.enrich(splitDocuments, 5);
+            List<Document> enrichedDocuments = new JobEnricher(jd).apply(splitDocuments);
             List<Document> documentsToSave = updateJobDocumentIds(jobId, enrichedDocuments);
             jobQdrantVectorStore.add(documentsToSave);
             log.info("Added {} documents to job vector store", documentsToSave.size());
@@ -45,7 +56,7 @@ public class IngestService {
         log.info("Ingesting resume from path: " + path);
         List<Document> documents = pdfDocumentReader.read(path);
         List<Document> splitDocuments = textSplitter.splitDocuments(documents);
-        List<Document> enrichedDocuments = keywordEnricher.enrich(splitDocuments, 5);
+        List<Document> enrichedDocuments = keywordEnricher.enrich(splitDocuments, 10);
         List<Document> documentsToSave = updateResumeDocumentIds(enrichedDocuments);
         resumeQdrantVectorStore.add(documentsToSave);
         log.info("Added documents to resume vector store");

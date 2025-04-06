@@ -19,8 +19,7 @@ public class MarkdownDocumentReader {
     public List<Document> read(String markdownContent) {
         byte[] markdownContentBytes = markdownContent.getBytes(StandardCharsets.UTF_8);
         Resource resource = new ByteArrayResource(markdownContentBytes);
-        MarkdownDocumentReaderConfig markdownDocumentReaderConfig = markdownDocumentReaderConfigBuilder
-                .build();
+        MarkdownDocumentReaderConfig markdownDocumentReaderConfig = markdownDocumentReaderConfigBuilder.build();
         org.springframework.ai.reader.markdown.MarkdownDocumentReader markdownDocumentReader
                 = new org.springframework.ai.reader.markdown.MarkdownDocumentReader(resource, markdownDocumentReaderConfig);
         return markdownDocumentReader.read();
