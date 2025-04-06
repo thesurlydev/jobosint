@@ -39,8 +39,9 @@ const activityLog = {
         const logContainer = document.getElementById('activity-log');
         const log = JSON.parse(localStorage.getItem('activityLog') || '[]');
         
-        // Filter out "Job Selected" events - only keep "Save Page" events
-        const filteredLog = log.filter(entry => entry.action === 'Save Page');
+        // Filter out "Job Selected" events - only keep job saving events
+        // Either the old format with 'Save Page' or the new format with our delimiter
+        const filteredLog = log.filter(entry => entry.action === 'Save Page' || entry.action.includes('|||||'));
         
         if (filteredLog.length === 0) {
             logContainer.innerHTML = '<div class="flex items-center justify-center py-4">' +
@@ -79,30 +80,45 @@ const activityLog = {
                         : 'bg-yellow-50 border-yellow-100 text-yellow-700';
                 
                 const statusIcon = entry.status === 'success'
-                    ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>'
+                    ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>'
                     : entry.status === 'error'
-                        ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>'
-                        : '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
+                        ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" /></svg>'
+                        : '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
                 
                 const logItem = document.createElement('div');
                 logItem.className = `mb-2 rounded-lg border ${statusClass} overflow-hidden animate-fade-in`;
                 
+                // Parse the action text to separate job title and company if it contains our delimiter
+                let displayTitle, displayCompany;
+                if (entry.action.includes('|||||')) {
+                    const parts = entry.action.split('|||||');
+                    displayTitle = parts[0];
+                    displayCompany = parts[1];
+                } else {
+                    // For backward compatibility with old format
+                    displayTitle = entry.action;
+                    displayCompany = '';
+                }
+                
                 logItem.innerHTML = `
                     <div class="p-3">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center">
-                                <div class="mr-2">${statusIcon}</div>
-                                <span class="font-medium text-sm">${entry.action}</span>
+                        <div class="flex justify-between">
+                            <div class="flex">
+                                <div class="mr-3 py-0.5">${statusIcon}</div>
+                                <div class="flex flex-col w-full">
+                                    <span class="font-bold text-base">${displayTitle}</span>
+                                    ${displayCompany ? `<span class="font-bold text-xs text-slate-800">${displayCompany}</span>` : ''}
+                                    ${entry.details ? `
+                                        <div class="mt-1.5 text-xs opacity-90 truncate">
+                                            ${entry.details.length > 60 
+                                                ? `${entry.details.substring(0, 60)}...` 
+                                                : entry.details}
+                                        </div>
+                                    ` : ''}
+                                </div>
                             </div>
-                            <span class="text-xs opacity-70">${entry.timestamp}</span>
+                            <span class="text-xs opacity-70 ml-2 flex-shrink-0">${entry.timestamp}</span>
                         </div>
-                        ${entry.details ? `
-                            <div class="mt-1.5 text-xs opacity-90 truncate">
-                                ${entry.details.length > 60 
-                                    ? `${entry.details.substring(0, 60)}...` 
-                                    : entry.details}
-                            </div>
-                        ` : ''}
                     </div>
                 `;
                 
@@ -442,79 +458,89 @@ function savePageListener() {
             return;
         }
 
-        chrome.scripting.executeScript(
-            {
-                target: {tabId: activeTab.id},
-                function: functionToExecute
-            },
-            function (result) {
-                if (!result || result.length === 0) {
-                    showMessage('Failed to extract content from page', 'error');
-                    activityLog.add('Save Page', 'error', originalUrl.toString(), true);
-                    saveBtn.innerHTML = originalBtnText;
-                    saveBtn.disabled = false;
-                    return;
-                }
+        // Get job title and company name first
+        getJobTitleFromActiveTab(function(jobTitle) {
+            getCompanyNameFromActiveTab(function(companyName) {
+                // Store job title and company name separately for the activity log
+                // We'll use a special delimiter that won't appear in normal text to separate them
+                // This will be parsed when displaying the log
+                const logEntryText = `${jobTitle}|||||${companyName}`;
                 
-                const content = result[0].result;
-
-                // Get cookies for the current domain
-                chrome.cookies.getAll({domain: originalUrl.hostname}, function(cookies) {
-                    // Format cookies for inclusion in the request body
-                    const cookiesArray = cookies.map(cookie => ({
-                        name: cookie.name,
-                        value: cookie.value,
-                        domain: cookie.domain,
-                        path: cookie.path,
-                        expires: cookie.expirationDate,
-                        httpOnly: cookie.httpOnly,
-                        secure: cookie.secure
-                    }));
-
-                    const source = "chrome-extension";
-
-                    // Include cookies in the request body
-                    const body = JSON.stringify({
-                        url,
-                        content,
-                        source,
-                        cookies: cookiesArray
-                    });
-
-                    fetch('http://localhost:8080/api/pages', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: body
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            showMessage('Job information saved successfully!', 'success');
-                            activityLog.add('Save Page', 'success', url, true);
-                            return response.json();
-                        } else {
-                            showMessage(`Error: ${response.status}`, 'error');
-                            activityLog.add('Save Page', 'error', `Status: ${response.status}`, true);
-                            throw new Error(`Server responded with ${response.status}`);
+                chrome.scripting.executeScript(
+                    {
+                        target: {tabId: activeTab.id},
+                        function: functionToExecute
+                    },
+                    function (result) {
+                        if (!result || result.length === 0) {
+                            showMessage('Failed to extract content from page', 'error');
+                            activityLog.add(logEntryText, 'error', originalUrl.toString(), true);
+                            saveBtn.innerHTML = originalBtnText;
+                            saveBtn.disabled = false;
+                            return;
                         }
-                    })
+                        
+                        const content = result[0].result;
+
+                        // Get cookies for the current domain
+                        chrome.cookies.getAll({domain: originalUrl.hostname}, function(cookies) {
+                            // Format cookies for inclusion in the request body
+                            const cookiesArray = cookies.map(cookie => ({
+                                name: cookie.name,
+                                value: cookie.value,
+                                domain: cookie.domain,
+                                path: cookie.path,
+                                expires: cookie.expirationDate,
+                                httpOnly: cookie.httpOnly,
+                                secure: cookie.secure
+                            }));
+
+                            const source = "chrome-extension";
+
+                            // Include cookies in the request body
+                            const body = JSON.stringify({
+                                url,
+                                content,
+                                source,
+                                cookies: cookiesArray
+                            });
+
+                            fetch('http://localhost:8080/api/pages', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: body
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    showMessage('Job information saved successfully!', 'success');
+                                    activityLog.add(logEntryText, 'success', url, true);
+                                    return response.json();
+                                } else {
+                                    showMessage(`Error: ${response.status}`, 'error');
+                                    activityLog.add(logEntryText, 'error', `Status: ${response.status}`, true);
+                                    throw new Error(`Server responded with ${response.status}`);
+                                }
+                            })
                     .then(data => {
-                        console.log('Response from server:', data);
-                    })
-                    .catch(error => {
-                        showMessage('Error saving page!', 'error');
-                        console.error('Error details:', error);
-                        activityLog.add('Save Page', 'error', error.message, true);
-                    })
-                    .finally(() => {
-                        // Restore button state
-                        saveBtn.innerHTML = originalBtnText;
-                        saveBtn.disabled = false;
-                    });
+                                console.log('Response from server:', data);
+                            })
+                            .catch(error => {
+                                showMessage('Error saving page!', 'error');
+                                console.error('Error details:', error);
+                                activityLog.add(logEntryText, 'error', error.message, true);
+                            })
+                            .finally(() => {
+                                // Restore button state
+                                saveBtn.innerHTML = originalBtnText;
+                                saveBtn.disabled = false;
+                            });
                 });
-            }
-        );
+                    }
+                );
+            });
+        });
     });
 }
 
