@@ -1,21 +1,17 @@
 package com.jobosint.service
 
-import com.jobosint.model.Company
-import com.jobosint.model.CompanyParserResult
-import com.jobosint.model.JobPageDetail
-import com.jobosint.model.LinkedInJobSearchRequest
-import com.jobosint.model.LinkedInResult
-import com.jobosint.model.ScrapeResponse
+import com.jobosint.model.*
 import com.jobosint.parse.LinkedInParser
+import com.jobosint.playwright.CookieService
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.BrowserType.LaunchOptions
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
 import com.microsoft.playwright.options.LoadState
+import jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.util.*
 import java.util.function.Consumer
 
 @Service
@@ -24,6 +20,7 @@ class LinkedInService(
     val linkedInParser: LinkedInParser,
     val jobService: JobService,
     val scrapeService: ScrapeService,
+    val cookieService: CookieService
 ) {
 
     private val log = LoggerFactory.getLogger(LinkedInService::class.java)
@@ -127,8 +124,7 @@ class LinkedInService(
         val maxResults = jobSearchRequest.maxResults
 
         val options = LaunchOptions()
-//            .setHeadless(false) // Run in headful mode
-            .setHeadless(true) // Run in headful mode
+            .setHeadless(false) // Run in headful mode
 //            .setSlowMo(2000.0) // Slow motion delay in milliseconds
 
 //        val linkedInCookies = getCookiesForHost("linkedin.com")
@@ -144,7 +140,8 @@ class LinkedInService(
                         .setPermissions(listOf("geolocation"))
                 )
 
-//            context.addCookies(linkedInCookies)
+            val linkedInCookies = cookieService.loadLinkedInCookies()
+            context.addCookies(linkedInCookies)
 
             val page: Page = context.newPage()
 
@@ -156,6 +153,8 @@ class LinkedInService(
 
             /*
                 Date Posted Filters:
+                 - f_TPR=r3600 (posted in the last hour)
+                 - f_TPR=r43200 (posted in the last 12 hours)
                  - f_TPR=r86400 (posted in the last 24 hours)
                  - f_TPR=r604800 (posted in the last 7 days)
 
@@ -173,7 +172,9 @@ class LinkedInService(
                 println("Waiting for page ${nextPage - 1} to load")
                 page.waitForLoadState(LoadState.DOMCONTENTLOADED)
 
-                val searchResultsPaneSelector = "div.jobs-search-results-list"
+
+                // #main > div > div.scaffold-layout__list-detail-inner.scaffold-layout__list-detail-inner--grow > div.scaffold-layout__list > div
+                val searchResultsPaneSelector = "#main > div > div.scaffold-layout__list-detail-inner.scaffold-layout__list-detail-inner--grow > div.scaffold-layout__list > div"
                 page.focus(searchResultsPaneSelector)
 
                 val searchResultsPane = page.querySelector(searchResultsPaneSelector)

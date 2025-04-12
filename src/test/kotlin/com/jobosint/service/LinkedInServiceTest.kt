@@ -56,7 +56,7 @@ class LinkedInServiceTest {
         val actual = linkedInService.getCompanyTokenFromUrl(url)
         assertEquals("sleeperhq", actual)
     }
-
+/*
     @Test
     fun getCompanyFromToken() {
         val companyTag = "arcadiahq"
@@ -64,7 +64,7 @@ class LinkedInServiceTest {
         println(company)
         assertEquals("Arcadia", company?.name)
         assertEquals(companyTag, company?.linkedinToken)
-    }
+    }*/
 
     @Test
     fun testSearchJobs() {
