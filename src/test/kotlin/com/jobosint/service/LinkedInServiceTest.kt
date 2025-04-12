@@ -68,7 +68,7 @@ class LinkedInServiceTest {
 
     @Test
     fun testSearchJobs() {
-        val request = LinkedInJobSearchRequest("java")
+        val request = LinkedInJobSearchRequest("java", 10)
         val results = linkedInService.searchJobs(request)
         assert(results.isNotEmpty())
         assertEquals(10, results.size)

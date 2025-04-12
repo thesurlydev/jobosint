@@ -166,14 +166,40 @@ create table if not exists resume_keyword
 (
     resume_id uuid,
     keyword   varchar(50),
-    constraint fk_resume_id foreign key (resume_id) references jobosint.public.resume(id),
-    constraint fk_keyword foreign key (keyword) references jobosint.public.keyword(name)
+    constraint fk_resume_id foreign key (resume_id) references jobosint.public.resume (id),
+    constraint fk_keyword foreign key (keyword) references jobosint.public.keyword (name)
 );
 
 create table if not exists job_keyword
 (
     job_id  uuid,
     keyword varchar(50),
-    constraint fk_resume_id foreign key (job_id) references jobosint.public.job(id),
-    constraint fk_keyword foreign key (keyword) references jobosint.public.keyword(name)
+    constraint fk_resume_id foreign key (job_id) references jobosint.public.job (id),
+    constraint fk_keyword foreign key (keyword) references jobosint.public.keyword (name)
 );
+
+create table if not exists browser_session
+(
+    id         uuid primary key default gen_random_uuid(),
+    name       text,
+    start_url  text,
+    created_at timestamptz      default current_timestamp
+);
+
+create table if not exists browser_page
+(
+    id                 uuid primary key default gen_random_uuid(),
+    browser_session_id uuid,
+    url                text,
+    content_path       text,
+    created_at         timestamptz      default current_timestamp
+);
+
+create table if not exists browser_page_url
+(
+    id              uuid primary key default gen_random_uuid(),
+    browser_page_id uuid,
+    url             text,
+    text            text,
+    created_at      timestamptz      default current_timestamp
+)

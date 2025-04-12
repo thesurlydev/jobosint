@@ -1,14 +1,19 @@
 package com.jobosint.service
 
 import com.jobosint.model.*
+import com.jobosint.model.browse.BrowserPage
+import com.jobosint.model.browse.BrowserPageUrl
+import com.jobosint.model.browse.BrowserSession
 import com.jobosint.parse.LinkedInParser
 import com.jobosint.playwright.CookieService
+import com.jobosint.repository.BrowserPageRepository
+import com.jobosint.repository.BrowserPageUrlRepository
+import com.jobosint.repository.BrowserSessionRepository
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.BrowserType.LaunchOptions
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
 import com.microsoft.playwright.options.LoadState
-import jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -20,7 +25,10 @@ class LinkedInService(
     val linkedInParser: LinkedInParser,
     val jobService: JobService,
     val scrapeService: ScrapeService,
-    val cookieService: CookieService
+    val cookieService: CookieService,
+    val browserSessionRepository: BrowserSessionRepository,
+    val browserPageRepository: BrowserPageRepository,
+    val browserPageUrlRepository: BrowserPageUrlRepository
 ) {
 
     private val log = LoggerFactory.getLogger(LinkedInService::class.java)
@@ -127,8 +135,6 @@ class LinkedInService(
             .setHeadless(false) // Run in headful mode
 //            .setSlowMo(2000.0) // Slow motion delay in milliseconds
 
-//        val linkedInCookies = getCookiesForHost("linkedin.com")
-
         Playwright.create().use { playwright ->
 
             val browser = playwright.chromium().launch(options)
@@ -164,7 +170,13 @@ class LinkedInService(
                 - f_WT=3 (hybrid jobs)
                  */
 
-            page.navigate("https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=${term}")
+            val startPageUrl = "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=${term}"
+
+            val browserSession = BrowserSession("LinkedInServiceTest", startPageUrl)
+            val savedBrowserSession = browserSessionRepository.save(browserSession)
+            println("Saved browser session: ${savedBrowserSession.id}")
+
+            page.navigate(startPageUrl)
 
             var nextPage = 2
 
@@ -172,8 +184,11 @@ class LinkedInService(
                 println("Waiting for page ${nextPage - 1} to load")
                 page.waitForLoadState(LoadState.DOMCONTENTLOADED)
 
+                // TODO save page to disk and get path
+                val browserPage = BrowserPage(savedBrowserSession.id(), page.url())
+                val savedBrowserPage = browserPageRepository.save(browserPage)
+                println("Saved browser page: ${savedBrowserPage.id}")
 
-                // #main > div > div.scaffold-layout__list-detail-inner.scaffold-layout__list-detail-inner--grow > div.scaffold-layout__list > div
                 val searchResultsPaneSelector = "#main > div > div.scaffold-layout__list-detail-inner.scaffold-layout__list-detail-inner--grow > div.scaffold-layout__list > div"
                 page.focus(searchResultsPaneSelector)
 
@@ -197,11 +212,16 @@ class LinkedInService(
                             .let { links ->
                                 links?.forEach { link ->
                                     val href = link.getAttribute("href") ?: return@forEach
-                                    val text = link.textContent().replace("\n", "").trim()
+                                    val text = link.getAttribute("aria-label").replace("with verification", "").trim() ?: return@forEach
                                     val result = LinkedInResult(href, text)
                                     allResults.add(result)
                                     if (allResults.size == maxResults) {
                                         println("max results reached: ${allResults.size}")
+
+                                        allResults.stream()
+                                            .map { liResult -> BrowserPageUrl(savedBrowserPage.id, liResult.href, liResult.text) }
+                                            .forEach { bpu -> browserPageUrlRepository.save(bpu) }
+
                                         return allResults
                                     }
                                 }
@@ -211,12 +231,14 @@ class LinkedInService(
                     Thread.sleep(scrollSleepInterval)
                     currentScrollHeight += scrollIncrement
                 }
+                println("Finished scrolling; looking for paging button for page ${nextPage}")
 
                 // page navigation
                 val buttonSelector = "button[aria-label='Page $nextPage']"
                 val button = page.querySelector(buttonSelector)
 
                 if (button != null) {
+                    println("Found paging button for page $nextPage")
                     nextPage += 1
                     button.click()
                 } else {
