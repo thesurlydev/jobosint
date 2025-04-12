@@ -16,7 +16,7 @@
             <div class="col-3">
                 <p><img th:src="'https://logo.clearbit.com/' + ${company.websiteUrl()}"/></p>
                 <p th:if="${company.location() != null}"><strong>Location:</strong> <span th:text="${company.location()}">location</span></p>
-                <p th:if="${company.employeeCount() != null}"><strong>Employees:</strong> <span th:text="${company.employeeCount()}">num employees</span></p>
+                <p th:if="${company.employeeCount() != null && !company.employeeCount().isEmpty()}"><strong>Employees:</strong> <span th:text="${company.employeeCount()}">num employees</span></p>
             </div>
             <div class="col-7">
                 <p th:text="${company.summary()}">summary</p>
