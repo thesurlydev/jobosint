@@ -1,5 +1,6 @@
 package com.jobosint.service
 
+import com.jobosint.client.HttpClientFactory
 import com.jobosint.model.*
 import com.jobosint.model.browse.BrowserPage
 import com.jobosint.model.browse.BrowserPageUrl
@@ -14,9 +15,19 @@ import com.microsoft.playwright.BrowserType.LaunchOptions
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
 import com.microsoft.playwright.options.LoadState
+import com.sun.tools.javac.resources.ct
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.io.IOException
+import java.net.URI
+import java.net.URISyntaxException
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+import java.net.http.HttpResponse.*
+import java.net.http.HttpResponse.BodyHandlers.*
+import java.nio.file.Path
+import java.nio.file.StandardOpenOption
 import java.util.function.Consumer
 
 @Service
@@ -28,10 +39,61 @@ class LinkedInService(
     val cookieService: CookieService,
     val browserSessionRepository: BrowserSessionRepository,
     val browserPageRepository: BrowserPageRepository,
-    val browserPageUrlRepository: BrowserPageUrlRepository
+    val browserPageUrlRepository: BrowserPageUrlRepository,
+    val httpClientFactory: HttpClientFactory
 ) {
 
     private val log = LoggerFactory.getLogger(LinkedInService::class.java)
+
+
+    fun getQueryIdFromJobId(jobId: String): String {
+        val uri: URI?
+        try {
+            uri =
+                URI("https://www.linkedin.com/jobs/search/?currentJobId=${jobId}&f_WT=2&keywords=java&origin=JOBS_HOME_SEARCH_BUTTON&refresh=true")
+        } catch (e: URISyntaxException) {
+            throw RuntimeException(e)
+        }
+
+        val request = HttpRequest.newBuilder(uri)
+            .header("Accept", "*/*")
+            .header("Cookie", cookie())
+            .GET().build()
+
+        val response: HttpResponse<String>
+        try {
+            response = httpClientFactory.client.send(request, BodyHandlers.ofString());
+        } catch (e: IOException) {
+            throw RuntimeException(e)
+        } catch (e: InterruptedException) {
+            throw RuntimeException(e)
+        }
+
+        if (response.statusCode() != 200) {
+            throw RuntimeException("Failed to get job detail: ${response.statusCode()}")
+        }
+
+        var queryId = ""
+        response.body()
+            .let { body ->
+                val doc = Jsoup.parse(body)
+                val codeTags = doc.select("code")
+                codeTags.stream()
+                    .filter { ct -> ct.attr("id").startsWith("datalet") && ct.text().contains("jobPostingUrn") }
+                    .findFirst()
+                    .map { fct ->
+                        val startIdx = fct.text().indexOf("voyagerJobsDashJobPostingDetailSections.") + 40
+                        val substr = fct.text().substring(startIdx)
+                        queryId = substr.substringBefore("\"")
+                    }
+            }
+
+        return queryId
+    }
+
+    /*fun getJobDetail(String url): JobDetail {
+
+    }*/
 
     fun updateJobBoardIds() {
         jobService.findAllJobPageDetail("LinkedIn").forEach(Consumer { jobPageDetail: JobPageDetail ->
@@ -189,7 +251,8 @@ class LinkedInService(
                 val savedBrowserPage = browserPageRepository.save(browserPage)
                 println("Saved browser page: ${savedBrowserPage.id}")
 
-                val searchResultsPaneSelector = "#main > div > div.scaffold-layout__list-detail-inner.scaffold-layout__list-detail-inner--grow > div.scaffold-layout__list > div"
+                val searchResultsPaneSelector =
+                    "#main > div > div.scaffold-layout__list-detail-inner.scaffold-layout__list-detail-inner--grow > div.scaffold-layout__list > div"
                 page.focus(searchResultsPaneSelector)
 
                 val searchResultsPane = page.querySelector(searchResultsPaneSelector)
@@ -212,14 +275,21 @@ class LinkedInService(
                             .let { links ->
                                 links?.forEach { link ->
                                     val href = link.getAttribute("href") ?: return@forEach
-                                    val text = link.getAttribute("aria-label").replace("with verification", "").trim() ?: return@forEach
+                                    val text = link.getAttribute("aria-label").replace("with verification", "").trim()
+                                        ?: return@forEach
                                     val result = LinkedInResult(href, text)
                                     allResults.add(result)
                                     if (allResults.size == maxResults) {
                                         println("max results reached: ${allResults.size}")
 
                                         allResults.stream()
-                                            .map { liResult -> BrowserPageUrl(savedBrowserPage.id, liResult.href, liResult.text) }
+                                            .map { liResult ->
+                                                BrowserPageUrl(
+                                                    savedBrowserPage.id,
+                                                    liResult.href,
+                                                    liResult.text
+                                                )
+                                            }
                                             .forEach { bpu -> browserPageUrlRepository.save(bpu) }
 
                                         return allResults
@@ -248,5 +318,11 @@ class LinkedInService(
             }
             return allResults
         }
+    }
+
+    fun cookie(): String {
+        return """
+            lms_ads=AQGc2EiQyv7RgAAAAZYmI14H8y55uPBMbLVRmLjf3O5J0YD-t3sx9ttzI_1iNj-y4apWQUKRpeMCpqzDcc__Qdz_ayMrBaAC;_guid=a7f7e7b4-25ba-4a5e-af9c-8c0c425997c2;bcookie="v=2&b02c8c08-170b-4ea0-831e-facdb3d737b9";li_ep_auth_context=AFlhcHA9YWNjb3VudENlbnRlckh1YixhaWQ9MjUwNTgyOTYyLGlpZD0yNzM5MTE5NjIscGlkPTI0NDIyODEyOCxleHA9MTc0NDQ5NDMxMjgyNixjdXI9dHJ1ZQHZm014yNUg1UxjmI83hRvHsA2GCw;lms_analytics=AQGc2EiQyv7RgAAAAZYmI14H8y55uPBMbLVRmLjf3O5J0YD-t3sx9ttzI_1iNj-y4apWQUKRpeMCpqzDcc__Qdz_ayMrBaAC;fptctx2=taBcrIH61PuCVH7eNCyH0J9Fjk1kZEyRnBbpUW3FKs8CHPOIZ3JaRzj0TmqOgi5YqpER%252fkNeuGfec9qPPIOTsZZ9QFCo4n7t5zymk60i7ir95%252fVy8EydGX3u%252fEbUWhagdpSQbXHkt7lU8FgBZZ7nZ2UyOB1Tb5zmjLtJhTdpqKCwqSkWPBt6o44%252bop69JDXNKKxxhCyo%252fEiWQkvurligmpl3wZSa0pQuaXcAcoketM%252f2334t3qbtLAukbcH0HVxH6iYblKzpFQdWqO6ECwOcZ2%252f7dZvDsu%252b00cpZ4U0NYI18r6gehmmNxEHcI5NiBy6CtF5Oo9BJq0W0CNdTBZTG0XMhvU4l2BvNSK4mrwrp07I%253d;li_at=AQEFAP4BAAAAABUsbjsAAAGVtD86SAAAAZYr9r1RVgAAoXVybjpsaTplbnRlcnByaXNlQXV0aFRva2VuOmVKeGpaQUFDdnZmVE40SHB2Z1VLSUZvZ2VNSXNJQ1VKQUU5cEJVbz1edXJuOmxpOmVudGVycHJpc2VQcm9maWxlOih1cm46bGk6ZW50ZXJwcmlzZUFjY291bnQ6MjUwNTgyOTYyLDI0NDIyODEyOCledXJuOmxpOm1lbWJlcjo3NDUwMjg0ZUM0BYKbrtcSK_DDv6rcN9o17X_Qb_OYeFS7dTzKaQC_YxnXbMzc1EJWuosGEL4ArMWq8mdtSah3_UBUXZP24HqRuRIRqxhd9_-avuIlLxKqOVaXwJ1YDIbX7xyZ8v5XsvPNefTXatTqpKDEr002jIpjWUabLoTLoXJgqdqxSMHOt7OsOSjpp8oy2o8kjkbjHYJRig;lang=v=2&lang=en-us;lidc="b=OB84:s=O:r=O:a=O:p=O:g=3653:u=1179:x=1:i=1744489919:t=1744523472:v=2:sig=AQGp78Zw_PzVPNZSfbn0Zh2lgqbVYSIB";AnalyticsSyncHistory=AQJOrmac3kVBdAAAAZYmI13jMU8GIT_C65ygv_H1XuCqockWWkn-Y9kvqiuxd5r6BoiCA0_1HRspfQEm7nO2gw;bscookie="v=1&202412050300057240bb5c-2ca0-4fce-8414-8baaed50d544AQFug22dAVCIwD0LyMmI3hbfhyAU4xJt";dfpfpt=1f65c80d88c04ea6831ccfd6ebefbccb;JSESSIONID="ajax:7108999861729582947";li_rm=AQHxwZ2uUTmpbgAAAZWlLWZ7c_Ic4JdOpwpwDld6Exb4wk-92g0VJZKyuI-WHd7Sy9MsUkgknGePLeMK9tHKfZVXAJRayzSXEBXQYWTHxglHwR_SPnW5-kaX;li_sugr=0f0ba9e2-93ce-42ab-a34c-873edbf80ec6;li_theme=light;li_theme_set=app;liap=true;timezone=America/Los_Angeles;UserMatchHistory=AQLffODoXeWZUgAAAZYrs7EHwdcQJGehpqnkgVAVGQEnpUDN8PFyXSn-D7LJWGfK3ZnHhSc7DhCpNMsVs6UN3oS1_2puBoiMchnruhtk9HyCTLadCalcCGjvWGlGhfRpwBev5fHHApLC2k6-RJ1mZ06p6O4cXRPD8FxE1ZdfD3JhAvtq52xqOOTcy4cZpuHF_ECYz6xVqUVnQe2EEGcAeKJL96lLZj8mUn8iDJmMX4vM3PmXHvGM0NIksuB9Ne_umMRcamIJufECbUqNIWOHrd82-ECo_oCSuQDyCJNiJfrV2vj-ygt3DzpYkvu2r_6YI3sqv-OVDi6YCMfUDCiTBGsHAVgax8CP9Kr63wg2jcFJdakGgQ;visit=v=1&M
+        """.trimIndent()
     }
 }

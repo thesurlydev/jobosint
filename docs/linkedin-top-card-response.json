@@ -1,0 +1,1475 @@
+{
+  "data": {
+    "data": {
+      "$recipeTypes": [
+        "com.linkedin.8fbc3627c8305a33e3e6840ec7688312"
+      ],
+      "jobsDashJobPostingDetailSectionsByCardSectionTypes": {
+        "$recipeTypes": [
+          "com.linkedin.f1d8ff8a5c9d0a2c73d8c4418e3a4526"
+        ],
+        "elements": [
+          {
+            "$recipeTypes": [
+              "com.linkedin.180bad7e2024ccff1ee0157be65c0dd1"
+            ],
+            "jobPostingDetailSection": [
+              {
+                "howYouFitCard": null,
+                "similarJobsCard": null,
+                "interviewPrepCard": null,
+                "salaryCard": null,
+                "companyInsightsCard": null,
+                "*topCard": "urn:li:fsd_jobPostingCard:(4188561576,JOB_DETAILS)",
+                "bannerCard": null,
+                "jobSeekerActionCard": null,
+                "learningRecommendationCard": null,
+                "jobFitLevelSectionCard": null,
+                "hiringTeamCard": null,
+                "jobSegmentAttributesCard": null,
+                "howYouMatchCard": null,
+                "jobApplicantInsightsUrn": null,
+                "jobActivityCard": null,
+                "postApplyPromo": null,
+                "jobDescription": null,
+                "benefitsCard": null,
+                "jobAlertCard": null,
+                "seekerNextBestActionCards": null,
+                "marketplacePromoCard": null,
+                "topCardV2": null,
+                "companyCardV2": null,
+                "recommendedActionsCard": null
+              }
+            ],
+            "$type": "com.linkedin.voyager.dash.jobs.JobPostingDetailSection"
+          },
+          {
+            "$recipeTypes": [
+              "com.linkedin.180bad7e2024ccff1ee0157be65c0dd1"
+            ],
+            "jobPostingDetailSection": [
+              {
+                "howYouFitCard": {
+                  "*coachJobsKickoffPrompts": "urn:li:fsd_coachJobsKickoffPrompts:(4188561576,JOB_DETAILS_PRE_APPLY_V2)",
+                  "header": "Your AI-powered job assessment",
+                  "description": null,
+                  "isPremium": true,
+                  "$recipeTypes": [
+                    "com.linkedin.f0a23567d319f01c23ed0196720b5c49"
+                  ],
+                  "$type": "com.linkedin.voyager.dash.jobs.HowYouFitCard",
+                  "*premiumUpsellSlot": "urn:li:fsd_premiumUpsellSlot:JOB_DETAILS_HOW_YOU_FIT"
+                },
+                "similarJobsCard": null,
+                "interviewPrepCard": null,
+                "salaryCard": null,
+                "companyInsightsCard": null,
+                "topCard": null,
+                "bannerCard": null,
+                "jobSeekerActionCard": null,
+                "learningRecommendationCard": null,
+                "jobFitLevelSectionCard": null,
+                "hiringTeamCard": null,
+                "jobSegmentAttributesCard": null,
+                "howYouMatchCard": null,
+                "jobApplicantInsightsUrn": null,
+                "jobActivityCard": null,
+                "postApplyPromo": null,
+                "jobDescription": null,
+                "benefitsCard": null,
+                "jobAlertCard": null,
+                "seekerNextBestActionCards": null,
+                "marketplacePromoCard": null,
+                "topCardV2": null,
+                "companyCardV2": null,
+                "recommendedActionsCard": null
+              }
+            ],
+            "$type": "com.linkedin.voyager.dash.jobs.JobPostingDetailSection"
+          }
+        ],
+        "$type": "com.linkedin.restli.common.CollectionResponse"
+      },
+      "$type": "com.linkedin.8fbc3627c8305a33e3e6840ec7688312"
+    }
+  },
+  "included": [
+    {
+      "entityUrn": "urn:li:fsd_geo:103644278",
+      "countryISOCode": "US",
+      "abbreviatedLocalizedName": "United States",
+      "$recipeTypes": [
+        "com.linkedin.00c4f529ff2fa302d89eaea66344f268"
+      ],
+      "defaultLocalizedName": "United States",
+      "$type": "com.linkedin.voyager.dash.common.Geo"
+    },
+    {
+      "saved": false,
+      "entityUrn": "urn:li:fsd_saveState:(SAVE,urn:li:fsd_jobPosting:4188561576)",
+      "preDashEntityUrn": "urn:li:fs_saveAction:(SAVE,urn:li:fsd_jobPosting:4188561576)",
+      "$recipeTypes": [
+        "com.linkedin.9731877e56bf195f5714e9f273590184"
+      ],
+      "$type": "com.linkedin.voyager.dash.feed.SaveState"
+    },
+    {
+      "companyDetails": {
+        "$recipeTypes": [
+          "com.linkedin.b97672681af5b861a5ec5c53b8fcbc96"
+        ],
+        "jobCompany": {
+          "rawCompanyName": null,
+          "*company": "urn:li:fsd_company:13990"
+        },
+        "$type": "com.linkedin.voyager.dash.jobs.JobPostingCompany"
+      },
+      "jobState": "LISTED",
+      "trackingUrn": "urn:li:jobPosting:4188561576",
+      "*jobWorkplaceTypes": [
+        "urn:li:fsd_workplaceType:2"
+      ],
+      "repostedJob": false,
+      "trustReviewDecision": null,
+      "title": "Senior Software Development Engineer, Big Data",
+      "$recipeTypes": [
+        "com.linkedin.f8ea4e1538764dc27e403a1d55047e51"
+      ],
+      "posterId": "168764711",
+      "$type": "com.linkedin.voyager.dash.jobs.JobPosting",
+      "createdAt": 1742869046000,
+      "contentSource": "JOBS_PREMIUM_OFFLINE",
+      "entityUrn": "urn:li:fsd_jobPosting:4188561576",
+      "*location": "urn:li:fsd_geo:103644278",
+      "*workplaceTypesResolutionResults": [
+        "urn:li:fsd_workplaceType:2"
+      ]
+    },
+    {
+      "preDashNormalizedJobPostingUrn": "urn:li:fs_normalized_jobPosting:4188561576",
+      "primaryActions": [],
+      "navigationBarSubtitle": "Zillow · United States (Remote)",
+      "jobInsightsV2ResolutionResults": [
+        {
+          "noLongerVisibleInsightViewModel": null,
+          "premiumUpsellCard": null,
+          "jobInsightViewModel": {
+            "description": [
+              {
+                "label": {
+                  "colorStyle": "BRAND_ACCENT_3",
+                  "text": {
+                    "textDirection": "USER_LOCALE",
+                    "text": "  Remote",
+                    "attributesV2": [
+                      {
+                        "start": 0,
+                        "length": 1,
+                        "detailData": {
+                          "jobPostingName": null,
+                          "hyperlink": null,
+                          "profileFamiliarName": null,
+                          "color": null,
+                          "companyName": null,
+                          "icon": "IC_CHECK_16DP",
+                          "epoch": null,
+                          "systemImage": null,
+                          "textLink": null,
+                          "listItemStyle": null,
+                          "groupName": null,
+                          "hyperlinkOpenExternally": null,
+                          "listStyle": null,
+                          "profileFullName": null,
+                          "stringFieldReference": null,
+                          "learningCourseName": null,
+                          "profileMention": null,
+                          "style": null,
+                          "schoolName": null,
+                          "hashtag": null
+                        },
+                        "$recipeTypes": [
+                          "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+                        ],
+                        "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+                      }
+                    ],
+                    "accessibilityTextAttributesV2": [],
+                    "accessibilityText": "Matches your job preferences, workplace type is Remote.",
+                    "$recipeTypes": [
+                      "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+                    ],
+                    "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+                  },
+                  "$recipeTypes": [
+                    "com.linkedin.4a3588cb3f298939a6ef5b2e61cadc18"
+                  ],
+                  "$type": "com.linkedin.voyager.dash.common.ux.label.LabelViewModel"
+                },
+                "text": null
+              },
+              {
+                "label": {
+                  "colorStyle": "BRAND_ACCENT_3",
+                  "text": {
+                    "textDirection": "USER_LOCALE",
+                    "text": "  Full-time",
+                    "attributesV2": [
+                      {
+                        "start": 0,
+                        "length": 1,
+                        "detailData": {
+                          "jobPostingName": null,
+                          "hyperlink": null,
+                          "profileFamiliarName": null,
+                          "color": null,
+                          "companyName": null,
+                          "icon": "IC_CHECK_16DP",
+                          "epoch": null,
+                          "systemImage": null,
+                          "textLink": null,
+                          "listItemStyle": null,
+                          "groupName": null,
+                          "hyperlinkOpenExternally": null,
+                          "listStyle": null,
+                          "profileFullName": null,
+                          "stringFieldReference": null,
+                          "learningCourseName": null,
+                          "profileMention": null,
+                          "style": null,
+                          "schoolName": null,
+                          "hashtag": null
+                        },
+                        "$recipeTypes": [
+                          "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+                        ],
+                        "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+                      }
+                    ],
+                    "accessibilityTextAttributesV2": [],
+                    "accessibilityText": "Matches your job preferences, job type is Full-time.",
+                    "$recipeTypes": [
+                      "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+                    ],
+                    "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+                  },
+                  "$recipeTypes": [
+                    "com.linkedin.4a3588cb3f298939a6ef5b2e61cadc18"
+                  ],
+                  "$type": "com.linkedin.voyager.dash.common.ux.label.LabelViewModel"
+                },
+                "text": null
+              }
+            ],
+            "image": null,
+            "$recipeTypes": [
+              "com.linkedin.efd2ef2c46b7959f85a3d6461edc3e69"
+            ],
+            "$type": "com.linkedin.voyager.dash.jobs.JobInsightViewModel"
+          },
+          "insightViewModel": null,
+          "premiumUpsell": null,
+          "skillMatchInsight": null,
+          "verifiedHiringInsight": null,
+          "responsivenessInsightViewModel": null,
+          "trustInsightViewModel": null
+        }
+      ],
+      "title": {
+        "textDirection": "USER_LOCALE",
+        "text": "Senior Software Development Engineer, Big Data  ",
+        "attributesV2": [
+          {
+            "start": 0,
+            "length": 46,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": null,
+              "companyName": null,
+              "icon": null,
+              "epoch": null,
+              "systemImage": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": "BOLD",
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          },
+          {
+            "start": 47,
+            "length": 1,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": null,
+              "companyName": null,
+              "icon": null,
+              "systemImage": "SYS_ICN_VERIFIED_MEDIUM",
+              "epoch": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          },
+          {
+            "start": 47,
+            "length": 1,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": "LOW_EMPHASIS",
+              "companyName": null,
+              "icon": null,
+              "epoch": null,
+              "systemImage": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          },
+          {
+            "start": 47,
+            "length": 1,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": null,
+              "companyName": null,
+              "icon": null,
+              "epoch": null,
+              "systemImage": null,
+              "textLink": {
+                "viewingBehavior": "DEFAULT",
+                "controlName": null,
+                "sponsoredUrlAttributes": null,
+                "$recipeTypes": [
+                  "com.linkedin.ce28f52e436b3cdd8100675b5288a600"
+                ],
+                "url": "https://www.linkedin.com/jobs/view/4188561576?openBottomSheet=verifiedHiringV2",
+                "$type": "com.linkedin.voyager.dash.common.text.TextLink"
+              },
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          }
+        ],
+        "accessibilityTextAttributesV2": [],
+        "accessibilityText": "Senior Software Development Engineer, Big Data with verification",
+        "$recipeTypes": [
+          "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+        ],
+        "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+      },
+      "primaryActionV2": {
+        "dismissJobAction": null,
+        "applyJobAction": {
+          "applyControlName": "job_details_job_action_apply",
+          "$recipeTypes": [
+            "com.linkedin.64aff242d842d2f5c0d6ea1432ceb79a"
+          ],
+          "$type": "com.linkedin.voyager.dash.jobs.ApplyJobAction",
+          "*applyJobActionResolutionResult": "urn:li:fsd_jobSeekerApplicationDetail:4188561576"
+        },
+        "saveJobAction": null
+      },
+      "secondaryActionsV2ResolutionResults": [
+        {
+          "dismissJobAction": null,
+          "applyJobAction": null,
+          "saveJobAction": {
+            "*saveStateResolutionResult": "urn:li:fsd_saveState:(SAVE,urn:li:fsd_jobPosting:4188561576)",
+            "saveControlName": "job_details_job_action_save",
+            "unsaveControlName": "job_details_job_action_unsave",
+            "$recipeTypes": [
+              "com.linkedin.c175e2014cb329dc190cefda1f8b1191"
+            ],
+            "$type": "com.linkedin.voyager.dash.jobs.SaveJobAction"
+          }
+        }
+      ],
+      "entityUrn": "urn:li:fsd_jobPostingCard:(4188561576,JOB_DETAILS)",
+      "logo": {
+        "attributes": [
+          {
+            "scalingType": null,
+            "detailData": {
+              "profilePictureWithoutFrame": null,
+              "profilePictureWithRingStatus": null,
+              "icon": null,
+              "systemImage": null,
+              "*companyLogo": "urn:li:fsd_company:13990",
+              "nonEntityGroupLogo": null,
+              "vectorImage": null,
+              "nonEntityProfessionalEventLogo": null,
+              "profilePicture": null,
+              "imageUrl": null,
+              "professionalEventLogo": null,
+              "nonEntityCompanyLogo": null,
+              "nonEntitySchoolLogo": null,
+              "groupLogo": null,
+              "schoolLogo": null,
+              "ghostImage": null,
+              "nonEntityProfilePicture": null
+            },
+            "tintColor": null,
+            "$recipeTypes": [
+              "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+            ],
+            "tapTargets": [],
+            "displayAspectRatio": null,
+            "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+          }
+        ],
+        "editableAccessibilityText": false,
+        "actionTarget": "https://www.linkedin.com/company/zillow/life",
+        "accessibilityTextAttributes": [],
+        "totalCount": null,
+        "accessibilityText": "Zillow logo",
+        "$recipeTypes": [
+          "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+        ],
+        "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+      },
+      "tip": null,
+      "*jobPosting": "urn:li:fsd_jobPosting:4188561576",
+      "jobPostingTitle": "Senior Software Development Engineer, Big Data",
+      "*coachJobsKickoffPrompts": "urn:li:fsd_coachJobsKickoffPrompts:(4188561576,JOB_DETAILS)",
+      "*jobPostingVerification": "urn:li:fsd_jobPostingVerification:4188561576",
+      "primaryDescription": {
+        "textDirection": "USER_LOCALE",
+        "text": "Zillow",
+        "attributesV2": [
+          {
+            "start": 0,
+            "length": 6,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": "https://www.linkedin.com/company/zillow/life",
+              "profileFamiliarName": null,
+              "color": null,
+              "companyName": null,
+              "icon": null,
+              "epoch": null,
+              "systemImage": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          }
+        ],
+        "accessibilityTextAttributesV2": [],
+        "accessibilityText": null,
+        "$recipeTypes": [
+          "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+        ],
+        "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+      },
+      "$recipeTypes": [
+        "com.linkedin.f42293b24e5d60e317d2d68ab7597f64"
+      ],
+      "$type": "com.linkedin.voyager.dash.jobs.JobPostingCard",
+      "secondaryDescription": null,
+      "tertiaryDescription": {
+        "textDirection": "FIRST_STRONG",
+        "text": "United States · 2 weeks ago · Over 100 people clicked apply",
+        "attributesV2": [
+          {
+            "start": 0,
+            "length": 13,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": "LOW_EMPHASIS",
+              "companyName": null,
+              "icon": null,
+              "epoch": null,
+              "systemImage": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          },
+          {
+            "start": 13,
+            "length": 3,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": "LOW_EMPHASIS",
+              "companyName": null,
+              "icon": null,
+              "epoch": null,
+              "systemImage": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          },
+          {
+            "start": 16,
+            "length": 11,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": "LOW_EMPHASIS",
+              "companyName": null,
+              "icon": null,
+              "epoch": null,
+              "systemImage": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          },
+          {
+            "start": 16,
+            "length": 11,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": null,
+              "companyName": null,
+              "icon": null,
+              "epoch": {
+                "epochAt": 1742872540000,
+                "type": "TIME_AGO",
+                "$recipeTypes": [
+                  "com.linkedin.94721090e597af7c97503cb8b1a7e50f"
+                ],
+                "$type": "com.linkedin.voyager.dash.common.text.EpochTime"
+              },
+              "systemImage": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          },
+          {
+            "start": 27,
+            "length": 3,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": "LOW_EMPHASIS",
+              "companyName": null,
+              "icon": null,
+              "epoch": null,
+              "systemImage": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          },
+          {
+            "start": 30,
+            "length": 29,
+            "detailData": {
+              "jobPostingName": null,
+              "hyperlink": null,
+              "profileFamiliarName": null,
+              "color": "LOW_EMPHASIS",
+              "companyName": null,
+              "icon": null,
+              "epoch": null,
+              "systemImage": null,
+              "textLink": null,
+              "listItemStyle": null,
+              "groupName": null,
+              "hyperlinkOpenExternally": null,
+              "listStyle": null,
+              "profileFullName": null,
+              "stringFieldReference": null,
+              "learningCourseName": null,
+              "profileMention": null,
+              "style": null,
+              "schoolName": null,
+              "hashtag": null
+            },
+            "$recipeTypes": [
+              "com.linkedin.b0a683a611d43de435ed53c6232d8d44"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextAttribute"
+          }
+        ],
+        "accessibilityTextAttributesV2": [],
+        "accessibilityText": null,
+        "$recipeTypes": [
+          "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+        ],
+        "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+      }
+    },
+    {
+      "badge": {
+        "attributes": [
+          {
+            "scalingType": null,
+            "detailData": {
+              "profilePictureWithoutFrame": null,
+              "profilePictureWithRingStatus": null,
+              "companyLogo": null,
+              "icon": null,
+              "systemImage": "SYS_ICN_VERIFIED_MEDIUM",
+              "nonEntityGroupLogo": null,
+              "vectorImage": null,
+              "nonEntityProfessionalEventLogo": null,
+              "profilePicture": null,
+              "imageUrl": null,
+              "professionalEventLogo": null,
+              "nonEntityCompanyLogo": null,
+              "nonEntitySchoolLogo": null,
+              "groupLogo": null,
+              "schoolLogo": null,
+              "ghostImage": null,
+              "nonEntityProfilePicture": null
+            },
+            "tintColor": null,
+            "$recipeTypes": [
+              "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+            ],
+            "tapTargets": [],
+            "displayAspectRatio": null,
+            "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+          }
+        ],
+        "editableAccessibilityText": false,
+        "actionTarget": "https://www.linkedin.com/jobs/view/4188561576?openBottomSheet=verifiedHiringV2",
+        "accessibilityTextAttributes": [],
+        "totalCount": null,
+        "accessibilityText": null,
+        "$recipeTypes": [
+          "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+        ],
+        "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+      },
+      "entityUrn": "urn:li:fsd_jobPostingVerification:4188561576",
+      "controlName": "verification_show_all",
+      "$recipeTypes": [
+        "com.linkedin.6e9f752a90d23115960476b5ebe9cce2"
+      ],
+      "$type": "com.linkedin.voyager.dash.jobs.JobPostingVerification"
+    },
+    {
+      "resume": null,
+      "hasConfirmedEmailAddress": true,
+      "applied": false,
+      "applyStartersPreferenceVoid": false,
+      "jobDraftApplicationInfo": null,
+      "formattedApplyDate": null,
+      "$recipeTypes": [
+        "com.linkedin.0da643628377886b9fb1a0bb0cc0b73c"
+      ],
+      "onsiteApply": false,
+      "$type": "com.linkedin.voyager.dash.jobs.JobSeekerApplicationDetail",
+      "applyCtaText": {
+        "textDirection": "USER_LOCALE",
+        "text": "Apply",
+        "attributesV2": [],
+        "accessibilityTextAttributesV2": [],
+        "accessibilityText": "Apply on company website",
+        "$recipeTypes": [
+          "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+        ],
+        "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+      },
+      "entityUrn": "urn:li:fsd_jobSeekerApplicationDetail:4188561576",
+      "inPageOffsiteApply": false,
+      "applicantTrackingSystemName": "Workday",
+      "preApplySafetyTips": [],
+      "ambryResumeContainer": null,
+      "companyApplyUrl": "https://zillow.wd5.myworkdayjobs.com/Zillow_Group_External/job/Remote-USA/Senior-Software-Development-Engineer--Big-Data_P746592-1?source=LinkedIn",
+      "appliedAt": null
+    },
+    {
+      "localizedName": "Remote",
+      "entityUrn": "urn:li:fsd_workplaceType:2",
+      "workplaceTypeEnum": "REMOTE",
+      "localizedDescription": "Employees work off-site.",
+      "$recipeTypes": [
+        "com.linkedin.79cb580711dcd3cf7d83e724b3d9e260"
+      ],
+      "$type": "com.linkedin.voyager.dash.jobs.WorkplaceType"
+    },
+    {
+      "entityUrn": "urn:li:fsd_coachJobsKickoffPrompts:(4188561576,JOB_DETAILS_PRE_APPLY_V2)",
+      "isPremium": true,
+      "legoTrackingToken": null,
+      "$recipeTypes": [
+        "com.linkedin.8e19fba94618da7ceb9cca894420a5da"
+      ],
+      "kickoffPrompts": [
+        {
+          "queryText": "",
+          "controlName": "view_coach",
+          "coachSparkleIcon": {
+            "attributes": [
+              {
+                "scalingType": null,
+                "detailData": {
+                  "profilePictureWithoutFrame": null,
+                  "profilePictureWithRingStatus": null,
+                  "companyLogo": null,
+                  "icon": null,
+                  "systemImage": "SYS_ICN_SIGNAL_AI_SMALL",
+                  "nonEntityGroupLogo": null,
+                  "vectorImage": null,
+                  "nonEntityProfessionalEventLogo": null,
+                  "profilePicture": null,
+                  "imageUrl": null,
+                  "professionalEventLogo": null,
+                  "nonEntityCompanyLogo": null,
+                  "nonEntitySchoolLogo": null,
+                  "groupLogo": null,
+                  "schoolLogo": null,
+                  "ghostImage": null,
+                  "nonEntityProfilePicture": null
+                },
+                "tintColor": "PREMIUM_INBUG",
+                "$recipeTypes": [
+                  "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+                ],
+                "tapTargets": [],
+                "displayAspectRatio": null,
+                "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+              }
+            ],
+            "editableAccessibilityText": false,
+            "actionTarget": null,
+            "accessibilityTextAttributes": [],
+            "totalCount": null,
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+          },
+          "title": {
+            "textDirection": "USER_LOCALE",
+            "text": "",
+            "attributesV2": [],
+            "accessibilityTextAttributesV2": [],
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+          },
+          "$recipeTypes": [
+            "com.linkedin.70094a2b1194a3dfad82481287a40a81"
+          ],
+          "toolTipText": "See personalized advice on how to best position yourself for this job.",
+          "coachQueryContextV2": {
+            "serverIntent": "CoachClientIntent_JOB_DETAILS_PAGE",
+            "$recipeTypes": [
+              "com.linkedin.8864b68d440629f1899c8ff463b7f71d"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.coach.CoachQueryContextV2"
+          },
+          "coachUseCaseType": "JOB_SEEKER",
+          "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompt"
+        },
+        {
+          "queryText": "Am I a good fit?",
+          "controlName": "view_coach",
+          "coachSparkleIcon": {
+            "attributes": [
+              {
+                "scalingType": null,
+                "detailData": {
+                  "profilePictureWithoutFrame": null,
+                  "profilePictureWithRingStatus": null,
+                  "companyLogo": null,
+                  "icon": null,
+                  "systemImage": "SYS_ICN_SIGNAL_AI_SMALL",
+                  "nonEntityGroupLogo": null,
+                  "vectorImage": null,
+                  "nonEntityProfessionalEventLogo": null,
+                  "profilePicture": null,
+                  "imageUrl": null,
+                  "professionalEventLogo": null,
+                  "nonEntityCompanyLogo": null,
+                  "nonEntitySchoolLogo": null,
+                  "groupLogo": null,
+                  "schoolLogo": null,
+                  "ghostImage": null,
+                  "nonEntityProfilePicture": null
+                },
+                "tintColor": "PREMIUM_INBUG",
+                "$recipeTypes": [
+                  "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+                ],
+                "tapTargets": [],
+                "displayAspectRatio": null,
+                "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+              }
+            ],
+            "editableAccessibilityText": false,
+            "actionTarget": null,
+            "accessibilityTextAttributes": [],
+            "totalCount": null,
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+          },
+          "title": {
+            "textDirection": "USER_LOCALE",
+            "text": "Am I a good fit?",
+            "attributesV2": [],
+            "accessibilityTextAttributesV2": [],
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+          },
+          "$recipeTypes": [
+            "com.linkedin.70094a2b1194a3dfad82481287a40a81"
+          ],
+          "toolTipText": "See personalized advice on how to best position yourself for this job.",
+          "coachQueryContextV2": {
+            "serverIntent": "CoachClientIntent_JOB_ASSESSMENT",
+            "$recipeTypes": [
+              "com.linkedin.8864b68d440629f1899c8ff463b7f71d"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.coach.CoachQueryContextV2"
+          },
+          "coachUseCaseType": "JOB_SEEKER",
+          "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompt"
+        },
+        {
+          "queryText": "Tailor my resume",
+          "controlName": "view_coach",
+          "coachSparkleIcon": {
+            "attributes": [
+              {
+                "scalingType": null,
+                "detailData": {
+                  "profilePictureWithoutFrame": null,
+                  "profilePictureWithRingStatus": null,
+                  "companyLogo": null,
+                  "icon": null,
+                  "systemImage": "SYS_ICN_SIGNAL_AI_SMALL",
+                  "nonEntityGroupLogo": null,
+                  "vectorImage": null,
+                  "nonEntityProfessionalEventLogo": null,
+                  "profilePicture": null,
+                  "imageUrl": null,
+                  "professionalEventLogo": null,
+                  "nonEntityCompanyLogo": null,
+                  "nonEntitySchoolLogo": null,
+                  "groupLogo": null,
+                  "schoolLogo": null,
+                  "ghostImage": null,
+                  "nonEntityProfilePicture": null
+                },
+                "tintColor": "PREMIUM_INBUG",
+                "$recipeTypes": [
+                  "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+                ],
+                "tapTargets": [],
+                "displayAspectRatio": null,
+                "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+              }
+            ],
+            "editableAccessibilityText": false,
+            "actionTarget": null,
+            "accessibilityTextAttributes": [],
+            "totalCount": null,
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+          },
+          "title": {
+            "textDirection": "USER_LOCALE",
+            "text": "Tailor my resume",
+            "attributesV2": [],
+            "accessibilityTextAttributesV2": [],
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+          },
+          "$recipeTypes": [
+            "com.linkedin.70094a2b1194a3dfad82481287a40a81"
+          ],
+          "toolTipText": "See personalized advice on how to best position yourself for this job.",
+          "coachQueryContextV2": {
+            "serverIntent": "CoachClientIntent_RESUME_ASSISTANCE",
+            "$recipeTypes": [
+              "com.linkedin.8864b68d440629f1899c8ff463b7f71d"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.coach.CoachQueryContextV2"
+          },
+          "coachUseCaseType": "JOB_SEEKER",
+          "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompt"
+        },
+        {
+          "queryText": "How can I best position myself?",
+          "controlName": "view_coach",
+          "coachSparkleIcon": {
+            "attributes": [
+              {
+                "scalingType": null,
+                "detailData": {
+                  "profilePictureWithoutFrame": null,
+                  "profilePictureWithRingStatus": null,
+                  "companyLogo": null,
+                  "icon": null,
+                  "systemImage": "SYS_ICN_SIGNAL_AI_SMALL",
+                  "nonEntityGroupLogo": null,
+                  "vectorImage": null,
+                  "nonEntityProfessionalEventLogo": null,
+                  "profilePicture": null,
+                  "imageUrl": null,
+                  "professionalEventLogo": null,
+                  "nonEntityCompanyLogo": null,
+                  "nonEntitySchoolLogo": null,
+                  "groupLogo": null,
+                  "schoolLogo": null,
+                  "ghostImage": null,
+                  "nonEntityProfilePicture": null
+                },
+                "tintColor": "PREMIUM_INBUG",
+                "$recipeTypes": [
+                  "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+                ],
+                "tapTargets": [],
+                "displayAspectRatio": null,
+                "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+              }
+            ],
+            "editableAccessibilityText": false,
+            "actionTarget": null,
+            "accessibilityTextAttributes": [],
+            "totalCount": null,
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+          },
+          "title": {
+            "textDirection": "USER_LOCALE",
+            "text": "How can I best position myself?",
+            "attributesV2": [],
+            "accessibilityTextAttributesV2": [],
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+          },
+          "$recipeTypes": [
+            "com.linkedin.70094a2b1194a3dfad82481287a40a81"
+          ],
+          "toolTipText": "See personalized advice on how to best position yourself for this job.",
+          "coachQueryContextV2": {
+            "serverIntent": "CoachClientIntent_JOB_RECOMMENDED_ACTIONS",
+            "$recipeTypes": [
+              "com.linkedin.8864b68d440629f1899c8ff463b7f71d"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.coach.CoachQueryContextV2"
+          },
+          "coachUseCaseType": "JOB_SEEKER",
+          "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompt"
+        }
+      ],
+      "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompts"
+    },
+    {
+      "entityUrn": "urn:li:fsd_coachJobsKickoffPrompts:(4188561576,JOB_DETAILS)",
+      "isPremium": true,
+      "legoTrackingToken": null,
+      "$recipeTypes": [
+        "com.linkedin.8e19fba94618da7ceb9cca894420a5da"
+      ],
+      "kickoffPrompts": [
+        {
+          "queryText": "",
+          "controlName": "view_coach",
+          "coachSparkleIcon": {
+            "attributes": [
+              {
+                "scalingType": null,
+                "detailData": {
+                  "profilePictureWithoutFrame": null,
+                  "profilePictureWithRingStatus": null,
+                  "companyLogo": null,
+                  "icon": null,
+                  "systemImage": "SYS_ICN_SIGNAL_AI_SMALL",
+                  "nonEntityGroupLogo": null,
+                  "vectorImage": null,
+                  "nonEntityProfessionalEventLogo": null,
+                  "profilePicture": null,
+                  "imageUrl": null,
+                  "professionalEventLogo": null,
+                  "nonEntityCompanyLogo": null,
+                  "nonEntitySchoolLogo": null,
+                  "groupLogo": null,
+                  "schoolLogo": null,
+                  "ghostImage": null,
+                  "nonEntityProfilePicture": null
+                },
+                "tintColor": "PREMIUM_INBUG",
+                "$recipeTypes": [
+                  "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+                ],
+                "tapTargets": [],
+                "displayAspectRatio": null,
+                "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+              }
+            ],
+            "editableAccessibilityText": false,
+            "actionTarget": null,
+            "accessibilityTextAttributes": [],
+            "totalCount": null,
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+          },
+          "title": {
+            "textDirection": "USER_LOCALE",
+            "text": "",
+            "attributesV2": [],
+            "accessibilityTextAttributesV2": [],
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+          },
+          "$recipeTypes": [
+            "com.linkedin.70094a2b1194a3dfad82481287a40a81"
+          ],
+          "toolTipText": "See personalized advice on how to best position yourself for this job.",
+          "coachQueryContextV2": {
+            "serverIntent": "CoachClientIntent_JOB_DETAILS_PAGE",
+            "$recipeTypes": [
+              "com.linkedin.8864b68d440629f1899c8ff463b7f71d"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.coach.CoachQueryContextV2"
+          },
+          "coachUseCaseType": "JOB_SEEKER",
+          "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompt"
+        },
+        {
+          "queryText": "Am I a good fit?",
+          "controlName": "view_coach",
+          "coachSparkleIcon": {
+            "attributes": [
+              {
+                "scalingType": null,
+                "detailData": {
+                  "profilePictureWithoutFrame": null,
+                  "profilePictureWithRingStatus": null,
+                  "companyLogo": null,
+                  "icon": null,
+                  "systemImage": "SYS_ICN_SIGNAL_AI_SMALL",
+                  "nonEntityGroupLogo": null,
+                  "vectorImage": null,
+                  "nonEntityProfessionalEventLogo": null,
+                  "profilePicture": null,
+                  "imageUrl": null,
+                  "professionalEventLogo": null,
+                  "nonEntityCompanyLogo": null,
+                  "nonEntitySchoolLogo": null,
+                  "groupLogo": null,
+                  "schoolLogo": null,
+                  "ghostImage": null,
+                  "nonEntityProfilePicture": null
+                },
+                "tintColor": "PREMIUM_INBUG",
+                "$recipeTypes": [
+                  "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+                ],
+                "tapTargets": [],
+                "displayAspectRatio": null,
+                "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+              }
+            ],
+            "editableAccessibilityText": false,
+            "actionTarget": null,
+            "accessibilityTextAttributes": [],
+            "totalCount": null,
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+          },
+          "title": {
+            "textDirection": "USER_LOCALE",
+            "text": "Am I a good fit?",
+            "attributesV2": [],
+            "accessibilityTextAttributesV2": [],
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+          },
+          "$recipeTypes": [
+            "com.linkedin.70094a2b1194a3dfad82481287a40a81"
+          ],
+          "toolTipText": "See personalized advice on how to best position yourself for this job.",
+          "coachQueryContextV2": {
+            "serverIntent": "CoachClientIntent_JOB_ASSESSMENT",
+            "$recipeTypes": [
+              "com.linkedin.8864b68d440629f1899c8ff463b7f71d"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.coach.CoachQueryContextV2"
+          },
+          "coachUseCaseType": "JOB_SEEKER",
+          "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompt"
+        },
+        {
+          "queryText": "Tailor my resume",
+          "controlName": "view_coach",
+          "coachSparkleIcon": {
+            "attributes": [
+              {
+                "scalingType": null,
+                "detailData": {
+                  "profilePictureWithoutFrame": null,
+                  "profilePictureWithRingStatus": null,
+                  "companyLogo": null,
+                  "icon": null,
+                  "systemImage": "SYS_ICN_SIGNAL_AI_SMALL",
+                  "nonEntityGroupLogo": null,
+                  "vectorImage": null,
+                  "nonEntityProfessionalEventLogo": null,
+                  "profilePicture": null,
+                  "imageUrl": null,
+                  "professionalEventLogo": null,
+                  "nonEntityCompanyLogo": null,
+                  "nonEntitySchoolLogo": null,
+                  "groupLogo": null,
+                  "schoolLogo": null,
+                  "ghostImage": null,
+                  "nonEntityProfilePicture": null
+                },
+                "tintColor": "PREMIUM_INBUG",
+                "$recipeTypes": [
+                  "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+                ],
+                "tapTargets": [],
+                "displayAspectRatio": null,
+                "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+              }
+            ],
+            "editableAccessibilityText": false,
+            "actionTarget": null,
+            "accessibilityTextAttributes": [],
+            "totalCount": null,
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+          },
+          "title": {
+            "textDirection": "USER_LOCALE",
+            "text": "Tailor my resume",
+            "attributesV2": [],
+            "accessibilityTextAttributesV2": [],
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+          },
+          "$recipeTypes": [
+            "com.linkedin.70094a2b1194a3dfad82481287a40a81"
+          ],
+          "toolTipText": "See personalized advice on how to best position yourself for this job.",
+          "coachQueryContextV2": {
+            "serverIntent": "CoachClientIntent_RESUME_ASSISTANCE",
+            "$recipeTypes": [
+              "com.linkedin.8864b68d440629f1899c8ff463b7f71d"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.coach.CoachQueryContextV2"
+          },
+          "coachUseCaseType": "JOB_SEEKER",
+          "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompt"
+        },
+        {
+          "queryText": "How can I best position myself?",
+          "controlName": "view_coach",
+          "coachSparkleIcon": {
+            "attributes": [
+              {
+                "scalingType": null,
+                "detailData": {
+                  "profilePictureWithoutFrame": null,
+                  "profilePictureWithRingStatus": null,
+                  "companyLogo": null,
+                  "icon": null,
+                  "systemImage": "SYS_ICN_SIGNAL_AI_SMALL",
+                  "nonEntityGroupLogo": null,
+                  "vectorImage": null,
+                  "nonEntityProfessionalEventLogo": null,
+                  "profilePicture": null,
+                  "imageUrl": null,
+                  "professionalEventLogo": null,
+                  "nonEntityCompanyLogo": null,
+                  "nonEntitySchoolLogo": null,
+                  "groupLogo": null,
+                  "schoolLogo": null,
+                  "ghostImage": null,
+                  "nonEntityProfilePicture": null
+                },
+                "tintColor": "PREMIUM_INBUG",
+                "$recipeTypes": [
+                  "com.linkedin.296fd4ebc3f7a46ccca548d534f656e4"
+                ],
+                "tapTargets": [],
+                "displayAspectRatio": null,
+                "$type": "com.linkedin.voyager.dash.common.image.ImageAttribute"
+              }
+            ],
+            "editableAccessibilityText": false,
+            "actionTarget": null,
+            "accessibilityTextAttributes": [],
+            "totalCount": null,
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.30e1ec6a491035bd7a31cc9de8a12c18"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.image.ImageViewModel"
+          },
+          "title": {
+            "textDirection": "USER_LOCALE",
+            "text": "How can I best position myself?",
+            "attributesV2": [],
+            "accessibilityTextAttributesV2": [],
+            "accessibilityText": null,
+            "$recipeTypes": [
+              "com.linkedin.390ac1c1431d5b4e340a65af24ed68f2"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.text.TextViewModel"
+          },
+          "$recipeTypes": [
+            "com.linkedin.70094a2b1194a3dfad82481287a40a81"
+          ],
+          "toolTipText": "See personalized advice on how to best position yourself for this job.",
+          "coachQueryContextV2": {
+            "serverIntent": "CoachClientIntent_JOB_RECOMMENDED_ACTIONS",
+            "$recipeTypes": [
+              "com.linkedin.8864b68d440629f1899c8ff463b7f71d"
+            ],
+            "$type": "com.linkedin.voyager.dash.common.coach.CoachQueryContextV2"
+          },
+          "coachUseCaseType": "JOB_SEEKER",
+          "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompt"
+        }
+      ],
+      "$type": "com.linkedin.voyager.dash.jobs.gai.CoachJobsKickoffPrompts"
+    },
+    {
+      "name": "Zillow",
+      "logoResolutionResult": {
+        "url": null,
+        "vectorImage": {
+          "digitalmediaAsset": "urn:li:digitalmediaAsset:D560BAQGrC7UhdwNCBQ",
+          "attribution": null,
+          "c2paManifestData": null,
+          "$recipeTypes": [
+            "com.linkedin.b8949adeaaa915212d0136c4b9a1952b"
+          ],
+          "artifacts": [
+            {
+              "width": 200,
+              "$recipeTypes": [
+                "com.linkedin.8d64ead1eeea51a297dc70da47337de1"
+              ],
+              "fileIdentifyingUrlPathSegment": "200_200/company-logo_200_200/0/1736460294867/zillow_logo?e=1749686400&v=beta&t=3dvdtOCYb9H1IZlJ1BC2gDaebawQLtcKWRafl5Iq0qw",
+              "expiresAt": 1749686400000,
+              "height": 200,
+              "$type": "com.linkedin.common.VectorArtifact"
+            },
+            {
+              "width": 100,
+              "$recipeTypes": [
+                "com.linkedin.8d64ead1eeea51a297dc70da47337de1"
+              ],
+              "fileIdentifyingUrlPathSegment": "100_100/company-logo_100_100/0/1736460294867/zillow_logo?e=1749686400&v=beta&t=OuqEODVTghh59LUaow0UUg8XC2nMuct5aYI_HPnoXbc",
+              "expiresAt": 1749686400000,
+              "height": 100,
+              "$type": "com.linkedin.common.VectorArtifact"
+            },
+            {
+              "width": 400,
+              "$recipeTypes": [
+                "com.linkedin.8d64ead1eeea51a297dc70da47337de1"
+              ],
+              "fileIdentifyingUrlPathSegment": "400_400/company-logo_400_400/0/1736460294867/zillow_logo?e=1749686400&v=beta&t=0pEo7JzQMDZtWATPDtSaEJVdLrK_rJtLyDB94MD2wu0",
+              "expiresAt": 1749686400000,
+              "height": 400,
+              "$type": "com.linkedin.common.VectorArtifact"
+            }
+          ],
+          "rootUrl": "https://media.licdn.com/dms/image/v2/D560BAQGrC7UhdwNCBQ/company-logo_",
+          "$type": "com.linkedin.common.VectorImage"
+        }
+      },
+      "entityUrn": "urn:li:fsd_company:13990",
+      "$recipeTypes": [
+        "com.linkedin.a2ef5c1c8d1bd7b83de7009b834a38c6"
+      ],
+      "$type": "com.linkedin.voyager.dash.organization.Company"
+    },
+    {
+      "entityUrn": "urn:li:fsd_premiumUpsellSlot:JOB_DETAILS_HOW_YOU_FIT",
+      "$recipeTypes": [
+        "com.linkedin.dc4c6e3940e502e42eb82438140331c7"
+      ],
+      "upsellCard": null,
+      "$type": "com.linkedin.voyager.dash.premium.PremiumUpsellSlotContent"
+    }
+  ]
+}

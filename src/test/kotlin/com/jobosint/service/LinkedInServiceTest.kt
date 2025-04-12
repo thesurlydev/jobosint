@@ -73,4 +73,11 @@ class LinkedInServiceTest {
         assert(results.isNotEmpty())
         assertEquals(10, results.size)
     }
+
+    @Test
+    fun getQueryIdFromJobId() {
+        val jobId = "3902691303"
+        val queryId = linkedInService.getQueryIdFromJobId(jobId)
+        assertEquals("c07b0d44515bceba51a9b73c01b0cecb", queryId)
+    }
 }
