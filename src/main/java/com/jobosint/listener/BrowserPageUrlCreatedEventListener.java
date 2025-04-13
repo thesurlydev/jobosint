@@ -18,12 +18,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.Map.entry;
 
@@ -38,8 +41,16 @@ public class BrowserPageUrlCreatedEventListener implements ApplicationListener<B
     private final ScrapeService scrapeService;
     private final LinkedInService linkedInService;
     private final JobService jobService;
+    
+    // Semaphore to limit concurrent scraping operations
+    private final Semaphore scrapeSemaphore = new Semaphore(2); // Reduced to 2 concurrent scrapes
+    
+    // Track scraping statistics
+    private final AtomicInteger successCount = new AtomicInteger(0);
+    private final AtomicInteger failureCount = new AtomicInteger(0);
 
     @Override
+    @Async
     public void onApplicationEvent(@NonNull BrowserPageUrlCreatedEvent event) {
         log.info("Received: {}", event);
 
@@ -53,35 +64,103 @@ public class BrowserPageUrlCreatedEventListener implements ApplicationListener<B
         }
 
         log.info("Scraping URL: {}", url);
-        Path savedPath;
+        Path savedPath = null;
+        
+        // Acquire a permit from the semaphore before scraping
         try {
+            log.debug("Waiting for scrape permit for URL: {}", url);
+            scrapeSemaphore.acquire();
+            log.debug("Acquired scrape permit for URL: {}", url);
+            
+            try {
+                // Attempt to scrape with retry logic
+                ScrapeResponse scrapeResponse = null;
+                Exception lastException = null;
+                
+                // Try up to 3 times
+                for (int attempt = 0; attempt < 3; attempt++) {
+                    try {
+                        scrapeResponse = scrapeService.scrapeHtml(url, cookieService.loadLinkedInCookies());
+                        break; // Success, exit the loop
+                    } catch (Exception e) {
+                        lastException = e;
+                        log.warn("Scrape attempt {} failed for URL {}: {}", attempt + 1, url, e.getMessage());
+                        
+                        if (attempt < 2) {
+                            // Wait before retrying
+                            try {
+                                Thread.sleep(1000 * (attempt + 1)); // Exponential backoff
+                            } catch (InterruptedException ie) {
+                                Thread.currentThread().interrupt();
+                                throw new RuntimeException("Interrupted while waiting to retry scrape", ie);
+                            }
+                        }
+                    }
+                }
+                
+                // If all attempts failed
+                if (scrapeResponse == null) {
+                    if (lastException != null) {
+                        throw lastException;
+                    } else {
+                        throw new RuntimeException("Failed to scrape after multiple attempts");
+                    }
+                }
 
-            ScrapeResponse scrapeResponse = scrapeService.scrapeHtml(url, cookieService.loadLinkedInCookies());
+                if (scrapeResponse.errors() != null && !scrapeResponse.errors().isEmpty()) {
+                    log.error("Errors: {}", scrapeResponse.errors());
+                    failureCount.incrementAndGet();
+                    throw new RuntimeException("Failed to get job detail: " + scrapeResponse.errors());
+                }
 
-            if (scrapeResponse.errors() == null || !scrapeResponse.errors().isEmpty()) {
-                log.error("Errors: {}", scrapeResponse.errors());
-                throw new RuntimeException("Failed to get job detail: " + scrapeResponse.errors());
+                if (scrapeResponse.data() == null || scrapeResponse.data().isEmpty()) {
+                    log.error("No data returned from scrape");
+                    failureCount.incrementAndGet();
+                    throw new RuntimeException("Failed to get job detail: No data returned");
+                }
+
+                var content = java.lang.String.join(System.lineSeparator(), scrapeResponse.data());
+
+                String decodedContent = UrlUtils.decodeContent(content);
+
+                Document doc = Jsoup.parse(decodedContent);
+                if (doc.title().equals("LinkedIn")) {
+                    failureCount.incrementAndGet();
+                    throw new RuntimeException("LinkedIn blocked the request");
+                }
+
+                savedPath = pageService.saveContent(decodedContent);
+                successCount.incrementAndGet();
+                log.info("Scrape successful for URL: {} (Success: {}, Failures: {})", 
+                        url, successCount.get(), failureCount.get());
+                
+            } catch (IOException e) {
+                failureCount.incrementAndGet();
+                log.error("IO error while scraping URL {}: {}", url, e.getMessage());
+                throw new RuntimeException(e);
+            } catch (Exception e) {
+                failureCount.incrementAndGet();
+                log.error("Error while scraping URL {}: {}", url, e.getMessage());
+                throw new RuntimeException(e);
+            } finally {
+                // Always release the permit
+                scrapeSemaphore.release();
+                log.debug("Released scrape permit for URL: {}", url);
             }
-
-            var content = java.lang.String.join(System.lineSeparator(), scrapeResponse.data());
-
-            String decodedContent = UrlUtils.decodeContent(content);
-
-            Document doc = Jsoup.parse(decodedContent);
-            if (doc.title().equals("LinkedIn")) {
-                throw new RuntimeException("LinkedIn blocked the request");
+            
+            if (savedPath != null) {
+                log.info("Saved content to {}", savedPath);
+    
+                Page page = new Page(null, url, savedPath.toString(), "sync");
+                Page savedPage = pageService.savePage(page, null);
+    
+                log.info("Saved page: {}", savedPage);
             }
-
-            savedPath = pageService.saveContent(decodedContent);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.error("Interrupted while waiting for scrape permit: {}", e.getMessage());
+            throw new RuntimeException("Interrupted while waiting for scrape permit", e);
         }
-        log.info("Saved content to {}", savedPath);
-
-        Page page = new Page(null, url, savedPath.toString(), "sync");
-        Page savedPage = pageService.savePage(page, null);
-
-        log.info("Saved page: {}", savedPage);
     }
 
     /**
@@ -94,18 +173,6 @@ public class BrowserPageUrlCreatedEventListener implements ApplicationListener<B
         return Map.ofEntries(
                 entry("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"),
                 entry("Accept-Language", "en-US,en;q=0.9"),
-//                entry("Cache-Control", "no-cache"),
-//                entry("Pragma", "no-cache"),
-//                entry("priority", "u=0, i"),
-//                entry("sec-ch-prefers-color-scheme", "light"),
-//                entry("sec-ch-ua", "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\""),
-//                entry("sec-ch-ua-mobile", "?0"),
-//                entry("sec-ch-ua-platform", "\"macOS\""),
-//                entry("sec-fetch-dest", "document"),
-//                entry("sec-fetch-mode", "navigate"),
-//                entry("sec-fetch-site", "same-origin"),
-//                entry("sec-fetch-user", "?1"),
-//                entry("upgrade-insecure-requests", "1"),
                 entry("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36")
         );
     }

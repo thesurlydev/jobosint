@@ -15,6 +15,7 @@ import com.jobosint.util.LinkedInUtils.getCompanyTokenFromUrl
 import com.jobosint.util.LinkedInUtils.getJobBoardIdFromPath
 import com.jobosint.util.LinkedInUtils.getJobBoardIdFromUrl
 import com.microsoft.playwright.Browser
+import com.microsoft.playwright.BrowserContext
 import com.microsoft.playwright.BrowserType.LaunchOptions
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
@@ -29,11 +30,14 @@ import java.net.URISyntaxException
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.net.http.HttpResponse.BodyHandlers
+import java.time.LocalDateTime
+import java.util.concurrent.ConcurrentHashMap
 import java.util.function.Consumer
+import jakarta.annotation.PreDestroy
 
 @Service
 class LinkedInService(
-    val browser: Browser,
+    val playwright: Playwright,
     val linkedInParser: LinkedInParser,
     val jobService: JobService,
     val scrapeService: ScrapeService,
@@ -46,7 +50,81 @@ class LinkedInService(
 ) {
 
     private val log = LoggerFactory.getLogger(LinkedInService::class.java)
+    
+    // Thread-local browser instances
+    private val threadBrowsers = ConcurrentHashMap<Long, Browser>()
+    private val threadContexts = ConcurrentHashMap<Long, BrowserContext>()
 
+    /**
+     * Get or create a browser instance for the current thread
+     */
+    private fun getBrowser(): Browser {
+        val threadId = Thread.currentThread().id
+        return threadBrowsers.computeIfAbsent(threadId) {
+            log.info("Creating new browser instance for thread {}", threadId)
+            val launchOptions = LaunchOptions()
+            launchOptions.setHeadless(true)
+            playwright.chromium().launch(launchOptions)
+        }
+    }
+
+    /**
+     * Create a new browser context for the current thread
+     */
+    private fun createContext(): BrowserContext {
+        val threadId = Thread.currentThread().id
+        // Close any existing context for this thread
+        closeContext()
+        
+        // Create a new context
+        val context = getBrowser().newContext()
+        threadContexts[threadId] = context
+        log.debug("Created new browser context for thread {}", threadId)
+        return context
+    }
+    
+    /**
+     * Close the browser context for the current thread
+     */
+    private fun closeContext() {
+        val threadId = Thread.currentThread().id
+        val existingContext = threadContexts.remove(threadId)
+        existingContext?.let {
+            try {
+                it.close()
+                log.debug("Closed browser context for thread {}", threadId)
+            } catch (e: Exception) {
+                log.warn("Error closing browser context for thread {}: {}", threadId, e.message)
+            }
+        }
+    }
+    
+    /**
+     * Clean up resources when the application is shutting down
+     */
+    @PreDestroy
+    fun cleanup() {
+        log.info("Cleaning up browser resources")
+        threadContexts.forEach { (threadId, context) ->
+            try {
+                context.close()
+                log.debug("Closed browser context for thread {}", threadId)
+            } catch (e: Exception) {
+                log.warn("Error closing browser context for thread {}: {}", threadId, e.message)
+            }
+        }
+        threadContexts.clear()
+        
+        threadBrowsers.forEach { (threadId, browser) ->
+            try {
+                browser.close()
+                log.debug("Closed browser for thread {}", threadId)
+            } catch (e: Exception) {
+                log.warn("Error closing browser for thread {}: {}", threadId, e.message)
+            }
+        }
+        threadBrowsers.clear()
+    }
 
     fun getQueryIdFromJobId(jobId: String): String {
         val uri: URI?
@@ -100,114 +178,226 @@ class LinkedInService(
             val pageUrl = jobPageDetail.pageUrl
             try {
                 val jobBoardId = getJobBoardIdFromUrl(pageUrl)
-                jobService.updateJobBoardId(jobPageDetail.id, jobBoardId)
-            } catch (e: IllegalArgumentException) {
-                log.warn("Invalid jobId: $pageUrl")
+                if (jobBoardId != null) {
+                    jobService.updateJobBoardId(jobPageDetail.id, jobBoardId)
+                }
+            } catch (e: Exception) {
+                log.error("Error updating job board id for {}", pageUrl, e)
             }
         })
+    }
+
+    fun getJobDetail(jobId: String): Job? {
+        val existingJob = jobService.getJobBySourceJobId("LinkedIn", jobId)
+        if (existingJob.isPresent) {
+            return existingJob.get()
+        }
+
+        val url = "https://www.linkedin.com/jobs/view/$jobId"
+        val scrapeResponse = scrapeService.scrapeHtml(url, cookieService.loadLinkedInCookies())
+        if (scrapeResponse.errors() != null) {
+            log.error("Error scraping job detail: {}", scrapeResponse.errors())
+            return null
+        }
+
+        val html = scrapeResponse.data().joinToString("\n")
+        try {
+            val parserResult = linkedInParser.parseJobDescriptionFromContent(html)
+            // Create a new Job with the parsed data
+            return Job(
+                null,                      // id
+                null,                      // companyId
+                jobId,                     // jobBoardId
+                parserResult.title,        // title
+                url,                       // url
+                null,                      // salaryMin
+                null,                      // salaryMax
+                "LinkedIn",                // source
+                null,                      // notes
+                parserResult.description,  // content
+                "new",                     // status
+                null,                      // pageId
+                LocalDateTime.now()        // createdAt
+            ).let { jobService.saveJob(it) }
+        } catch (e: Exception) {
+            log.error("Error parsing job detail: {}", e.message)
+            return null
+        }
+    }
+
+    fun getCompanyDetail(companyToken: String): Company? {
+        val url = "https://www.linkedin.com/company/$companyToken"
+        val scrapeResponse = scrapeService.scrapeHtml(url, cookieService.loadLinkedInCookies())
+        if (scrapeResponse.errors() != null) {
+            log.error("Error scraping company detail: {}", scrapeResponse.errors())
+            return null
+        }
+
+        val html = scrapeResponse.data().joinToString("\n")
+        try {
+            val result = linkedInParser.parseCompanyDescriptionFromString(html)
+            return Company(
+                null,
+                result.name,
+                result.websiteUrl,
+                null,
+                result.employeeCount,
+                result.summary,
+                result.location,
+                companyToken,
+                null
+            )
+        } catch (e: Exception) {
+            log.error("Error parsing company detail: {}", e.message)
+            return null
+        }
+    }
+
+    fun getCompanyJobs(companyToken: String): List<Job> {
+        val url = "https://www.linkedin.com/company/$companyToken/jobs"
+        val scrapeResponse = scrapeService.scrapeHtml(url, cookieService.loadLinkedInCookies())
+        if (scrapeResponse.errors() != null) {
+            log.error("Error scraping company jobs: {}", scrapeResponse.errors())
+            return emptyList()
+        }
+
+        // This would require implementing a method to parse job listings from a company page
+        // For now, we'll return an empty list
+        return emptyList()
+    }
+    
+    /**
+     * Scrape a company profile from LinkedIn
+     * 
+     * @param companyTag The company tag/slug from the LinkedIn URL
+     * @param cookies Optional cookies to use for the request
+     * @return The company information or null if not found
+     */
+    fun scrapeCompany(companyTag: String, cookies: List<Map<String, String>>?): Company? {
+        val url = "https://www.linkedin.com/company/$companyTag/about/"
+        log.info("Scraping company: $url")
+        
+        val scrapeResponse = scrapeService.scrapeHtml(url, cookies)
+        if (scrapeResponse.errors() != null) {
+            log.error("Error scraping company: {}", scrapeResponse.errors())
+            return null
+        }
+        
+        if (scrapeResponse.data().isEmpty()) {
+            return null
+        }
+        
+        val content = scrapeResponse.data().joinToString("\n")
+        try {
+            val result = linkedInParser.parseCompanyDescriptionFromString(content)
+            return Company(
+                null,
+                result.name,
+                result.websiteUrl,
+                null,
+                result.employeeCount,
+                result.summary,
+                result.location,
+                companyTag,
+                null
+            )
+        } catch (e: Exception) {
+            log.error("Error parsing company: {}", e.message)
+            return null
+        }
+    }
+
+    fun browse(url: String): BrowserSession {
+        log.info("Browsing {}", url)
+        val session = BrowserSession("LinkedInBrowse", url)
+        val savedSession = browserSessionRepository.save(session)
+
+        try {
+            val context = createContext()
+            val page = context.newPage()
+            
+            // Add cookies
+            val cookiesList = cookieService.loadLinkedInCookies()
+            if (cookiesList.isNotEmpty()) {
+                val cookies = cookieService.mapCookiesToPlaywright(cookiesList)
+                context.addCookies(cookies)
+            }
+
+            // Navigate to the URL
+            page.navigate(url)
+            page.waitForLoadState(LoadState.DOMCONTENTLOADED)
+
+            // Create a browser page record
+            val browserPage = BrowserPage(null, savedSession.id(), page.title(), "active")
+            val savedPage = browserPageRepository.save(browserPage)
+
+            // Extract and save URLs
+            val links = page.querySelectorAll("a[href*='/jobs/view/']")
+            for (link in links) {
+                val href = link.getAttribute("href")
+                if (href != null && href.contains("/jobs/view/")) {
+                    val jobId = getJobBoardIdFromPath(href)
+                    if (jobId != null) {
+                        val fullUrl = if (href.startsWith("http")) href else "https://www.linkedin.com$href"
+                        val text = link.textContent()
+                        
+                        val browserPageUrl = BrowserPageUrl(null, savedPage.id(), fullUrl, text)
+                        val savedBrowserPageUrl = browserPageUrlRepository.save(browserPageUrl)
+                        
+                        // Publish event for further processing
+                        applicationEventPublisher.publishEvent(
+                            BrowserPageUrlCreatedEvent(this, savedBrowserPageUrl)
+                        )
+                    }
+                }
+            }
+
+            closeContext()
+            
+            return savedSession
+        } catch (e: Exception) {
+            log.error("Error browsing {}", url, e)
+            closeContext()
+            throw RuntimeException("Error browsing $url", e)
+        }
     }
 
     fun jobStillAcceptingApplications(jobId: String): Boolean {
         val url = String.format("https://www.linkedin.com/jobs/view/%s", jobId)
         val scrapeResponse: ScrapeResponse = scrapeService.scrapeHtml(url)
-        val content = java.lang.String.join(System.lineSeparator(), scrapeResponse.data())
-        val doc = Jsoup.parse(content)
-        val figure = doc.select("figure.closed-job")
+        val figure = scrapeResponse.data().filter { it.contains("No longer accepting applications") }
         return figure.isEmpty()
-    }
-
-    // https://www.linkedin.com/company/arcadiahq/about/
-    fun scrapeCompany(companyTag: String, cookies: List<Map<String, String>>?): Company? {
-
-        val url = String.format("https://www.linkedin.com/company/%s/about/", companyTag)
-
-        log.info("Scraping company: $url")
-
-        val scrapeResponse: ScrapeResponse = scrapeService.scrapeHtml(url, cookies)
-
-        log.info("Scrape response: $scrapeResponse")
-
-        if (scrapeResponse.data() == null || scrapeResponse.data().isEmpty()) {
-            return null
-        }
-
-        val linkedInToken: String = getCompanyTokenFromUrl(url)
-
-        val content = java.lang.String.join(System.lineSeparator(), scrapeResponse.data())
-        val companyParserResult: CompanyParserResult = linkedInParser.parseCompanyDescriptionFromString(content)
-        val company = Company(
-            null,
-            companyParserResult.name,
-            companyParserResult.websiteUrl,
-            null,
-            companyParserResult.employeeCount,
-            companyParserResult.summary,
-            companyParserResult.location,
-            linkedInToken,
-            null
-        )
-
-        return company
     }
 
     fun searchJobs(jobSearchRequest: LinkedInJobSearchRequest): Set<LinkedInResult> {
         val allResults = mutableSetOf<LinkedInResult>()
 
+        val scrollIncrement = 300
         val scrollSleepInterval = 500L
-        val scrollIncrement = 350
-
         val term = jobSearchRequest.term
         val maxResults = jobSearchRequest.maxResults
 
-        val options = LaunchOptions()
-            // .setHeadless(false) // Run in headful mode
-            .setSlowMo(2000.0) // Slow motion delay in milliseconds
+        val context = createContext()
+        val page = context.newPage()
 
-        Playwright.create().use { playwright ->
+        // Add cookies
+        val cookiesList = cookieService.loadLinkedInCookies()
+        if (cookiesList.isNotEmpty()) {
+            val cookies = cookieService.mapCookiesToPlaywright(cookiesList)
+            context.addCookies(cookies)
+        }
 
-            val browser = playwright.chromium().launch(options)
+        val startPageUrl = "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=${term}"
 
-            // prevent the Chrome location popup from appearing
-            val context = browser
-                .newContext(
-                    Browser.NewContextOptions()
-                        .setPermissions(listOf("geolocation"))
-                )
+        val browserSession = BrowserSession("LinkedInServiceTest", startPageUrl)
+        val savedBrowserSession = browserSessionRepository.save(browserSession)
+        log.info("Saved browser session: ${savedBrowserSession.id()}")
 
-            val linkedInCookies = cookieService.loadLinkedInPlaywrightCookies()
-            context.addCookies(linkedInCookies)
+        page.navigate(startPageUrl)
 
-            val page: Page = context.newPage()
+        var nextPage = 2
 
-            // dismiss other popups
-            page.onDialog { dialog ->
-                log.info("dialog message: ${dialog.message()}")
-                dialog.dismiss()
-            }
-
-            /*
-                Date Posted Filters:
-                 - f_TPR=r3600 (posted in the last hour)
-                 - f_TPR=r43200 (posted in the last 12 hours)
-                 - f_TPR=r86400 (posted in the last 24 hours)
-                 - f_TPR=r604800 (posted in the last 7 days)
-
-                Remote filters:
-                - f_WT=1 (on-site jobs)
-                - f_WT=2 (remote jobs)
-                - f_WT=3 (hybrid jobs)
-                 */
-
-            val startPageUrl = "https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_WT=2&keywords=${term}"
-
-            val browserSession = BrowserSession("LinkedInServiceTest", startPageUrl)
-            val savedBrowserSession = browserSessionRepository.save(browserSession)
-            log.info("Saved browser session: ${savedBrowserSession.id}")
-
-            page.navigate(startPageUrl)
-
-            var nextPage = 2
-
+        try {
             while (true) {
                 log.info("Waiting for page ${nextPage - 1} to load")
                 page.waitForLoadState(LoadState.DOMCONTENTLOADED)
@@ -215,7 +405,7 @@ class LinkedInService(
                 // TODO save page to disk and get path
                 val browserPage = BrowserPage(savedBrowserSession.id(), page.url())
                 val savedBrowserPage = browserPageRepository.save(browserPage)
-                log.info("Saved browser page: ${savedBrowserPage.id}")
+                log.info("Saved browser page: ${savedBrowserPage.id()}")
 
                 val searchResultsPaneSelector =
                     "#main > div > div.scaffold-layout__list-detail-inner.scaffold-layout__list-detail-inner--grow > div.scaffold-layout__list > div"
@@ -241,7 +431,8 @@ class LinkedInService(
                             .let { links ->
                                 links?.forEach { link ->
                                     val href = link.getAttribute("href") ?: return@forEach
-                                    val text = link.getAttribute("aria-label").replace("with verification", "").trim()
+                                    val text =
+                                        link.getAttribute("aria-label").replace("with verification", "").trim()
                                     val result = LinkedInResult(href, text)
                                     allResults.add(result)
                                     if (allResults.size == maxResults) {
@@ -252,7 +443,7 @@ class LinkedInService(
                                                 val jobId = getJobBoardIdFromPath(liResult.href)
                                                 val url = "https://www.linkedin.com/jobs/view/$jobId"
                                                 BrowserPageUrl(
-                                                    savedBrowserPage.id,
+                                                    savedBrowserPage.id(),
                                                     url,
                                                     liResult.text
                                                 )
@@ -267,6 +458,7 @@ class LinkedInService(
                                                 )
                                             }
 
+                                        closeContext()
                                         return allResults
                                     }
                                 }
@@ -291,7 +483,10 @@ class LinkedInService(
                     break
                 }
             }
-            return allResults
+        } finally {
+            closeContext()
         }
+        
+        return allResults
     }
 }

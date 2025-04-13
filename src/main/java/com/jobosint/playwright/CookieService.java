@@ -162,4 +162,61 @@ public class CookieService {
 
         return playwrightCookies;
     }
+
+    /**
+     * Maps a list of cookie maps to Playwright cookies
+     *
+     * @param cookieMaps List of maps containing cookie data
+     * @return List of Playwright cookies
+     */
+    public List<Cookie> mapCookiesToPlaywright(List<Map<String, String>> cookieMaps) {
+        List<Cookie> playwrightCookies = new ArrayList<>();
+
+        for (Map<String, String> cookieMap : cookieMaps) {
+            if (cookieMap.containsKey("name") && cookieMap.containsKey("value")) {
+                Cookie cookie = new Cookie(cookieMap.get("name"), cookieMap.get("value"));
+
+                // Set required domain and path properties
+                if (cookieMap.containsKey("domain")) {
+                    cookie.domain = cookieMap.get("domain");
+                }
+
+                if (cookieMap.containsKey("path")) {
+                    cookie.path = cookieMap.get("path");
+                }
+
+                // Set optional properties
+                if (cookieMap.containsKey("expirationDate")) {
+                    try {
+                        cookie.expires = Double.parseDouble(cookieMap.get("expirationDate"));
+                    } catch (NumberFormatException e) {
+                        // Skip setting expires if invalid
+                    }
+                }
+
+                if (cookieMap.containsKey("httpOnly")) {
+                    cookie.httpOnly = Boolean.parseBoolean(cookieMap.get("httpOnly"));
+                }
+
+                if (cookieMap.containsKey("secure")) {
+                    cookie.secure = Boolean.parseBoolean(cookieMap.get("secure"));
+                }
+
+                if (cookieMap.containsKey("sameSite")) {
+                    String sameSite = cookieMap.get("sameSite");
+                    if ("lax".equalsIgnoreCase(sameSite)) {
+                        cookie.sameSite = SameSiteAttribute.LAX;
+                    } else if ("strict".equalsIgnoreCase(sameSite)) {
+                        cookie.sameSite = SameSiteAttribute.STRICT;
+                    } else if ("none".equalsIgnoreCase(sameSite) || "no_restriction".equalsIgnoreCase(sameSite)) {
+                        cookie.sameSite = SameSiteAttribute.NONE;
+                    }
+                }
+
+                playwrightCookies.add(cookie);
+            }
+        }
+
+        return playwrightCookies;
+    }
 }

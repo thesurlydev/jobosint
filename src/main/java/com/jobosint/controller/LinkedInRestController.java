@@ -21,7 +21,7 @@ public class LinkedInRestController {
     @GetMapping("/sync")
     @Operation(summary = "Sync LinkedIn jobs based on the given search request")
     public ResponseEntity<String> syncJobs() {
-        linkedInService.searchJobs(new LinkedInJobSearchRequest("java", 1));
+        linkedInService.searchJobs(new LinkedInJobSearchRequest("java", 10));
         return ResponseEntity.ok("ok");
     }
 }
