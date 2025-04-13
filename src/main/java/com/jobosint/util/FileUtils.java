@@ -22,8 +22,20 @@ public class FileUtils {
     }
 
     public static void writeToFile(String path, String content) {
-        try (FileWriter fileWriter = new FileWriter(path)) {
-            fileWriter.write(content);
+        try {
+            // Create parent directories if they don't exist
+            File file = new File(path);
+            File parentDir = file.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                if (!parentDir.mkdirs()) {
+                    log.warn("Failed to create directory structure for: {}", parentDir.getAbsolutePath());
+                }
+            }
+            
+            // Write the content to the file
+            try (FileWriter fileWriter = new FileWriter(path)) {
+                fileWriter.write(content);
+            }
         } catch (IOException e) {
             log.error("Error writing to file {}", path, e);
         }
