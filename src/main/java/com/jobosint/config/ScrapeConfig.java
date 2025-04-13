@@ -15,5 +15,6 @@ public record ScrapeConfig(Path downloadPath,
                            Integer viewportWidth,
                            Integer viewportHeight,
                            Boolean cookiesEnabled,
-                           Double defaultTimeoutMillis) {
+                           Double defaultTimeoutMillis,
+                           String cookieAuthDir) {
 }

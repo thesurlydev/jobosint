@@ -15,7 +15,6 @@ import com.microsoft.playwright.BrowserType.LaunchOptions
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
 import com.microsoft.playwright.options.LoadState
-import com.sun.tools.javac.resources.ct
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -25,9 +24,6 @@ import java.net.URISyntaxException
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.net.http.HttpResponse.*
-import java.net.http.HttpResponse.BodyHandlers.*
-import java.nio.file.Path
-import java.nio.file.StandardOpenOption
 import java.util.function.Consumer
 
 @Service
@@ -55,9 +51,11 @@ class LinkedInService(
             throw RuntimeException(e)
         }
 
+        val linkedInCookieString = cookieService.loadLinkedInRawCookieString()
+
         val request = HttpRequest.newBuilder(uri)
             .header("Accept", "*/*")
-            .header("Cookie", cookie())
+            .header("Cookie", linkedInCookieString)
             .GET().build()
 
         val response: HttpResponse<String>
@@ -208,7 +206,7 @@ class LinkedInService(
                         .setPermissions(listOf("geolocation"))
                 )
 
-            val linkedInCookies = cookieService.loadLinkedInCookies()
+            val linkedInCookies = cookieService.loadLinkedInPlaywrightCookies()
             context.addCookies(linkedInCookies)
 
             val page: Page = context.newPage()
@@ -318,11 +316,5 @@ class LinkedInService(
             }
             return allResults
         }
-    }
-
-    fun cookie(): String {
-        return """
-            lms_ads=AQGc2EiQyv7RgAAAAZYmI14H8y55uPBMbLVRmLjf3O5J0YD-t3sx9ttzI_1iNj-y4apWQUKRpeMCpqzDcc__Qdz_ayMrBaAC;_guid=a7f7e7b4-25ba-4a5e-af9c-8c0c425997c2;bcookie="v=2&b02c8c08-170b-4ea0-831e-facdb3d737b9";li_ep_auth_context=AFlhcHA9YWNjb3VudENlbnRlckh1YixhaWQ9MjUwNTgyOTYyLGlpZD0yNzM5MTE5NjIscGlkPTI0NDIyODEyOCxleHA9MTc0NDQ5NDMxMjgyNixjdXI9dHJ1ZQHZm014yNUg1UxjmI83hRvHsA2GCw;lms_analytics=AQGc2EiQyv7RgAAAAZYmI14H8y55uPBMbLVRmLjf3O5J0YD-t3sx9ttzI_1iNj-y4apWQUKRpeMCpqzDcc__Qdz_ayMrBaAC;fptctx2=taBcrIH61PuCVH7eNCyH0J9Fjk1kZEyRnBbpUW3FKs8CHPOIZ3JaRzj0TmqOgi5YqpER%252fkNeuGfec9qPPIOTsZZ9QFCo4n7t5zymk60i7ir95%252fVy8EydGX3u%252fEbUWhagdpSQbXHkt7lU8FgBZZ7nZ2UyOB1Tb5zmjLtJhTdpqKCwqSkWPBt6o44%252bop69JDXNKKxxhCyo%252fEiWQkvurligmpl3wZSa0pQuaXcAcoketM%252f2334t3qbtLAukbcH0HVxH6iYblKzpFQdWqO6ECwOcZ2%252f7dZvDsu%252b00cpZ4U0NYI18r6gehmmNxEHcI5NiBy6CtF5Oo9BJq0W0CNdTBZTG0XMhvU4l2BvNSK4mrwrp07I%253d;li_at=AQEFAP4BAAAAABUsbjsAAAGVtD86SAAAAZYr9r1RVgAAoXVybjpsaTplbnRlcnByaXNlQXV0aFRva2VuOmVKeGpaQUFDdnZmVE40SHB2Z1VLSUZvZ2VNSXNJQ1VKQUU5cEJVbz1edXJuOmxpOmVudGVycHJpc2VQcm9maWxlOih1cm46bGk6ZW50ZXJwcmlzZUFjY291bnQ6MjUwNTgyOTYyLDI0NDIyODEyOCledXJuOmxpOm1lbWJlcjo3NDUwMjg0ZUM0BYKbrtcSK_DDv6rcN9o17X_Qb_OYeFS7dTzKaQC_YxnXbMzc1EJWuosGEL4ArMWq8mdtSah3_UBUXZP24HqRuRIRqxhd9_-avuIlLxKqOVaXwJ1YDIbX7xyZ8v5XsvPNefTXatTqpKDEr002jIpjWUabLoTLoXJgqdqxSMHOt7OsOSjpp8oy2o8kjkbjHYJRig;lang=v=2&lang=en-us;lidc="b=OB84:s=O:r=O:a=O:p=O:g=3653:u=1179:x=1:i=1744489919:t=1744523472:v=2:sig=AQGp78Zw_PzVPNZSfbn0Zh2lgqbVYSIB";AnalyticsSyncHistory=AQJOrmac3kVBdAAAAZYmI13jMU8GIT_C65ygv_H1XuCqockWWkn-Y9kvqiuxd5r6BoiCA0_1HRspfQEm7nO2gw;bscookie="v=1&202412050300057240bb5c-2ca0-4fce-8414-8baaed50d544AQFug22dAVCIwD0LyMmI3hbfhyAU4xJt";dfpfpt=1f65c80d88c04ea6831ccfd6ebefbccb;JSESSIONID="ajax:7108999861729582947";li_rm=AQHxwZ2uUTmpbgAAAZWlLWZ7c_Ic4JdOpwpwDld6Exb4wk-92g0VJZKyuI-WHd7Sy9MsUkgknGePLeMK9tHKfZVXAJRayzSXEBXQYWTHxglHwR_SPnW5-kaX;li_sugr=0f0ba9e2-93ce-42ab-a34c-873edbf80ec6;li_theme=light;li_theme_set=app;liap=true;timezone=America/Los_Angeles;UserMatchHistory=AQLffODoXeWZUgAAAZYrs7EHwdcQJGehpqnkgVAVGQEnpUDN8PFyXSn-D7LJWGfK3ZnHhSc7DhCpNMsVs6UN3oS1_2puBoiMchnruhtk9HyCTLadCalcCGjvWGlGhfRpwBev5fHHApLC2k6-RJ1mZ06p6O4cXRPD8FxE1ZdfD3JhAvtq52xqOOTcy4cZpuHF_ECYz6xVqUVnQe2EEGcAeKJL96lLZj8mUn8iDJmMX4vM3PmXHvGM0NIksuB9Ne_umMRcamIJufECbUqNIWOHrd82-ECo_oCSuQDyCJNiJfrV2vj-ygt3DzpYkvu2r_6YI3sqv-OVDi6YCMfUDCiTBGsHAVgax8CP9Kr63wg2jcFJdakGgQ;visit=v=1&M
-        """.trimIndent()
     }
 }

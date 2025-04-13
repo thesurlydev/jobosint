@@ -2,8 +2,10 @@ package com.jobosint.playwright;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jobosint.config.ScrapeConfig;
 import com.microsoft.playwright.options.Cookie;
 import com.microsoft.playwright.options.SameSiteAttribute;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -11,34 +13,16 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 public class CookieService {
 
-    /**
-     * Loads cookies from a JSON file and converts them to Playwright cookie format
-     * 
-     * @param resourcePath Path to the JSON file containing cookies
-     * @return List of Playwright cookies
-     * @throws IOException If there's an error reading the file
-     */
-    public List<Cookie> loadCookiesFromResource(String resourcePath) throws IOException {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (is == null) {
-                throw new IOException("Resource not found: " + resourcePath);
-            }
-            
-            ObjectMapper mapper = new ObjectMapper();
-            List<Map<String, Object>> cookiesData = mapper.readValue(is, new TypeReference<List<Map<String, Object>>>() {});
-            
-            return convertToPlaywrightCookies(cookiesData);
-        }
-    }
-    
+    private final ScrapeConfig config;
+
     /**
      * Loads cookies from a file path and converts them to Playwright cookie format
      * 
@@ -46,7 +30,7 @@ public class CookieService {
      * @return List of Playwright cookies
      * @throws IOException If there's an error reading the file
      */
-    public List<Cookie> loadCookiesFromFile(String filePath) throws IOException {
+    public List<Cookie> loadPlaywrightCookiesFromFile(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         try (InputStream is = Files.newInputStream(path)) {
             ObjectMapper mapper = new ObjectMapper();
@@ -57,13 +41,53 @@ public class CookieService {
     }
     
     /**
-     * Loads LinkedIn cookies specifically from the resources directory
+     * Loads cookies from the auth directory and converts them to Playwright cookie format
+     * 
+     * @param filename Name of the cookie file in the auth directory
+     * @return List of Playwright cookies
+     * @throws IOException If there's an error reading the file
+     */
+    public List<Cookie> loadPlaywrightCookiesFromAuthDirectory(String filename) throws IOException {
+        Path path = Paths.get(config.cookieAuthDir(), filename);
+        if (!Files.exists(path)) {
+            throw new IOException("Cookie file not found: " + path);
+        }
+        return loadPlaywrightCookiesFromFile(path.toString());
+    }
+    
+    /**
+     * Loads cookie string directly from a file in the auth directory
+     * 
+     * @param filename Name of the text file containing cookie string in the auth directory
+     * @return Raw cookie string from the file
+     * @throws IOException If there's an error reading the file
+     */
+    public String loadRawCookieStringFromAuthDirectory(String filename) throws IOException {
+        Path path = Paths.get(config.cookieAuthDir(), filename);
+        if (!Files.exists(path)) {
+            throw new IOException("Cookie file not found: " + path);
+        }
+        return Files.readString(path).trim();
+    }
+    
+    /**
+     * Loads LinkedIn cookies from the auth directory
      * 
      * @return List of Playwright cookies for LinkedIn
      * @throws IOException If there's an error reading the file
      */
-    public List<Cookie> loadLinkedInCookies() throws IOException {
-        return loadCookiesFromResource("cookies/linkedin.json");
+    public List<Cookie> loadLinkedInPlaywrightCookies() throws IOException {
+        return loadPlaywrightCookiesFromAuthDirectory("linkedin.json");
+    }
+    
+    /**
+     * Loads LinkedIn raw cookie string from the auth directory
+     * 
+     * @return Raw cookie string for LinkedIn
+     * @throws IOException If there's an error reading the file
+     */
+    public String loadLinkedInRawCookieString() throws IOException {
+        return loadRawCookieStringFromAuthDirectory("linkedin.txt");
     }
     
     /**
