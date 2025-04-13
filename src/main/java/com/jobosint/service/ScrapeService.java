@@ -6,6 +6,7 @@ import com.jobosint.parse.GenericHtmlParser;
 import com.jobosint.parse.HtmlParser;
 import com.jobosint.parse.ParseResult;
 import com.jobosint.util.FileUtils;
+import com.jobosint.util.LinkedInUtils;
 import com.jobosint.util.UrlUtils;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.Page;
@@ -89,7 +90,14 @@ public class ScrapeService {
         var downloadPath = config.downloadPath();
         var namespace = config.namespace();
         var url = req.url();
-        var slug = UrlUtils.slugify(url);
+        String slug;
+        if (url.startsWith("https://www.linkedin.com/jobs/view/")) {
+            var jobId = LinkedInUtils.INSTANCE.getJobBoardIdFromUrl(url);
+            slug = "linkedin-job-" + jobId;
+        } else {
+            slug = UUID.randomUUID().toString();
+        }
+
 
         Browser.NewContextOptions contextOptions = new Browser.NewContextOptions();
         if (req.fetchHar()) {
@@ -103,18 +111,57 @@ public class ScrapeService {
         List<Cookie> cookiesForHost = null;
 
         if (config.cookiesEnabled() != null && config.cookiesEnabled() && req.cookies() != null) {
-            // TODO convert cookies to Cookie objects
+            cookiesForHost = new ArrayList<>();
 
+            for (Map<String, String> cookieMap : req.cookies()) {
+                if (cookieMap.containsKey("name") && cookieMap.containsKey("value")) {
+                    Cookie cookie = new Cookie(cookieMap.get("name"), cookieMap.get("value"));
 
-            // convert req.cookies to Cookie objects
-            cookiesForHost = req.cookies().stream()
-                    .map(cookie -> new Cookie(cookie.entrySet().stream().findFirst().get().getKey(), cookie.entrySet().stream().findFirst().get().getValue()))
-                    .collect(Collectors.toList());
+                    // Set required domain and path properties
+                    if (cookieMap.containsKey("domain")) {
+                        cookie.domain = cookieMap.get("domain");
+                    }
+
+                    if (cookieMap.containsKey("path")) {
+                        cookie.path = cookieMap.get("path");
+                    }
+
+                    // Set optional properties
+                    if (cookieMap.containsKey("expirationDate")) {
+                        try {
+                            cookie.expires = Double.parseDouble(cookieMap.get("expirationDate"));
+                        } catch (NumberFormatException e) {
+                            log.warn("Invalid expirationDate format for cookie: {}", cookieMap.get("name"));
+                        }
+                    }
+
+                    if (cookieMap.containsKey("httpOnly")) {
+                        cookie.httpOnly = Boolean.parseBoolean(cookieMap.get("httpOnly"));
+                    }
+
+                    if (cookieMap.containsKey("secure")) {
+                        cookie.secure = Boolean.parseBoolean(cookieMap.get("secure"));
+                    }
+
+                    if (cookieMap.containsKey("sameSite")) {
+                        String sameSite = cookieMap.get("sameSite");
+                        if ("lax".equalsIgnoreCase(sameSite)) {
+                            cookie.sameSite = com.microsoft.playwright.options.SameSiteAttribute.LAX;
+                        } else if ("strict".equalsIgnoreCase(sameSite)) {
+                            cookie.sameSite = com.microsoft.playwright.options.SameSiteAttribute.STRICT;
+                        } else if ("none".equalsIgnoreCase(sameSite) || "no_restriction".equalsIgnoreCase(sameSite)) {
+                            cookie.sameSite = com.microsoft.playwright.options.SameSiteAttribute.NONE;
+                        }
+                    }
+
+                    cookiesForHost.add(cookie);
+                }
+            }
 
             log.info("Found {} cookies", cookiesForHost.size());
         }
 
-        ScrapeResponse sr = null;
+        ScrapeResponse sr;
         Set<String> errors = new HashSet<>();
         EnumMap<FetchAttribute, String> downloadPaths = new EnumMap<>(FetchAttribute.class);
         try (BrowserContext context = browser.newContext(contextOptions)) {

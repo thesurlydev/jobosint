@@ -1,9 +1,9 @@
 package com.jobosint.util;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import com.github.slugify.Slugify;
+
+import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 public class UrlUtils {
 
@@ -33,18 +33,62 @@ public class UrlUtils {
         return baseUrl;
     }
 
-    public static String slugify(String url) {
-        if (url == null) {
-            return "";
-        }
-        return url.replaceFirst("https://", "").replaceAll("[^a-zA-Z0-9]", "_");
-    }
-
     public static String host(String url) {
         try {
             return new URI(url).getHost();
         } catch (URISyntaxException e) {
             return null;
+        }
+    }
+
+    /*public static String removeQueryString(String url) {
+        var nurl = url;
+        if (nurl.contains("?")) {
+            nurl = url.substring(0, url.indexOf("?"));
+        }
+        return nurl;
+    }*/
+
+    public static String slugify(String in) {
+        Slugify slugify = Slugify.builder().lowerCase(true).build();
+        return slugify.slugify(in);
+    }
+
+    public static String removeQueryString(String urlString) {
+        try {
+            URI uri = URI.create(urlString);
+            URL url = uri.toURL();
+            return url.toString();
+        } catch (MalformedURLException e) {
+            // Handle exception if the URL is malformed or cannot be parsed
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String decodeContent(String data) {
+        if (data == null) return null; // Early return for null input
+
+        StringBuilder tempBuffer = new StringBuilder();
+        try {
+            for (char c : data.toCharArray()) {
+                switch (c) {
+                    case '%':
+                        tempBuffer.append("<percentage>"); // Placeholder for '%'
+                        break;
+                    case '+':
+                        tempBuffer.append("<plus>"); // Placeholder for '+'
+                        break;
+                    default:
+                        tempBuffer.append(c);
+                }
+            }
+            String decodedData = URLDecoder.decode(tempBuffer.toString(), StandardCharsets.UTF_8);
+            return decodedData
+                    .replaceAll("<percentage>", "%")
+                    .replaceAll("<plus>", "+");
+        } catch (Exception e) {
+            return null; // Return null or some error indication as per your error handling policy
         }
     }
 

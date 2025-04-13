@@ -32,15 +32,15 @@ public class CompanyService {
     public List<Company> search(String query) {
         if (query.startsWith("\"") && query.endsWith("\"")) {
             var exact = query.replaceAll("\"", "");
-            log.info("Performing exact search for: {}", exact);
+            log.debug("Performing exact search for: {}", exact);
             return companyRepository.findCompaniesByNameIsIgnoreCase(exact);
         }
         var results = companyRepository.findCompaniesByNameIsIgnoreCase(query);
         if (results.size() == 1) {
-            log.info("Found exact match");
+            log.debug("Found exact match");
             return results;
         }
-        log.info("No exact match; performing 'like' search for: {}", query);
+        log.debug("No exact match; performing 'like' search for: {}", query);
         return companyRepository.findCompaniesByNameContainingIgnoreCase(query);
     }
 

@@ -5,6 +5,7 @@ import com.jobosint.model.Page;
 import com.jobosint.model.extension.SavePageRequest;
 import com.jobosint.parse.LinkedInParser;
 import com.jobosint.service.PageService;
+import com.jobosint.util.UrlUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 @RequestMapping("/api/pages")
@@ -32,7 +31,7 @@ public class PageRestController {
     public ResponseEntity<JobDescriptionParserResult> parsePage(@RequestBody SavePageRequest savePageRequest) {
         log.info("Parsing page from {}", savePageRequest.url());
         try {
-            String decodedContent = decodeContent(savePageRequest.content());
+            String decodedContent = UrlUtils.decodeContent(savePageRequest.content());
             JobDescriptionParserResult jobDescriptionParserResult = linkedInParser.parseJobDescriptionFromContent(decodedContent);
             return ResponseEntity.ok(jobDescriptionParserResult);
 
@@ -49,7 +48,7 @@ public class PageRestController {
         log.info("SavePageRequest: {} from {}", savePageRequest.url(), savePageRequest.source());
         Page savedPage;
         try {
-            String decodedContent = decodeContent(savePageRequest.content());
+            String decodedContent = UrlUtils.decodeContent(savePageRequest.content());
             Path savedPath = pageService.saveContent(decodedContent);
             Page page = savePageRequest.toPage(savedPath);
             savedPage = pageService.savePage(page, savePageRequest.cookies());
@@ -60,30 +59,5 @@ public class PageRestController {
         return ResponseEntity.ok(savedPage);
     }
 
-    private String decodeContent(String data) {
-        if (data == null) return null; // Early return for null input
 
-        StringBuilder tempBuffer = new StringBuilder();
-        try {
-            for (char c : data.toCharArray()) {
-                switch (c) {
-                    case '%':
-                        tempBuffer.append("<percentage>"); // Placeholder for '%'
-                        break;
-                    case '+':
-                        tempBuffer.append("<plus>"); // Placeholder for '+'
-                        break;
-                    default:
-                        tempBuffer.append(c);
-                }
-            }
-            String decodedData = URLDecoder.decode(tempBuffer.toString(), StandardCharsets.UTF_8);
-            return decodedData
-                    .replaceAll("<percentage>", "%")
-                    .replaceAll("<plus>", "+");
-        } catch (Exception e) {
-            log.error("Error fixing content", e);
-            return null; // Return null or some error indication as per your error handling policy
-        }
-    }
 }

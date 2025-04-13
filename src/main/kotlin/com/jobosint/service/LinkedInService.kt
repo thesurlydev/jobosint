@@ -11,6 +11,9 @@ import com.jobosint.playwright.CookieService
 import com.jobosint.repository.BrowserPageRepository
 import com.jobosint.repository.BrowserPageUrlRepository
 import com.jobosint.repository.BrowserSessionRepository
+import com.jobosint.util.LinkedInUtils.getCompanyTokenFromUrl
+import com.jobosint.util.LinkedInUtils.getJobBoardIdFromPath
+import com.jobosint.util.LinkedInUtils.getJobBoardIdFromUrl
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.BrowserType.LaunchOptions
 import com.microsoft.playwright.Page
@@ -94,7 +97,6 @@ class LinkedInService(
 
     fun updateJobBoardIds() {
         jobService.findAllJobPageDetail("LinkedIn").forEach(Consumer { jobPageDetail: JobPageDetail ->
-            println(jobPageDetail)
             val pageUrl = jobPageDetail.pageUrl
             try {
                 val jobBoardId = getJobBoardIdFromUrl(pageUrl)
@@ -112,50 +114,6 @@ class LinkedInService(
         val doc = Jsoup.parse(content)
         val figure = doc.select("figure.closed-job")
         return figure.isEmpty()
-    }
-
-    fun getJobBoardIdFromUrl(url: String): String {
-        val baseUrl: String = removeQueryString(url)
-
-        // get the board token and job id from the page url
-        val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val jobId = urlParts[5]
-        // verify jobId is a number
-        if (!jobId.matches("\\d+".toRegex())) {
-            throw IllegalArgumentException("Invalid jobId: $jobId")
-        }
-        return jobId
-    }
-
-    fun getJobBoardIdFromPath(path: String): String {
-        val baseUrl: String = removeQueryString(path)
-
-        // get the board token and job id from the page url
-        val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val jobId = urlParts[3]
-        // verify jobId is a number
-        if (!jobId.matches("\\d+".toRegex())) {
-            throw IllegalArgumentException("Invalid jobId: $jobId")
-        }
-        return jobId
-    }
-
-    public fun removeQueryString(url: String): String {
-        var baseUrl: String = url
-        if (baseUrl.contains("?")) {
-            baseUrl = url.substring(0, url.indexOf("?"))
-        }
-        return baseUrl
-    }
-
-    // https://www.linkedin.com/company/sleeperhq/about/ -> sleeperhq
-    fun getCompanyTokenFromUrl(url: String): String {
-        val baseUrl = removeQueryString(url)
-
-        // get the board token and job id from the page url
-        val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val token = urlParts[4]
-        return token
     }
 
     // https://www.linkedin.com/company/arcadiahq/about/
@@ -202,7 +160,7 @@ class LinkedInService(
         val maxResults = jobSearchRequest.maxResults
 
         val options = LaunchOptions()
-           // .setHeadless(false) // Run in headful mode
+            // .setHeadless(false) // Run in headful mode
             .setSlowMo(2000.0) // Slow motion delay in milliseconds
 
         Playwright.create().use { playwright ->
