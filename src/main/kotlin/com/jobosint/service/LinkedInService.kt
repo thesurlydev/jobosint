@@ -1,6 +1,7 @@
 package com.jobosint.service
 
 import com.jobosint.client.HttpClientFactory
+import com.jobosint.event.BrowserPageUrlCreatedEvent
 import com.jobosint.model.*
 import com.jobosint.model.browse.BrowserPage
 import com.jobosint.model.browse.BrowserPageUrl
@@ -17,13 +18,14 @@ import com.microsoft.playwright.Playwright
 import com.microsoft.playwright.options.LoadState
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.io.IOException
 import java.net.URI
 import java.net.URISyntaxException
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
-import java.net.http.HttpResponse.*
+import java.net.http.HttpResponse.BodyHandlers
 import java.util.function.Consumer
 
 @Service
@@ -36,7 +38,8 @@ class LinkedInService(
     val browserSessionRepository: BrowserSessionRepository,
     val browserPageRepository: BrowserPageRepository,
     val browserPageUrlRepository: BrowserPageUrlRepository,
-    val httpClientFactory: HttpClientFactory
+    val httpClientFactory: HttpClientFactory,
+    val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
     private val log = LoggerFactory.getLogger(LinkedInService::class.java)
@@ -89,10 +92,6 @@ class LinkedInService(
         return queryId
     }
 
-    /*fun getJobDetail(String url): JobDetail {
-
-    }*/
-
     fun updateJobBoardIds() {
         jobService.findAllJobPageDetail("LinkedIn").forEach(Consumer { jobPageDetail: JobPageDetail ->
             println(jobPageDetail)
@@ -110,15 +109,13 @@ class LinkedInService(
         val url = String.format("https://www.linkedin.com/jobs/view/%s", jobId)
         val scrapeResponse: ScrapeResponse = scrapeService.scrapeHtml(url)
         val content = java.lang.String.join(System.lineSeparator(), scrapeResponse.data())
-        println(content)
         val doc = Jsoup.parse(content)
-
         val figure = doc.select("figure.closed-job")
         return figure.isEmpty()
     }
 
     fun getJobBoardIdFromUrl(url: String): String {
-        val baseUrl: String = getBaseUrl(url)
+        val baseUrl: String = removeQueryString(url)
 
         // get the board token and job id from the page url
         val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -130,7 +127,20 @@ class LinkedInService(
         return jobId
     }
 
-    private fun getBaseUrl(url: String): String {
+    fun getJobBoardIdFromPath(path: String): String {
+        val baseUrl: String = removeQueryString(path)
+
+        // get the board token and job id from the page url
+        val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val jobId = urlParts[3]
+        // verify jobId is a number
+        if (!jobId.matches("\\d+".toRegex())) {
+            throw IllegalArgumentException("Invalid jobId: $jobId")
+        }
+        return jobId
+    }
+
+    public fun removeQueryString(url: String): String {
         var baseUrl: String = url
         if (baseUrl.contains("?")) {
             baseUrl = url.substring(0, url.indexOf("?"))
@@ -140,7 +150,7 @@ class LinkedInService(
 
     // https://www.linkedin.com/company/sleeperhq/about/ -> sleeperhq
     fun getCompanyTokenFromUrl(url: String): String {
-        val baseUrl = getBaseUrl(url)
+        val baseUrl = removeQueryString(url)
 
         // get the board token and job id from the page url
         val urlParts = baseUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -192,8 +202,8 @@ class LinkedInService(
         val maxResults = jobSearchRequest.maxResults
 
         val options = LaunchOptions()
-            .setHeadless(false) // Run in headful mode
-//            .setSlowMo(2000.0) // Slow motion delay in milliseconds
+           // .setHeadless(false) // Run in headful mode
+            .setSlowMo(2000.0) // Slow motion delay in milliseconds
 
         Playwright.create().use { playwright ->
 
@@ -213,7 +223,7 @@ class LinkedInService(
 
             // dismiss other popups
             page.onDialog { dialog ->
-                println("dialog message: ${dialog.message()}")
+                log.info("dialog message: ${dialog.message()}")
                 dialog.dismiss()
             }
 
@@ -234,20 +244,20 @@ class LinkedInService(
 
             val browserSession = BrowserSession("LinkedInServiceTest", startPageUrl)
             val savedBrowserSession = browserSessionRepository.save(browserSession)
-            println("Saved browser session: ${savedBrowserSession.id}")
+            log.info("Saved browser session: ${savedBrowserSession.id}")
 
             page.navigate(startPageUrl)
 
             var nextPage = 2
 
             while (true) {
-                println("Waiting for page ${nextPage - 1} to load")
+                log.info("Waiting for page ${nextPage - 1} to load")
                 page.waitForLoadState(LoadState.DOMCONTENTLOADED)
 
                 // TODO save page to disk and get path
                 val browserPage = BrowserPage(savedBrowserSession.id(), page.url())
                 val savedBrowserPage = browserPageRepository.save(browserPage)
-                println("Saved browser page: ${savedBrowserPage.id}")
+                log.info("Saved browser page: ${savedBrowserPage.id}")
 
                 val searchResultsPaneSelector =
                     "#main > div > div.scaffold-layout__list-detail-inner.scaffold-layout__list-detail-inner--grow > div.scaffold-layout__list > div"
@@ -257,7 +267,7 @@ class LinkedInService(
                 val searchPaneScrollHeight: Int =
                     page.evaluate("element => element.scrollHeight", searchResultsPane) as Int
 
-                println("searchPaneScrollHeight: $searchPaneScrollHeight")
+                log.info("searchPaneScrollHeight: $searchPaneScrollHeight")
                 var currentScrollHeight = 0
                 while (currentScrollHeight <= searchPaneScrollHeight) {
 
@@ -268,49 +278,58 @@ class LinkedInService(
                         currentScrollHeight
                     )
                     page.evaluate(scrollScript).let { scrollResult ->
-                        println("scroll result: $scrollResult")
+                        log.info("scroll result: $scrollResult")
                         page.querySelector(searchResultsPaneSelector).querySelectorAll("a[href*='/jobs/view/']")
                             .let { links ->
                                 links?.forEach { link ->
                                     val href = link.getAttribute("href") ?: return@forEach
                                     val text = link.getAttribute("aria-label").replace("with verification", "").trim()
-                                        ?: return@forEach
                                     val result = LinkedInResult(href, text)
                                     allResults.add(result)
                                     if (allResults.size == maxResults) {
-                                        println("max results reached: ${allResults.size}")
+                                        log.info("max results reached: ${allResults.size}")
 
                                         allResults.stream()
                                             .map { liResult ->
+                                                val jobId = getJobBoardIdFromPath(liResult.href)
+                                                val url = "https://www.linkedin.com/jobs/view/$jobId"
                                                 BrowserPageUrl(
                                                     savedBrowserPage.id,
-                                                    liResult.href,
+                                                    url,
                                                     liResult.text
                                                 )
                                             }
-                                            .forEach { bpu -> browserPageUrlRepository.save(bpu) }
+                                            .forEach { bpu ->
+                                                val savedBrowserPageUrl = browserPageUrlRepository.save(bpu)
+                                                applicationEventPublisher.publishEvent(
+                                                    BrowserPageUrlCreatedEvent(
+                                                        this,
+                                                        savedBrowserPageUrl
+                                                    )
+                                                )
+                                            }
 
                                         return allResults
                                     }
                                 }
                             }
                     }
-                    println("all results: ${allResults.size}")
+                    log.info("all results: ${allResults.size}")
                     Thread.sleep(scrollSleepInterval)
                     currentScrollHeight += scrollIncrement
                 }
-                println("Finished scrolling; looking for paging button for page ${nextPage}")
+                log.info("Finished scrolling; looking for paging button for page ${nextPage}")
 
                 // page navigation
                 val buttonSelector = "button[aria-label='Page $nextPage']"
                 val button = page.querySelector(buttonSelector)
 
                 if (button != null) {
-                    println("Found paging button for page $nextPage")
+                    log.info("Found paging button for page $nextPage")
                     nextPage += 1
                     button.click()
                 } else {
-                    println("Button not found")
+                    log.warn("Button not found")
                     break
                 }
             }
