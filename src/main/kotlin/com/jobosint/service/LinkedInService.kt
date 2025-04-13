@@ -2,7 +2,12 @@ package com.jobosint.service
 
 import com.jobosint.client.HttpClientFactory
 import com.jobosint.event.BrowserPageUrlCreatedEvent
-import com.jobosint.model.*
+import com.jobosint.model.Company
+import com.jobosint.model.Job
+import com.jobosint.model.JobPageDetail
+import com.jobosint.model.LinkedInJobSearchRequest
+import com.jobosint.model.LinkedInResult
+import com.jobosint.model.ScrapeResponse
 import com.jobosint.model.browse.BrowserPage
 import com.jobosint.model.browse.BrowserPageUrl
 import com.jobosint.model.browse.BrowserSession
@@ -11,15 +16,20 @@ import com.jobosint.playwright.CookieService
 import com.jobosint.repository.BrowserPageRepository
 import com.jobosint.repository.BrowserPageUrlRepository
 import com.jobosint.repository.BrowserSessionRepository
+import com.jobosint.repository.JobRepository
+import com.jobosint.service.JobService
+import com.jobosint.util.LinkedInUtils
 import com.jobosint.util.LinkedInUtils.getCompanyTokenFromUrl
 import com.jobosint.util.LinkedInUtils.getJobBoardIdFromPath
 import com.jobosint.util.LinkedInUtils.getJobBoardIdFromUrl
+import com.jobosint.util.RateLimiter
 import com.microsoft.playwright.Browser
 import com.microsoft.playwright.BrowserContext
 import com.microsoft.playwright.BrowserType.LaunchOptions
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
-import com.microsoft.playwright.options.LoadState
+import com.microsoft.playwright.options.Cookie
+import jakarta.annotation.PreDestroy
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
@@ -31,9 +41,11 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.net.http.HttpResponse.BodyHandlers
 import java.time.LocalDateTime
+import java.util.Collections
+import java.util.HashSet
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
-import jakarta.annotation.PreDestroy
 
 @Service
 class LinkedInService(
@@ -54,6 +66,9 @@ class LinkedInService(
     // Thread-local browser instances
     private val threadBrowsers = ConcurrentHashMap<Long, Browser>()
     private val threadContexts = ConcurrentHashMap<Long, BrowserContext>()
+    
+    // Track processed URLs to avoid duplicates
+    private val processedUrls = Collections.synchronizedSet(HashSet<String>())
 
     /**
      * Get or create a browser instance for the current thread
@@ -325,14 +340,14 @@ class LinkedInService(
 
             // Navigate to the URL
             page.navigate(url)
-            page.waitForLoadState(LoadState.DOMCONTENTLOADED)
+            page.waitForLoadState()
 
             // Create a browser page record
             val browserPage = BrowserPage(null, savedSession.id(), page.title(), "active")
             val savedPage = browserPageRepository.save(browserPage)
 
             // Extract and save URLs
-            val links = page.querySelectorAll("a[href*='/jobs/view/']")
+            val links = page.querySelectorAll("a[href]")
             for (link in links) {
                 val href = link.getAttribute("href")
                 if (href != null && href.contains("/jobs/view/")) {
@@ -341,12 +356,27 @@ class LinkedInService(
                         val fullUrl = if (href.startsWith("http")) href else "https://www.linkedin.com$href"
                         val text = link.textContent()
                         
+                        // Skip if we've already processed this URL
+                        if (!processedUrls.add(fullUrl)) {
+                            log.info("Skipping already processed URL: {}", fullUrl)
+                            continue
+                        }
+                        
                         val browserPageUrl = BrowserPageUrl(null, savedPage.id(), fullUrl, text)
                         val savedBrowserPageUrl = browserPageUrlRepository.save(browserPageUrl)
                         
-                        // Publish event for further processing
-                        applicationEventPublisher.publishEvent(
-                            BrowserPageUrlCreatedEvent(this, savedBrowserPageUrl)
+                        // Schedule event publishing with a delay to prevent overwhelming the system
+                        val delayMs = (processedUrls.size % 10) * 1000L // Stagger events with 0-9 seconds delay
+                        RateLimiter.scheduleLinkedInRequest(
+                            {
+                                // Publish event for further processing
+                                applicationEventPublisher.publishEvent(
+                                    BrowserPageUrlCreatedEvent(this, savedBrowserPageUrl)
+                                )
+                                true
+                            },
+                            delayMs,
+                            TimeUnit.MILLISECONDS
                         )
                     }
                 }
@@ -365,8 +395,8 @@ class LinkedInService(
     fun jobStillAcceptingApplications(jobId: String): Boolean {
         val url = String.format("https://www.linkedin.com/jobs/view/%s", jobId)
         val scrapeResponse: ScrapeResponse = scrapeService.scrapeHtml(url)
-        val figure = scrapeResponse.data().filter { it.contains("No longer accepting applications") }
-        return figure.isEmpty()
+        val figure = scrapeResponse.data()?.filter { it.contains("No longer accepting applications") }
+        return figure?.isEmpty() ?: true
     }
 
     fun searchJobs(jobSearchRequest: LinkedInJobSearchRequest): Set<LinkedInResult> {
@@ -400,7 +430,7 @@ class LinkedInService(
         try {
             while (true) {
                 log.info("Waiting for page ${nextPage - 1} to load")
-                page.waitForLoadState(LoadState.DOMCONTENTLOADED)
+                page.waitForLoadState()
 
                 // TODO save page to disk and get path
                 val browserPage = BrowserPage(savedBrowserSession.id(), page.url())
@@ -442,19 +472,37 @@ class LinkedInService(
                                             .map { liResult ->
                                                 val jobId = getJobBoardIdFromPath(liResult.href)
                                                 val url = "https://www.linkedin.com/jobs/view/$jobId"
-                                                BrowserPageUrl(
-                                                    savedBrowserPage.id(),
-                                                    url,
-                                                    liResult.text
-                                                )
-                                            }
-                                            .forEach { bpu ->
-                                                val savedBrowserPageUrl = browserPageUrlRepository.save(bpu)
-                                                applicationEventPublisher.publishEvent(
-                                                    BrowserPageUrlCreatedEvent(
-                                                        this,
-                                                        savedBrowserPageUrl
+                                                
+                                                // Skip if we've already processed this URL
+                                                if (!processedUrls.add(url)) {
+                                                    log.info("Skipping already processed URL: {}", url)
+                                                    null
+                                                } else {
+                                                    BrowserPageUrl(
+                                                        savedBrowserPage.id(),
+                                                        url,
+                                                        liResult.text
                                                     )
+                                                }
+                                            }
+                                            .filter { it != null }
+                                            .forEach { bpu ->
+                                                val savedBrowserPageUrl = browserPageUrlRepository.save(bpu!!)
+                                                
+                                                // Schedule event publishing with a delay to prevent overwhelming the system
+                                                val delayMs = (processedUrls.size % 10) * 1000L // Stagger events with 0-9 seconds delay
+                                                RateLimiter.scheduleLinkedInRequest(
+                                                    {
+                                                        applicationEventPublisher.publishEvent(
+                                                            BrowserPageUrlCreatedEvent(
+                                                                this,
+                                                                savedBrowserPageUrl
+                                                            )
+                                                        )
+                                                        true
+                                                    },
+                                                    delayMs,
+                                                    TimeUnit.MILLISECONDS
                                                 )
                                             }
 
@@ -464,9 +512,9 @@ class LinkedInService(
                                 }
                             }
                     }
-                    log.info("all results: ${allResults.size}")
-                    Thread.sleep(scrollSleepInterval)
+
                     currentScrollHeight += scrollIncrement
+                    Thread.sleep(scrollSleepInterval)
                 }
                 log.info("Finished scrolling; looking for paging button for page ${nextPage}")
 

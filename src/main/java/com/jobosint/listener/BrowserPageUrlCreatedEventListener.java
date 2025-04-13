@@ -11,6 +11,7 @@ import com.jobosint.service.LinkedInService;
 import com.jobosint.service.PageService;
 import com.jobosint.service.ScrapeService;
 import com.jobosint.util.LinkedInUtils;
+import com.jobosint.util.RateLimiter;
 import com.jobosint.util.UrlUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -45,9 +48,15 @@ public class BrowserPageUrlCreatedEventListener implements ApplicationListener<B
     // Semaphore to limit concurrent scraping operations
     private final Semaphore scrapeSemaphore = new Semaphore(2); // Reduced to 2 concurrent scrapes
     
+    // LinkedIn rate limiter
+    private final RateLimiter linkedInRateLimiter = RateLimiter.getLinkedInInstance();
+    
     // Track scraping statistics
     private final AtomicInteger successCount = new AtomicInteger(0);
     private final AtomicInteger failureCount = new AtomicInteger(0);
+    
+    // Track processed URLs to avoid duplicates
+    private final Set<String> processedUrls = java.util.Collections.synchronizedSet(new java.util.HashSet<>());
 
     @Override
     @Async
@@ -55,6 +64,12 @@ public class BrowserPageUrlCreatedEventListener implements ApplicationListener<B
         log.info("Received: {}", event);
 
         var url = event.getBrowserPageUrl().url();
+        
+        // Skip if we've already processed this URL
+        if (!processedUrls.add(url)) {
+            log.info("Skipping already processed URL: {}", url);
+            return;
+        }
 
         var jobId = LinkedInUtils.INSTANCE.getJobBoardIdFromUrl(url);
         Optional<Job> existingJob = jobService.getJobBySourceJobId("LinkedIn", jobId);
@@ -63,104 +78,119 @@ public class BrowserPageUrlCreatedEventListener implements ApplicationListener<B
             return;
         }
 
-        log.info("Scraping URL: {}", url);
-        Path savedPath = null;
+        log.info("Queueing scrape for URL: {}", url);
         
-        // Acquire a permit from the semaphore before scraping
-        try {
-            log.debug("Waiting for scrape permit for URL: {}", url);
-            scrapeSemaphore.acquire();
-            log.debug("Acquired scrape permit for URL: {}", url);
+        // Queue the LinkedIn request instead of processing it immediately
+        CompletableFuture<Path> future = RateLimiter.queueLinkedInRequest(() -> {
+            Path savedPath = null;
             
+            // Acquire a permit from the semaphore before scraping
             try {
-                // Attempt to scrape with retry logic
-                ScrapeResponse scrapeResponse = null;
-                Exception lastException = null;
+                log.debug("Waiting for scrape permit for URL: {}", url);
+                scrapeSemaphore.acquire();
+                log.debug("Acquired scrape permit for URL: {}", url);
                 
-                // Try up to 3 times
-                for (int attempt = 0; attempt < 3; attempt++) {
-                    try {
-                        scrapeResponse = scrapeService.scrapeHtml(url, cookieService.loadLinkedInCookies());
-                        break; // Success, exit the loop
-                    } catch (Exception e) {
-                        lastException = e;
-                        log.warn("Scrape attempt {} failed for URL {}: {}", attempt + 1, url, e.getMessage());
+                try {
+                    // Use the rate limiter for LinkedIn requests
+                    ScrapeResponse scrapeResponse = linkedInRateLimiter.executeWithRateLimit(() -> {
+                        // Attempt to scrape with retry logic
+                        Exception lastException = null;
                         
-                        if (attempt < 2) {
-                            // Wait before retrying
+                        // Try up to 3 times
+                        for (int attempt = 0; attempt < 3; attempt++) {
                             try {
-                                Thread.sleep(1000 * (attempt + 1)); // Exponential backoff
-                            } catch (InterruptedException ie) {
-                                Thread.currentThread().interrupt();
-                                throw new RuntimeException("Interrupted while waiting to retry scrape", ie);
+                                return scrapeService.scrapeHtml(url, cookieService.loadLinkedInCookies());
+                            } catch (Exception e) {
+                                lastException = e;
+                                log.warn("Scrape attempt {} failed for URL {}: {}", attempt + 1, url, e.getMessage());
+                                
+                                if (attempt < 2) {
+                                    // Wait before retrying
+                                    try {
+                                        Thread.sleep(1000 * (attempt + 1)); // Exponential backoff
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new RuntimeException("Interrupted while waiting to retry scrape", ie);
+                                    }
+                                }
                             }
                         }
+                        
+                        // If all attempts failed
+                        if (lastException != null) {
+                            throw lastException;
+                        } else {
+                            throw new RuntimeException("Failed to scrape after multiple attempts");
+                        }
+                    });
+
+                    if (scrapeResponse.errors() != null && !scrapeResponse.errors().isEmpty()) {
+                        log.error("Errors: {}", scrapeResponse.errors());
+                        failureCount.incrementAndGet();
+                        throw new RuntimeException("Failed to get job detail: " + scrapeResponse.errors());
                     }
+
+                    if (scrapeResponse.data() == null || scrapeResponse.data().isEmpty()) {
+                        log.error("No data returned from scrape");
+                        failureCount.incrementAndGet();
+                        throw new RuntimeException("Failed to get job detail: No data returned");
+                    }
+
+                    var content = java.lang.String.join(System.lineSeparator(), scrapeResponse.data());
+
+                    String decodedContent = UrlUtils.decodeContent(content);
+
+                    Document doc = Jsoup.parse(decodedContent);
+                    if (doc.title().equals("LinkedIn")) {
+                        failureCount.incrementAndGet();
+                        throw new RuntimeException("LinkedIn blocked the request");
+                    }
+
+                    savedPath = pageService.saveContent(decodedContent);
+                    successCount.incrementAndGet();
+                    log.info("Scrape successful for URL: {} (Success: {}, Failures: {})", 
+                            url, successCount.get(), failureCount.get());
+                    
+                } catch (IOException e) {
+                    failureCount.incrementAndGet();
+                    log.error("IO error while scraping URL {}: {}", url, e.getMessage());
+                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    failureCount.incrementAndGet();
+                    log.error("Error while scraping URL {}: {}", url, e.getMessage());
+                    throw new RuntimeException(e);
+                } finally {
+                    // Always release the permit
+                    scrapeSemaphore.release();
+                    log.debug("Released scrape permit for URL: {}", url);
                 }
                 
-                // If all attempts failed
-                if (scrapeResponse == null) {
-                    if (lastException != null) {
-                        throw lastException;
-                    } else {
-                        throw new RuntimeException("Failed to scrape after multiple attempts");
-                    }
-                }
-
-                if (scrapeResponse.errors() != null && !scrapeResponse.errors().isEmpty()) {
-                    log.error("Errors: {}", scrapeResponse.errors());
-                    failureCount.incrementAndGet();
-                    throw new RuntimeException("Failed to get job detail: " + scrapeResponse.errors());
-                }
-
-                if (scrapeResponse.data() == null || scrapeResponse.data().isEmpty()) {
-                    log.error("No data returned from scrape");
-                    failureCount.incrementAndGet();
-                    throw new RuntimeException("Failed to get job detail: No data returned");
-                }
-
-                var content = java.lang.String.join(System.lineSeparator(), scrapeResponse.data());
-
-                String decodedContent = UrlUtils.decodeContent(content);
-
-                Document doc = Jsoup.parse(decodedContent);
-                if (doc.title().equals("LinkedIn")) {
-                    failureCount.incrementAndGet();
-                    throw new RuntimeException("LinkedIn blocked the request");
-                }
-
-                savedPath = pageService.saveContent(decodedContent);
-                successCount.incrementAndGet();
-                log.info("Scrape successful for URL: {} (Success: {}, Failures: {})", 
-                        url, successCount.get(), failureCount.get());
-                
-            } catch (IOException e) {
-                failureCount.incrementAndGet();
-                log.error("IO error while scraping URL {}: {}", url, e.getMessage());
-                throw new RuntimeException(e);
-            } catch (Exception e) {
-                failureCount.incrementAndGet();
-                log.error("Error while scraping URL {}: {}", url, e.getMessage());
-                throw new RuntimeException(e);
-            } finally {
-                // Always release the permit
-                scrapeSemaphore.release();
-                log.debug("Released scrape permit for URL: {}", url);
+                return savedPath;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                log.error("Interrupted while waiting for scrape permit: {}", e.getMessage());
+                throw new RuntimeException("Interrupted while waiting for scrape permit", e);
             }
-            
+        });
+        
+        // Handle the result asynchronously
+        future.thenAccept(savedPath -> {
             if (savedPath != null) {
-                log.info("Saved content to {}", savedPath);
-    
-                Page page = new Page(null, url, savedPath.toString(), "sync");
-                Page savedPage = pageService.savePage(page, null);
-    
-                log.info("Saved page: {}", savedPage);
+                try {
+                    log.info("Saved content to {}", savedPath);
+
+                    Page page = new Page(null, url, savedPath.toString(), "sync");
+                    Page savedPage = pageService.savePage(page, null);
+
+                    log.info("Saved page: {}", savedPage);
+                } catch (Exception e) {
+                    log.error("Error processing saved content for URL {}: {}", url, e.getMessage());
+                }
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            log.error("Interrupted while waiting for scrape permit: {}", e.getMessage());
-            throw new RuntimeException("Interrupted while waiting for scrape permit", e);
-        }
+        }).exceptionally(ex -> {
+            log.error("Error in future for URL {}: {}", url, ex.getMessage());
+            return null;
+        });
     }
 
     /**
