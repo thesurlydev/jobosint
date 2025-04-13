@@ -157,6 +157,10 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
             if (jobDescriptionParserResult != null && jobDescriptionParserResult.companyName() != null) {
                 Company company = companyService.upsertCompany(jobDescriptionParserResult.companyName(), null);
                 if (company != null) {
+                    if (jobExists(page.url())) {
+                        log.info("Job already exists: {}", jobDescriptionParserResult.title());
+                        return;
+                    }
                     processJob(jobDescriptionParserResult, page, company, jobSource);
                 }
             }
@@ -191,5 +195,14 @@ public class PageCreatedEventListener implements ApplicationListener<PageCreated
         );
 
         jobService.saveJob(job);
+    }
+
+    private boolean jobExists(String url) {
+        Optional<Job> existingJob = jobService.getJobByUrl(url);
+        if (existingJob.isPresent()) {
+            log.info("Job already exists: {}", existingJob.get());
+            return true;
+        }
+        return false;
     }
 }

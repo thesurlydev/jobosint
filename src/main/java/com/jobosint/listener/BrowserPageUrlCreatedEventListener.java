@@ -2,12 +2,15 @@ package com.jobosint.listener;
 
 import com.jobosint.client.HttpClientFactory;
 import com.jobosint.event.BrowserPageUrlCreatedEvent;
+import com.jobosint.model.Job;
 import com.jobosint.model.Page;
 import com.jobosint.model.ScrapeResponse;
 import com.jobosint.playwright.CookieService;
+import com.jobosint.service.JobService;
 import com.jobosint.service.LinkedInService;
 import com.jobosint.service.PageService;
 import com.jobosint.service.ScrapeService;
+import com.jobosint.util.LinkedInUtils;
 import com.jobosint.util.UrlUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Map.entry;
 
@@ -33,39 +37,22 @@ public class BrowserPageUrlCreatedEventListener implements ApplicationListener<B
     private final PageService pageService;
     private final ScrapeService scrapeService;
     private final LinkedInService linkedInService;
+    private final JobService jobService;
 
     @Override
     public void onApplicationEvent(@NonNull BrowserPageUrlCreatedEvent event) {
         log.info("Received: {}", event);
 
         var url = event.getBrowserPageUrl().url();
-        log.info("Scraping URL: {}", url);
-        /*HttpResponse<String> response;
-        try {
-            String linkedInCookieString = cookieService.loadLinkedInRawCookieString();
-            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(URI.create(url))
-                    .header("Cookie", linkedInCookieString);
-            
-            // Apply all LinkedIn headers from the getLinkedInHeaders method
-            Map<String, String> headers = getLinkedInHeaders();
-            for (Map.Entry<String, String> header : headers.entrySet()) {
-                requestBuilder.header(header.getKey(), header.getValue());
-            }
-            
-            HttpRequest request = requestBuilder.GET().build();
 
-            response = httpClientFactory.getClientWithLogging().send(request, HttpResponse.BodyHandlers.ofString());
-
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        var jobId = LinkedInUtils.INSTANCE.getJobBoardIdFromUrl(url);
+        Optional<Job> existingJob = jobService.getJobBySourceJobId("LinkedIn", jobId);
+        if (existingJob.isPresent()) {
+            log.info("Job already exists: {}", existingJob.get());
+            return;
         }
 
-        if (response.statusCode() != 200) {
-            throw new RuntimeException("Failed to get job detail: ${response.statusCode()}");
-        }*/
-
-
-
+        log.info("Scraping URL: {}", url);
         Path savedPath;
         try {
 

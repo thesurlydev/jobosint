@@ -131,4 +131,15 @@ public class FileUtils {
                 .mapToObj(i -> baseUrl + i)
                 .forEach(url -> appendToFile(linksFilePath, url));
     }
+
+    /**
+     * Reads the contents of a file as a string.
+     *
+     * @param filePath the path to the file to read
+     * @return the contents of the file as a string
+     * @throws IOException if an I/O error occurs reading from the file
+     */
+    public static String readFromFile(Path filePath) throws IOException {
+        return Files.readString(filePath);
+    }
 }
