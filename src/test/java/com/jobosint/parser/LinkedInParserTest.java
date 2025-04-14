@@ -6,8 +6,11 @@ import com.jobosint.model.JobDescriptionParserResult;
 import com.jobosint.model.ProfileParserResult;
 import com.jobosint.parse.JobDescriptionParser;
 import com.jobosint.parse.LinkedInParser;
+import com.jobosint.util.FileUtils;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,6 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class LinkedInParserTest {
 
     private final LinkedInParser parser = new LinkedInParser(null, new JobDescriptionParser());
+
+
+    @Test
+    public void parseJobDescriptionFromContent() throws Exception {
+        String content = FileUtils.readFromFile(Path.of("downloads/jobosint/linkedin-job-4209400522/index-good.html"));
+        JobDescriptionParserResult jobDescriptionParserResult = parser.parseJobDescriptionFromContent(content);
+        System.out.println(jobDescriptionParserResult);
+    }
 
     @Test
     public void parseJobDescription() throws Exception {
